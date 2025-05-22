@@ -1,0 +1,1199 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Organization Profile</h1>
+    </div>
+    <div class="col-6 teamDiv">
+      <button id="add" class="btn btnColorAll btnScc" (click)="saveEditOrganization()">
+        <i class="fa fa-plus marTopnew" aria-hidden="true"></i>
+        Save Changes
+      </button>
+      <button id="add" class="btn btnColorAll btnScc" style="margin-left: 20px" (click)="backToMainSetting()">
+        <i class="fa fa-chevron-left marTopnew" aria-hidden="true"></i>
+        Back
+      </button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div class="row marTop18">
+      <div class="col">
+        <div class="CardRow">
+          <div class="row bodyOne">
+            <div class="col-md-4 col-12">
+              <div class="details">
+                <p class="linebottom cardHeadertxt">Oragnization Details</p>
+                <form [formGroup]="editOrganizationForm">
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <label for="nameArea" style="padding-right: 5px">Organization Name</label>
+                      <input formControlName="eOrganizationName" type="text" class="form-control" id="nameArea" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <label for="nameArea" style="padding-right: 5px">Industry</label>
+                      <select2 [data]="industryData" [options]="commonOption" [value]="industryValue"
+                        (valueChanged)="changedIndustry($event)"></select2>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="showIndustryRemarks">
+                    <div class="col-12">
+                      <label for="nameArea" style="padding-right: 5px">Enter Industry Type</label>
+                      <input formControlName="industryType" type="text" class="form-control" id="nameArea" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <label for="nameArea" style="padding-right: 5px">Organization Address</label>
+                      <input formControlName="eCompanyAddress1" type="text" class="form-control" placeholder="Street 1"
+                        id="nameArea" />
+                      <input formControlName="eCompanyAddress2" type="text" class="form-control martop15"
+                        placeholder="Street 2" id="nameArea" />
+                      <input formControlName="eCompanyAddress3" type="text" class="form-control martop15"
+                        placeholder="City" id="nameArea" />
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="details marTop">
+                <p class="linebottom cardHeadertxt">Primary Contact</p>
+                <div class="form-group row">
+                  <div class="col-12">
+                    <label for="nameArea" style="padding-right: 5px">Name</label>
+                    <input value="{{ selectedOrganizationData?.primary_cont_name }}" type="text" class="form-control"
+                      id="nameArea" disabled />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-12">
+                    <label for="nameArea" style="padding-right: 5px">Email</label>
+                    <input value="{{ selectedOrganizationData?.primary_cont_type }}" type="text" class="form-control"
+                      id="nameArea" disabled />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-12">
+
+              <!-- Workdays -->
+              <div class="details">
+
+                <div
+                  style="font-weight: 500; border-bottom: 1px solid #d7d2d2; display: flex; justify-content: space-between; padding-bottom: 5px; margin-bottom: 10px; ">
+                  <Span>Working Days : </Span>
+                </div>
+
+                <form [formGroup]="editDropDownsForm">
+                  <div>
+                    <div class="marbot">
+                      <label for="nameArea" style="padding-right: 5px">Work Profile Effective Day</label>
+                      <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                        title="Select Work Day Profile Start Date."></i>
+                      <ejs-datepicker format="MMM d, y" formControlName="wrkProfileEffectiveDay"
+                      [min]='minDate'></ejs-datepicker>
+                      <div *ngIf="chwkexpdays" class="changeValue"></div>
+                    </div>
+                    <div style="display: flex; justify-content: end;">
+                      <a (click)="WorkProfileHistoryModel(WorkProfileHistory) "><i class="fa fa-external-link"
+                          aria-hidden="true"></i>
+                        Work Profile change History
+                      </a>
+                    </div>
+                    <label for="nameArea" style="padding-right: 5px">Select Work Days</label>
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                      title="Select the Working days"></i>
+                      <div style="text-align: center;">
+                        <div *ngFor=" let days of editWorkdaysData; let i = index " class="round-checkboxes">
+                          <input [id]="days.day_name" (change)="editChangeWorkingDays($event)"
+                            [checked]="days.is_working" name="work_days[]" type="checkbox" [value]="days.day_name"
+                            [disabled]="disableWork" />
+                          <label tooltipClass="my-custom-class" [ngbTooltip]="days.day_name" container="body"
+                            [for]="days.day_name">{{ days.day }}</label>
+                        </div>
+                      </div>
+
+                    <div style="margin: 15px 18px">
+                      <input class="form-check-input" [checked]="editIsFlexibleDiv" type="checkbox" value=""
+                        formControlName="editFlexibleCheckbox" id="flexCheckChecked" [disabled]="disableWork"
+                        (change)="editIsFlexed($event)" />
+                      <label style="padding-right: 5px" class="form-check-label" for="flexCheckChecked">
+                        Flexible Working Hours
+                      </label>
+                      <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                        title="Work flexible with in the given checkIn Checkout Tolerance Time by fullfilling the selected Minimum Work Hours."></i>
+                    </div>
+
+                    <div *ngIf="!editIsFlexibleDiv">
+                      <div style="display: flex; margin-top: 10px">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Work starts</label>
+                          <ngx-select-dropdown [disabled]="editIsFlexibleDiv || disableWork"
+                            [config]="worktimeDropConfig" formControlName="editStartTimeDropdownValue"
+                            (change)="selectWorkStart($event)"
+                            [options]="workStartHoursData"></ngx-select-dropdown>
+                        </div>
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Work ends</label>
+                          <ngx-select-dropdown [disabled]="editIsFlexibleDiv || disableWork"
+                            [config]="worktimeDropConfig" (change)="selectWorkEnd($event)"
+                            formControlName="editEndTimeDropdownValue"
+                            [options]="workEndHoursData"></ngx-select-dropdown>
+                        </div>
+                      </div>
+
+                      <div style="display: flex; margin-top: 10px;">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">CheckIn Tolerance</label>
+                          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                            title="Employee is allowed to checkin by the given time after the work start time"></i>
+                          <ngx-select-dropdown [config]="worktimeDropConfig"
+                            formControlName="editCheckinTolerance" [options]="workStartHoursData"
+                            [disabled]="editIsFlexibleDiv || disableWork" (change)="selectCheckinTolerance($event)"></ngx-select-dropdown>
+                        </div>
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Less Hour Tolerance</label>
+                          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                            title="Set the Less Hour Tolerance minutes for employee to prevent automatic deduction for the selected minutes in payroll."></i>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="editLessHourTolerance"
+                            [options]="timelimits"
+                            [disabled]="editIsFlexibleDiv || disableWork"></ngx-select-dropdown>
+                        </div>
+                      </div>
+
+                      <div style="display: flex; margin-top: 10px;">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Adjusted Checkout Time</label>
+                          <input formControlName="editadjustedCheckoutTime" type="text" class="form-control" id="nameArea"
+                          disabled />
+                        </div>
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Working Hours</label>
+                          <input formControlName="editWorkingHours" type="text" class="form-control" id="nameArea"
+                          disabled />
+                        </div>
+                      </div>
+
+                      <div style="display: flex; margin-top: 10px;">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Break Time Limit</label>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="editBreakTimeLimit"
+                            [options]="timelimits"
+                            [disabled]="editIsFlexibleDiv || disableWork"></ngx-select-dropdown>
+                        </div>
+                      </div>
+
+                      <div style="width: 95%; display: flex; justify-content: end; margin: 3px 0px 0px 0px;">
+                        <button style="border: none; background: none;" (click)="helpWorkOption('main')">Help
+                          <i *ngIf="!helpWork" style="margin-left: 2px;" class="fa fa-question-circle"
+                            aria-hidden="true"></i>
+                          <i *ngIf="helpWork" style="margin-left: 2px;" class="fa fa-times"
+                            aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <!-- helpWorkOption -->
+                      <div style="margin: 5px 5px;" *ngIf="helpWork">
+                        <p>In normal working hours, employees are expected to check in between the designated
+                          "Work start" time and the "CheckIn Tolerance" time.
+                          The work end time can be extended based on the actual check-in time to ensure the
+                          total
+                          working hours are met.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div *ngIf="editIsFlexibleDiv">
+                      <div  style="display: flex; margin-top: 10px;">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">CheckIn After</label>
+                          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                            title="Employee is allowed to check in after the given time"></i>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="editCheckInAfter"
+                            (change)="selectCheckInAfter($event)" [disabled]="disableWork"
+                            [options]="workStartHoursData"></ngx-select-dropdown>
+                        </div>
+
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">CheckOut Before</label>
+                          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                            title="Employee is allowed to check out by the given time"></i>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="editCheckOutBefore"
+                            (change)="selectCheckOutBefore($event)" [disabled]="disableWork"
+                            [options]="workEndHoursData"></ngx-select-dropdown>
+                        </div>
+
+                      </div>
+                      <div  style="display: flex; margin-top: 10px;">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Minimum work hours</label>
+                          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                            title="Select the Minimum Work Hours to be completed while employee have flexible work hours"></i>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" (change)="selectMinimum($event)"
+                            formControlName="editTotalHoursDropdownValue" [disabled]="disableWork"
+                            [options]="workTotalHoursData"></ngx-select-dropdown>
+                        </div>
+
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Break Time Limit</label>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" [disabled]="disableWork"
+                            formControlName="editBreakTimeLimitFlex" [options]="timelimits"></ngx-select-dropdown>
+                        </div>
+                      </div>
+
+                      <div style="display: flex; margin-top: 10px;">
+                        <div style="margin-right: 10px; width: 50%">
+                          <label for="nameArea" style="padding-right: 5px">Less Hour Tolerance</label>
+                          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                            title="Set the Less Hour Tolerance minutes for employee to prevent automatic deduction for the selected minutes in payroll."></i>
+                          <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="editLessHourToleranceFlex"
+                            [options]="timelimits"
+                            [disabled]="disableWork"></ngx-select-dropdown>
+                        </div>
+                      </div>
+
+                      <div style="width: 95%; display: flex; justify-content: end; margin: 3px 0px 0px 0px;">
+                        <button style="border: none; background: none;" (click)="helpWorkOption('flex')">Help
+                          flexible
+                          <i *ngIf="!helpWorkFlex" style="margin-left: 2px;" class="fa fa-question-circle"
+                            aria-hidden="true"></i>
+                          <i *ngIf="helpWorkFlex" style="margin-left: 2px;" class="fa fa-times"
+                            aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <div style="margin: 5px 5px;" *ngIf="helpWorkFlex">
+                        <p>In cases of flexible working hours, employee have the freedom to check In after the
+                          designated "CheckIn After" time
+                          and check out before the "CheckOut Before" time, as long as they fulfill the minimum
+                          work hours requirement specified.
+                          This allows employees to adjust their schedules while ensuring that the required
+                          amount
+                          of work is completed.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style="margin: 12px 18px">
+                      <input class="form-check-input" [checked]="managed" type="checkbox" value=""
+                        formControlName="editCostomWorkDays" id="flexCheckChecked"
+                        (change)="manageWorkHrsByWeekDays($event)" />
+                      <label class="form-check-label" for="flexCheckChecked">
+                        Customize particular working hours by weekdays.
+                      </label>
+                    </div>
+
+                    <!-- Managed here -->
+                    <div *ngIf="managed">
+
+                      <div style="display: block;"><label for="nameArea"
+                        style="padding-right: 5px; margin-bottom: 10px;">Select custom work day</label><i
+                        class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                        title="Select the Work Day to Customise"></i></div>
+                      <div style="text-align: center;">
+                        <div *ngFor="let days of editWorkDayExp; let i = index" class="round-checkboxes">
+                          <input [disabled]="disableWork" [id]="days.day_name"
+                            (change)="editWorkDayExpcheck($event)" [checked]="days.is_working"
+                            name="work_days[]" type="checkbox" [value]="days.day_name" />
+                          <label tooltipClass="my-custom-class" [ngbTooltip]="days.day_name" container="body"
+                            [for]="days.day_name">{{ days.day }}</label>
+                        </div>
+                        <div *ngIf="chwkexpdays" class="changeValue"></div>
+                      </div>
+
+                      <div *ngFor=" let days of editWorkDayExp; let i = index" style="display: flex;">
+
+                        <!-- Saturday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Saturday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 0px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;">
+                              <input [disabled]="disableWork" class="form-check-input"
+                                [checked]="saeditIsFlexibleDiv" formControlName="saIsFlex" type="checkbox"
+                                value="" id="flexCheckChecked" (change)="saeditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="saeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="saeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsasa"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!saeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!saeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  formControlName="StartSaturday" [disabled]="disableWork"  (change)="selectWorkEndExp($event, 'Saturday')"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="saeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="saeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="websa"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!saeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!saeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  formControlName="EndSaturday" [disabled]="disableWork" (change)="selectWorkEndExp($event, 'Saturday')"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!saeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!saeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Saturday')"
+                                  [disabled]="disableWork" formControlName="tosa"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="saeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="saeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  formControlName="misa" [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btlsa"
+                                  [disabled]="disableWork" placeholder="CheckIn Tolarence"
+                                  [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhtsa" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input formControlName="actsa"  type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whsa"  type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+
+                        </div>
+                        <!-- Sunday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Sunday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 0px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;"><input class="form-check-input"
+                                [checked]="sueditIsFlexibleDiv" [disabled]="disableWork"
+                                formControlName="suIsFlex" type="checkbox" value="" id="flexCheckChecked"
+                                (change)="sueditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="sueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="sueditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsasa"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!sueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!sueditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Sunday')"
+                                  [disabled]="disableWork" formControlName="StartSunday"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="sueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="sueditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="websu"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!sueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!sueditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Sunday')"
+                                  [disabled]="disableWork" formControlName="EndSunday"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!sueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!sueditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Sunday')"
+                                  [disabled]="disableWork" formControlName="tosu"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="sueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="sueditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="misu"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btlsu"
+                                  [disabled]="disableWork" [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhtsu" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input  formControlName="actsu" type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whsu" type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Monday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Monday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 0px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;"><input class="form-check-input"
+                                [disabled]="disableWork" [checked]="moeditIsFlexibleDiv"
+                                formControlName="moIsFlex" type="checkbox" value="" id="flexCheckChecked"
+                                (change)="moeditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="moeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="moeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsamo"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!moeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!moeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Monday')"
+                                  [disabled]="disableWork" formControlName="StartMonday"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="moeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="moeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="webmo"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!moeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!moeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Monday')"
+                                  [disabled]="disableWork" formControlName="EndMonday"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!moeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!moeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Monday')"
+                                  [disabled]="disableWork" formControlName="tomo"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="moeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="moeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="mimo"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btlmo"
+                                  [disabled]="disableWork" [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhtmo" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input formControlName="actmo" type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whmo" type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Tuesday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Tuesday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 0px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;"><input class="form-check-input"
+                                [disabled]="disableWork" [checked]="tueditIsFlexibleDiv"
+                                formControlName="tuIsFlex" type="checkbox" value="" id="flexCheckChecked"
+                                (change)="tueditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="tueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="tueditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsatu"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!tueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!tueditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Tuesday')"
+                                  [disabled]="disableWork" formControlName="StartTuesday"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="tueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="tueditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="webtu"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!tueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!tueditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Tuesday')"
+                                  formControlName="EndTuesday" [disabled]="disableWork"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!tueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!tueditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Tuesday')"
+                                  [disabled]="disableWork" formControlName="totu"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="tueditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="tueditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="mitu"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btltu"
+                                  [disabled]="disableWork" [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhttu" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input formControlName="acttu" type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whtu" type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Wednesday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Wednesday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 0px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;"><input class="form-check-input"
+                                [disabled]="disableWork" [checked]="weeditIsFlexibleDiv"
+                                formControlName="weIsFlex" type="checkbox" value="" id="flexCheckChecked"
+                                (change)="weeditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="weeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="weeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsawe"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!weeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!weeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Wednesday')"
+                                  [disabled]="disableWork" formControlName="StartWednesday"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="weeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="weeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="webwe"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!weeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!weeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Wednesday')"
+                                  [disabled]="disableWork" formControlName="EndWednesday"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!weeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!weeditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Wednesday')"
+                                  [disabled]="disableWork" formControlName="towe"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="weeditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="weeditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="miwe"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btlwe"
+                                  [disabled]="disableWork" [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhtwe" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input formControlName="actwe" type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whwe" type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Thursday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Thursday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 0px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;"><input class="form-check-input"
+                                [checked]="theditIsFlexibleDiv" formControlName="thIsFlex" type="checkbox"
+                                [disabled]="disableWork" value="" id="flexCheckChecked"
+                                (change)="theditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="theditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="theditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsath"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!theditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!theditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Thursday')"
+                                  formControlName="StartThursday" [disabled]="disableWork"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="theditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="theditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="webth"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!theditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!theditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Thursday')"
+                                  formControlName="EndThursday" [disabled]="disableWork"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!theditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!theditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Thursday')"
+                                  [disabled]="disableWork" formControlName="toth"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="theditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="theditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="mith"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btlth"
+                                  [disabled]="disableWork" [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhtth" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input formControlName="actth" type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whth" type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Friday -->
+                        <div *ngIf="days.is_working == true && days.day_name == 'Friday.';else other_content"
+                          style="    border-bottom: 1px solid #adadaa; padding: 10px 2px 10px 2px; width: 100%; margin: 0px 0px 10px 0px;">
+
+                          <div style="display: flex;">
+                            <div style="margin-right: 5px; width: 25%"><label
+                                style="font-weight: 500;">{{days.day_name.slice(0, -1)}}</label></div>
+                            <div style="margin-right: 5px;"><input class="form-check-input"
+                                [disabled]="disableWork" [checked]="freditIsFlexibleDiv"
+                                formControlName="frIsFlex" type="checkbox" value="" id="flexCheckChecked"
+                                (change)="freditIsFlexed($event)" />
+                            </div>
+                            <div><label class="form-check-label" for="flexCheckChecked"> Flexible </label>
+                            </div>
+                          </div>
+
+                          <div style=" width: 100%; display: flex; ">
+
+                            <div style="display: flex; flex-direction: row; width:49%">
+                              <div style="width: 50%; margin-right: 2px">
+                                <label *ngIf="freditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn After</label>
+                                <ngx-select-dropdown *ngIf="freditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="wsafr"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!freditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Work Starts</label>
+                                <ngx-select-dropdown *ngIf="!freditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Friday')"
+                                  [disabled]="disableWork" formControlName="StartFriday"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 49%; margin-right: 2px">
+                                <label *ngIf="freditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckOut Before</label>
+                                <ngx-select-dropdown *ngIf="freditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="webfr"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="!freditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px; ">Work Ends</label>
+                                <ngx-select-dropdown *ngIf="!freditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectWorkEndExp($event, 'Friday')"
+                                  [disabled]="disableWork" formControlName="EndFriday"
+                                  [options]="workEndHoursData"></ngx-select-dropdown>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: row; width:51%">
+                              <div style="width: 50%; margin-right: 2px;">
+                                <label *ngIf="!freditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">CheckIn Tolarence</label>
+                                <ngx-select-dropdown *ngIf="!freditIsFlexibleDiv" [config]="worktimeDropConfig" (change)="selectCheckinToleranceexp($event, 'Friday')"
+                                  [disabled]="disableWork" formControlName="tofr"
+                                  [options]="workStartHoursData"></ngx-select-dropdown>
+
+                                <label *ngIf="freditIsFlexibleDiv"
+                                  style=" font-size: smaller; margin-bottom: 0px;">Minimum Hours</label>
+                                <ngx-select-dropdown *ngIf="freditIsFlexibleDiv" [config]="worktimeDropConfig"
+                                  [disabled]="disableWork" formControlName="mifr"
+                                  [options]="workTotalHoursData"></ngx-select-dropdown>
+                              </div>
+                              <div style="width: 50%">
+                                <label style=" font-size: smaller; margin-bottom: 0px;">Break Time
+                                  Limit</label>
+                                <ngx-select-dropdown [config]="worktimeDropConfig" formControlName="btlfr"
+                                  [disabled]="disableWork" [options]="timelimits"></ngx-select-dropdown>
+                              </div>
+                            </div>
+                          </div>
+                          <div style=" width: 100%; display: flex;  flex-direction: row; margin-top: 5px;">
+                            <div style="width: 25%; margin-right: 2px;">
+                              <label style=" font-size: smaller; margin-bottom: 0px;"> Less Hour Tolerance </label>
+                              <ngx-select-dropdown formControlName="lhtfr" [config]="worktimeDropConfig" [options]="timelimits"></ngx-select-dropdown>
+                            </div>
+                            <div style="width: 24%; margin-right: 2px;" *ngIf="!saeditIsFlexibleDiv" >
+                              <label
+                              style=" font-size: smaller; margin-bottom: 0px;">Adjusted Checkout Time</label>
+                              <input formControlName="actfr" type="text" class="form-control" id="nameArea"
+                              disabled />
+                            </div>
+                            <div style="width: 25%" *ngIf="!saeditIsFlexibleDiv">
+                              <label
+                            style=" font-size: smaller; margin-bottom: 0px;">Working Hours</label>
+                            <input formControlName="whfr" type="text" class="form-control" id="nameArea"
+                                disabled />
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </form>
+              </div>
+              <!-- New Organization Work Days&Time Setting -->
+
+              <!-- New Organization Work Days&Time Setting ^-->
+
+              <!-- <div class="details" >
+                <p class="linebottom cardHeadertxt">Working Days & Time</p>
+                <div>
+                  <label for="nameArea" style="padding-right: 5px;">Select Days</label>
+                  <i class="fa fa-info-circle" ngbTooltip="Select Number of Days your team has to work" tooltipClass="my-custom-class" container="body"></i>
+                  <div>
+                    <div *ngFor="let days of orgWorkingDays; let i=index;" class="round-checkboxes">
+                      <input [id]="days.day_name" (change)="workingDayChange($event)"  [checked]="days.is_working" name="work_days[]" type="checkbox" [value]="days.day_name">
+                      <label tooltipClass="my-custom-class" [ngbTooltip]="days.day_name" container="body" [for]="days.day_name">{{days.day}}</label>
+                    </div>
+                  </div>
+                  <div style="display: flex; margin-top: 12px;">
+                    <div style="margin-right: 10px;">
+                      <label for="nameArea" style="padding-right: 5px;">Work starts</label>
+                      <i class="fa fa-info-circle" ngbTooltip="Work Start time" tooltipClass="my-custom-class" container="body"></i>
+                      <select2 [disabled]="isFlexibleDiv" [data]="workStartHoursData" [options]="commonOption" [value]="workStartHourValue"  (valueChanged)="changedStartHrs($event)" ></select2>
+                    </div>
+                    <div style="margin-right: 10px;">
+                      <label for="nameArea" style="padding-right: 5px;">Work ends</label>
+                      <i class="fa fa-info-circle" ngbTooltip="Work End time" tooltipClass="my-custom-class" container="body"></i>
+                      <select2 [disabled]="isFlexibleDiv" [data]="workEndHoursData" [options]="commonOption" [value]="workEndHourValue"  (valueChanged)="changedEndHrs($event)" ></select2>
+                    </div>
+                    <div>
+                      <label for="nameArea" style="padding-right: 5px;">Minimum Hours</label>
+                      <i class="fa fa-info-circle" ngbTooltip="Total Hrs to complete time" tooltipClass="my-custom-class" container="body"></i>
+                      <select2 [data]="workTotalHoursData" [options]="commonOption" [value]="workTotalHoursValue"  (valueChanged)="changedTotalHrs($event)" ></select2>
+                    </div>
+                  </div>
+                  <div style="margin: 12px 18px;">
+                    <input class="form-check-input" type="checkbox" [checked]="isFlexibleDiv" value="" id="flexCheckChecked" (change)="isFlexed($event)">
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Flexible Working Hours
+                    </label>
+                    <i class="fa fa-info-circle helpsign" ngbTooltip="Minimum hrs to complete" tooltipClass="my-custom-class" container="body"></i>
+                  </div>
+                </div>
+              </div> -->
+              <!------------------------------------------------------------------------- NOT CUSTOMIZED ----------------------------------------------------------------------------------->
+              <div class="details marTop">
+                <p class="linebottom">Geo</p>
+                <div>
+                  <label for="nameArea" style="padding-right: 5px">Timezone</label>
+                  <select2 [data]="timeZoneData" [options]="commonOption" [value]="timeZoneValue"
+                    (valueChanged)="editChangedTimeZone($event)"></select2>
+                </div>
+                <div style="margin-top: 12px">
+                  <label for="nameArea" style="padding-right: 5px">Time format</label>
+                  <select2 [data]="timeformatData" [options]="commonOption" [value]="timeformatValue"
+                    (valueChanged)="editChangedTimeformat($event)"></select2>
+                </div>
+              </div>
+
+              <div class="details marTop" [formGroup]="editOrganizationForm">
+                <p class="linebottom">Accounts</p>
+                <div>
+                  <label for="nameArea" style="padding-right: 5px">Currency</label>
+                  <input formControlName="currency" type="text" class="form-control" placeholder="Enter Currency" />
+                </div>
+                <div style="margin-top: 12px">
+                  <label for="nameArea" style="padding-right: 5px">VAT Percentage</label>
+                  <input formControlName="vat" type="number" class="form-control" placeholder="Enter VAT percentage" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-12">
+              <div class="details">
+                <p class="linebottom cardHeadertxt">Office Location</p>
+                <div>
+                  <form [formGroup]="addOrgBranchForm">
+                    <div class="form-group row">
+                      <div class="col-12">
+                        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                          <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                            (dragEnd)="markerDragEnd($event)" [iconUrl]="{
+                              url: 'https://www.iconpacks.net/icons/1/free-building-icon-1062-thumb.png',
+                              scaledSize: {
+                                width: 40,
+                                height: 60
+                              }
+                            }"></agm-marker>
+                          <agm-circle [latitude]="latitude" [longitude]="longitude" [clickable]="false"
+                            [draggable]="false" [editable]="false" [fillColor]="'green'" [fillOpacity]="0.5"
+                            [radius]="georadius">
+                          </agm-circle>
+
+                          <ng-container *ngFor="
+                              let branch of addOrgBranchForm.get('branches')[
+                                'controls'
+                              ];
+                              let i = index
+                            ">
+                            <agm-marker [latitude]="
+                                branch.get('latitude').value
+                                  ? branch.get('latitude').value
+                                  : latitude
+                              " [longitude]="
+                                branch.get('longitude').value
+                                  ? branch.get('longitude').value
+                                  : longitude
+                              " [markerDraggable]="true" (dragEnd)="markerDragEndonIndex($event, i)">
+                            </agm-marker>
+                          </ng-container>
+
+                          <!-- <agm-circle formControlName="latitude"    formControlName="longitude"   [latitude]="latitude" [longitude]="longitude" [clickable]="false"
+                          [draggable]="false" [editable]="false" [fillColor]="'green'" [fillOpacity]="0.5"
+                          [radius]="georadius">
+                        </agm-circle> -->
+                        </agm-map>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-12">
+                        <button id="add" class="btn btnColorAll btnScc" (click)="addNewBranchFrom()">
+                          <i class="fa fa-plus marTopnew" aria-hidden="true"></i>
+                          Add New Branch
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-12">
+                        <label for="orgAddress" style="padding-right: 5px" #eformattedAddress>Organization
+                          Address</label>
+                        <input type="text" formControlName="eformattedAddress" class="form-control" id="orgAddress"
+                          readonly />
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-12">
+                        <label for="orgRaidus" style="padding-right: 5px" #eraidus>Raidus</label>
+                        <input type="number" formControlName="eraidus" class="form-control" id="orgRaidus" />
+                      </div>
+                    </div>
+
+                    <hr />
+                    <ng-container *ngFor="let branch of newBranchArr; let i = index">
+                      <div class="form-group row">
+                        <div class="col-8">
+                          <label for="orgAddress" style="padding-right: 5px">Organization Address</label>
+                          <input type="text" value="{{ branch.formattedAddress }}" class="form-control"
+                            id="formattedAddress" readonly />
+                        </div>
+                        <div class="col-4" style="margin: 26px 0px 0px 0px">
+                          <!-- <i class="fa fa-trash actionButton" aria-hidden="true" ngbPopover="Delete Created Branch" "></i> Delete  -->
+
+                          <!-- <button id='add' class='btn  btnScc' (click)="deleteNewBranch(i)">
+                              <i class="fa fa-trash marTopnew" aria-hidden="true"></i>
+
+                             </button> -->
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-12">
+                          <label for="orgRaidus" style="padding-right: 5px">Raidus</label>
+                          <input type="number" value="{{ branch.raidus }}" (keyup)="raidusValue($event, i)"
+                            class="form-control" id="raidus" />
+                        </div>
+                      </div>
+                    </ng-container>
+                  </form>
+
+                  <!-- <div class="form-group row">
+                    <div class="col-12"  style="display: flex;" >
+                      <input type="checkbox"  class="marTopLef" >
+                        <p class="marleft7">Add Branch GeoFencing</p>
+                           <i class="fa fa-info-circle"
+                            style="margin: 3px 5px;"
+                            ngbPopover="Allow users to checkin only within specified range.If they are not within the specifed range then they can't checkin into work"></i>
+                    </div>
+                    <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px;padding: 6px;"  >Note: If restrict geo-fence is not checked then user can checkin even if it's not inside range and it will appear inside<span style="font-weight: bold;font-size:12px;margin-left: 4px;">Exception Reports</span> </div>
+                  </div> -->
+                </div>
+              </div>
+              <!-- Overtime setting -->
+              <!-- <div class="col-md-4 col-12"> -->
+              <div class="overtime">
+                <form [formGroup]="addOvertimeForm">
+                  <p class="linebottom">Select Overtime Options</p>
+
+                  <div style="margin-bottom: 10px;">
+                    <input type="checkbox" value="" (change)="handleOvertime($event)" style="margin-right: 5px"
+                      formControlName="isWorkdayOvertimeEnabled" />
+                    <label style="padding-right: 5px" class="form-check-label" for="flexCheckChecked">
+                      Enable workday Overtime calculation
+                    </label>
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title=""></i>
+                  </div>
+                  <div style="margin-bottom: 10px;">
+                    <input type="checkbox" value="" (change)="handleOvertime($event)" style="margin-right: 5px"
+                      formControlName="isHolidayOvertimeEnabled" />
+                    <label style="padding-right: 5px" class="form-check-label" for="flexCheckChecked">
+                      Enable holiday Overtime calculation
+                    </label>
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title=""></i>
+                  </div>
+
+                  <div class="col-12" style="padding-top: 5px">
+                    <label>Select minimum ovetime period : </label>
+                    <div style="display: flex;gap: 10px;">
+                      <div style="width: 50%;">
+                        <label for="nameArea" style="padding-right: 5px">Hours</label>
+                        <i class="fa fa-info-circle" ngbTooltip="Work Start time" tooltipClass="my-custom-class"
+                          container="body"></i>
+                        <ngx-select-dropdown [disabled]="handleOverTimeCheck" [options]="overtimeHourData"
+                          [config]="worktimeDropConfig"
+                          formControlName="addOvertimeHourDropdownValue"></ngx-select-dropdown>
+                      </div>
+                      <div style="width: 50%;">
+                        <label for="nameArea" style="padding-right: 5px">Minutes</label>
+                        <i class="fa fa-info-circle" ngbTooltip="Work Start time" tooltipClass="my-custom-class"
+                          container="body"></i>
+                        <ngx-select-dropdown [disabled]="handleOverTimeCheck" [options]="overtimeMinuteData"
+                          [config]="worktimeDropConfig"
+                          formControlName="addOvertimeMinuteDropdownValue"></ngx-select-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #WorkProfileHistory>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Work Profile Change History</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModels()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ejs-grid [dataSource]="orgWorkdayHistory" height="200px">
+      <e-columns>
+        <e-column field="modified_date" headerText="Modified By:">
+          <ng-template #template let-element>
+            {{ element.created_by }}
+          </ng-template>
+        </e-column>
+        <e-column field="effective_startday" headerText="Start From:" textAlign="Centre">
+          <ng-template #template let-element>
+            {{ element.effective_startday | date : 'mediumDate' }}
+          </ng-template>
+        </e-column>
+        <e-column field="effective_enddate" headerText="Ends On:">
+          <ng-template #template let-element>
+            {{ element.effective_enddate | date :'mediumDate' }}
+          </ng-template>
+        </e-column>
+        <e-column field="modified_date" headerText="Modified Date">
+          <ng-template #template let-element>
+            {{ element.modified_date | date : 'mediumDate' }}
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</ng-template>

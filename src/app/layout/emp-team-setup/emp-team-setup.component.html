@@ -1,0 +1,285 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <!-- begin:: Subheader -->
+  <div class="kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+                <div class="kt-subheader__main">
+                  <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+                  font-weight: 500;">
+                    Members
+                  </h3>
+          
+                  <span class="kt-subheader__separator kt-hidden"></span>
+                  <div class="kt-subheader__breadcrumbs">
+                    <!-- <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-separator"></span>
+                    <a href="#" class="kt-subheader__breadcrumbs-link">
+                      Application
+                    </a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                  </div>
+                </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+               
+            </div>
+           
+                        
+
+                    
+     
+      </div>
+  </div>
+  
+ 
+
+
+  <!-- end:: Subheader -->
+  <!-- begin:: Content -->
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!--Begin::Dashboard 1-->
+    <!--Begin::Row-->
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader" *ngIf='headerText.length!=0' style="
+    background-color: #ffff; padding:15px;margin-bottom: 0px;padding-bottom: 0px;"  >
+      <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)"  >
+        <e-tabitems>
+                    <e-tabitem  *ngFor='let header of headerText' [header]='header'>
+                   
+                                    
+                    <ng-template #content *ngIf='header.text=="Team"' >
+                      <div  style="
+                          background-color: white;
+    margin-top: 15px;
+    /* margin: -10px; */
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 16px;
+    padding-bottom: 15px;
+    padding-left: 14px;">
+   <div class="col-xl-3 col-lg-4" >
+    <select2 [options]="options" [data]="teamData" [value]="teamValue"
+    (valueChanged)="changedTeam($event)"></select2>
+   </div>
+
+                      </div>
+                   </ng-template>
+                    <ng-template #content *ngIf='header.text=="Employees"' >
+                      <div  style="
+                          background-color: white;
+   /* padding: 0px 10px; */
+   margin-top: 15px;">
+   <div class="col-xl-4 col-lg-4" >
+     <select2 [data]="empData"  [options]="empOptions" [value]="empValue" (valueChanged)="changedEmp($event)" ></select2> 
+
+   </div>
+
+                      </div>
+                   </ng-template>
+                    </e-tabitem>
+                  
+                </e-tabitems>
+            </ejs-tab>
+    
+     
+    </div>
+    
+
+   
+   
+    
+    
+    <div  class="row" *ngIf="showTeamMem" style="        margin: 0px 0px;
+    padding: 15px 10px;
+    background: #fafafa;min-height: 320px;">
+      <div  class="col-xl-12 col-lg-12" >
+        <ejs-grid  [dataSource]='teamEmployeeWorkforce' #grid  [allowTextWrap]='true'   
+        >
+         <e-columns>
+             
+                
+                 
+                  
+             <e-column field='full_name' headerText='Employee Name' textAlign='' width=150>
+               <ng-template #template let-data>
+                 
+                   <span style="color:blue;cursor: pointer;text-transform: capitalize;" (click)="toActivitiesEmp(data.emp_id)">{{data.full_name}}</span>
+                             
+           </ng-template>
+             </e-column>
+                   <e-column field='deptartment_name' headerText='Department' width=120></e-column>
+                   <e-column field='designation_name' headerText='Designation' width=120></e-column>
+                   <e-column field='workemail' headerText='Email' width=120></e-column>
+      
+              <!-- <e-column type=''  headerText='Productive Time'  width='150'>
+                 <ng-template #template let-data>
+                 
+                       {{data.productive_time!=null?data.productive_time:'0 h'}}
+                 </ng-template>
+             </e-column> 
+             <e-column type='' headerText='Desk Time'  width='100'>
+              <ng-template #template let-data>
+              
+                {{data.desktop_time!=null?data.desktop_time:'0 h'}}
+
+
+              </ng-template>
+
+          </e-column>  <e-column type='' headerText='Arrival Time'  width='120'>
+            <ng-template #template let-data>
+            
+                                         {{data.arrival_time!=null?data.arrival_time:'0 h'}}
+
+            </ng-template>
+        </e-column>  <e-column type='' headerText='Left Time'  width='100'>
+          <ng-template #template let-data>
+          
+                                       {{data.left_time!=null?data.left_time:'0 h'}}
+
+          </ng-template>
+      </e-column>
+      <e-column type='' headerText='At Work'  width='100'>
+        <ng-template #template let-data>
+        
+          {{data.time_at_work!=null?data.time_at_work:'0 h'}}
+
+        </ng-template>
+    </e-column> -->
+             <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+         </e-columns>
+         </ejs-grid>
+      </div>
+    </div>
+    <div  class="row" *ngIf="showEmp" style="    margin: 0px 0px;
+    padding: 15px 10px;
+    background: #fafafa;min-height: 320px;
+    margin-bottom: 15px;">
+      <div  class="col-xl-12 col-lg-12" >
+        
+        <ejs-grid height="315px"  [dataSource]='employeeWorkforce' #grid  [allowTextWrap]='true'   
+        >
+         <e-columns>
+             
+                
+                 
+                  
+             <e-column field='full_name' headerText='Employee Name' textAlign='' width=150>
+               <ng-template #template let-data>
+                 
+                   <span style="color:blue;cursor: pointer;text-transform: capitalize;" (click)="toWorkforceSetup(data.emp_id)">{{data.full_name}}</span>
+                             
+           </ng-template>
+             </e-column>
+                   <e-column field='deptartment_name' headerText='Department' width=150></e-column>
+                   <e-column field='designation_name' headerText='Designation' width=150></e-column>
+                   <e-column field='workemail' headerText='Email' width=150></e-column>
+      
+              <!-- <e-column type=''  headerText='Productive Time'  width='150'>
+                 <ng-template #template let-data>
+                 
+                       {{data.productive_time!=null?data.productive_time:'0 h'}}
+                 </ng-template>
+             </e-column> 
+             <e-column type='' headerText='Desk Time'  width='100'>
+              <ng-template #template let-data>
+              
+                {{data.desktop_time!=null?data.desktop_time:'0 h'}}
+
+
+              </ng-template>
+
+          </e-column> 
+           <e-column type='' headerText='Arrival Time'  width='120'>
+            <ng-template #template let-data>
+            
+                                         {{data.arrival_time!=null?data.arrival_time:'0 h'}}
+
+            </ng-template>
+        </e-column>  <e-column type='' headerText='Left Time'  width='100'>
+          <ng-template #template let-data>
+          
+                                       {{data.left_time!=null?data.left_time:'0 h'}}
+
+          </ng-template>
+      </e-column>
+      <e-column type='' headerText='At Work'  width='100'>
+        <ng-template #template let-data>
+        
+          {{data.time_at_work!=null?data.time_at_work:'0 h'}}
+
+        </ng-template>
+    </e-column> -->
+             <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+         </e-columns>
+         </ejs-grid>
+      </div>
+    </div>
+    
+    <div  class="row" *ngIf="showDeptMem" style="    margin: 0px 0px;
+    padding: 15px 10px;
+    background: #fafafa;
+    margin-bottom: 15px;min-height: 320px;">
+      <div  class="col-xl-12 col-lg-12" >
+        
+        <ejs-grid  [dataSource]='deptWorkforce' #grid  [allowTextWrap]='true'   
+        >
+         <e-columns>
+             
+                
+                 
+                  
+             <e-column field='full_name' headerText='Employee Name' textAlign='' width=150>
+               <ng-template #template let-data>
+                 
+                   <span style="color:blue;cursor: pointer;text-transform: capitalize;" (click)="toActivitiesEmp(data.emp_id)">{{data.full_name}}</span>
+                             
+           </ng-template>
+             </e-column>
+                   <e-column field='deptartment_name' headerText='Department' width=120></e-column>
+                   <e-column field='designation_name' headerText='Designation' width=120></e-column>
+                   <e-column field='workemail' headerText='Email' width=120></e-column>
+      
+              <!-- <e-column type=''  headerText='Productive Time'  width='150'>
+                 <ng-template #template let-data>
+                 
+                       {{data.productive_time!=null?data.productive_time:'0 h'}}
+                 </ng-template>
+             </e-column> 
+             <e-column type='' headerText='Desk Time'  width='100'>
+              <ng-template #template let-data>
+              
+                {{data.desktop_time!=null?data.desktop_time:'0 h'}}
+
+
+              </ng-template>
+
+          </e-column>  <e-column type='' headerText='Arrival Time'  width='120'>
+            <ng-template #template let-data>
+            
+                                         {{data.arrival_time!=null?data.arrival_time:'0 h'}}
+
+            </ng-template>
+        </e-column>  <e-column type='' headerText='Left Time'  width='100'>
+          <ng-template #template let-data>
+          
+                                       {{data.left_time!=null?data.left_time:'0 h'}}
+
+          </ng-template>
+      </e-column>
+      <e-column type='' headerText='At Work'  width='100'>
+        <ng-template #template let-data>
+        
+          {{data.time_at_work!=null?data.time_at_work:'0 h'}}
+
+        </ng-template>
+    </e-column> -->
+             <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+         </e-columns>
+         </ejs-grid>
+      </div>
+    </div>
+    
+    
+
+   
+    
+    
+

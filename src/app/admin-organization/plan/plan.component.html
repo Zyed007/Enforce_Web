@@ -1,0 +1,264 @@
+
+<!-- <link href="../../../assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> -->
+
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+             Plans                         </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                          Plans                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Plan                    </a>
+                                            <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+                              Edit Plan                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+       
+    </div>
+</div>
+<div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+  <!-- begin:: Subheader -->
+  <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid ">
+          <div class="kt-subheader__main">
+              <h3 class="kt-subheader__title">
+                  
+                 Tasks                           </h3>
+  
+                              <span class="kt-subheader__separator kt-hidden"></span>
+                 
+                      </div>
+          <div class="kt-subheader__toolbar">
+              <div class="kt-subheader__wrapper">
+                                    
+                  
+                
+              </div>
+          </div>
+      </div>
+  </div> -->
+  <!-- end:: Subheader -->
+<div class="kt-portlet kt-portlet--mobile">
+<div class="row">
+<div class="col col-xl-12 col-lg-12">
+  <div class="kt-portlet__head kt-portlet__head--lg">
+      <div class="kt-portlet__head-label">
+         
+          <h3 class="kt-portlet__head-title">
+             Plans
+          </h3>
+      </div>
+      <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+  <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+      <i class="la la-long-arrow-left"></i>
+      Back
+  </a> -->
+  &nbsp;
+  <div class="dropdown dropdown-inline">
+      <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+            
+      <!-- </button> -->
+<button type="button"  (click)='AddForm()' class="button button-fill button-rose" > <i class="flaticon2-plus" ></i> Add New </button>
+   
+  </div>
+</div>		</div>
+  </div>
+   
+
+   <div class="kt-portlet__body"  style=" border-bottom-color: #f0f3ff;
+      color: #595d6e;" >
+          <!--begin: Datatable -->
+           <!-- <div class="kt-datatable" id="local_data"></div> -->
+          <!--end: Datatable -->
+          <!-- <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field> -->
+                <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_length" id="kt_table_1_length">
+                                  
+                                    </div></div>
+                                  
+
+                                    <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"><label>Search: <mat-form-field>
+                                            <input matInput [(ngModel)]="searchField" class="form-control" (keyup)="applyFilter($event.target.value)"  >
+                                            <i class="fa fa-close closeBtnIcon"  (click)="clearSearchField()" *ngIf="searchField" ></i>
+                                          </mat-form-field > </label></div></div>
+                                </div>
+          <mat-table #table [dataSource]="dataSource" matSort>
+                 
+                  <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+              
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="index">
+                      <mat-header-cell  *matHeaderCellDef> No. </mat-header-cell>
+                      <mat-cell   *matCellDef="let element; let j = index"> {{j+1}} </mat-cell>
+                    </ng-container>
+                  <ng-container matColumnDef="Action"  >
+              
+                    <mat-header-cell *matHeaderCellDef > Action </mat-header-cell>
+              
+                    <mat-cell *matCellDef="let element" >
+              
+                      <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                      <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskEdit(element.id)"> <i class="la la-edit"></i> </a>
+                   
+                      <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskDelete(element.id)"><i class="la la-trash"></i>						</a>
+              
+                    </mat-cell>
+              
+              
+                  </ng-container>
+                  
+              
+                  
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="priority_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Plan </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.plan_name}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="desc">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.plan_desc}} </mat-cell>
+                  </ng-container>
+                  
+                  
+                 
+              
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                </div>
+              
+
+      </div>
+  
+</div>
+
+</div>
+</div>
+
+
+</div>
+
+<div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+         
+    
+ 
+
+       <div class="row">
+          <div class="col-lg-12">
+            <!--begin::Portlet-->
+            <div class="kt-portlet">
+                <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                       
+                        <h3 class="kt-portlet__head-title">
+                          Plans
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="kt-portlet__head-wrapper">
+                <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                    <i class="la la-long-arrow-left"></i>
+                    Back
+                </a> -->
+                &nbsp;
+                <div class="dropdown dropdown-inline">
+                    <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+                          
+                    <!-- </button> -->
+              <button type="button"  (click)='TaskView()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+                 
+                </div>
+            </div>		</div>
+                </div>
+             
+              <!--begin::Form-->
+              <form class="kt-form kt-form--label-right" [formGroup]="priorityForm">
+                <div class="kt-portlet__body">
+                  <!-- <div class="form-group row">
+                    <div class="col-lg-5">
+                      <label>Plan Name:</label>
+                      <input type="email" class="form-control" placeholder="Enter task" formControlName="priorityName">
+                    </div>
+                   
+                  </div>	 -->
+                  
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Plan Name:</label>
+                    <div class="col-lg-4 col-xl-4">
+                <input type="email" class="form-control" placeholder="Enter Plan" formControlName="priorityName">
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Description:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+
+
+                  </div>
+              </div>
+                  <!-- <div class="form-group row">
+                     
+                      <div class="col-lg-5">
+                          <label for="exampleTextarea">Description:</label>
+                          <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                        </div>
+                    </div>	  -->
+                 	                
+                      </div>
+          
+                      
+                      <div class="kt-portlet__foot">
+                  <div class="kt-form__actions">
+                    <div class="row">
+                      <div class="col-lg-6">
+                          <span *ngIf="AddNewSubmit">
+                              <button type="reset" class="btn btn-success" style="margin-right:10px;" (click)=" onAddNewSubmit()">Submit & New</button>
+                          </span>
+                          <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                          <button type="reset" class="btn btn-success" (click)="editable ? onEditSubmit() : onAddSubmit()">Submit</button>
+
+                          <button type="reset" class="btn btn-secondary" (click)='TaskView()' style="margin-left:10px;">Cancel</button>
+                          <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                         
+                        <!-- <button type="reset" class="btn btn-secondary" style="margin-left:5px;">Cancel</button> -->
+                      </div>
+                      <!-- <div class="col-lg-6 kt-align-right">
+                        <button type="reset" class="btn btn-danger">Delete</button>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              
+             
+              </form>
+          
+             
+              
+              
+          
+            </div>
+          
+          
+          </div>
+          </div>	
+<!-- end:: Content -->				</div>
+

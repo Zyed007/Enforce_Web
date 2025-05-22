@@ -1,0 +1,80 @@
+<div class="mainProfileDiv">
+    <div class="row pad2515">
+      <div class="col">
+        <h1 class="labelMainHeader">Asset Type</h1>
+      </div>
+      <div class="col addProfilesection">
+        <button ejs-button class="btn btnColorAll" (click)="addNewAssetType()" *ngIf="assetTypeListing">Add Asset Type</button>
+        <button ejs-button class="btn btnColorAll marlef15" (click)="back()">Back</button>
+      </div>
+    </div>
+    <div class="profiletabGrid">
+        <div *ngIf="assetTypeListing">
+          <ejs-grid #vendSatGrid [dataSource]='assetTypeData' [toolbar]='employeeGridToolItems' (created)="serviceSearchKeyUp" height='300px'>
+            <e-columns>
+              <e-column field='type' headerText='Type'></e-column>
+              <e-column field='category' headerText='Category'></e-column>
+              <e-column field='type_desc' headerText='Description'></e-column>
+              <e-column field='created_by' headerText='Created By'></e-column>
+              <e-column field='created_date' headerText='Created Date'>
+                <ng-template #template let-data>
+                  <div>
+                    <p style="margin-bottom: 0px;">{{data.created_date | date : "dd/MM/y"}}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field='modified_by' headerText='Modified By'></e-column>
+              <e-column field='modified_date' headerText='Modified Date'>
+                <ng-template #template let-data>
+                  <div>
+                    <p style="margin-bottom: 0px;">{{data.modified_date | date : "dd/MM/y"}}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+             
+              <e-column headerText='Action'>
+                <ng-template #template let-data>
+                  <div>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor: pointer;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editTypeData(data)"></i>
+                    <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;cursor: pointer;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteTypeData(data)"></i>
+                  </div>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+          <div *ngIf="isLoading" class="spinner-overlay">
+            <div class="spinner-border text-primary custom-spinner" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="pad2515" *ngIf="!assetTypeListing">
+          <div class="row" [formGroup]="typeForm">
+            <div class="col-4">
+              <label class="labelcss">Asset Type</label>
+              <input class="e-input" type="text" placeholder="Enter name" formControlName="type" />
+              <div class="errorTxt" *ngIf="typeForm.controls['type']?.errors?.required ">
+                *Asset Type is required
+              </div>
+            </div>
+            <div class="col-4">
+              <label class="labelcss">Description</label>
+              <textarea class="e-input" rows="1" formControlName="desc" placeholder="Enter Description"></textarea>
+            </div>
+            <div class="col-4">
+              <label class="labelcss">Category</label>
+              <ejs-dropdownlist [dataSource]="assetCatogery" formControlName="category" [allowFiltering]="true"
+                  placeholder="Select Category" ></ejs-dropdownlist>
+                  <div class="errorTxt" *ngIf="typeForm.controls['category']?.errors?.required ">
+                    *Asset Category is required
+                  </div>                  
+            </div>
+          </div>
+          <div style="margin-top: 20px;">
+            <button class='btn btnColorAlll' (click)="submitStatus()">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+</div>

@@ -1,0 +1,254 @@
+.rowimp{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.rowcard{
+  background: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+
+.btnColorAll{
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.martop{
+  margin-top: 15px;
+}
+
+.labelcss{
+  font-family: Source Sans Pro,sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #475056;
+}
+
+.swithcss{
+  margin: 0px 10px;
+}
+
+.errorTxt{
+  color: #f35b5b;
+  background: none;
+  border: none;
+  padding: 3px;
+  margin-bottom: 0px;
+}
+
+.hyplink{
+  margin-bottom: 2px !important;
+  color: blue;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.marbot0{
+  margin-bottom: 0px !IMPORTANT;
+  font-weight: 500;
+}
+
+.marbot{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.datedisplay{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  background: white;
+  height: -webkit-fill-available;
+  padding: 10px 22px;
+  border-radius: 5px;
+}
+
+.topcardbx{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+.headerTxtxx{
+  border-bottom: 1px solid #ada8a8;
+  padding-bottom: 7px;
+  font-weight: 500;
+  color: #475056;
+  font-size: 14px;
+  font-family: Source Sans Pro, sans-serif;
+  text-transform: uppercase;
+}
+
+.rowCard{
+  margin-bottom: 15px;
+  background: white;
+  padding: 20px 5px;
+  border-radius: 5px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+}
+
+.dispGrid{
+  display: grid;
+}
+
+.marbottp{
+  margin-bottom: 0px !important;
+  font-weight: 500;
+}
+
+.tabseStyle2{
+  display: inline-block;
+}
+
+.botmm{
+  margin-bottom: 0px !important;
+  padding-bottom: 5px;
+  margin-top: 3px;
+  border-bottom: 1px solid #949494;
+}
+
+header {
+  display:table;
+  width:100%;
+  max-width:100%;
+}
+header div {
+  display:table-row;
+  line-height:1.5em;
+  font-size:2em;
+  white-space:nowrap;
+}
+header h1 {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+  width: 1px;
+}
+header span.spacer {
+  display:table-cell;
+}
+header h1 {
+  padding: 0 10px 0px 0px;
+}
+header span.spacer:after {
+  display: inline-block;
+  width: 100%;
+  content: ".";
+  font-size: 0;
+  color: transparent;
+  height: 1px;
+  background: #ada8a8;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.boxxx{
+  padding: 10px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+}
+
+.hyperlink{
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  word-wrap: break-word !important;
+}
+
+.actionButton{
+  color: #2e3e4e !important;
+  cursor: pointer;
+}
+
+.disableButton{
+  color: #c9c9c9 !important;
+  pointer-events: none;
+}
+
+.reqbtn{
+  display: flex !important;
+  border: 1px solid #a3a5ad !important;
+  padding: 1px 6px !important;
+}
+
+.carddes{
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 5px;
+  border-top: 3px solid #e91e63;
+  background-color: #f2f2f2;
+}
+
+.cardHeader{
+  margin-bottom: 3px;
+  font-weight: 500;
+  border-bottom: 1px solid #ada8a8;
+  padding: 5px 12px;
+  font-size: 14px;
+  width: -webkit-fill-available;
+}
+
+.cardBody{
+  padding: 5px 12px;
+  font-size: 13px;
+}
+
+.fontFam{
+  font-family: sans-serif;
+}
+
+.rowstyle{
+  margin-bottom: 20px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #ada8a8;
+}
+
+.rowImp{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.colImp{
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.colleft{
+  border-left: 1px solid #ada8a8;
+}
+
+.marTop{
+  margin-top: 10px;
+}
+
+.e-upload .e-upload-files{
+  display: none !important;
+}
+
+.e-upload .e-file-select-wrap, .e-bigger.e-small .e-upload .e-file-select-wrap{
+  padding: 0px !important;
+}
+
+.e-upload{
+  border: none;
+}
+
+.e-btn, .e-css.e-btn{
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  font-weight: 400;
+  font-size: 13px;
+  text-transform: inherit;
+}
+
+.impe{
+  -webkit-text-fill-color: rgba(0,0,0,.42) !important;
+  background: rgba(0,0,0,0) !important;
+  color: rgba(0,0,0,.42) !important;
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0, rgba(0, 0, 0, 0.42) 33%, transparent 0) !important;
+  background-position: bottom -1px left 0 !important;
+  background-repeat: repeat-x !important;
+  background-size: 4px 1px !important;
+  border-bottom-color: rgba(0,0,0,0) !important;
+}

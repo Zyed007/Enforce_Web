@@ -1,0 +1,1347 @@
+<div *ngIf="noAccessTosettingsPage" class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <!-- begin:: Subheader -->
+  <div class="kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+                <div class="kt-subheader__main">
+                  <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+                  font-weight: 500;">
+                    Settings
+                  </h3>
+
+                  <span class="kt-subheader__separator kt-hidden"></span>
+                  <div class="kt-subheader__breadcrumbs">
+                    <!-- <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-separator"></span>
+                    <a href="#" class="kt-subheader__breadcrumbs-link">
+                      Application
+                    </a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                  </div>
+                </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+            </div>
+            <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)"  >
+              <e-tabitems>
+                          <e-tabitem  *ngFor='let header of headerText' [header]='header'>
+                          </e-tabitem>
+
+                      </e-tabitems>
+                  </ejs-tab>
+            <div class="row" style="margin-top: 15px;" id='COMMON'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;"  >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Common
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="localActivity()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Activity
+                            </div>
+                                        </div>
+                                      </div>
+
+
+
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='DELEGATION'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;" >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Delegation
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-9 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="delegation()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-user" style="font-size:16px;color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                            Delegate
+                            </div>
+                                        </div>
+                                      </div>
+
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 15px;"  id='PRODUCTIVITY'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;"  >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Productivity
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+
+                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="appTracker()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-crisp-icons
+                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          App Track
+                                        </div>
+                                                    </div>
+                                                  </div>
+
+
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='LEAVE'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;" >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Leave
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leaveStatus()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Leave Status
+                            </div>
+                                        </div>
+                                      </div>
+                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leaveType()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-crisp-icons
+                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          Leave Type
+                                        </div>
+                                                    </div>
+                                                  </div>
+                                                  <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                    <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leaveSetup()">
+                                                    <div style="       text-align: center;
+                                                    /* background-color: blue; */
+                                                    /* height: 50px; */
+                                                    /* width: 50px; */
+                                                    border-radius: 50%;
+                                                    background: rgba(253, 57, 122, 0.1);
+                                                    margin: auto;
+                                                    padding: 15px 18px;">
+                                                      <i class="flaticon2-crisp-icons
+                                                      " style="font-size:16px;    color: #fd397a;" ></i>
+                                                    </div>
+                                                    <div  style="font-size: 14px;
+                                                    color: #183247;    text-align: center;
+                            padding-top: 10px;">
+                                                      Leave Setup
+                                                    </div>
+                                                                </div>
+                                                              </div>
+                                                              <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="timeOfftype()">
+                                                                <div style="       text-align: center;
+                                                                /* background-color: blue; */
+                                                                /* height: 50px; */
+                                                                /* width: 50px; */
+                                                                border-radius: 50%;
+                                                                background: rgba(253, 57, 122, 0.1);
+                                                                margin: auto;
+                                                                padding: 15px 18px;">
+                                                                  <i class="flaticon2-crisp-icons
+                                                                  " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                </div>
+                                                                <div  style="font-size: 14px;
+                                                                color: #183247;    text-align: center;
+                                        padding-top: 10px;">
+                                                                  Timeoff Type
+                                                                </div>
+                                                                            </div>
+                                                                          </div>
+                                                                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leaveOpenBalance()">
+                                                                            <div style="       text-align: center;
+                                                                            /* background-color: blue; */
+                                                                            /* height: 50px; */
+                                                                            /* width: 50px; */
+                                                                            border-radius: 50%;
+                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                            margin: auto;
+                                                                            padding: 15px 18px;">
+                                                                              <i class="flaticon2-crisp-icons
+                                                                              " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                            </div>
+                                                                            <div  style="font-size: 14px;
+                                                                            color: #183247;    text-align: center;
+                                                    padding-top: 10px;">
+                                                                            Leave Open Balance
+                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='LEAD'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet"  style="margin-bottom: 0px;">
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Lead
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadPrefix()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+      padding-top: 10px;">
+                            Lead Prefix
+                            </div>
+                                        </div>
+                                      </div>
+                          <!-- <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadCompany()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Lead Company
+                            </div>
+                                        </div>
+                                      </div> -->
+                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadSource()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-crisp-icons
+                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          Lead Source
+                                        </div>
+                                                    </div>
+                                                  </div>
+                                                  <!-- <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                    <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadRating()">
+                                                    <div style="       text-align: center;
+                                                    /* background-color: blue; */
+                                                    /* height: 50px; */
+                                                    /* width: 50px; */
+                                                    border-radius: 50%;
+                                                    background: rgba(253, 57, 122, 0.1);
+                                                    margin: auto;
+                                                    padding: 15px 18px;">
+                                                      <i class="flaticon2-crisp-icons
+                                                      " style="font-size:16px;    color: #fd397a;" ></i>
+                                                    </div>
+                                                    <div  style="font-size: 14px;
+                                                    color: #183247;    text-align: center;
+                            padding-top: 10px;">
+                                                      Lead Rating
+                                                    </div>
+                                                                </div>
+                                                              </div> -->
+                                                              <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadStatus()">
+                                                                <div style="       text-align: center;
+                                                                /* background-color: blue; */
+                                                                /* height: 50px; */
+                                                                /* width: 50px; */
+                                                                border-radius: 50%;
+                                                                background: rgba(253, 57, 122, 0.1);
+                                                                margin: auto;
+                                                                padding: 15px 18px;">
+                                                                  <i class="flaticon2-crisp-icons
+                                                                  " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                </div>
+                                                                <div  style="font-size: 14px;
+                                                                color: #183247;    text-align: center;
+                                        padding-top: 10px;">
+                                                                  Lead Status
+                                                                </div>
+                                                                            </div>
+                                                                          </div>
+
+                                                                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadStage()">
+                                                                            <div style="       text-align: center;
+                                                                            /* background-color: blue; */
+                                                                            /* height: 50px; */
+                                                                            /* width: 50px; */
+                                                                            border-radius: 50%;
+                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                            margin: auto;
+                                                                            padding: 15px 18px;">
+                                                                              <i class="flaticon2-crisp-icons
+                                                                              " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                            </div>
+                                                                            <div  style="font-size: 14px;
+                                                                            color: #183247;    text-align: center;
+                                                    padding-top: 10px;">
+                                                                              Lead Stage
+                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadDealType()">
+                                                                                        <div style="       text-align: center;
+                                                                                        /* background-color: blue; */
+                                                                                        /* height: 50px; */
+                                                                                        /* width: 50px; */
+                                                                                        border-radius: 50%;
+                                                                                        background: rgba(253, 57, 122, 0.1);
+                                                                                        margin: auto;
+                                                                                        padding: 15px 18px;">
+                                                                                          <i class="flaticon2-crisp-icons
+                                                                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                                        </div>
+                                                                                        <div  style="font-size: 14px;
+                                                                                        color: #183247;    text-align: center;
+                                                                padding-top: 10px;">
+                                                                                          Deal Type
+                                                                                        </div>
+                                                                                                    </div>
+                                                                                                  </div>
+                                                                                                  <!-- <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                                                    <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadContactRole()">
+                                                                                                    <div style="       text-align: center;
+                                                                                                    /* background-color: blue; */
+                                                                                                    /* height: 50px; */
+                                                                                                    /* width: 50px; */
+                                                                                                    border-radius: 50%;
+                                                                                                    background: rgba(253, 57, 122, 0.1);
+                                                                                                    margin: auto;
+                                                                                                    padding: 15px 18px;">
+                                                                                                      <i class="flaticon2-crisp-icons
+                                                                                                      " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                                                    </div>
+                                                                                                    <div  style="font-size: 14px;
+                                                                                                    color: #183247;    text-align: center;
+                                                                            padding-top: 10px;">
+                                                                                                      Contact Role
+                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                              </div> -->
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='ESTIMATION'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;"  >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Estimation
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="estPrefix()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Estimation Prefix
+                            </div>
+                                        </div>
+                                      </div>
+                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="unitDesc()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-crisp-icons
+                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          Unit description
+                                        </div>
+                                                    </div>
+                                                  </div>
+
+                                                              <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="perUnitHrs()">
+                                                                <div style="       text-align: center;
+                                                                /* background-color: blue; */
+                                                                /* height: 50px; */
+                                                                /* width: 50px; */
+                                                                border-radius: 50%;
+                                                                background: rgba(253, 57, 122, 0.1);
+                                                                margin: auto;
+                                                                padding: 15px 18px;">
+                                                                  <i class="flaticon2-time
+                                                                  " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                </div>
+                                                                <div  style="font-size: 14px;
+                                                                color: #183247;    text-align: center;
+                                        padding-top: 10px;">
+                                                                 Per Unit Cost Hrs
+                                                                </div>
+                                                                            </div>
+                                                                          </div>
+                                                                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="taskHrs()">
+                                                                            <div style="       text-align: center;
+                                                                            /* background-color: blue; */
+                                                                            /* height: 50px; */
+                                                                            /* width: 50px; */
+                                                                            border-radius: 50%;
+                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                            margin: auto;
+                                                                            padding: 15px 18px;">
+                                                                              <i class="flaticon2-time
+                                                                              " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                            </div>
+                                                                            <div  style="font-size: 14px;
+                                                                            color: #183247;    text-align: center;
+                                                    padding-top: 10px;">
+                                                                             Task Hrs
+                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="profitMargin()">
+                                                                            <div style="       text-align: center;
+                                                                            /* background-color: blue; */
+                                                                            /* height: 50px; */
+                                                                            /* width: 50px; */
+                                                                            border-radius: 50%;
+                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                            margin: auto;
+                                                                            padding: 15px 18px;">
+                                                                              <i class="
+                                                                              flaticon2-percentage
+                                                        " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                            </div>
+                                                                            <div  style="font-size: 14px;
+                                                                            color: #183247;    text-align: center;
+                                                    padding-top: 10px;">
+                                                                             Profit Margin
+                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;"  id='QUOTATION'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet"  style="margin-bottom: 0px;">
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Quotation
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="qtnPrefix()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+      padding-top: 10px;">
+                           Quotation  Prefix
+                            </div>
+                                        </div>
+                                      </div>
+
+
+                                                                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="leadStage()">
+                                                                            <div style="       text-align: center;
+                                                                            /* background-color: blue; */
+                                                                            /* height: 50px; */
+                                                                            /* width: 50px; */
+                                                                            border-radius: 50%;
+                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                            margin: auto;
+                                                                            padding: 15px 18px;">
+                                                                              <i class="flaticon2-crisp-icons
+                                                                              " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                            </div>
+                                                                            <div  style="font-size: 14px;
+                                                                            color: #183247;    text-align: center;
+                                                    padding-top: 10px;">
+                                                                              Quotation Stage
+                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='PROJECT'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;"  >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Project
+                      </h3>
+
+
+                    </div>
+                    </div>
+
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="projPrefix()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+      padding-top: 10px;">
+                            Project Prefix
+                            </div>
+                                        </div>
+                                      </div>
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="designType()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                             Design Type
+                            </div>
+                                        </div>
+                                      </div>
+
+                                                                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="projType()">
+                                                                                        <div style="       text-align: center;
+                                                                                        /* background-color: blue; */
+                                                                                        /* height: 50px; */
+                                                                                        /* width: 50px; */
+                                                                                        border-radius: 50%;
+                                                                                        background: rgba(253, 57, 122, 0.1);
+                                                                                        margin: auto;
+                                                                                        padding: 15px 18px;">
+                                                                                          <i class="flaticon2-crisp-icons
+                                                                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                                        </div>
+                                                                                        <div  style="font-size: 14px;
+                                                                                        color: #183247;    text-align: center;
+                                                                padding-top: 10px;">
+                                                                                         Project Type
+                                                                                        </div>
+                                                                                                    </div>
+                                                                                                  </div>
+
+                                                                                                  <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                                                    <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="pkgType()">
+                                                                                                    <div style="       text-align: center;
+                                                                                                    /* background-color: blue; */
+                                                                                                    /* height: 50px; */
+                                                                                                    /* width: 50px; */
+                                                                                                    border-radius: 50%;
+                                                                                                    background: rgba(253, 57, 122, 0.1);
+                                                                                                    margin: auto;
+                                                                                                    padding: 15px 18px;">
+                                                                                                      <i class="flaticon2-crisp-icons
+                                                                                                      " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                                                    </div>
+                                                                                                    <div  style="font-size: 14px;
+                                                                                                    color: #183247;    text-align: center;
+                                                                            padding-top: 10px;">
+                                                                                                     Package Type
+                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                              </div>
+
+                                                                                                              <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                                                                <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="milestTemp()">
+                                                                                                                <div style="       text-align: center;
+                                                                                                                /* background-color: blue; */
+                                                                                                                /* height: 50px; */
+                                                                                                                /* width: 50px; */
+                                                                                                                border-radius: 50%;
+                                                                                                                background: rgba(253, 57, 122, 0.1);
+                                                                                                                margin: auto;
+                                                                                                                padding: 15px 18px;">
+                                                                                                                  <i class="flaticon2-crisp-icons
+                                                                                                                  " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                                                                </div>
+                                                                                                                <div  style="font-size: 14px;
+                                                                                                                color: #183247;    text-align: center;
+                                                                                        padding-top: 10px;">
+                                                                                                                 Milestone Template
+                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                          </div>
+                                                                                                                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                                                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="taskTemp()">
+                                                                                                                            <div style="       text-align: center;
+                                                                                                                            /* background-color: blue; */
+                                                                                                                            /* height: 50px; */
+                                                                                                                            /* width: 50px; */
+                                                                                                                            border-radius: 50%;
+                                                                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                                                                            margin: auto;
+                                                                                                                            padding: 15px 18px;">
+                                                                                                                              <i class="flaticon2-crisp-icons
+                                                                                                                              " style="font-size:16px;    color: #fd397a;" ></i>
+                                                                                                                            </div>
+                                                                                                                            <div  style="font-size: 14px;
+                                                                                                                            color: #183247;    text-align: center;
+                                                                                                    padding-top: 10px;">
+                                                                                                                             Task Template
+                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                      </div>
+
+                                                                                                            </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+
+
+
+            <div class="row" style="margin-top: 15px;" id='NOTIFICATION'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;" >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                        Notification
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="notifyType()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Notification Type
+                            </div>
+                                        </div>
+                                      </div>
+                                      <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="notifySetup()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-crisp-icons
+                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          Notification Setup
+                                        </div>
+                                                    </div>
+                                                  </div>
+
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+            <div class="row" style="margin-top: 15px;" id='TASK'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;" >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Task
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-9 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="taskStatus()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Task Status
+                            </div>
+                                        </div>
+                                      </div>
+                                      <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="taskPriority()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-crisp-icons
+                                          " style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          Task Priority
+                                        </div>
+                                                    </div>
+                                                  </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='EMPLOYEE'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet"  style="margin-bottom: 0px;">
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Employee
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-9 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="empStatus()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-user-1" style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Employee Status
+                            </div>
+                                        </div>
+                                      </div>
+                                      <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="empType()">
+                                        <div style="       text-align: center;
+                                        /* background-color: blue; */
+                                        /* height: 50px; */
+                                        /* width: 50px; */
+                                        border-radius: 50%;
+                                        background: rgba(253, 57, 122, 0.1);
+                                        margin: auto;
+                                        padding: 15px 18px;">
+                                          <i class="flaticon2-user-1" style="font-size:16px;    color: #fd397a;" ></i>
+                                        </div>
+                                        <div  style="font-size: 14px;
+                                        color: #183247;    text-align: center;
+                padding-top: 10px;">
+                                          Employee Type
+                                        </div>
+                                                    </div>
+                                                  </div>
+                                                  <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                                                    <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="industryType()">
+                                                    <div style="       text-align: center;
+                                                    /* background-color: blue; */
+                                                    /* height: 50px; */
+                                                    /* width: 50px; */
+                                                    border-radius: 50%;
+                                                    background: rgba(253, 57, 122, 0.1);
+                                                    margin: auto;
+                                                    padding: 15px 18px;">
+                                                      <i class="fa fa-industry" style="font-size:16px;    color: #fd397a;" ></i>
+                                                    </div>
+                                                    <div  style="font-size: 14px;
+                                                    color: #183247;    text-align: center;
+                            padding-top: 10px;">
+                                                      Industry Type
+                                                    </div>
+                                                                </div>
+                                                              </div>
+                                                              <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                                                                <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="deptType()">
+                                                                <div style="       text-align: center;
+                                                                /* background-color: blue; */
+                                                                /* height: 50px; */
+                                                                /* width: 50px; */
+                                                                border-radius: 50%;
+                                                                background: rgba(253, 57, 122, 0.1);
+                                                                margin: auto;
+                                                                padding: 15px 18px;">
+                                                                  <i class="fa fa-industry" style="font-size:16px;    color: #fd397a;" ></i>
+                                                                </div>
+                                                                <div  style="font-size: 14px;
+                                                                color: #183247;    text-align: center;
+                                        padding-top: 10px;">
+                                                                  Department
+                                                                </div>
+                                                                            </div>
+                                                                          </div>
+                                                                          <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                                                                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="desgnType()">
+                                                                            <div style="       text-align: center;
+                                                                            /* background-color: blue; */
+                                                                            /* height: 50px; */
+                                                                            /* width: 50px; */
+                                                                            border-radius: 50%;
+                                                                            background: rgba(253, 57, 122, 0.1);
+                                                                            margin: auto;
+                                                                            padding: 15px 18px;">
+                                                                              <i class="fa fa-industry" style="font-size:16px;    color: #fd397a;" ></i>
+                                                                            </div>
+                                                                            <div  style="font-size: 14px;
+                                                                            color: #183247;    text-align: center;
+                                                    padding-top: 10px;">
+                                                                              Designation
+                                                                            </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                                                                                        <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="workLocation()" >                                                                                     <div style="       text-align: center;
+                                                                                        /* background-color: blue; */
+                                                                                        /* height: 50px; */
+                                                                                        /* width: 50px; */
+                                                                                        border-radius: 50%;
+                                                                                        background: rgba(253, 57, 122, 0.1);
+                                                                                        margin: auto;
+                                                                                        padding: 15px 18px;">
+                                                                                          <i class="fa fa-map-marker" style="font-size:18px;    color: #fd397a;" ></i>
+                                                                                        </div>
+                                                                                        <div  style="font-size: 14px;
+                                                                                        color: #183247;    text-align: center;
+                                                                padding-top: 10px;">
+                                                                                          Work Location
+                                                                                        </div>
+                                                                                                    </div>
+                                                                                                  </div>
+
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='TEAM'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;" >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       Team
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-9 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-4 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="empTeamSetup()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Team Members
+                            </div>
+                                        </div>
+                                      </div>
+
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;" id='USER RIGHTS'>
+              <div  class="col-xl-12 col-lg-12">
+                <div class="control-section kt-portlet" style="margin-bottom: 0px;"  >
+
+                  <div class="kt-portlet__head" style="min-height: 40px !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;;">
+                       User Rights
+                      </h3>
+
+
+                    </div>
+                    </div>
+                    <div class="row" style="padding:10px 25px;margin-top: 15px;
+                    margin-bottom: 15px;">
+                      <div class="col-md-12 col-sm-6" >
+                        <div  class="row">
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="roleMgt()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Role Management
+                             </div>
+                                        </div>
+                                      </div>
+                          <div  class="col-md-3 col-sm-12" style="padding-bottom: 10px;">
+                            <div style="display: flex;    flex-direction: column;cursor: pointer;" (click)="moduleSetup()">
+                            <div style="       text-align: center;
+                            /* background-color: blue; */
+                            /* height: 50px; */
+                            /* width: 50px; */
+                            border-radius: 50%;
+                            background: rgba(253, 57, 122, 0.1);
+                            margin: auto;
+                            padding: 15px 18px;">
+                              <i class="flaticon2-crisp-icons
+                              " style="font-size:16px;    color: #fd397a;" ></i>
+                            </div>
+                            <div  style="font-size: 14px;
+                            color: #183247;    text-align: center;
+    padding-top: 10px;">
+                              Module Setup
+                            </div>
+                                        </div>
+                                      </div>
+
+
+
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+            </div>
+                </div>
+            </div>
+
+
+
+
+      </div>
+  </div>
+  </div>
+
+<div *ngIf="!noAccessTosettingsPage">
+  <app-not-found></app-not-found>
+</div>
+

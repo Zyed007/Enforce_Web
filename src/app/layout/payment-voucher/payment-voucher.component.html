@@ -1,0 +1,505 @@
+<div class="kt-form kt-form--label-right" [formGroup]="ApprMarkPaidForm">
+  <div class="kt-portlet__body" *ngIf="!isVoucherLoading">
+    <!-- Row 1: Id and Acc Ref Id in one line -->
+    <div class="form-group row">
+      <label for="reffid" class="col-xl-3 col-lg-3 col-form-label text-left">Id :</label>
+      <div class="col-lg-3 col-xl-3">
+        <input type="text" class="form-control" formControlName="reffid" />
+      </div>
+
+      <label for="accRefId" class="col-xl-3 col-lg-3 col-form-label text-left">Acc Ref Id :</label>
+      <div class="col-lg-3 col-xl-3">
+        <input type="text" class="form-control" formControlName="accRefId" />
+      </div>
+    </div>
+
+    <!-- Row 2: Type and Amount in one line -->
+    <div class="form-group row">
+      <label for="type" class="col-xl-3 col-lg-3 col-form-label text-left">Type :<span class="error-msg"
+          style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3">
+        <input type="text" class="form-control" disabled formControlName="type" />
+      </div>
+
+      <label for="amount" class="col-xl-3 col-lg-3 col-form-label text-left">Amount :<span class="error-msg"
+          style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">AED</div>
+          </div>
+          <input type="text" class="form-control" [disabled]="isAmountDisabled" formControlName="amount" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Mode of Payment and Account to Debit (condition for Bank Transfer / Cheque) -->
+    <div class="form-group row">
+      <!-- Mode of Payment -->
+      <label for="mode" class="col-xl-3 col-lg-3 col-form-label text-left">
+        Mode of Payment:<span class="error-msg" style="color: red">*</span>
+      </label>
+      <div class="col-lg-3 col-xl-3">
+        <ejs-dropdownlist [dataSource]="paymentModeArr" (change)="selectMode($event)" formControlName="mode"
+          [fields]="commonFields"></ejs-dropdownlist>
+      </div>
+
+      <!-- Paid By (Visible only for Cash) -->
+      <ng-container *ngIf="ApprMarkPaidForm.get('mode').value === 'Cash'">
+        <label for="paidBy" class="col-xl-3 col-lg-3 col-form-label text-left">
+          Paid by:<span class="error-msg" style="color: red">*</span>
+        </label>
+        <div class="col-lg-3 col-xl-3">
+          <ejs-dropdownlist [dataSource]="paidByArr" (change)="selectMode($event)" formControlName="paidBy"
+            [fields]="commonFields"></ejs-dropdownlist>
+          <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('sender')"
+            *ngIf="ApprMarkPaidForm.get('debitAcc').value" class="view-bank-account">
+            View Bank Account
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+        </div>
+      </ng-container>
+
+      <!-- Account to Debit (Visible for Bank Transfer and Cheque) -->
+      <ng-container *ngIf="['Bank Transfer', 'Cheque'].includes(ApprMarkPaidForm.get('mode').value)">
+        <label for="debitAcc" class="col-xl-3 col-lg-3 col-form-label text-left">
+          Account to Debit:<span class="error-msg" style="color: red">*</span>
+        </label>
+        <div class="col-lg-3 col-xl-3">
+          <ejs-dropdownlist [dataSource]="senderArr" (change)="selectMode($event)" formControlName="debitAcc"
+            [fields]="commonFields"></ejs-dropdownlist>
+          <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('sender')"
+            *ngIf="ApprMarkPaidForm.get('debitAcc').value" class="view-bank-account">
+            View Bank Account
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+        </div>
+      </ng-container>
+
+      <!-- Cheque Details (Visible for Cheque) -->
+
+    </div>
+
+
+    <div class="form-group row" *ngIf="ApprMarkPaidForm.get('mode').value === 'Cheque'">
+      <!-- Attach Cheque -->
+
+      <label for="attachCheque" class="col-xl-3 col-lg-3 col-form-label text-left">
+        Attach Cheque:<span class="error-msg" style="color: red">*</span>
+      </label>
+      <div class="col-lg-3 col-xl-3" style="display: flex;align-items: center;">
+        <!-- <div class="input-group"> -->
+        <ejs-uploader (selected)="onFileSelected($event, 'cheque')" allowedExtensions=".jpg,.png,.pdf"
+          [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"
+          *ngIf="!ApprMarkPaidForm.get('cheque').value"></ejs-uploader>
+        <a *ngIf="ApprMarkPaidForm.get('cheque').value" (click)="goToLink(ApprMarkPaidForm.get('cheque').value)"
+          class="hyperlink ml-2">
+          <!-- <a (click)="goToLink(ApprMarkPaidForm.get('cheque').value)" class="d-inline-flex align-items-center text-decoration-none cursor-pointer">
+            <i class="fa fa-eye"></i>
+            <span class="ml-1">View Document</span>
+          </a> -->
+          <a *ngIf="ApprMarkPaidForm.get('cheque').value" href="javascript:void(0)"
+            style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">
+            View Cheque <i class="fa fa-eye" aria-hidden="true" style="margin-left: 5px;"></i>
+          </a>
+        </a>
+        <i *ngIf="ApprMarkPaidForm.get('cheque').value" class="fa fa-trash ml-2" style="cursor: pointer;"
+          (click)="docDelete()" placement="top" ngbTooltip="Delete File" container="body"></i>
+        <!-- </div> -->
+      </div>
+
+      <!-- Cheque Type -->
+
+      <label for="chequeType" class="col-xl-3 col-lg-3 col-form-label text-left">
+        Cheque Type:<span class="error-msg" style="color: red">*</span>
+      </label>
+      <div class="col-lg-3 col-xl-3">
+        <div class="d-flex align-items-center gap-3">
+          <ejs-radiobutton label="PDC" formControlName="chequeType" (change)="chequeType('PDC')" value="PDC"
+            style="margin-right: 10px;"></ejs-radiobutton>
+          <ejs-radiobutton label="CDC" formControlName="chequeType" (change)="chequeType('CDC')"
+            value="CDC"></ejs-radiobutton>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group row" *ngIf="ApprMarkPaidForm.get('mode').value === 'Cheque'">
+      <!-- Cheque Date -->
+
+      <label for="chequeDate" class="col-xl-3 col-lg-3 col-form-label text-left">
+        Cheque Date:<span class="error-msg" style="color: red">*</span>
+      </label>
+      <!-- <div class="col-lg-3 col-xl-3">
+        <ejs-datepicker format="MMM d, y" formControlName="chequeDate" [min]="maxDate"
+          class="form-control"></ejs-datepicker>
+      </div> -->
+      <div class="col-lg-3 col-xl-3">
+        <ejs-datepicker formControlName="chequeDate" format="MMM d, y" placeholder="Enter date"></ejs-datepicker>
+      </div>
+
+      <!-- Cheque Number -->
+
+      <label for="chequeNumber" class="col-xl-3 col-lg-3 col-form-label text-left">
+        Cheque Number:<span class="error-msg" style="color: red">*</span>
+      </label>
+      <div class="col-lg-3 col-xl-3">
+        <input type="text" class="form-control" formControlName="chequeNumber" />
+      </div>
+
+    </div>
+
+
+
+    <!-- Row 4: Beneficiary Type and Employee (for Individual Account) -->
+    <div class="form-group row">
+      <label for="beneficiaryType" class="col-xl-3 col-lg-3 col-form-label text-left">Beneficiary Type :<span
+          class="error-msg" style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3">
+        <ejs-dropdownlist [dataSource]="beneficiaryType" (change)="selectBeneficiaryType($event)"
+          formControlName="beneficiaryType" [fields]="commonFields"></ejs-dropdownlist>
+        <a href="javascript:void(0)" (click)="openBankAccModal()"
+          *ngIf="ApprMarkPaidForm.get('beneficiaryType').value=='Provisional Account'"
+          style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+          Add Bank Account
+        </a>
+      </div>
+
+      <label for="empid" class="col-xl-3 col-lg-3 col-form-label text-left">Employee :<span class="error-msg"
+          style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3" *ngIf="ApprMarkPaidForm.get('beneficiaryType').value=='Individual Account'">
+        <ejs-dropdownlist [dataSource]="activeEmpList" formControlName="empid" [allowFiltering]="true"
+          [itemTemplate]="template" (filtering)="onFiltering($event)"
+          [fields]="activeEmpCommonFields"></ejs-dropdownlist>
+        <ng-template #template let-data>
+          <div style="border-bottom: 1px solid #ccc; display: flex; flex-direction: column;">
+            <span style="font-weight: bold;">{{ data.text }}</span>
+            <span style="font-size: 12px;">ID: {{ data.emp_code }}</span>
+          </div>
+        </ng-template>
+        <a *ngIf="ApprMarkPaidForm.get('empid').value" href="javascript:void(0)" (click)="getUserDetailsByEmpId()"
+          style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">
+          View Employee <i class="fa fa-eye" aria-hidden="true" style="margin-left: 5px;"></i>
+        </a>
+      </div>
+    </div>
+    <!-- Row 5: Reciept-->
+    <div class="form-group row"
+      *ngIf="ApprMarkPaidForm.get('mode').value=='Bank Transfer' || ApprMarkPaidForm.get('mode').value=='Cash'">
+      <label for="dateincurred"
+        class="col-xl-3 col-lg-3 col-form-label text-left">{{ApprMarkPaidForm.get('mode').value=='Bank Transfer'?'Attach
+        Document':'Attach Payment Voucher'}} :<span class="error-msg" style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3" style="display: flex; align-items: center;gap: 5px;">
+        <ejs-uploader (selected)="onFileSelected($event,'reciept')" allowedExtensions=".jpg,.png,.pdf"
+          [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+        <a (click)="goToLink(this.ApprMarkPaidForm.get('recieptDoc').value)" class="hyperlink" style="cursor: pointer;"
+          *ngIf="this.ApprMarkPaidForm.get('recieptDoc').value!='' && this.ApprMarkPaidForm.get('recieptDoc').value!=null">
+          <i class="fa fa-eye"></i>
+        </a>
+        <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+          container="body"
+          *ngIf="this.ApprMarkPaidForm.get('recieptDoc').value!='' && this.ApprMarkPaidForm.get('recieptDoc').value!=null"
+          (click)="docDelete()"></i>
+      </div>
+
+      <!-- <label for="remark" class="col-xl-3 col-lg-3 col-form-label text-left">Remark :</label>
+        <div class="col-lg-3 col-xl-3">
+          <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+        </div> -->
+    </div>
+    <div class="form-group row">
+      <label for="dateincurred" class="col-xl-3 col-lg-3 col-form-label text-left">Additional Document :<span
+          class="error-msg" style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3">
+        <ejs-uploader (selected)="onFileSelected($event, 'additionalDoc')" allowedExtensions=".jpg,.png,.pdf"
+          [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"
+          *ngIf="!ApprMarkPaidForm.get('additionalDoc').value"></ejs-uploader>
+        <a *ngIf="ApprMarkPaidForm.get('additionalDoc').value"
+          (click)="goToLink(ApprMarkPaidForm.get('additionalDoc').value)" class="hyperlink ml-2">
+          <a *ngIf="ApprMarkPaidForm.get('additionalDoc').value" href="javascript:void(0)"
+            style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">
+            View Document <i class="fa fa-eye" aria-hidden="true" style="margin-left: 5px;"></i>
+          </a>
+        </a>
+        <i *ngIf="ApprMarkPaidForm.get('additionalDoc').value" class="fa fa-trash ml-2" style="cursor: pointer;"
+          (click)="docDelete()" placement="top" ngbTooltip="Delete File" container="body"></i>
+      </div>
+
+      <label for="remark" class="col-xl-3 col-lg-3 col-form-label text-left">Remark :</label>
+      <div class="col-lg-3 col-xl-3">
+        <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Row 6: Date Incurred and Remark in one line -->
+    <div class="form-group row">
+      <label for="dateincurred" class="col-xl-3 col-lg-3 col-form-label text-left">Date Incurred :<span
+          class="error-msg" style="color: red">*</span></label>
+      <div class="col-lg-3 col-xl-3">
+        <ejs-datepicker formControlName="dateincurred" format="MMM d, y" placeholder="Enter date"></ejs-datepicker>
+      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center mt-4 mb-4" *ngIf="isMarkPaid">
+      <div class="card p-3" style="width: 70%;">
+        <div class="modal-header py-2">
+          <h4 class="modal-title" id="modal-basic-title">Voucher Paid Details</h4>
+        </div>
+
+        <div class="card-body py-2">
+          <form [formGroup]="paymentForm">
+
+            <!-- Row 1: Receipt Number and Receipt Document -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="receiptNumber" class="form-label">Receipt Number:</label>
+                <input type="text" class="form-control" id="receiptNumber" formControlName="receiptNumber"
+                  placeholder="Enter receipt number">
+              </div>
+
+              <div class="col-md-6">
+                <label for="receiptDocument" class="form-label">Receipt Document:</label>
+                <div class="d-flex align-items-center gap-2">
+                  <ejs-uploader (selected)="onFileSelected($event,'receiptDocument')" allowedExtensions=".jpg,.png,.pdf"
+                    [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false" *ngIf="!isPaid"></ejs-uploader>
+                  <a (click)="goToLink(paymentForm.get('receiptDocument').value)" class="text-primary"
+                    style="cursor: pointer;" *ngIf="paymentForm.get('receiptDocument').value">
+                    <i class="fa fa-eye"></i>
+                  </a>
+                </div>
+                <div
+                  *ngIf="paymentForm.controls['receiptDocument'].invalid && paymentForm.controls['receiptDocument'].touched"
+                  class="text-danger">
+                  Receipt document is required.
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: Date and Remarks -->
+            <div class="row">
+              <div class="col-md-6">
+                <label for="receiptDate" class="form-label">Date:</label>
+                <ejs-datepicker formControlName="date" format="MMM d, y" placeholder="Enter date"></ejs-datepicker>
+              </div>
+
+              <div class="col-md-6">
+                <label for="remarks" class="form-label">Remarks:</label>
+                <textarea class="form-control" id="remarks" formControlName="remarks" rows="2"
+                  placeholder="Enter remarks"></textarea>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div *ngIf="isViewMode">
+      <div>
+        <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Payment Voucher Request Details</strong>
+          </u>
+        </p>
+        <p style="margin-bottom: 2px">Created by : {{voucherData.created_by}}</p>
+        <p style="margin-bottom: 2px">Created Date : {{voucherData.created_date | date }} </p>
+      </div>
+
+      <!-- <div *ngIf="voucherData.approver1_roleId">
+        <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Approval Status</strong> </u></p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.status == 'Reject' ">
+          Level 1: {{voucherData.approver1_roleName}}
+          <span class="approve" *ngIf="voucherData.is_approved_1 == true"> Approved</span>
+          <span class="decline" *ngIf="voucherData.is_approved_1 == false"> Rejected</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.status == 'Reject' ">
+          Level 2: {{voucherData.approver2_roleName}}
+          <span class="decline" *ngIf="voucherData.is_approved_2 == false"> Rejected</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.status != 'Reject' ">
+          Level 1: {{voucherData.approver1_roleName}}
+          <span class="pending" *ngIf="voucherData.is_approved_1 == false"> Pending</span>
+          <span class="approve" *ngIf="voucherData.is_approved_1 == true"> Approved</span>
+          <span *ngIf="voucherData.is_approved_1"><strong>By
+              {{voucherData.approver1_name}}</strong></span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.approver2_roleId && voucherData.status != 'Reject' ">
+          Level 2: {{voucherData.approver2_roleName}}
+          <span class="pending" *ngIf="voucherData.is_approved_2 == false"> Pending</span>
+          <span class="approve" *ngIf="voucherData.is_approved_2 == true"> Approved</span>
+          <span *ngIf="voucherData.is_approved_2"><strong>By
+              {{voucherData.approver2_name}}</strong></span>
+        </p>
+      </div> -->
+      <div *ngIf="voucherData.approver1_roleId">
+        <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Approval Status</strong> </u></p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.status == 'Rejected' ">
+          Level 1: {{voucherData.approver1_roleName}}
+          <span class="approve" *ngIf="voucherData.is_approved_1 == true"> Approved</span>
+          <span class="decline" *ngIf="voucherData.is_approved_1 == false"> Rejected</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.status == 'Rejected' ">
+          Level 2: {{voucherData.approver1_roleName}}
+          <span class="decline" *ngIf="voucherData.is_approved_2 == false"> Rejected</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.status != 'Rejected' ">
+          Level 1: {{voucherData.approver1_roleName}}
+          <span class="pending" *ngIf="voucherData.is_approved_1 == false"> Pending</span>
+          <span class="approve" *ngIf="voucherData.is_approved_1 == true"> Approved</span>
+          <span *ngIf="voucherData.is_approved_1"><strong>By&nbsp;{{voucherData.approver1_name}}</strong></span>
+
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="voucherData.approver2_roleId && voucherData.status != 'Rejected' ">
+          Level 2: {{voucherData.approver2_roleName}}
+          <span class="pending" *ngIf="voucherData.is_approved_2 == false"> Pending</span>
+          <span class="approve" *ngIf="voucherData.is_approved_2 == true"> Approved</span>
+          <span *ngIf="voucherData.is_approved_2"><strong>By&nbsp;{{voucherData.approver2_name}}</strong></span>
+
+        </p>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+
+    <div style="display: flex; justify-content: flex-end;gap: 10px;padding: 10px;">
+      <button class="btn" style="background-color: grey;color: white;">Close</button>
+      <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+        (click)="handleSubmitPaymentVoucher()" *ngIf="isCreateMode">Create Voucher</button>
+      <button class="btn" style="background-color: #07a913; color: white; font-weight: 600"
+        *ngIf="isViewMode && isActionable" (click)="handleUpdatePaymentVoucher('Approved')">
+        Approve
+      </button>
+      <button class="btn" style="background-color: #e91e1e; color: white; font-weight: 600"
+        (click)="handleRejectPaymentVoucher()" *ngIf="isViewMode && isActionable">
+        Reject
+      </button>
+      <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" (click)="handleMarkAsPaid()"
+        *ngIf="isMarkPaid && !isPaid">Mark As
+        Paid
+      </button>
+    </div>
+
+  </div>
+  <div *ngIf="isVoucherLoading" style="height: 350px;">
+    <div class="spinner-overlay">
+      <div class="spinner-border text-primary custom-spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showBankAccModal" class="custom-modal-backdrop">
+  <div class="custom-bank-modal" (click)="$event.stopPropagation()">
+    <div class="modal-content" style="width: 650px !important;" data-backdrop="static" aria-hidden="true" tabindex="-1"
+      id="bank_acc_modal">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Bank Account Details</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeBankAccModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form [formGroup]="bankAccountForm" (ngSubmit)="onSubmit()" class="form-container">
+            <div class="form-row">
+              <div class="form-item">
+                <label for="nickName" style="font-weight: bold;">Nick Name:</label>
+                <input type="text" id="nickName" formControlName="nick_name" class="form-control" disabled>
+
+              </div>
+              <div class="form-item">
+                <label for="role" style="font-weight: bold;">Type:</label>
+                <input type="text" id="role" formControlName="role" class="form-control" disabled>
+
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-item">
+                <label for="accountHolderName" style="font-weight: bold;">Account Holder's Name:</label>
+                <input type="text" id="accountHolderName" formControlName="acc_holder_name" class="form-control"
+                  disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="accountType" style="font-weight: bold;">Account Type:</label>
+                <input type="text" id="accountType" formControlName="acc_type" class="form-control" disabled>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="accountNumber" style="font-weight: bold;">Account Number:</label>
+                <input type="text" id="accountNumber" formControlName="acc_num" class="form-control" disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="bankName" style="font-weight: bold;">Bank Name:</label>
+                <input type="text" id="bankName" formControlName="bank_name" class="form-control" disabled>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="branchName" style="font-weight: bold;">Branch Name:</label>
+                <input type="text" id="branchName" formControlName="branch_name" class="form-control" disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="swiftBicCode" style="font-weight: bold;">SWIFT/BIC Code:</label>
+                <input type="text" id="swiftBicCode" formControlName="swift_bic" class="form-control" disabled>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="iban" style="font-weight: bold;">IBAN:</label>
+                <input type="text" id="iban" formControlName="iban" class="form-control" disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="currency" style="font-weight: bold;">Currency:</label>
+                <input type="text" id="currency" formControlName="currency" class="form-control" disabled>
+
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-item">
+                <label for="desc" style="font-weight: bold;">Description:</label>
+                <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc" disabled></textarea>
+              </div>
+              <div class="form-item">
+                <!-- <label for="is_wps" style="font-weight: bold;">WPS Provider:</label>
+                  <div style="display: flex;gap: 10px;">
+                      <input type="checkbox" formControlName="is_wps"/>
+                      <label for="wpsNo" style="margin-bottom: 0px !important;" >Add this account as a WPS provider</label>
+                  </div> -->
+              </div>
+            </div>
+
+          </form>
+
+
+        </div>
+
+      </div>
+      <div class="modal-footer" *ngIf="addProvisionalBankAcc">
+        <button ejs-button class="btn btnColorAll" (click)="closeModel()" [disabled]="bankAccountForm.invalid">Save and
+          Submit</button>
+        <button ejs-button class="btn btnColorAll" type="submit" (click)="submitBankAccountDetails()"
+          [disabled]="bankAccountForm.invalid">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

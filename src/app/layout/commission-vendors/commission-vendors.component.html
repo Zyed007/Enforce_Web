@@ -1,0 +1,334 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css" />
+<div style="padding: 40px 20px;" *ngIf="noAccessPage">
+  <div class="row rowimp rowcard" style="padding: 0px; margin-bottom: 20px;padding-bottom: 20px;" *ngIf="mainVendorList">
+    <div class="col-12">
+      <div class="row" style="padding: 10px 0px; border-bottom: 1px solid #ada8a8;">
+        <div class="col-6" style="margin: auto;">
+          <h3 style="font-size: 17px; font-weight: 300; margin-bottom: 0px;">Vendors</h3>
+        </div>
+        <div class="col-6" style="text-align: end;">
+          <button class='btn btnColorAll' (click)="vendorsDiv('none')">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Vendor
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" style="margin-top: 15px;">
+      <ejs-grid #vendorDataTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true' (created)='serviceSearchKeyUp()'
+        [dataSource]='allVendordata' allowTextWrap='true' height="350px" allowSorting='true'>
+        <e-columns>
+
+          <e-column field='createdDate' headerText='Created Date' width=90>
+            <ng-template #template let-data>
+              <span>{{data.createdDate | date: 'dd/MM/yyyy'}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='name' headerText='Vendor Name' width=100>
+            <ng-template #template let-data>
+              <div style="display: grid;">
+                <span>{{data.name}}</span>
+              </div>
+            </ng-template>
+          </e-column>
+
+          <e-column field='vendorEmail' headerText='Vendor Email' width=80>
+            <ng-template #template let-data>
+              <span>{{data.vendorEmail}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='vendorPhone' headerText='Vendor Phone' width=80>
+            <ng-template #template let-data>
+              <span>{{data.vendorPhone}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='type' headerText='Vendor Type' width=90>
+            <ng-template #template let-data>
+              <span>{{data.type}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='statusName' headerText='Status' width=90>
+            <ng-template #template let-data>
+              <span>{{data.statusName}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText='No. of Documents' width=90>
+            <ng-template #template let-data>
+              <span>{{data.vendorEntityDocument?.length}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText='Action' width=90>
+            <ng-template #template let-data>
+              <i class="fa fa-pencil-square-o" style="font-size: 15px; margin-right: 10px;" aria-hidden="true" placement="top" ngbTooltip="Update Vendor" (click)="vendorsDiv(data)" container="body"></i>
+              <i class="fa fa-trash" style="font-size: 15px;" aria-hidden="true" placement="top" ngbTooltip="Delete Vendor" container="body" (click)="vendorsDelete(data)"></i>
+            </ng-template>
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+
+  <div class="row rowimp rowcard" style="padding: 0px; margin-bottom: 20px;padding-bottom: 20px;" *ngIf="!mainVendorList">
+    <div class="col-12">
+      <div class="row" style="padding: 10px 0px; border-bottom: 1px solid #ada8a8;">
+        <div class="col-6" style="margin: auto;">
+          <h3 style="font-size: 17px; font-weight: 300; margin-bottom: 0px;">{{vendorFormType}} Vendor</h3>
+        </div>
+        <div class="col-6" style="text-align: end;">
+          <button class='btn btnColorAll' (click)="closeVendorDiv()">
+            <i class="fa fa-chevron-circle-left" aria-hidden="true" style="margin-top: -1px;"></i>
+            back
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" style="margin-top: 15px;" [formGroup]="vendorForm">
+
+      <header>
+        <div>
+          <h1>Basic Information</h1>
+          <span class="spacer"></span>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col-4">
+          <label style="padding-right: 5px;">Vendor Name</label>
+          <input type="text" class="e-input" formControlName="name" placeholder="Enter name">
+          <div class="errorTxt" *ngIf="vendorForm.controls['name']?.errors?.required && !formSubmitAttemptForVendor">
+            *Vendor name is required
+          </div>
+        </div>
+        <div class="col-4">
+          <label style="padding-right: 5px;">Vendor Type</label>
+          <ejs-dropdownlist #resetDropDown [dataSource]='vendorType' formControlName="type" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Vendor type'></ejs-dropdownlist>
+          <div class="errorTxt" *ngIf="vendorForm.controls['type']?.errors?.required && !formSubmitAttemptForVendor">
+            *Vendor Type is required
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="horns">Select a Vendor Activity</label>
+          <ejs-multiselect [dataSource]='vendorCategoryDropDown' formControlName="category" [fields]='commonFields' placeholder='Select a Vendor Activity'></ejs-multiselect>
+          <div class="errorTxt" *ngIf="vendorForm.controls['category']?.errors?.required && !formSubmitAttemptForVendor">
+            *Vendor activity is required
+          </div>
+        </div>
+
+        <div class="col-12 smallMarTop">
+          <div class="row" [formGroup]="venPriConForm">
+            <div class="col-3">
+              <label style="padding-right: 5px;">Address 1</label>
+              <textarea class="e-input" placeholder="Enter Building, street" rows="1" formControlName="address1"></textarea>
+              <div class="errorTxt" *ngIf="venPriConForm.controls['address1']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *Address is required
+              </div>
+            </div>
+            <div class="col-3">
+              <label style="padding-right: 5px;">Address 2</label>
+              <textarea class="e-input" placeholder="Enter Landmark" rows="1" formControlName="address2"></textarea>
+            </div>
+            <div class="col-3">
+              <label class="labelcss">City</label>
+              <ejs-dropdownlist [dataSource]='cityDataDropDown' formControlName="city" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a City'></ejs-dropdownlist>
+              <div class="errorTxt" *ngIf="venPriConForm.controls['city']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *City is required
+              </div>
+            </div>
+            <div class="col-3">
+              <label style="padding-right: 5px;">Country</label>
+              <ejs-dropdownlist #resetDropDown [dataSource]='countryDataDropDown' formControlName="country" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Country'></ejs-dropdownlist>
+              <div class="errorTxt" *ngIf="venPriConForm.controls['country']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *Country is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4 smallMarTop">
+          <label style="padding-right: 5px;">Vendor Phone Number</label>
+          <ngx-intl-tel-input
+			        [enableAutoCountrySelect]="true"
+			        [enablePlaceholder]="false"
+			        [searchCountryFlag]="true"
+			        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+			        [selectFirstCountry]="false"
+			        [selectedCountryISO]="selectedISO"
+			        [maxLength]="15"
+			        [tooltipField]="TooltipLabel.Name"
+			        [phoneValidation]="false"
+			        [separateDialCode]="true"
+			        formControlName="phone">
+			    </ngx-intl-tel-input>
+          <div class="errorTxt" *ngIf="vendorForm.controls['phone']?.errors?.required && !formSubmitAttemptForVendor">
+            *Vendor Phone is required
+          </div>
+        </div>
+        <div class="col-4 smallMarTop">
+          <label style="padding-right: 5px;">Vendor Email</label>
+          <input type="email" class="e-input" formControlName="email" placeholder="Enter Email">
+          <div class="errorTxt" *ngIf="vendorForm.controls['email']?.errors?.required && !formSubmitAttemptForVendor">
+            *Email is required
+          </div>
+        </div>
+        <div class="col-4 smallMarTop">
+          <label style="padding-right: 5px;">Vendor Status</label>
+          <ejs-dropdownlist #resetDropDown [dataSource]='vendorStatusDropDown' formControlName="status" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Vendor status'></ejs-dropdownlist>
+          <div class="errorTxt" *ngIf="vendorForm.controls['status']?.errors?.required && !formSubmitAttemptForVendor">
+            *Vendor status is required
+          </div>
+        </div>
+      </div>
+
+      <header class="martop">
+        <div>
+          <h1>Vendor Primary Contact</h1>
+          <span class="spacer"></span>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="row" [formGroup]="venPriConForm">
+            <div class="col-4">
+              <label style="padding-right: 5px;">First Name</label>
+              <input type="text" class="e-input" formControlName="PFname" placeholder="Enter First name">
+              <div class="errorTxt" *ngIf="venPriConForm.controls['PFname']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *First name is required
+              </div>
+            </div>
+            <div class="col-4">
+              <label style="padding-right: 5px;">Last Name</label>
+              <input type="text" class="e-input" formControlName="PLname" placeholder="Enter Last name">
+              <div class="errorTxt" *ngIf="venPriConForm.controls['PLname']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *Last name is required
+              </div>
+            </div>
+            <div class="col-4">
+              <label style="padding-right: 5px;">Designation</label>
+              <input type="text" class="e-input" formControlName="designation" placeholder="Enter First name">
+              <div class="errorTxt" *ngIf="venPriConForm.controls['designation']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *Designation is required
+              </div>
+            </div>
+            <div class="col-12" style="margin: 10px 0px;">
+              <ejs-checkbox (change)="isContactSame($event)" label="Same as above phone number and email"></ejs-checkbox>
+            </div>
+            <div class="col-6">
+              <label style="padding-right: 5px;">Phone Number</label>
+              <ngx-intl-tel-input
+                  [enableAutoCountrySelect]="true"
+                  [enablePlaceholder]="false"
+                  [searchCountryFlag]="true"
+                  [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                  [selectFirstCountry]="false"
+                  [selectedCountryISO]="selectedISO"
+                  [maxLength]="15"
+                  [tooltipField]="TooltipLabel.Name"
+                  [phoneValidation]="false"
+                  [separateDialCode]="true"
+                  formControlName="Pphone">
+              </ngx-intl-tel-input>
+              <div class="errorTxt" *ngIf="venPriConForm.controls['Pphone']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *Phone number is required
+              </div>
+            </div>
+            <div class="col-6">
+              <label style="padding-right: 5px;">Email</label>
+              <input type="email" class="e-input" formControlName="Pemail" placeholder="Enter Email">
+              <div class="errorTxt" *ngIf="venPriConForm.controls['Pemail']?.errors?.required && !formSubmitAttemptForVendorContact">
+                *Email is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <header class="martop">
+        <div>
+          <h1>Vendor Documents</h1>
+          <span class="spacer"></span>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col-12">
+          <table class="table" style="margin-bottom: 2rem;table-layout:fixed">
+            <thead>
+              <tr>
+                <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:25%">Upload Type</th>
+                <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:30%">Upload Document</th>
+                <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:25%">Document Expire Date</th>
+                <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:20%">Action</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="venDocument">
+              <tr *ngFor="let task of venDocument.controls; let i=index" [formGroupName]="i">
+
+                <td>
+                  <ejs-dropdownlist (change)="getDocTypeChange($event, i)" [dataSource]='vendorDocDropDown' formControlName="documentType" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Vendor Document'></ejs-dropdownlist>
+                  <div class="errorTxt" *ngIf="venDocument.controls[i].get('documentType')?.errors?.required && !formSubmitAttemptForVendor">
+                    *Document type is required
+                  </div>
+                </td>
+
+                <td>
+                  <div style="display: flex;">
+                    <ejs-uploader *ngIf="venDocument.controls[i].get('documentUrl')?.value === ''"
+                    (selected)="onFileSelected($event, i)" allowedExtensions = '.jpg,.png,.pdf' [autoUpload]='true' [buttons]="{ browse: 'Browse' }" multiple=false></ejs-uploader>
+                    <a *ngIf="venDocument.controls[i].get('documentUrl')?.value !== ''" (click)="goToLink(venDocument.controls[i].get('documentUrl')?.value)" class="hyperlink">
+                      View Document
+                    </a>
+                  </div>
+                  <div class="errorTxt" *ngIf="venDocument.controls[i].get('documentUrl')?.errors?.required && !formSubmitAttemptForVendor">
+                    *Vendor Document is required
+                  </div>
+                </td>
+
+                <td>
+                  <ejs-datepicker *ngIf="showExpireDate(task)"
+                   format='MMM d, y' formControlName="documentExpireDate" [min]='expDateMinDate' class="e-input"></ejs-datepicker>
+                  <p *ngIf="!showExpireDate(task)">No Expire Date required for this document.</p>
+                </td>
+
+                <td style="display: flex;">
+                  <i class="fa fa-trash commonBtn" style="padding: 6px; font-size: 15px; margin-right: 10px;" [ngClass]="checkToShowDelete(task) ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteDocumnetRow(i)"></i>
+                  <ejs-uploader *ngIf="venDocument.controls[i].get('documentUrl')?.value !== ''"
+                    (selected)="onFileSelected($event, i)" allowedExtensions = '.jpg,.png,.pdf' [autoUpload]='true' [buttons]="{ browse: 'Update' }" multiple=false></ejs-uploader>
+                </td>
+              </tr>
+              <div>
+                <button class="btn reqbtn"(click)="addNewDocumnetName()">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px;">Add New Document</p>
+                </button>
+              </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-12 martop">
+          <button class='btn btnColorAll' (click)="submitAddVendor()">
+            {{vendorFormType === 'Add' ? 'Save' : 'Update'}}
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!noAccessPage">
+  <app-not-found></app-not-found>
+</div>

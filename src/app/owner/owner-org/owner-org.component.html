@@ -1,0 +1,82 @@
+<div class="row start">
+  <div class="row dateDiv">
+    <div class="col-6">
+
+    </div>
+    <div class="col-6">
+      <ejs-daterangepicker [max]="today" [value]='dateRangeValue' format='E, d MMM, y' (change)="changeDate($event)">
+      </ejs-daterangepicker>
+    </div>
+  </div>
+  <div class="col-12 CardRow" *ngIf="allOrg">
+    <ejs-grid #orgGrid [dataSource]='orgData' [allowSorting]='true' [toolbar]='toolbarOptions' (created)='createdOrg($event)' height='500'>
+      <e-columns>
+        <e-column field='org_name' headerText='Organization' width=60></e-column>
+        <e-column field='createdby' headerText='Created by' width=60></e-column>
+        <e-column field='emp_count' headerText='Employees' width=30></e-column>
+        <e-column field='GecodingTotal' headerText='Total Geocode' textAlign='center' width=40>
+          <ng-template #template let-data>
+            <p style="margin-bottom: 0px;">
+              {{data.GecodingTotal}}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field='MapViewTotal' headerText='Total Map Request' textAlign='center' width=40>
+          <ng-template #template let-data>
+            <p style="margin-bottom: 0px;">
+              {{data.MapViewTotal}}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field='total_count' headerText='Total' textAlign='center' width=30>
+          <ng-template #template let-data>
+            <p style="margin-bottom: 0px;">
+              {{data.total_count}}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column headerText='Action' textAlign='center' width=30>
+          <ng-template #template let-data>
+            <i class="material-icons point" ngbTooltip="Check request made" container="body" (click)="singleOrgfun(data)">
+              import_export
+            </i>
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  <div class="col-12 CardRow" *ngIf="singleOrg">
+    <div class="backDiv">
+      <button id='add' class='btn btnColorAll' style="margin-left: 20px;" (click)="backToMainOrg()">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Back
+      </button>
+    </div>
+    <ejs-grid #singleOrgGrid [dataSource]='singleData' [allowSorting]='true' [toolbar]='toolbarOptions' (created)='createdSingleOrg($event)' height='500'>
+      <e-columns>
+        <e-column field='emp_name' headerText='Employee Name'></e-column>
+        <e-column field='GecodingTotal' headerText='Geo Coding'>
+          <ng-template #template let-data>
+            <p style="margin-bottom: 0px;">
+              {{data.GecodingTotal}}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field='MapViewTotal' headerText='Map Load'>
+          <ng-template #template let-data>
+            <p style="margin-bottom: 0px;">
+              {{data.MapViewTotal}}
+            </p>
+          </ng-template>
+        </e-column>
+        <e-column field='total_count' headerText='Total'>
+          <ng-template #template let-data>
+            <p style="margin-bottom: 0px;">
+              {{data.total_count}}
+            </p>
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>

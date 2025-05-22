@@ -1,0 +1,96 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Other Income Type</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openCommissionType()" *ngIf="mainTypeCommListing">Add Other Income Type</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainIncome()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div *ngIf="mainTypeCommListing">
+      <ejs-grid #commissionGrid [dataSource]='incomeTableData' (created)='serviceSearchKeyUp()' [toolbar]='commissionGridToolItems' height='300px'>
+        <e-columns>
+          <e-column field='createdDate' headerText='Created Date'>
+            <ng-template #template let-data>
+              <div>
+                <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field='createdBy' headerText='Created By'></e-column>
+          <e-column field='name' headerText='Other Income Type Name'></e-column>
+          <e-column headerText='No. of Type'>
+            <ng-template #template let-data>
+              <div>
+                {{data.incomeType.length}}
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editSingleCommission(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteCommission(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="pad2515" *ngIf="!mainTypeCommListing">
+      <div class="row">
+        <div class="col-6" [formGroup]="incomeForm">
+          <div>
+            <label class="labelcss">Other Income Name</label>
+            <input class="e-input" type="text" placeholder="Enter Income" formControlName="incomeName" />
+            <div class="errorTxt" *ngIf="incomeForm.controls['incomeName']?.errors?.required && !formSubmitAttemptForIncome">
+              *Income Name is required
+            </div>
+          </div>
+          <table class="table" style="margin-bottom: 0rem;">
+            <thead>
+              <tr>
+                <th scope="col" style="border-bottom: 1px solid #dee2e6 !important;">Type</th>
+                <th scope="col" style="border-bottom: 1px solid #dee2e6 !important;">Delete</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="incomeType">
+              <tr *ngFor="let task of incomeType.controls; let i=index" [formGroupName]="i">
+                <td>
+                  <input type="text" class="form-control" placeholder="Enter a Task Name" formControlName="typeName">
+                  <div class="errorTxt" *ngIf="incomeType.controls[i].get('typeName')?.errors?.required && formSubmitAttemptForIncome != null && !formSubmitAttemptForIncome">
+                    *Type Name is required
+                  </div>
+                </td>
+
+                <td>
+                  <i class="fa fa-trash commonBtn" [ngClass]="disableDeleteBtn ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteTaskRow(i)"></i>
+                </td>
+              </tr>
+              <div>
+                <button class="btn reqbtn"(click)="addNewTypeName()">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px;">Add New Type</p>
+                </button>
+              </div>
+            </tbody>
+          </table>
+          <div style="margin-top: 20px;">
+
+            <button class='btn btnColorAlll' (click)="submitCommissionType()" *ngIf="!editCommissionDiv">
+              Submit
+            </button>
+
+            <button class='btn btnColorAlll' (click)="updateCommissionType()" *ngIf="editCommissionDiv">
+              Update
+            </button>
+
+          </div>
+        </div>
+        <div class="col-6"></div>
+      </div>
+    </div>
+  </div>
+</div>

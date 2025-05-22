@@ -1,0 +1,2781 @@
+<!-- <link href="../../../assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet"
+  type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />
+
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container--fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+
+        Quotation Management </h3>
+
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a class="kt-subheader__breadcrumbs-link">
+          Quotations </a>
+        <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+          Add Quotation </a>
+        <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+          Edit Quotation </a>
+        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+<div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+  <!-- begin:: Subheader -->
+  <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid ">
+          <div class="kt-subheader__main">
+              <h3 class="kt-subheader__title">
+                  
+                 Tasks                           </h3>
+  
+                              <span class="kt-subheader__separator kt-hidden"></span>
+                 
+                      </div>
+          <div class="kt-subheader__toolbar">
+              <div class="kt-subheader__wrapper">
+                                    
+                  
+                
+              </div>
+          </div>
+      </div>
+  </div> -->
+  <!-- end:: Subheader -->
+  <div class="kt-portlet kt-portlet--mobile">
+    <div class="row">
+      <div class="col col-xl-12 col-lg-12">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <div class="kt-portlet__head-label">
+
+            <h3 class="kt-portlet__head-title">
+              Quotations
+            </h3>
+          </div>
+          <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+              <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+      <i class="la la-long-arrow-left"></i>
+      Back
+  </a> -->
+              &nbsp;
+              <div class="dropdown dropdown-inline">
+                <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+                <!-- </button> -->
+                <button type="button" style="display: none;" (click)='AddForm()' class="button button-fill button-rose"> <i
+                    class="flaticon2-plus"></i> Add New </button>
+                <button type="button" (click)='goBack()' class="button button-fill button-rose"
+                  style="margin-left:10px;"> <i class="fa fa-angle-left"></i> Back </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="kt-portlet__body" style=" border-bottom-color: #f0f3ff;padding-top: -15px;
+      color: #595d6e;" *ngIf='showList'>
+          <!--begin: Datatable -->
+          <!-- <div class="kt-datatable" id="local_data"></div> -->
+          <!--end: Datatable -->
+          <!-- <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field> -->
+          <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+
+            <ejs-grid #grid [dataSource]='projectData' height="315px" [searchSettings]='searchOptions'
+              allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'
+              (toolbarClick)='toolbarClick($event)'  [allowTextWrap]='true' [allowExcelExport]='true' [allowPdfExport]='true'
+              >
+              <e-columns>
+
+
+                <!-- <e-column field='' headerText='No' textAlign='' width=60>
+                  <ng-template #template let-data>
+                    <div>{{(data.index)}}</div>
+                  
+
+                  </ng-template>
+                </e-column> -->
+                <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+                <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                <e-column field='quotation_prefix' headerText='Qtn No' textAlign='' width=180>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span>{{data.quotation_prefix}}</span>
+
+
+                  </ng-template>
+                </e-column>
+                <e-column field='project_name' headerText='Project' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span *ngIf='viewDashboard' style="color:blue;cursor: pointer;text-transform: capitalize;" (click)="toQtnLayout(data.id)" >{{data.project_name}} </span>
+                    <span *ngIf='!viewDashboard' style="text-transform: capitalize;"  >{{data.project_name}} </span>
+                    <span *ngIf="data.isComplimentary !== null && data.isMarketing !== null" style="font-size: 10px;">  {{ data.isComplimentary === 'true' ? "Complimentary Project" : "Marketing project" }}   </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                 <e-column  field='' headerText='' textAlign='Left' width=80>
+                  <ng-template #template let-data >
+                    
+                   <span *ngIf="data.stage_name=='Modified'" class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded ng-star-inserted" style="color: white;">Modified</span>
+                                
+              </ng-template>
+                </e-column>
+                <!-- <e-column field='gross_total_amount' headerText='Gross Amount(AED)' textAlign='' width=140>
+                  <ng-template #template let-data>
+
+                    <span  >{{data.gross_total_amount!=''?(data.gross_total_amount| currency:'INR':''):''}} </span>
+
+                  </ng-template>
+                </e-column> -->
+                <e-column field='net_total_amount' headerText='Project Value(AED)' textAlign='' width=140>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span  >{{data.net_total_amount!=''?(data.net_total_amount| currency:'INR':''):''}} </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                <!-- <e-column field='total_hours' headerText='Total Hours' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <span  >{{data.total_hours!=''?(data.total_hours):''}} </span>
+
+                  </ng-template>
+                </e-column> -->
+                <e-column field='stage_name' headerText='Stage' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span  >{{data.stage_name}} </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                <e-column field='lead_name' headerText='Customer' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span  >{{data.lead_name}} </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                <e-column field='phone' headerText='Phone No' textAlign='' width=160>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span  >{{data.phone}} </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                <e-column field='email' headerText='Email' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span  >{{data.email}} </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                <e-column field='ondate' headerText='Date' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span  >{{data.ondate}} </span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+                
+                <!-- <e-column field='quotation_subject' headerText='Subject' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                   
+                    <span>{{data.quotation_subject}}</span>
+
+
+                  </ng-template>
+                </e-column> -->
+              
+
+                <!-- <e-column field='project_status_name' headerText='Status' width=90></e-column> -->
+
+
+
+                <!-- <e-column field='start_date' headerText='Start Date' textAlign='' width=90>
+                        <ng-template #template let-data>
+                          
+                            <span>{{data.start_date| date :  "dd/MM/y"}}</span>
+                             
+                                      
+                    </ng-template>
+                      </e-column>
+                      <e-column field='end_date' headerText='End Date' textAlign='' width=90>
+                        <ng-template #template let-data>
+                          
+                            <span>{{data.end_date| date :  "dd/MM/y"}}</span>
+
+                    </ng-template>
+                      </e-column> -->
+                <!-- <e-column field='completed_date' headerText='Completed Date' textAlign='' width=120>
+                        <ng-template #template let-data>
+                          
+                            <span>{{data.completed_date| date:'MM/dd/yyyy'}}</span>
+
+                    </ng-template>
+                      </e-column> -->
+                <!-- <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column> -->
+                  <!--<e-column type='' textAlign='' headerText='Actions' width='90' style="display: none;">
+                  <ng-template #template let-data>
+                    <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> 
+                    <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                      (click)="qtnEdit(data.id)"> <i class="la la-edit"></i> </a>  
+
+                     <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                      (click)="taskDelete(data.id)"><i class="la la-trash"></i> </a> 
+
+
+                  </ng-template>
+                </e-column> -->
+              </e-columns>
+            </ejs-grid>
+            <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+          </div>
+
+
+        </div>
+        <div *ngIf="!showList" >
+          <app-not-found></app-not-found>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+  <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+
+
+    <div class="kt-portlet kt-portlet--tabs">
+
+      <!--begin::Portlet-->
+
+      <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+
+          <h3 class="kt-portlet__head-title">
+            Projects
+
+          </h3>
+
+          <div style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;"
+            [routerLink]="['/pricing']" class="btn btn-bold btn-sm btn-font-sm btn-label-warning">UPGRADE</div>
+          <div style="color:#2c77f4!important;margin-left: 10px;">Upgrade to enable customer info & location</div>
+
+        </div>
+        <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+            <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+              <i class="la la-long-arrow-left"></i>
+              Back
+          </a> -->
+            &nbsp;
+            <div class="dropdown dropdown-inline">
+              <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+              <!-- </button> -->
+              <button type="button" (click)='TaskView()' class="button button-fill button-rose"> <i
+                  class="fa fa-angle-left"></i> Back </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--begin::Form-->
+      <div class="kt-portlet__body">
+
+        <div class="kt-form kt-form--label-right">
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+
+
+              <form class="kt-form kt-form--label-right" [formGroup]="projectForm">
+
+                <div class="form-group row" *ngIf="!editable">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Prefix:</label>
+                  <div class="kt-radio-inline col-lg-4 col-xl-4 accessRadio">
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="prefixVal" value="is_auto" (change)="customRadioChange()">
+                      Auto
+                      <span></span>
+                    </label>
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="prefixVal" value="is_custom" (change)="customRadioChange()">
+                      Custom
+                      <span></span>
+                    </label>
+
+                  </div>
+                </div>
+
+                <div *ngIf="showPrefixText  && !editable" class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Enter Prefix:</label>
+                  <div class="col-lg-4 col-xl-4 col-sm-4">
+                    <input type="email" class="form-control" placeholder="Enter Prefix" formControlName="prefix_name"
+                      (keyup)="customInputChange($event)">
+                  </div>
+                  <span style="margin-top: 5px;">{{customPrefix}}</span>
+                </div>
+                <div *ngIf="prefixExists && editable==false" style="color: red;">Prefix already exists. Please enter a new prefix.</div>
+                <div *ngIf="!showPrefixText && editable==false" class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <span>{{prefixString}}</span>
+
+
+                  </div>
+                </div>
+                <div *ngIf="editable" class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+                     
+                <span>{{project_prefix_val}}</span>
+                     
+                      
+                    </div>
+                </div>
+                <!-- <div *ngIf="showPrefixText && !editable" class="form-group row">
+      <label class="col-xl-3 col-lg-3 col-form-label">Enter Prefix:</label>
+      <div class="col-lg-4 col-xl-4 col-sm-4">
+  <input type="email" class="form-control" placeholder="Enter Prefix" formControlName="prefix_name" (keyup)="customInputChange($event)">
+      </div>
+      <span style="margin-top: 5px;">{{customPrefix}}</span>
+  </div> -->
+                <!-- <div *ngIf="prefixExists" style="color: red;">Prefix already exists. Please enter a new prefix.</div> -->
+                <!-- <div *ngIf="!showPrefixText && editable==false " class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+    <div class="col-lg-4 col-xl-4">
+       
+  <span>{{prefixString}}</span>
+       
+        
+      </div>
+  </div> -->
+                 <!-- <div *ngIf="editable" class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+    <div class="col-lg-4 col-xl-4">
+       
+  <span>{{project_prefix_val}}</span>
+       
+        
+      </div>
+  </div>  -->
+
+                <div class="form-group row costForm">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Name<span class="required"
+                      style="color: red;">*</span></label>
+                      
+                  <div class="col-lg-4 col-xl-4">
+                  <!-- <tag-input [placeholder]="'Enter Name'"
+                      [secondaryPlaceholder]="'Enter Name'"  (onAdd)="!editable?onAddedProj($event):onEditProj($event)"  formControlName="project_name" 
+                     [maxItems]=1 [onlyFromAutocomplete]="false" [addOnBlur]="true"
+                     >
+                     <tag-input-dropdown
+                     [autocompleteItems]="projectNames"
+                     [showDropdownIfEmpty]="true"
+                     [dynamicUpdate]="false"
+                     
+                   >
+                   <ng-template let-item="item" let-index="index">
+                     {{ item.display }}
+                   </ng-template>
+                   </tag-input-dropdown>
+                   </tag-input>   -->
+                      <!-- <input type="email" class="form-control" (keyup)="nameChange($event)" placeholder="Enter name"
+                      formControlName="project_name">   -->
+                      <select2 [data]="costprojectData" [options]="taskOptions" [disabled]='true' [value]="costprojVal"
+                      (valueChanged)="changedCostProj($event)"></select2>
+                      <div *ngIf="addformSubmitted && costprojVal==''">
+                        <label class="e-error" for="projName" id="OrderID-info" >*Project is required</label>
+
+                        </div>
+                  </div>
+                </div>
+               <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Design Type</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="designTypeData" [disabled]='true' [options]="taskOptions" [value]="desgnTypeVal"
+                      (valueChanged)="changedDesgnType($event)"></select2>
+                  </div>
+                  <!-- <div aria-haspopup="true" (click)="AddDesignType()" aria-expanded="false"
+                    style="color:black;margin-top:5px;">
+                    <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                          color: #fff;
+                                          font-size: 8px;
+                                          "></i>
+                      Add Design Type
+                    </a>
+
+
+
+                  </div> -->
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Type:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="projectTypeData" [disabled]='true' [options]="taskOptions" [value]="projTypeVal"
+                      (valueChanged)="changedProjType($event)"></select2>
+                  </div>
+                  <!-- <div aria-haspopup="true" (click)="AddProjType()" aria-expanded="false"
+                    style="color:black;margin-top:5px;">
+                    <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                          color: #fff;
+                                          font-size: 8px;
+                                          "></i>
+                      Add Project Type
+                    </a>
+
+
+
+                  </div> -->
+                </div>
+              <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Packages:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="packageTypeData" [disabled]='true' [options]="taskOptions" [value]="pkgTypeVal"
+                      (valueChanged)="changedPkgType($event)"></select2>
+                  </div>
+                  
+                </div> 
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Stage</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="stageData" [options]="taskOptions" [value]="stageVal"
+                    (valueChanged)="changedStage($event)"></select2>
+                  </div>
+                  
+                </div>
+                <div class="form-group row" *ngIf="showUpdateBtn">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4" style="display: flex;justify-content: flex-end;">
+                    <button type="button" style="width: 100px !important;" class="button button-fill button-rose"  (click)='openStatusModal()' aria-haspopup="true" aria-expanded="false">
+                       UPDATE 	
+                  </button> 
+                  </div>
+                  
+                </div>
+                
+            
+                <div class="required-msg row" style="margin-top:-10px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <div *ngIf="isFieldValid('project_name')" class="error-msg">Required.</div>
+                  </div>
+                </div>
+              
+
+                <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Customer Info</h3>
+                <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                  style="margin: 10px 0px !important;"></div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Customer</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="customerData" [disabled]='true' [options]="taskOptions" [value]="customerVal"
+                      (valueChanged)="changedCustomer($event)"></select2>
+
+                    <!-- <input class="form-control" type="text" value="" formControlName="customer_Name"  placeholder="Name"> -->
+                  </div>
+                  <!-- <div aria-haspopup="true" (click)="AddCst()" aria-expanded="false"
+                    style="color:black;margin-top:5px;">
+                    <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                        color: #fff;
+                                        font-size: 8px;
+                                        "></i>
+                      Add Customer
+                    </a>
+
+
+
+                  </div> -->
+
+                  <!-- <div *ngIf="projectForm.controls['customer_Name'].errors && !projectForm.controls['customer_Name'].pristine" class="error-msg">
+                        <div [hidden]="!projectForm.controls['customer_Name'].errors.required">Required.</div>
+                      </div> -->
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Contact Name</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <input class="form-control" type="text" value="" readonly formControlName="name" placeholder="Name">
+                  </div>
+                  <label class="col-form-label"></label>
+
+                  <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                              <input class="form-control" type="email" value="" formControlName="email"  placeholder="Email" >
+
+                      </div> -->
+                  <div class="error-msg">
+                    <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                    <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+                    <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                    <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                                ssfssscs                                                                                                                      
+                              </div> -->
+                    <div
+                      *ngIf="projectForm.controls['contact_type'].errors && !projectForm.controls['contact_type'].pristine"
+                      class="error-msg">
+                      <div [hidden]="!projectForm.controls['contact_type'].errors.required">Required.</div>
+                      <div [hidden]="!projectForm.controls['contact_type'].errors.patternInvalid">Enter a valid email or
+                        phone</div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Contact Email</label>
+
+
+                  <div class="col-lg-4 col-xl-4">
+                    <input class="form-control" type="email" value="" readonly formControlName="email" placeholder="Email">
+                    <!-- <input class="form-control" type="email" value="" disabled="{planType == 'Basic'?'disabled':''}" formControlName="email"  placeholder="Email" > -->
+                    <div class="error-msg">
+                      <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                      <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+                      <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                      <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                                ssfssscs                                                                                                                      
+                              </div> -->
+                      <div
+                        *ngIf="projectForm.controls['email'].errors && !projectForm.controls['email'].pristine"
+                        class="error-msg">
+                        <!-- <div [hidden]="!projectForm.controls['contact_type'].errors.required">Required.</div> -->
+                        <div [hidden]="!projectForm.controls['email'].errors.pattern">Enter a valid email </div>
+                      </div>
+  
+                    </div>
+                  </div>
+                 
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label"> Phone Number</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <input class="form-control" type="text" value="" readonly formControlName="phone"  placeholder="Number">
+  
+                    <!-- <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                      [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                      [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true" name="phone"
+                      [id]='phone' [ngModelOptions]="{updateOn: 'blur'}" (ngModelChange)="onChange($event)"
+                      [(ngModel)]="phone">
+  
+                    </ngx-intl-tel-input> -->
+                    <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Phone" > -->
+                    <div *ngIf="phoneInvalid" class="error-msg">
+                      <div>{{phoneErrorMsg}}</div>
+  
+                      <!-- <div [hidden]="!signUpForm.controls['email'].errors.patternInvalid">Enter a valid Phone Number.</div> -->
+                    </div>
+                   <div
+                    *ngIf="projectForm.controls['phone'].errors && !projectForm.controls['phone'].pristine"
+                    class="error-msg">
+                    <div [hidden]="!projectForm.controls['phone'].errors.pattern">Enter a valid email </div>
+                  </div> 
+                    <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Phone" > -->
+                  </div>
+                  <label class="col-form-label"></label>
+  
+                  <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                          <input class="form-control" type="email" value="" formControlName="mobile"  placeholder="Mobile" >
+  
+                  </div> -->
+  
+                </div>
+              </form>
+             
+<!-- 
+              <form  [formGroup]="projectForm">
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label"> Country</label>
+                  <div class="col-lg-4 col-xl-4">
+  
+                  <select2 [data]="countryData" [disabled]='true' [options]="taskOptions" [value]="projcountryValue"
+                    (valueChanged)="changedProjCountry($event)"></select2>
+                </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label"> City</label>
+                  <div class="col-lg-4 col-xl-4">
+  
+                    <input class="form-control" type="text" value="" readonly formControlName="city" placeholder="Enter city">
+  
+                </div>
+                </div>
+              </form> -->
+              
+            
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                style="margin: 10px 0px !important;"></div>
+                <form class="kt-form kt-form--label-right" [formGroup]="projectForm">
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">No of floors<span class="required"
+                        style="color: red;">*</span></label>
+                    <div class="col-lg-4 col-xl-4">
+                      <input type="number" min='1' readonly class="form-control" placeholder="Enter no"
+                        formControlName="floor_no">
+                        <div *ngIf="addformSubmitted && projectForm.controls.floor_no.valid==false">
+                          <label class="e-error" for="floor_no" id="OrderID-info" >*No is required</label>
+  
+                          </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Plot Size
+                      <!-- <span class="required"
+                        style="color: red;">*</span> -->
+                      </label>
+                    <div class="col-lg-4 col-xl-4 btnGroup" style="display: flex;">
+                      <input type="number" min='0' readonly class="form-control" placeholder="Enter no"
+                        formControlName="plot_size">
+                        <div id="text" class="e-btn-group">
+                          <input type="radio" id="sq_ft"  formControlName="plotVal" value="sq_ft"  (change)='plotSqftChange($event)' />
+                          <label class="e-btn" for="sq_ft">sq ft</label>
+                          
+                          <input type="radio" id="sq_m"  formControlName="plotVal" value="sq_m" (change)='plotSqftChange($event)'/>
+                          <label class="e-btn" for="sq_m">sq m</label>                                    
+                      </div>
+                        <!-- <div *ngIf="addformSubmitted && projectForm.controls.floor_no.valid==false">
+                          <label class="e-error" for="floor_no" id="OrderID-info" >*No is required</label>
+  
+                          </div> -->
+                    </div>
+                    
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Built Up Area
+                      <!-- <span class="required"
+                        style="color: red;">*</span> -->
+                      </label>
+                    <div class="col-lg-4 col-xl-4 btnGroup" style="display: flex;">
+                      <input type="number" readonly min='0' class="form-control" placeholder="Enter no"
+                        formControlName="built_area">
+                        <div id="built_text" class="e-btn-group">
+                          <input type="radio" id="built_sq_ft"  formControlName="builtVal" value="built_sq_ft"   />
+                          <label class="e-btn" for="built_sq_ft">sq ft</label>
+                          
+                          <input type="radio" id="built_sq_m" formControlName="builtVal" value="built_sq_m" />
+                          <label class="e-btn" for="built_sq_m">sq m</label>                                    
+                      </div>
+                        <!-- <div *ngIf="addformSubmitted && projectForm.controls.floor_no.valid==false">
+                          <label class="e-error" for="floor_no" id="OrderID-info" >*No is required</label>
+  
+                          </div> -->
+                    </div>
+                  </div>
+
+                  <div class="row">                
+                    
+                </div>
+  </form>
+                <!-- <form class="kt-form kt-form--label-right" [formGroup]="emailForm">
+                  <div  formArrayName="emails" >
+
+                  <span class="" *ngFor="let email of emailForm.get('emails')['controls']; let i = index"
+                  [formGroupName]="i">
+                
+                    <div class="form-group row" *ngIf="email.get('is_checkbox').value==true" style="display: flex;margin-top:12px;">
+                      <label class="col-xl-3 col-lg-3 col-form-label"> </label>
+                      <label class="kt-checkbox">
+                              <input type="checkbox" id="billable" formControlName="checkbox_value" [checked]="approveChecked" [value]="addApprover" (change)="onCheckChange($event)">
+                              <span style="margin-left:15px;margin-right: 5px;"></span>
+                      </label>
+                      <div>
+                        <input type="email" style="border:none;background: none;" class="form-control" readonly  placeholder="Label" formControlName="Label">
+
+                      </div>
+
+                 
+                  </div>
+                    </span>
+                 
+                   
+                  </div>
+
+</form> -->
+               
+<!-- <div class="form-group row"  style="display: flex;margin-top:12px;">
+  <label class="col-xl-3 col-lg-3 col-form-label"> </label>
+  <label class="kt-checkbox">
+          <input type="checkbox"   [checked]="BOQChecked" [value]="BOQvalue" (change)="onBOQChange($event)">
+          <span style="margin-left:15px;margin-right: 5px;"></span>
+  </label>
+  <div style="margin-left:14px;">
+BOQ
+  </div>
+
+
+</div>
+<div class="form-group row"  style="display: flex;margin-top:12px;">
+  <label class="col-xl-3 col-lg-3 col-form-label"> </label>
+  <label class="kt-checkbox">
+          <input type="checkbox"  [checked]="siteChecked" [value]="siteVal" (change)="onSitVisitChange($event)">
+          <span style="margin-left:15px;margin-right: 5px;"></span>
+  </label>
+  <div style="margin-left:14px;">
+Site Visit
+  </div>
+
+
+</div> -->
+
+<!-- <div style="display: flex;justify-content: flex-end;margin-right: 100px;margin-bottom: 5px;">
+  <button type="button" id='width100' style="width: 100px !important;" class="button button-fill button-rose"  (click)='openUnitModal()' aria-haspopup="true" aria-expanded="false">
+    <i class="flaticon2-plus" ></i> Unit Type  	
+</button>
+</div> -->
+
+
+<!-- <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Scope of Work</h3> -->
+<div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+style="margin: 10px 0px !important;"></div>
+
+<ejs-accordion>
+  <e-accordionitems>
+    <e-accordionitem >
+      <ng-template #header>
+        <div>SCOPE OF WORK</div>
+      </ng-template>
+      <ng-template #content>
+        <form class="kt-form kt-form--label-right" [formGroup]="emailForm">
+          <div class="form-group row" formArrayName="emails">
+            <label class="col-xl-1 col-lg-0 col-form-label">
+              </label>
+            <div class="col-lg-12 col-xl-10 specifyTable" style="max-height: 490px;
+            overflow-y: auto;
+            height: auto;">
+              <table>
+                <tr >
+                  <th  style="display: none;">Add Unit</th>
+                  <th>Description</th>
+                  <!-- <th>Number of units</th> -->
+                  <th>Cost Up (%)<span ngbPopover="Cost value increase by percentage"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                    margin-left: 5px;" container="body">
+                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                      color: #fff;
+                      font-size: 10px;
+                      "></i>
+                    </span></th>
+                  <!-- <th>Design Type</th> -->
+                  <th>Notes</th>
+                  <th>Tags</th>
+                  <th  style="display: none;">Remove Unit</th>
+      
+                </tr>
+                <tr *ngFor="let email of emailForm.get('emails')['controls']; let i = index"
+                [formGroupName]="i">
+                <td  style="display: none;" *ngIf="email.get('is_checkbox').value==false">
+                  <div aria-haspopup="true" (click)="AddUnitDesc(i)" aria-expanded="false"
+                  style="color:black;margin-top:5px;text-align: center;">
+                  <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                        color: #fff;
+                                        font-size: 8px;
+                                        "></i>
+                    
+                  </a>
+      
+                  <!-- <pre>{{email.get('id').valid}}</pre>
+                  <pre>{{email.get('is_checkbox').valid}}</pre>
+                  <pre>{{email.get('Label').valid}}</pre>
+                  <pre>{{email.get('size').valid}}</pre>
+                  <pre>{{email.get('tags').valid}}</pre>
+                  <pre>{{email.get('notes').valid}}</pre>
+                  <pre>{{email.get('checkbox_value').valid}}</pre>
+                  <pre>{{email.get('designType').valid}}</pre> -->
+                  
+      
+                </div>
+             
+                
+                </td >
+                  <td *ngIf="email.get('is_checkbox').value==false">
+                    <input type="text" placeholder="email" formControlName="id" style="display: none;">
+      
+                    <input   type="email" style="border:none;background: none;" class="form-control" readonly  placeholder="Label" formControlName="Label">
+                    <!-- <input  *ngIf="email.get('id').value==''" type="email"  class="form-control"   placeholder="Enter Description" formControlName="Label"> -->
+      
+                  </td>
+                  <td class='e-bold' *ngIf="email.get('is_checkbox').value==false" style="display: none;">
+                    <input type="text" placeholder="email" formControlName="is_checkbox" style="display: none;">
+                    <!-- {{(email.get('is_checkbox').value==true)?'adssd':'asd'}} -->
+                    <!-- <div *ngIf="email.get('is_checkbox').value==true">
+                      <label class=" kt-checkbox">
+                        <input type="checkbox" formControlName="checkbox_value">
+                        <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                      </label>
+                      </div> -->
+                      <!-- <div *ngIf="email.get('is_checkbox').value==false">
+                        <input type="email" class="form-control"  placeholder="Enter No" (keyup)="qtyChange($event,i)"
+                    formControlName="unit_no">
+                        </div> -->
+                      <!-- ? <label class=" kt-checkbox">
+                      <input type="checkbox">
+                      <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                    </label>: <input type="email" class="form-control" (keyup)="nameChange($event)" placeholder="Enter No"
+                    formControlName="unit_no">}}
+                     -->
+                     
+                  </td>
+                  <td class='e-bold'  style="width: 200px;" *ngIf="email.get('is_checkbox').value==false">
+                    <input type="number"  style="border:none;background: none;" readonly  class="form-control"  min="0" placeholder="-"
+                      formControlName="size">
+                  </td>
+                  <!-- <td class='e-bold' style="width:200px" *ngIf="email.get('is_checkbox').value==false">
+                    <ejs-multiselect   style="margin-top:6px;" id='multiselectelement' [mode]='box'   formControlName="designType" (change)="ExtraTags[dataSource]='email.get("tags").value' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                    <div *ngIf="addformSubmitted && email.get('designType').value==''">
+                      <label class="e-error" for="designType" id="OrderID-info" style="display: block;">*DesignType is required</label>
+      
+                      </div>
+                   
+                  </td> -->
+                  <td class='e-bold' style="width: 200px;" *ngIf="email.get('is_checkbox').value==false">
+                    <input type="text" class="form-control" style="border:none;background: none;" readonly  placeholder="-"
+                      formControlName="notes">
+                  </td>
+                  <td style="width:216px" *ngIf="email.get('is_checkbox').value==false">
+                    <tag-input formControlName="tags"  [removable]="false" (onSelect)="onSelect($event)"
+                      [errorMessages]="errorMessages" [validators]="validators" [maxItems]=1 [placeholder]="'Tags'"
+                      [secondaryPlaceholder]="'Tags'" [addOnBlur]="true"  [modelAsStrings]="true" (onAdd)="hideMilestone()"   (onRemove)="hideMilestone()">
+                    </tag-input>
+                    <div *ngIf="addformSubmitted && email.get('tags').value==''">
+                      <label class="e-error" for="tags" id="OrderID-info" style="display: block;">*Tags is required</label>
+      
+                      </div>
+                  </td>
+                  <td  style="display: none;" *ngIf="email.get('is_checkbox').value==false">
+                    <div aria-haspopup="true" (click)="RemoveUnitDesc(i)" aria-expanded="false"
+                    style="color:black;margin-top:5px;text-align: center;">
+                    <a><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                          color: #fff;
+                                          font-size: 8px;
+                                          "></i>
+                      
+                    </a>
+      
+      
+      
+                  </div>
+                  </td>
+                </tr>
+              
+      
+              </table>
+      
+            </div>
+            <!-- <label class="col-xl-2 col-lg-2 col-form-label" >Unit Description</label> -->
+            
+          </div>
+         
+        </form>
+      </ng-template>
+    </e-accordionitem>
+  
+  </e-accordionitems>
+</ejs-accordion>
+
+            <!-- <div class="form-group row">
+              <label class="col-xl-1 col-lg-0 col-form-label"></label>
+              <label class="col-xl-3 col-lg-2 col-form-label" style="text-align: left;
+              font-size: 14px;
+              font-weight: 500;
+              padding-left: 0px;">Services</label>
+            </div> -->
+
+<div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+style="margin: 10px 0px !important;"></div>
+<ejs-accordion>
+  <e-accordionitems>
+   
+    <e-accordionitem>
+      <ng-template #header>
+        <div>SERVICES</div>
+      </ng-template>
+      <ng-template #content>
+        <form class="kt-form kt-form--label-right" [formGroup]="extraUnitForm">
+          <div class="form-group row" formArrayName="extras">
+            <label class="col-xl-1 col-lg-0 col-form-label">
+              </label>
+            <div class="col-lg-12 col-xl-10 specifyTable" style="max-height: 490px;
+            overflow-y: auto;
+            height: auto;">
+              <table>
+                <tr >
+                  <th style="display: none;">Add Unit</th>
+                  <th>Description</th>
+                  <!-- <th>Number of units</th> -->
+                  <th>Cost Up (%)<span ngbPopover="Cost value increase by percentage"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                    margin-left: 5px;" container="body">
+                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                      color: #fff;
+                      font-size: 10px;
+                      "></i>
+                    </span></th>
+                  <!-- <th>Design Type</th> -->
+                  <th>Notes</th>
+                  <th>Tags</th>
+                  <th  style="display: none;">Remove Unit</th>
+      
+                </tr>
+                <tr   *ngFor="let email of extraUnitForm.get('extras')['controls']; let i = index"
+                [formGroupName]="i">
+                <td  style="display: none;" *ngIf="email.get('is_checkbox').value==false">
+                  <div aria-haspopup="true" (click)="AddExtraUnitDesc(i)" aria-expanded="false"
+                  style="color:black;margin-top:5px;text-align: center;">
+                  <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                        color: #fff;
+                                        font-size: 8px;
+                                        "></i>
+                    
+                  </a>
+      
+                  <!-- <pre>{{email.get('id').valid}}</pre>
+                  <pre>{{email.get('is_checkbox').valid}}</pre>
+                  <pre>{{email.get('Label').valid}}</pre>
+                  <pre>{{email.get('size').valid}}</pre>
+                  <pre>{{email.get('tags').valid}}</pre>
+                  <pre>{{email.get('notes').valid}}</pre>
+                  <pre>{{email.get('checkbox_value').valid}}</pre>
+                  <pre>{{email.get('designType').valid}}</pre> -->
+                  
+      
+                </div>
+             
+                
+                </td>
+                  <td *ngIf="email.get('is_checkbox').value==false">
+                    <input type="text" placeholder="email" formControlName="id" style="display: none;">
+      
+                    <input   type="email" style="border:none;background: none;" class="form-control" readonly  placeholder="Label" formControlName="Label">
+                    <!-- <input  *ngIf="email.get('id').value==''" type="email"  class="form-control"   placeholder="Enter Description" formControlName="Label"> -->
+      
+                  </td>
+                  <td class='e-bold' *ngIf="email.get('is_checkbox').value==false" style="display: none;">
+                    <input type="text" placeholder="email" formControlName="is_checkbox" style="display: none;">
+                    <!-- {{(email.get('is_checkbox').value==true)?'adssd':'asd'}} -->
+                    <!-- <div *ngIf="email.get('is_checkbox').value==true">
+                      <label class=" kt-checkbox">
+                        <input type="checkbox" formControlName="checkbox_value">
+                        <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                      </label>
+                      </div> -->
+                      <!-- <div *ngIf="email.get('is_checkbox').value==false">
+                        <input type="email" class="form-control"  placeholder="Enter No" (keyup)="qtyChange($event,i)"
+                    formControlName="unit_no">
+                        </div> -->
+                      <!-- ? <label class=" kt-checkbox">
+                      <input type="checkbox">
+                      <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                    </label>: <input type="email" class="form-control" (keyup)="nameChange($event)" placeholder="Enter No"
+                    formControlName="unit_no">}}
+                     -->
+                     
+                  </td>
+                  <td class='e-bold' style="width: 200px;" *ngIf="email.get('is_checkbox').value==false">
+                    <input type="number" class="form-control" style="border:none;background: none;" readonly  min="0" placeholder="-"
+                      formControlName="size">
+                  </td>
+                  <!-- <td class='e-bold' style="width:200px" *ngIf="email.get('is_checkbox').value==false">
+                    <ejs-multiselect   style="margin-top:6px;" id='multiselectelement' [mode]='box'   formControlName="designType" (change)="ExtraTags[dataSource]='ejsDesignTypeData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                    <div *ngIf="addformSubmitted && email.get('designType').value==''">
+                      <label class="e-error" for="designType" id="OrderID-info" style="display: block;">*DesignType is required</label>
+      
+                      </div>
+                   
+                  </td> -->
+                  <td class='e-bold' style="width: 200px;" *ngIf="email.get('is_checkbox').value==false">
+                    <input type="text" class="form-control" style="border:none;background: none;" readonly   placeholder="-"
+                      formControlName="notes">
+                  </td>
+                  <!-- <td style="width:100px" *ngIf="email.get('is_checkbox').value==false"> -->
+                    <!-- <tag-input formControlName="tags" (onSelect)="onSelect($event)"
+                      [errorMessages]="errorMessages" [validators]="validators" [maxItems]=1 [placeholder]="'Tags'"
+                      [secondaryPlaceholder]="'Tags'" [modelAsStrings]="true">
+                    </tag-input> -->
+                    <!-- <div *ngIf="addformSubmitted && email.get('tags').value==''">
+                      <label class="e-error" for="tags" id="OrderID-info" style="display: block;">*Tags is required</label>
+      
+                      </div> -->
+                      <td class='e-bold' style="width:200px" *ngIf="email.get('is_checkbox').value==false">
+                        <ejs-multiselect #dropdown [enabled]="false"   style="margin-top:6px;width:200px" id='multiselectelement' [mode]='box'   formControlName="designType"   [dataSource]='email.get("tags").value' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                        <div *ngIf="addformSubmitted && email.get('designType').value==''">
+                          <label class="e-error" for="designType" id="OrderID-info" style="display: block;">*Tags is required</label>
+      
+                          </div>
+                       
+                      </td>
+                  <!-- </td> -->
+                  <td  style="display: none;" *ngIf="email.get('is_checkbox').value==false">
+                    <div aria-haspopup="true" (click)="RemoveExtraUnitDesc(i)" aria-expanded="false"
+                    style="color:black;margin-top:5px;text-align: center;">
+                    <a><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                          color: #fff;
+                                          font-size: 8px;
+                                          "></i>
+                      
+                    </a>
+      
+      
+      
+                  </div>
+                  </td>
+                </tr>
+              
+      
+              </table>
+      
+            </div>
+            <!-- <label class="col-xl-2 col-lg-2 col-form-label" >Unit Description</label> -->
+            
+          </div>
+          <!-- <div style="display: flex;justify-content: flex-end;margin-right: 100px;margin-bottom: 5px;"> -->
+            <!-- <button type="button" style="width: 115px !important;" class="button button-fill button-rose"  (click)='reCalc()' aria-haspopup="true" aria-expanded="false">
+              <i class="flaticon2-plus" ></i> RE-ESTIMATE  	
+          </button> -->
+          <!-- </div> -->
+          <!-- <div style="display: flex;justify-content: flex-end;margin-right: 100px;margin-bottom: 5px;">
+            <button type="button" id='width100' style="width: 100px !important;" class="button button-fill button-rose"  (click)='projCostId!=""?onUpdateCost():onAddSubmit()' aria-haspopup="true" aria-expanded="false">
+              <i class="flaticon2-plus" ></i> Calculate  	
+          </button>
+          </div>
+          <div>Please click calculate to update cost</div> -->
+          <!-- showUpdateCalculate -->
+          <div class="form-group row" style="margin-bottom: 0px;" *ngIf="showUnitLengthErr">
+            <label class="col-xl-1 col-lg-0 col-form-label"></label>
+            <label class="col-xl-3 col-lg-4 col-form-label" style="text-align: left;color:red"><span >Please add unit description</span></label>
+      
+          <!-- <div *ngIf="showUnitLengthErr" class="col-xl-3 col-lg-4 col-form-label" style="text-align: left;color:red"><span >Please add unit description</span></div> -->
+          </div>
+          <div class="form-group row"  style="display: none;">
+            <label class="col-xl-1 col-lg-0 col-form-label"></label>
+          
+            <label class="col-xl-3 col-lg-4 col-form-label" style="text-align: left;"><span *ngIf="milestoneData.length==0">Please click calculate to update cost</span></label>
+            <div class="col-lg-8 col-xl-7" style="text-align: right;">
+              <div style="margin-bottom: 5px;">
+                <button type="button" id='width100' style="width: 100px !important;" class="button button-fill button-rose"  (click)='projCostId!=""?onUpdateCost():onAddSubmit()' aria-haspopup="true" aria-expanded="false">
+                  <i class="flaticon2-plus" ></i> Calculate  	
+              </button>
+              </div>
+            </div>
+            
+          </div>
+        </form>
+      </ng-template>
+    </e-accordionitem>
+  
+  </e-accordionitems>
+</ejs-accordion>
+
+              
+<form [formGroup]="milestTaskForm" *ngIf="milestoneData.length!=0">
+  <div class="form-group row"  formArrayName="miles">
+    <label class="col-xl-1 col-lg-0 col-form-label">
+    </label>
+    <div class="col-lg-12 col-xl-10">
+      <div class="control-section accordion-control-section">
+        <div class="e-sample-resize-container">
+          <div class="product_title"> Milestone & Task </div>
+          <!-- Render the Accoridon Component -->
+          <ejs-accordion #accordion expandMode='Single' (expanding)="expand($event)">
+            <e-accordionitems>
+              <e-accordionitem  *ngFor="let milestone of milestoneData;" header={{milestone.milestone_name}} content=#{{milestone.alias_name}} >
+              </e-accordionitem>
+              <!-- <e-accordionitem header='Design' content='#designTask'> </e-accordionitem>
+              <e-accordionitem header='Shop Drawings' content='#sdTask'></e-accordionitem> -->
+            </e-accordionitems>
+          </ejs-accordion>
+          <div *ngFor="let milestone of milestoneData;" id={{milestone.alias_name}} style="display:none">
+            <div *ngIf="milestone.milestone_name=='Shop Drawing'" style="font-size: 10px;margin-bottom:4px">Note: The total hours are calculated based on the floor. Per floor shop drawing consumes 60 Hours</div>
+            <div style="font-size: 10px;margin-bottom:4px;display: flex;justify-content: flex-end;">
+              <div><span style="font-weight: bold;font-size: 11px;margin-right: 4px;">Total Hours - </span>{{milestone.total_hrs }}</div> 
+               <div style=" margin-left: 10px;"><span style="font-weight: bold;font-size: 11px;margin-right: 4px;">Total Cost - </span>{{milestone.total_cost }}<span style="margin-left: 4px;">AED</span></div>  
+            </div>
+            <table style="width:100%" >
+              <tr>
+               
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" rowspan="2">Action</th> -->
+                <th  >Action</th>
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" rowspan="2">Tasks</th> -->
+                <th  >Tasks</th>
+                 <!-- <th *ngIf="milestone.alias_name=='Drawing'"  style="text-align:center" colspan="2">Hours for task</th>  -->
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" style="text-align:center" rowspan="2">Hours per unit</th> -->
+                <th  style="text-align:center">Hours per unit</th>
+                <th  style="text-align:center" >Type</th>
+                <th  style="text-align:center" >Unit</th>
+
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" style="text-align:center" rowspan="2">Budgeted Hours</th> -->
+                <th  style="text-align:center" >Budgeted Hours</th>
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" rowspan="2">Discount (+/-)</th>
+                <th *ngIf="milestone.alias_name!='Drawing'" >Discount (+/-)</th> -->
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" style="text-align:center" rowspan="2">Total cost (AED)</th> -->
+                <th style="text-align:center" >Total cost (AED)</th>
+                <!-- <th *ngIf="milestone.alias_name=='Drawing'" rowspan="2">Note</th>
+                <th *ngIf="milestone.alias_name!='Drawing'" >Note</th> -->
+              </tr>
+              <!-- <tr *ngIf="milestone.alias_name=='Drawing'">
+              
+                <th scope="col" style="text-align:center">Hours</th>
+                <th scope="col" style="text-align:center">Type</th>
+               
+              </tr> -->
+              <tr *ngFor="let mile of milestTaskForm.get('miles')['controls']; let i = index"
+              [formGroupName]="i">
+                <td *ngIf="milestone.id==mile.get('id').value">
+                  <label class=" kt-checkbox" >
+                    <input type="checkbox" formControlName="is_checkbox" [checked]="mile.get('is_checkbox').value" (change)="updateIsSelect($event,mile.get('taskid').value,i)"  >
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td *ngIf="milestone.id==mile.get('id').value">                         
+                  <input type="email" style="border:none;background: none;" class="form-control" readonly  placeholder="Label" formControlName="Label">
+                </td>
+                <td *ngIf="milestone.id==mile.get('id').value">
+                  <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2> -->
+                    <!-- <ejs-dropdownlist id="ejsactivList" [enabled]="false" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                    <input type="text"  class="form-control" style="background:none;border:none;text-align: center;" placeholder="Enter No" readonly formControlName="Unithrs">
+
+                </td>
+                <td *ngIf="milestone.id==mile.get('id').value  " style="width: 60px;">
+                  <!-- {{mile.get('is_checkbox').value}} -->
+                  <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2> -->
+                    <!-- <ejs-dropdownlist id="ejsactivList" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                  
+                    <input type="text" style="text-align: center;border:none;background: none;"   readonly  class="form-control" placeholder="Enter No" formControlName="floorUnit" [disabled]="mile.get('is_checkbox').value==false?true:false" >
+                </td>
+                
+                <td *ngIf="milestone.id==mile.get('id').value" style="width: 60px;">
+                  <!-- {{mile.get('is_checkbox').value}} -->
+                  <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2> -->
+                    <!-- <ejs-dropdownlist id="ejsactivList" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                    <input type="text" style="text-align: center;border:none;background: none;"  readonly   class="form-control" placeholder="Enter No" formControlName="Unit" [disabled]="mile.get('is_checkbox').value==false?true:false" >
+                </td>
+                <td *ngIf="milestone.id==mile.get('id').value">
+                  <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2> -->
+                    
+
+                    <!-- <ejs-dropdownlist id="ejsactivList" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                    <input type="number"  class="form-control" style="background:none;border:none;text-align: center;"  readonly (change)="hrschange(mile.get('taskid').value,$event,i,mile.get('total_cost').value,milestone.total_hrs)"   placeholder="Enter No" formControlName="Qty">
+                </td>
+                
+                   
+                     <td *ngIf="milestone.id==mile.get('id').value" style="display: none;">
+                      <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                        (valueChanged)="changedProjType($event)"></select2> -->
+                        <!-- {{mile.get('total_cost').value}} -->
+                        <!-- <ejs-dropdownlist id="ejsactivList" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                        <!-- <input type="number" class="form-control"  placeholder="Enter Discount"  
+                        formControlName="profit" (change)="taskDiscchange($event,i,mile.get('total_cost').value)">               -->
+                        <ejs-numerictextbox   placeholder="Enter Discount"  (change)="taskDiscchange(mile.get('taskid').value,$event,i,mile.get('total_cost').value,milestone.total_hrs)"  formControlName="profit"></ejs-numerictextbox>
+                       
+                      </td>
+                       <td *ngIf="milestone.id==mile.get('id').value">
+                        <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                          (valueChanged)="changedProjType($event)"></select2> -->
+                          <!-- <ejs-dropdownlist id="ejsactivList" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                           <input type="number"  style="background:none;border:none;text-align: center;" readonly class="form-control"  placeholder="Enter Cost"    
+                          formControlName="total_cost">  
+                          <!-- <ejs-numerictextbox  formControlName="total_cost" min='0' (keyup)='costChange("costChange")' (change)="totalcostchange(mile.get('taskid').value,$event,i,mile.get('total_cost').value)"></ejs-numerictextbox> -->
+
+                         </td>
+                       <td *ngIf="milestone.id==mile.get('id').value" style="display: none;">
+                        <!-- <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                          (valueChanged)="changedProjType($event)"></select2> -->
+                          <!-- <ejs-dropdownlist id="ejsactivList" formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist> -->
+                          <input type="text" class="form-control"  placeholder="Enter Notes" (change)="UpdateCostProjectNotesQtyTaskID($event,mile.get('taskid').value,mile.get('is_checkbox').value)"  
+                          formControlName="notes">               
+                         </td>
+                
+                <!-- <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>  -->
+              </tr>
+              <!-- <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>Client Need Study</td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>Zoning
+                </td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>Initial Concept
+                </td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr> -->
+            </table>
+          </div>
+
+          <!-- <div id='designTask' style="display:none">
+            <table style="width:100%">
+              <tr>
+                <th>Action</th>
+                <th>Tasks</th>
+                <th>Type Of Unit</th>
+                <th>Qty</th>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>Mood board</td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>3D Sketch</td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>Exterior Design</td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>Video
+                </td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class=" kt-checkbox">
+                    <input type="checkbox">
+                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                  </label>
+                </td>
+                <td>360(3D)
+                </td>
+                <td>
+                  <select2 [data]="typeOfUnit" [options]="taskOptions" [value]="projTypeVal"
+                    (valueChanged)="changedProjType($event)"></select2>
+
+                </td>
+                <td>
+                  <input type="email" class="form-control" (keyup)="nameChange($event)"
+                    placeholder="Enter No" formControlName="project_name">
+
+                </td>
+              </tr>
+            </table>
+          </div> -->
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+  <div  class="form-group row disabledInputs" >
+    <label class="col-xl-1 col-lg-0 col-form-label">
+    </label>
+    
+    <div class="col-lg-12 col-xl-10">
+      <div class="form-group row" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">Total Hours</label>
+        <div class="col-lg-2 col-xl-2">
+          <input type="email" class="form-control"  placeholder="Enter total" disabled='true' [value]='MilestHrs'
+            >
+            
+        </div>
+      </div>
+      <div class="form-group row numberInput" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">Gross Total (AED)</label>
+        <div class="col-lg-2 col-xl-2">
+          <!-- <input type="email" class="form-control"   placeholder="Enter total" [value]='totalHrs' -->
+            <!-- > -->
+            <ejs-numerictextbox [enabled]='false' [value]='totalHrs'></ejs-numerictextbox>
+        </div>
+      </div>
+     
+      <div class="form-group row numberInput" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">Profit Margin ({{profit_margin}}%)</label>
+        <div class="col-lg-2 col-xl-2 " >
+          <!-- <input type="email" class="form-control"  placeholder="Enter margin" [value]="profit_value" disabled='true'
+            > -->
+            <ejs-numerictextbox [enabled]='false'  [value]="profit_value" ></ejs-numerictextbox>
+            
+        </div>
+      </div>
+      <div class="form-group row" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">Discount</label>
+        <div class="col-lg-2 col-xl-2">
+          <!-- <input type="email" class="form-control" (change)="discUpdated($event)"  placeholder="Enter total" 
+            > -->
+            <input type="email" class="form-control"  placeholder="Enter Discount" disabled='true' 
+            >
+            <!-- <ejs-numerictextbox [enabled]='false'  placeholder="Enter Discount"  (change)="discUpdated($event)" ></ejs-numerictextbox> -->
+            
+        </div>
+      </div>
+      <div class="form-group row numberInput" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">Total</label>
+        <div class="col-lg-2 col-xl-2">
+          <!-- <input type="email" class="form-control" (change)="discUpdated($event)"  placeholder="Enter total" 
+            > -->
+            <ejs-numerictextbox   placeholder="Enter Discount" [value]='total_value' [enabled]='false'   ></ejs-numerictextbox>
+            
+        </div>
+      </div>
+      <div class="form-group row numberInput" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">VAT (5%) </label>
+        <div class="col-lg-2 col-xl-2">
+          <!-- <input type="email" class="form-control" [appFormatFields]="CURRENCY" placeholder="Enter total" disabled='true' [value]='net_total'
+            > -->
+            <!-- <input type="email" class="form-control"  placeholder="Enter total" [value]='vat_total' disabled='true' 
+            >             -->
+            <ejs-numerictextbox   placeholder="Enter Discount" [value]='vat_total' [enabled]='false'   ></ejs-numerictextbox>
+
+        </div>
+      </div>
+     
+      <div class="form-group row numberInput" style="display: flex;justify-content: flex-end;"> 
+        <label class="col-xl-3 col-lg-3 col-form-label" style="font-weight: bold;
+        font-size: 13px; 
+        margin-bottom: 0px;">Net Total (AED) </label>
+        <div class="col-lg-2 col-xl-2">
+          <!-- <input type="email" class="form-control" [appFormatFields]="CURRENCY" placeholder="Enter total" disabled='true' [value]='net_total'
+            > -->
+            <ejs-numerictextbox [enabled]='false' [value]='net_total'></ejs-numerictextbox>
+            
+        </div>
+      </div>
+    </div>
+ 
+   
+  </div>
+</form>
+<div style=" width: 100%;   color: #e91e63;
+    text-align: right;
+    border-top: 1px solid #ebedf2;
+    padding: 7px;
+    font-weight: 500;cursor: pointer;
+    
+"><button aria-expanded="false" aria-haspopup="true" (click)="reEstimate()" class="button button-fill button-rose" style="width: 110px !important;" type="button"><i class="flaticon2-plus"></i> REVISE </button></div>
+<h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;" style="display: none;">Quotation Details</h3>
+  <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+    style="margin: 10px 0px !important;display: none;"></div>
+<form class="kt-form kt-form--label-right" [formGroup]="projectForm"  style="display: none;">
+  <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Subject</label>
+    <div class="col-lg-4 col-xl-4">
+      <input class="form-control" type="text" value="" formControlName="subject" placeholder="Enter subject">
+    </div>
+    <label class="col-form-label"></label>
+
+    <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                <input class="form-control" type="email" value="" formControlName="email"  placeholder="Email" >
+
+        </div> -->
+    <div class="error-msg">
+      <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+      <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+      <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+      <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                  ssfssscs                                                                                                                      
+                </div> -->
+      <div
+        *ngIf="projectForm.controls['subject'].errors && !projectForm.controls['subject'].pristine"
+        class="error-msg">
+        <div [hidden]="!projectForm.controls['subject'].errors.required">Required.</div>
+        <!-- <div [hidden]="!projectForm.controls['contact_type'].errors.patternInvalid">Enter a valid email or
+          phone</div> -->
+      </div>
+
+    </div>
+  </div>
+  <div class="form-group row costForm">
+    <label class="col-xl-3 col-lg-3 col-form-label">Warranty<span class="required"
+        style="color: red;">*</span></label>
+        
+    <div class="col-lg-4 col-xl-4">
+        <select2 [data]="warrantyData" [options]="taskOptions" [value]="warrantyVal"
+        (valueChanged)="changedWarranty($event)"></select2>
+        <div *ngIf="addformSubmitted && warrantyVal==''">
+          <label class="e-error" for="projName" id="OrderID-info" >*Warranty is required</label>
+
+          </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Validity(Days)</label>
+    <div class="col-lg-4 col-xl-4">
+      <input class="form-control" type="text" value="" formControlName="validity" placeholder="Enter days">
+    </div>
+    <label class="col-form-label"></label>
+
+    <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                <input class="form-control" type="email" value="" formControlName="email"  placeholder="Email" >
+
+        </div> -->
+    <div class="error-msg">
+      <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+      <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+      <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+      <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                  ssfssscs                                                                                                                      
+                </div> -->
+      <div
+        *ngIf="projectForm.controls['validity'].errors && !projectForm.controls['validity'].pristine"
+        class="error-msg">
+        <div [hidden]="!projectForm.controls['validity'].errors.required">Required.</div>
+        <!-- <div [hidden]="!projectForm.controls['contact_type'].errors.patternInvalid">Enter a valid email or
+          phone</div> -->
+      </div>
+
+    </div>
+  </div>
+ <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Payment</label>
+    <div class="col-lg-4 col-xl-4">
+      <select2 [data]="paymentData" [options]="taskOptions" [value]="paymentVal"
+        (valueChanged)="changedPayment($event)"></select2>
+    </div>
+    <!-- <div aria-haspopup="true" (click)="AddDesignType()" aria-expanded="false"
+      style="color:black;margin-top:5px;">
+      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                            color: #fff;
+                            font-size: 8px;
+                            "></i>
+        Add Payment Type
+      </a>
+
+
+
+    </div> -->
+  </div>
+  <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Mode Of Payment</label>
+    <div class="col-lg-4 col-xl-4">
+      <select2 [data]="paymentMode" [options]="taskOptions" [value]="paymentModeVal"
+        (valueChanged)="changedPaymentMode($event)"></select2>
+    </div>
+    <!-- <div aria-haspopup="true" (click)="AddDesignType()" aria-expanded="false"
+      style="color:black;margin-top:5px;">
+      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                            color: #fff;
+                            font-size: 8px;
+                            "></i>
+        Add Payment Type
+      </a>
+
+
+
+    </div> -->
+  </div>
+  <div class="form-group row" *ngIf="paymentModeVal==2">
+    <label class="col-xl-3 col-lg-3 col-form-label">Type</label>
+    <div class="col-lg-4 col-xl-4">
+      <select2 [data]="paymentModeType" [options]="taskOptions" [value]="paymentModeTypeVal"
+        (valueChanged)="changedPaymentModeType($event)"></select2>
+    </div>
+    <!-- <div aria-haspopup="true" (click)="AddDesignType()" aria-expanded="false"
+      style="color:black;margin-top:5px;">
+      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                            color: #fff;
+                            font-size: 8px;
+                            "></i>
+        Add Payment Type
+      </a>
+
+
+
+    </div> -->
+  </div>
+  <div class="form-group row" *ngIf="paymentModeTypeVal==1">
+    <label class="col-xl-3 col-lg-3 col-form-label">No Of Days</label>
+    <div class="col-lg-4 col-xl-4">
+      <input class="form-control" type="text" value="" formControlName="no_of_days" placeholder="Enter days">
+    </div>
+    <label class="col-form-label"></label>
+
+    <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                <input class="form-control" type="email" value="" formControlName="email"  placeholder="Email" >
+
+        </div> -->
+  
+  </div>
+  <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Exclusion</label>
+    <div class="col-lg-4 col-xl-4">
+      <select2 [data]="exclusionData" [options]="taskOptions" [value]="exclusionVal"
+        (valueChanged)="changedExclusion($event)"></select2>
+    </div>
+    <!-- <div aria-haspopup="true" (click)="AddProjType()" aria-expanded="false"
+      style="color:black;margin-top:5px;">
+      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                            color: #fff;
+                            font-size: 8px;
+                            "></i>
+        Add Project Type
+      </a>
+
+
+
+    </div> -->
+  </div>
+<div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Tax</label>
+    <div class="col-lg-4 col-xl-4">
+      <select2 [data]="taxData" [options]="taskOptions" [value]="taxVal"
+        (valueChanged)="changedTax($event)"></select2>
+    </div>
+    
+  </div> 
+
+  <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Remarks</label>
+    <div class="col-lg-4 col-xl-4">
+      <input class="form-control" type="text" value="" formControlName="remarks" placeholder="Enter remarks">
+    </div>
+    <label class="col-form-label"></label>
+
+    <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                <input class="form-control" type="email" value="" formControlName="email"  placeholder="Email" >
+
+        </div> -->
+  
+  </div>
+
+  
+  <div class="form-group row">
+    <label class="col-xl-3 col-lg-3 col-form-label">Stage</label>
+    <div class="col-lg-4 col-xl-4">
+      <select2 [data]="stageData" [options]="taskOptions" [value]="stageVal"
+        (valueChanged)="changedStage($event)"></select2>
+
+    </div>
+  
+      </div>
+  
+</form>
+
+ 
+              
+           
+             
+
+
+
+
+
+              <!-- <div style="    color: #6c757d!important;
+         " class="col-lg-6 col-xl-8 ">Public- Can only be viewed by the employee </div> -->
+              <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                <div class="kt-form__actions">
+                  <div class="row">
+                    <!-- <div data-toggle="tab" role="tab" data-href="#kt_user_edit_tab_2" (click)="nextTab('#kt_user_edit_tab_2')" class="col-lg-10"><button  class="btn btn-success" type="reset">Next</button>
+                  </div> -->
+                    <!-- <button type="button" class="btn btn-success"  aria-haspopup="true" aria-expanded="false">
+                        Next <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i> 	
+                </button> -->
+
+                    <!-- <button type="reset" class="btn btn-success tab-button"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                </button> -->
+                    <!-- <button type="submit" [disabled]='milestoneData.length==0' (click)='openStatusModal()' class="btn btn-success tab-button"
+                      style="width: 92px;"> Next <i class="fa fa-angle-right"
+                        style="margin-bottom: 2px;margin-left: 2px;"></i>
+                    </button> -->
+                    <button type="submit" (click)='onAddQtn($event)' class="btn btn-success tab-button"
+                    style="width: 92px;"> Save <i class="fa fa-angle-right"
+                      style="margin-bottom: 2px;margin-left: 2px;"></i>
+                  </button>
+
+
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+    <!-- end:: Content -->
+  </div>
+</div>
+
+<div class="rightLogModal">
+
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="customer_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnCustomerClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="customerForm">
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                     <div class="kt-checkbox-inline" style="display: flex;">
+                      <div style="display: flex;">
+                              <div style="color: grey;margin-right:5px; ">Organization</div>
+                              <div >
+                                  <label class="switch" >
+
+                                      <input type="checkbox"  id='toggleDeptCheck'  name="chec" [checked]="showOrgDetails" (change)="checkIsOrg($event)" >
+
+                                      <span>
+                                         
+                                      </span>
+                                  </label>
+
+                              </div>
+
+
+                           
+                           </div>
+
+                           
+                 
+              </div> 
+                    <div class="form-group row" *ngIf="!showOrgDetails">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">First Name</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="customer_Name"
+                          placeholder="Name">
+
+                        <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                        <div *ngIf="(addCstformSubmitted) && customerForm.get('customer_Name').value==''" class="error-msg">Required.</div>  
+                      </div>
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Last Name</label>
+                        
+                        <input class="form-control" type="text" value="" formControlName="last_Name"
+                          placeholder="Name">
+
+                        <div *ngIf="(addCstformSubmitted) && customerForm.get('last_Name').value==''" class="error-msg">Required.</div>  
+
+                      </div> 
+
+                    </div>
+
+                    <div class="form-group row" *ngIf="showOrgDetails">
+                      <div class="col-lg-12 col-xl-12">
+                        <label>Company Name</label>
+
+                          <input class="form-control" type="text" value="" formControlName="company_Name"
+                          placeholder="Name">
+                           <div *ngIf="(addCstformSubmitted) && customerForm.get('company_Name').value==''" class="error-msg">Required.</div> 
+                        
+                              <div class="form-text text-muted">
+                                  
+                                </div>
+                               
+                          
+                      </div>
+                      <!-- <div aria-haspopup="true" (click)="AddCompany()" aria-expanded="false"
+                      style="color:black;margin-top:36px;">
+                      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                            color: #fff;
+                                            font-size: 8px;
+                                            "></i>
+                        Add Company Name
+                      </a>
+  
+  
+  
+                    </div> -->
+                  </div>
+
+                  <div class="form-group row" *ngIf="showOrgDetails" >
+                    <div class="col-lg-6">
+                        <label>Annual Revenue</label>
+                        <!-- <input class="form-control" min='0' type="number" value="" formControlName="revenue"  placeholder="Name"> -->
+
+                        <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div>
+                        -->
+                        <div class="input-group ">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>								
+                          </div>
+                          <input class="form-control" min='0' type="number" value="" formControlName="revenue"  placeholder="Enter Revenue">
+
+                        
+                        </div>
+                             
+                        
+                    </div>
+                    <div class="col-lg-6">
+                        
+                      <label class="">No of Employees:</label>
+
+                      <input class="form-control" type="number" value="" formControlName="emp_no"  placeholder="Enter Number">
+                      <!-- <div *ngIf="isFieldValid('emp_no')" class="error-msg">Required.</div> -->
+
+                        
+                          <div class="form-text text-muted">
+                              
+                              <!-- <div  *ngIf="isEmpProfileFieldValid('lastName')">Last Name is required.</div> -->
+                            </div>
+                      <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                      <span class="form-text text-muted">Please enter your last name</span> -->
+                  </div>
+                    
+                </div>
+                <div class="form-group row" *ngIf="showOrgDetails">
+                    <div class="col-lg-12 col-xl-12">
+                        <label>Industry</label>
+                        <!-- <input class="form-control" type="text" value="" formControlName="customer_Name"  placeholder="Name"> -->
+                        <select2   [data]="industryData" [options]="taskOptions" [value]="industryValue"  (valueChanged)="changedIndustry($event)" ></select2>
+
+                        <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                       
+                            <div class="form-text text-muted">
+                                
+                              </div>
+                             
+                        
+                    </div>
+                    <div class="col-lg-12 col-xl-12">
+                      <label>Website</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="email" value="" formControlName="email"  placeholder="Email" > -->
+
+                          <input class="form-control" type="email" value="" formControlName="website"  placeholder="Enter website" >
+
+
+                      </div>
+                  
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12 col-xl-12 ">
+                  <label>Email</label>
+
+                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="email" value="" formControlName="email"  placeholder="Email" > -->
+                      <input class="form-control" type="email" value="" formControlName="customer_email"  placeholder="Enter Email" >
+                      <div class="error-msg" *ngIf="(addCstformSubmitted)&& customerForm.get('customer_email').value==''">
+                        Required
+
+                        </div>
+                    
+                      <div *ngIf="customerForm.controls['customer_email'].errors && !customerForm.controls['customer_email'].pristine"
+                      class="error-msg">
+
+                      <div [hidden]="!customerForm.controls['customer_email'].errors.patternInvalid">Enter a valid email 
+                          </div>
+                          </div>
+                  </div>
+
+                  <div class="col-lg-12 col-xl-12">
+                    <label>Phone Number</label>
+                    <input class="form-control" type="text" value="" formControlName="customer_phone"  placeholder="Enter Number">
+                      <!-- <tag-input [placeholder]="'Enter Number'" [errorMessages]="errorMessages"
+                      [validators]="validators"  
+                     [secondaryPlaceholder]="'Enter Number'"  formControlName="contact_no" 
+                    [maxItems]=1 [onlyFromAutocomplete]="false"
+                    >
+                    <tag-input-dropdown
+                    [autocompleteItems]="contactNo"
+                    [showDropdownIfEmpty]="true"
+                    [dynamicUpdate]="false"
+                    
+                  >
+                  </tag-input-dropdown>
+                  </tag-input>  -->
+                  <!-- <div class="error-msg" *ngIf="(addformSubmitted || nextSubmit)&& customerForm.get('contact_no').value==''">
+                    Required
+
+                    </div> -->
+                    <!-- <div *ngIf="isFieldValid('first_Name')" class="error-msg">Required.</div> -->
+                   
+                        <div class="form-text text-muted">
+                          Eg: Phone number format (+XX-XXXXXXXX)  
+                          </div>
+                      <div *ngIf="(addCstformSubmitted)&& customerForm.get('customer_phone').value=='' " class="error-msg">Required.</div> 
+
+                          <div *ngIf="customerForm.controls['customer_phone'].errors && !customerForm.controls['customer_phone'].pristine"
+                      class="error-msg">
+                      
+
+                      <div [hidden]="customerForm.controls['customer_phone'].errors && !customerForm.controls['customer_phone'].errors.patternInvalid">Enter a valid contact no 
+                          </div>
+                          </div>
+                    
+                </div>
+                  
+
+              </div>
+                    <div class="form-group row">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Country</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <div class="form-group ">
+
+                          <select2 [data]="countryData" [options]="taskOptions" [value]="countryValue"
+                            (valueChanged)="changedCountry($event)"></select2>
+                        </div>
+                        <label for="exampleTextarea">Address</label>
+
+                        <input class="form-control" type="text" value="" formControlName="street_1"
+                          placeholder="Street">
+
+                        <!-- <div *ngIf="isFieldValid('street_1')" class="error-msg">Required.</div> -->
+
+                      </div>
+
+
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-lg-6 col-xl-6">
+
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="street_2"
+                          placeholder="Street">
+
+
+                      </div>
+                      <div class="col-lg-6 col-xl-6">
+
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="city" placeholder="City">
+
+
+                      </div>
+
+                    </div>
+
+                    <div style="margin:1.5rem 0"
+                      class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 15px;">Primary Contact</h3>
+
+                    <div class="form-group row">
+                      <div class="col-lg-12 col-xl-12">
+                        <label for="exampleTextarea">First Name</label>
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        <input class="form-control" type="text" value="" formControlName="fname" placeholder="Name">
+                      </div>
+
+
+
+                    </div>
+                    <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+                      <label for="exampleTextarea">Last Name</label>
+
+                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                      <input class="form-control" type="text" value="" formControlName="lname" placeholder="Name">
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-lg-12 col-xl-12">
+                        <label for="exampleTextarea">Contact Email</label>
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        <input class="form-control" type="email" value="" formControlName="email" placeholder="Email">
+                        <div *ngIf="customerForm.controls['email'].errors && !customerForm.controls['email'].pristine"
+                        class="error-msg">
+  
+                        <div [hidden]="!customerForm.controls['email'].errors.patternInvalid">Enter a valid email 
+                            </div>
+                            </div>
+                      </div>
+
+
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-lg-12 col-xl-12">
+                        <label for="exampleTextarea">Contact Number</label>
+                        <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Enter Number">
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                      </div>
+
+                      <div *ngIf="customerForm.controls['phone'].errors && !customerForm.controls['phone'].pristine"
+                  class="error-msg">
+                  
+
+                  <div [hidden]="customerForm.controls['phone'].errors && !customerForm.controls['phone'].errors.patternInvalid">Enter a valid contact no 
+                      </div>
+                      </div>
+
+
+                    </div>
+                    <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+                      <label for="exampleTextarea">Relationship</label>
+
+                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                      <input class="form-control" type="text" value="" formControlName="relationship" placeholder="Relationship">
+                    </div>
+                    </div>
+                    <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+                      <label for="exampleTextarea">Designation</label>
+
+                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                      <input class="form-control" type="text" value="" formControlName="desgn" placeholder="Designation">
+                    </div>
+                    </div>
+                    <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+                      <label for="exampleTextarea">Note</label>
+
+                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                      <input class="form-control" type="text" value="" formControlName="note" placeholder="Note">
+                    </div>
+                    </div>
+
+
+
+                  </div>
+
+
+                </form>
+                <!-- Tel Input -->
+                <!-- <div class="form-group row">
+                  <div class="col-lg-12 col-xl-12">
+                    <label for="exampleTextarea">Contact Number</label>
+                    <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                      [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                      [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                      name="cstPhone" [id]='cstPhone' [ngModelOptions]="{updateOn: 'blur'}"
+                      (ngModelChange)="onCstPhChange($event)" [(ngModel)]="cstPhone">
+
+                    </ngx-intl-tel-input>
+                    <div *ngIf="cstPhoneInvalid" class="error-msg">
+                      <div>{{phoneErrorMsg}}</div>
+
+                    </div>
+
+                  </div>
+
+
+                </div> -->
+              
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="onAddCustomer($event)">Add</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnCustomerClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="design_type_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Design Type</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnDesignClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="designTypeForm">
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+
+                    <div class="form-group row">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Design Name</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="design_Name"
+                          placeholder="Name">
+
+                        <div *ngIf="isFieldValid('design_Name')" class="error-msg">Required.</div>
+
+                      </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                  </div>
+
+
+                </form>
+
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="onAddDesignType()">Add</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnDesignClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="proj_type_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Project Type</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnProjTypeClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="projTypeForm">
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+
+                    <div class="form-group row">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Project Type</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="type_Name"
+                          placeholder="Name">
+
+                        <div *ngIf="projTypeForm.controls.type_Name.valid==false" class="error-msg">Required.</div>
+
+                      </div>
+                    
+
+
+                    </div>
+
+                    <div class="form-group row">
+                     
+                      <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Description:</label>
+                          <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                  </div>
+
+
+                </form>
+
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="onAddProjType()">Add</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnProjTypeClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="cost_status_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Status</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnStatusModalClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="statusForm" >
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                    <div class="form-group row"  >
+                      <div style="display: flex;padding-left: 0px;" class="col-xl-12 col-form-label" >
+                          <div class="col-xl-3 col-lg-3 col-sm-3" style="color: black;" >Verify Location</div>
+                          <div >
+                              <label class="switch" >
+                                  <input type="checkbox"  [checked]="" name='chec'   id="isProj"   (change)="checkIsLoc($event)" >
+                                  <span>
+                                     
+                                  </span>
+                              </label>
+                 
+                          </div>
+                          <div ngbPopover="Verify the location"  triggers="mouseenter:mouseleave" placement="right" style="margin-top: -2px;">
+                           <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+                           color: #fff;
+                           font-size: 11px;
+                           "></i>
+                         </div>
+                       </div>
+                       <!-- <div class="col-xl-3 col-lg-2 col-sm-1" style="color: black;text-align: right;" ></div> -->
+
+                       <div  style="color: #6c757d!important;font-size:11px;margin-top: -12px;padding-left: 16px;
+                                "  >Note: Setup project location to verify people who are working on the project location </div>
+                     
+                    </div>
+                    <div class="form-group row" [ngClass]="verifyLoc ?'shown':'hidden'"  >
+                      <label class="col-xl-6 col-lg-6 col-form-label" style="text-align: left;">Enter address</label>
+              
+                      <div class="col-lg-12 col-xl-12">
+                        <div class="form-group">
+                            <input type="text"   (focus)="focusFunction()" (keyup)="keyup($event)" (click)="clickFunction()" class="form-control" [value]="nearbyAddress"  placeholder="Search Nearest Location" autocorrect="off"  (change)="onSearchChange()" autocapitalize="off" spellcheck="off" type="text" #search>
+                            <!-- <div  *ngIf="!editable" style="color: #6c757d!important;font-size:11px
+                            "  >Note: Setup project location </div> -->
+                            <!-- <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search> -->
+                          </div>   
+                         
+                         
+                                         
+<div class="pac-container form-group col-lg-12 col-sm-12 " *ngIf="showNearbyPlaces"  style="color:black;width:94%;margin-top: -1rem !important;height:185px;overflow-y: auto;
+margin-bottom: 8px;">
+<div class="pac-item " *ngFor="let place of nearbyPlaces; let i='index'" (click)="selectNearBy(place)">
+<span *ngIf='i<11' class="pac-icon pac-icon-marker"></span>
+<span *ngIf='i<11' class="pac-item-query"></span>
+<span *ngIf='i<11'>{{place.name}}</span>
+</div>
+
+</div>     
+
+
+                        <div style="position:relative " class="costContainer">
+                            <!-- <div  class="avatar_logo"  style="position:absolute">
+                              <span class="avatar_cancel"  (click)="closeMap()" > <i style="color:red;font-size: 0.9rem;" class="fa fa-times"></i></span>  
+    
+                      </div> -->
+                         
+                            <agm-map  [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                                (dragEnd)="markerDragEnd($event)"></agm-marker>
+                            </agm-map>
+                          </div>
+
+                          
+                      <div  >
+                      </div>
+                            <label  style="color:grey;">Address: {{address}}</label>
+                            </div>
+                </div>
+                  <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Status</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                                          <select2  [data]="projectStatusData" [options]="taskOptions"  [value]="projStatus" [disabled]='true'   (valueChanged)="changedCostStatus($event)"></select2>
+
+                                          <div  style="color: #6c757d!important;font-size:11px
+                                          "  >Note: Once the job opened the project will be moved to project production </div>
+                       <div class="requiredField" *ngIf="submitClicked?projStatus=='':''">Required.</div>
+                    </div>
+                      
+
+
+                    </div>
+                    
+                    <div class="form-group row">
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Start Date</label>
+                        <ejs-datepicker  formControlName="startDate" (change)="onstartDtChange($event)" [value]='startdateValue' placeholder='Enter date'></ejs-datepicker>
+                        <div style="color: #6c757d!important;margin-top: 5px;
+                        "  >Note: Job Opening Date.</div>
+      
+                      </div>
+                      
+                  </div>
+                 
+               
+                  <div class="form-group row">
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">End Date</label>
+                      <ejs-datepicker   formControlName="endDate" (change)="onendDtChange($event)" [value]='enddateValue' placeholder='Enter date'></ejs-datepicker>
+                      <div *ngIf="submitClicked && statusForm.controls.endDate.valid==false">
+                        <label class="e-error" for="endDate" id="OrderID-info" >*Date is required</label>
+      
+                        </div>
+                      <div style="color: #6c757d!important;margin-top: 5px;
+                      "  >Note: Job Closing Date.</div>
+    
+                    </div>
+        
+                </div>
+
+                   
+
+
+
+
+                  </div>
+
+
+                </form>
+              
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="onUpdateStatus()">Submit</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnStatusModalClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="unit_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Customer</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnCustomerClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="customerForm">
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+
+                    <div class="form-group row">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Customer Name</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="customer_Name"
+                          placeholder="Name">
+
+                        <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div>
+
+                      </div>
+
+
+                    </div>
+
+
+                    <div class="form-group row">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Address</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <div class="form-group ">
+
+                          <select2 [data]="countryData" [options]="taskOptions" [value]="countryValue"
+                            (valueChanged)="changedCountry($event)"></select2>
+                        </div>
+                        <input class="form-control" type="text" value="" formControlName="street_1"
+                          placeholder="Street">
+
+                        <!-- <div *ngIf="isFieldValid('street_1')" class="error-msg">Required.</div> -->
+
+                      </div>
+
+
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-lg-6 col-xl-6">
+
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="street_2"
+                          placeholder="Street">
+
+
+                      </div>
+                      <div class="col-lg-6 col-xl-6">
+
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="city" placeholder="City">
+
+
+                      </div>
+
+                    </div>
+
+                    <div style="margin:1.5rem 0"
+                      class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 15px;">Primary Contact</h3>
+
+                    <div class="form-group row">
+                      <div class="col-lg-12 col-xl-12">
+                        <label for="exampleTextarea">Contact Name</label>
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        <input class="form-control" type="text" value="" formControlName="name" placeholder="Name">
+                      </div>
+
+
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-lg-12 col-xl-12">
+                        <label for="exampleTextarea">Contact Email</label>
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        <input class="form-control" type="email" value="" formControlName="email" placeholder="Email">
+                      </div>
+
+
+
+                    </div>
+
+
+
+
+                  </div>
+
+
+                </form>
+                <div class="form-group row">
+                  <div class="col-lg-12 col-xl-12">
+                    <label for="exampleTextarea">Contact Number</label>
+                    <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                      [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                      [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                      name="cstPhone" [id]='cstPhone' [ngModelOptions]="{updateOn: 'blur'}"
+                      (ngModelChange)="onCstPhChange($event)" [(ngModel)]="cstPhone">
+
+                    </ngx-intl-tel-input>
+                    <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Phone" > -->
+                    <div *ngIf="cstPhoneInvalid" class="error-msg">
+                      <div>{{phoneErrorMsg}}</div>
+
+                      <!-- <div [hidden]="!signUpForm.controls['email'].errors.patternInvalid">Enter a valid Phone Number.</div> -->
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="onAddCustomer($event)">Add</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnCustomerClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

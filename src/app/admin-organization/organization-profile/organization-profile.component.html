@@ -1,0 +1,1462 @@
+<!-- begin:: Subheader -->
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+        
+             Overview                          </h3>
+  
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                            Organization                        </a>
+                                            <span *ngIf=" !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="!editable" class="kt-subheader__breadcrumbs-link">
+                              Add Organization                    </a>
+                                            <span *ngIf="editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable" class="kt-subheader__breadcrumbs-link">
+                              Edit Organization                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+        <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+
+       
+    </div>
+  </div>
+  <!-- end:: Subheader -->
+
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+				
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+<div class="kt-portlet kt-portlet--tabs">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                   
+                    <h3 class="kt-portlet__head-title">
+                                        Organization                        
+
+                    </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-wrapper">
+            <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                <i class="la la-long-arrow-left"></i>
+                Back
+            </a> -->
+            &nbsp;
+            <div class="dropdown dropdown-inline">
+                <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+                      
+                <!-- </button> -->
+          <!-- <button type="button"  (click)='TaskView()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+             
+            </div>
+        </div>		</div>
+            </div>
+<div class="kt-portlet__head">
+<div class="kt-portlet__head-toolbar">
+<ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+<li class="nav-item">
+  <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab">
+ 
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+  <polygon points="0 0 24 0 24 24 0 24"/>
+  <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+  <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+  </g>
+  </svg>                          Profile
+  </a>
+</li>
+<li class="nav-item" >
+  <a class="nav-link" (click)="locationSetUp()" href="#kt_user_edit_tab_3" data-toggle="tab" role="tab">
+      <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon points="0 0 24 0 24 24 0 24"/>
+        <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+        <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+        </g>
+        </svg>  -->
+        <i class="fa fa-map-marker" style="font-size: 15px;font-weight: bold;"></i>
+                        Location
+  </a>
+</li>
+<li class="nav-item" *ngIf='showparentOrg'>
+    <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <polygon points="0 0 24 0 24 24 0 24"/>
+          <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+          <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+          </g>
+          </svg> 
+                          Setup
+    </a>
+  </li>
+  <li class="nav-item" *ngIf='showparentOrg'>
+    <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_4" role="tab">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <polygon points="0 0 24 0 24 24 0 24"/>
+          <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+          <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+          </g>
+          </svg> 
+                          Advanced
+    </a>
+  </li>
+
+</ul>
+</div>
+</div>
+<div class="kt-portlet__body">
+<form action="" method="" [formGroup]="orgProfileForm" >
+<div class="tab-content">
+<div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+  <div class="kt-form kt-form--label-right">
+      <div class="kt-form__body">
+          <div class="kt-section kt-section--first">
+              <div class="kt-section__body">
+                  <div class="row">
+                      <label class="col-xl-3"></label>
+                      <div class="col-lg-9 col-xl-6">
+                          <h3 class="kt-section__title kt-section__title-sm">Organization Info:</h3>
+                      </div>
+                  </div>
+
+
+                  <!-- <label class="hoverable" for="fileInput">
+                        <img [src]="url ? url : 'https://www.w3schools.com/howto/img_avatar.png'"> 
+                        <div class="hover-text">Choose file</div>
+                        <div class="background"></div>
+                      </label>
+                      <br/>
+                      <input id="fileInput" type='file' (change)="onSelectFile($event)">
+                      -->
+
+                  <div class="form-group row" *ngIf='showparentOrg'>
+                      <label class="col-xl-3 col-lg-3 col-form-label">Logo</label>
+                      <div class="col-lg-9 col-xl-6">
+                          <div class="kt-avatar kt-avatar--outline kt-avatar--circle-" id="kt_user_edit_avatar">
+                              <div class="kt-avatar__holder"> <img [src]="url ? url : 'assets/images/person-placeholder_3.png'"> </div>
+                              <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change Logo">
+                                    <i class="fa fa-edit"></i>
+                                    <!-- <span *ngIf="url" (click)="delete()" > <i  class="fa fa-times"></i></span> -->
+
+                                  <!-- <i class="fa fa-edit"></i> -->
+                                  <input id="fileInput" type='file' (change)="onSelectFile($event)" name="profile_avatar" formControlName="avatar" accept=".png, .jpg, .jpeg">
+                              </label>
+                              
+                              <!-- <span *ngIf="url" (click)="delete()" class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+                                  <i style="backgrcolor:black" class="fa fa-times"></i>
+                              </span>-->
+                              <!-- <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+                                    <i class="fa fa-times"></i>
+                                </span> -->
+                                <div  *ngIf="url" class="avatar_logo">
+                                        <span class="avatar_cancel"  (click)="delete()" > <i style="color:#2c77f4;font-size: 0.9rem;" class="fa fa-times"></i></span>  
+
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Organization Name<span class="required" style="color: red;">*</span></label>
+                      <div class="col-lg-9 col-xl-6">
+                          <input [disabled]="editable" class="form-control" type="text" value="" formControlName="org_Name"  placeholder="Name">
+                      </div>
+                      <div *ngIf="orgProfileForm.controls['org_Name'].errors && !orgProfileForm.controls['org_Name'].pristine" class="error-msg">
+                            <div [hidden]="!orgProfileForm.controls['org_Name'].errors.required">Required.</div>
+                          </div>
+                  </div>
+                  
+
+                
+                  <div class="form-group row">
+                     
+                       
+                        <label class="col-xl-3 col-lg-3 col-form-label" for="exampleTextarea">Summary:</label>
+                        <div class="col-lg-9 col-xl-6">
+                        <textarea class="form-control" id="exampleTextarea" rows="2" formControlName="summary"></textarea>
+                  </div>
+                    </div>
+                 <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Industry<span class="required" style="color: red;">*</span></label>
+                      <div class="col-lg-9 col-xl-6">
+                            <select2   [data]="industryData" [options]="options" [value]="industryValue"  (valueChanged)="changedIndustry($event)" ></select2>
+                      <div style='color:red' *ngIf='orgProfileFormSubmit && industryValue==""'>Required</div>
+                       
+                      </div>
+                  </div> 
+                  
+                  <div class="form-group row" *ngIf="showIndustryRemarks">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Enter Industry Type<span class="required" style="color: red;">*</span></label>
+                    <div class="col-lg-9 col-xl-6">
+                        <input class="form-control" type="text" value="" formControlName="industryType"  placeholder="Type">
+                    </div>
+                    
+                </div>
+                
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Company Address</label>
+                      <div class="col-lg-9 col-xl-6">
+                          <input class="form-control" type="text" value="" formControlName="street_1" placeholder="Street">
+                      </div>
+                      
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label "></label>
+                      <div class="col-lg-4 col-xl-4">
+                          <input class="form-control" type="text" value="" formControlName="street_2" placeholder="Street">
+                      </div>
+                      <div class="col-lg-2 col-xl-2 marginTop5">
+                          <input class="form-control" type="text" value="" formControlName="city" placeholder="City">
+                      </div>
+                     
+                  </div>
+                  <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Primary Contact</label>
+                        <div class="col-lg-3 col-xl-3 col-sm-6">
+                            <input class="form-control" type="text" value="" formControlName="contact_name"  placeholder="Name" readonly>
+                        </div>
+                        <label class="col-form-label"></label>
+
+                        <div class="col-lg-3 col-xl-3 col-sm-6 marginTop5">
+                                <input class="form-control" type="email" value="" formControlName="contact_type"  placeholder="Type" readonly>
+
+                        </div>
+                        <div class="error-msg">
+                                <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                                <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+                                <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                                <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                                  ssfssscs                                                                                                                      
+                                </div> -->
+                                <div *ngIf="orgProfileForm.controls['contact_type'].errors && !orgProfileForm.controls['contact_type'].pristine" class="error-msg">
+                                    <div [hidden]="!orgProfileForm.controls['contact_type'].errors.required">Required.</div>
+                                    <div [hidden]="!orgProfileForm.controls['contact_type'].errors.patternInvalid">Enter a valid email or phone</div>
+                                  </div>
+                                 
+                              </div>
+                    </div>
+                   
+
+
+                
+          <div  class="kt-portlet__foot kt-portlet__foot--fit-x">
+              <div  class="kt-form__actions">
+                  <div  class="row">
+                      <!-- <div data-toggle="tab" role="tab" data-href="#kt_user_edit_tab_2" (click)="nextTab('#kt_user_edit_tab_2')" class="col-lg-10"><button  class="btn btn-success" type="reset">Next</button>
+                      </div> -->
+                      <!-- <button type="button" class="btn btn-success"  aria-haspopup="true" aria-expanded="false">
+                            Next <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i> 	
+                    </button> -->
+
+                    <!-- <button type="reset" class="btn btn-success tab-button"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                    </button> -->
+                    <button type="reset" [disabled]="industryValue==''"  class="btn btn-success tab-button" style="width: 92px;"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                    </button>   
+                    </div></div></div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="tab-pane" id="kt_user_edit_tab_2" role="tabpanel">
+  <div class="kt-form kt-form--label-right">
+      <div class="kt-form__body">
+          <div class="kt-section kt-section--first">
+              <div class="kt-section__body">
+                  <div class="row">
+                      <label class="col-xl-3"></label>
+                      <div class="col-lg-9 col-xl-6">
+                          <h3 class="kt-section__title kt-section__title-sm"></h3>
+                      </div>
+                  </div>
+                 
+                  <!-- <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Fiscal Year</label>
+                      <div class="col-lg-9 col-xl-6">
+                          <select class="form-control">
+                              <option>Select Year</option>
+                              <option value="id">January - December</option>
+                              <option value="msa">April - May</option>
+                              <option value="ca" selected="">March - June</option>
+                             
+                           
+                          </select>
+                      </div>
+                  </div> -->
+                   <!-- <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Country</label>
+
+                        <div class="col-lg-9 col-xl-6">
+                                        
+                                <select2   [data]="countryData" [options]="options" [value]="countryValue"  (valueChanged)="changedCountry($event)" ></select2>
+
+                              </div>
+                  </div> 
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">City</label>
+
+                    <div class="col-lg-9 col-xl-6">
+                                    
+                            <select2   [data]="countryData" [options]="options" [value]="countryValue"  (valueChanged)="changedCountry($event)" ></select2>
+
+                          </div>
+              </div>  -->
+                  <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Financial Year</label>
+
+                        <div class="col-lg-9 col-xl-6">
+                                        
+                                <!-- <label>Country</label> -->
+                                <select2   [data]="yearData" [options]="options" [value]="yearValue"  (valueChanged)="changedYears($event)" ></select2>
+
+                                <!-- <span class="form-text text-muted">Please enter your full name</span> -->
+                              </div>
+                  </div>
+                  <!-- <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Off day(s)<span class="required" style="color: red;">*</span></label>
+
+                    <div class="col-lg-9 col-xl-2">
+                                    
+
+                            <select2   [data]="startDayData" [options]="options" [value]="startDayValue"  (valueChanged)="changedStartDay($event)" ></select2>
+                            <div  *ngIf="!editable" style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                            "  >Note:Default weekoff day is friday.</div>
+                          </div>
+                          <div class="col-xl-2">
+                                   
+                            <div class="kt-input-icon materialPicker">
+                                <input class="form-control" placeholder="From"
+                                  (click)="startTimeChanged()" [ngxTimepicker]="startpicker" 
+                                   formControlName="startTime" [value]="fromValue">
+                                <ngx-material-timepicker [defaultTime]="minStartTime" #startpicker></ngx-material-timepicker>
+                              
+                            </div>
+                          </div>
+                          <div style="margin-top: 6px;">to</div>
+
+                          <div class="col-xl-2">
+                            <div class="kt-input-icon">
+                                <input class="form-control" placeholder="To"  [value]="toValue" [ngxTimepicker]="picker"
+                                  formControlName="endTime">
+                                <ngx-material-timepicker #picker></ngx-material-timepicker>
+                              </div>
+                          </div>
+                          <div class="col-xl-2" style="display: flex;margin-top: 5px;">
+                            <label class=" kt-checkbox">
+                                <input type="checkbox" id="billable" 
+                                  (change)="onCheckChange($event)">
+                                <span style=""></span>
+                              </label>
+                              <div style="">Full day off</div>
+                          </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+              <div class="col-lg-9 col-xl-6" aria-haspopup="true" [ngClass]="disableAddWeekend? 'disabledDiv':'enabledDiv'"  (click)="AddWeekend()" aria-expanded="false" style="color:black;">
+                <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                    color: #fff;
+                                    font-size: 8px;
+                                    "></i>
+                                    Add Weekend
+                                    </a>
+
+
+
+              </div>
+              </div> -->
+
+
+
+              <!-- <div >
+                <div class="form-group row" *ngIf="weekend.length!=0" >
+                    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                    <div class="col-lg-9 col-xl-6">
+                        <div style="margin-top:5px;">
+                            <div class="kt-widget2">
+                                <div class="kt-widget2__item kt-widget2__item--success"
+                                  *ngFor="let item of weekend ; let i = index">
+                                  
+              
+                                  <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                   >
+                                    <a class="kt-widget2__title">
+                                      {{item.offworkdays}}
+                                      
+              
+                                    </a>
+                                  
+                                    <a class="kt-widget2__username">
+                                        
+                                      {{item.start_time?item.start_time:'Off'}}{{item.end_time?'-'+item.end_time:''}}
+              
+              
+                                    </a>
+                                  </div>
+                                  <div class="kt-widget2__actions">
+                                    <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                      (click)="offDayDelete(i)"><i class="la la-trash"></i></a>
+                                  </div>
+              
+                                </div>
+              
+              
+                              </div>
+                          </div>
+                    </div>
+                </div>
+            </div> -->
+              
+              <div class="form-group row weekdays">
+                <label class="col-xl-3 col-lg-3 col-form-label">Weekdays</label>
+                <mat-accordion class="col-lg-9 col-xl-6 col-sm-12" >
+
+                    <mat-expansion-panel style="color: #74788d;" [(expanded)]="xpandStatus">
+                      <mat-expansion-panel-header style="background-color: #f7f8fa;height: 30px !important;" 
+                       >
+                        <mat-panel-title>
+                            <div >Select</div>
+                          <!-- <div *ngFor="let option of weekend;let i=index">
+                            <div style="margin-right: 5px;">
+                                {{option.day_name}}
+                                <div> {{option.from_time}}-{{option.to_time}}</div>
+                            </div>  
+                            </div> -->
+                        </mat-panel-title>
+                        <mat-panel-description>
+
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+
+                    
+                        
+
+                      <!-- <div  formArrayName="days" class="row " style="margin: 5px -24px -12px -24px;">
+                        <div class="col-lg-12 accordionRadio" style="display: flex;border:1px solid grey;" *ngFor="let option of startDayData;let i=index">
+                            
+                          <label class="kt-option col-xl-3" style="border: none !important;margin-bottom: 0px !important;">
+                            <span class="kt-option__control" style="margin-top:-3px;" >
+                              <span class="kt-radio">
+                                 <input type="checkbox" name="m_option_1" [value]="selecteOptionValue"
+                                   (change)="selectedOption($event,option)" > 
+                                <span></span>
+                              </span>
+                            </span>
+                            <span class="kt-option__label">
+                              <span class="kt-option__head">
+                                <span class="kt-option__title">
+                                 {{option.text}}
+                                </span>
+                                <span class="kt-option__focus">
+
+                                </span>
+                              </span>
+                             
+                            </span>
+                          </label>
+                            <div  style="display: flex;margin-top:14px" class="col-xl-9">
+                             
+                               
+                                
+                            <span   class="kt-input-icon materialPicker col-xl-4">
+
+                                   <input class="form-control"  placeholder="From"
+                                     (click)="startTimeChanged(i,text)" [ngxTimepicker]="startpicker" 
+                                      [formControlName]="startDayData[i].text" [value]="option.from">
+                                   <ngx-material-timepicker #startpicker></ngx-material-timepicker>
+                                 
+                               </span> 
+                               <span>to</span>
+                              
+                               
+                               <span class="kt-input-icon col-xl-4">
+                                   <input class="form-control"  (click)="endTimeChanged(i)" placeholder="To"  [value]="option.to" [ngxTimepicker]="picker_i"
+                                     >
+                                   <ngx-material-timepicker  #picker_i></ngx-material-timepicker>
+                                 </span>
+                               
+                                 <span class="col-xl-2" style="display: flex;margin-top: 5px;">
+                                   <label class=" kt-checkbox">
+                                       <input type="checkbox" id="billable" [checked]="option.from==null" 
+                                         (change)="onCheckChange($event,i)">
+                                       <span style=""></span>
+                                     </label>
+                                     <div style=""> Off</div>
+                                   </span>
+                             </div>
+                          
+
+                               
+                                
+                               
+                        </div>
+                        
+
+                      </div> -->
+
+                      <ejs-grid [dataSource]='startDayData' class="col-lg-9 col-xl-12 col-sm-12" #grid [editSettings]='editSettings' (rowSelected)='rowSelected($event)'  height=270 allowPaging='false'  >
+                        <!-- <ejs-grid [dataSource]='startDayData' #grid [editSettings]='editSettings' (rowSelected)='rowSelected($event)' width=570 height=270 allowPaging='false'  [selectionSettings]='selectionOptions' > -->
+                        <e-columns>
+                          <!-- <e-column type="checkbox" width=40></e-column> -->
+                          <e-column field='text' isPrimaryKey=true headerText='Days' width='80' ></e-column>
+                          <e-column field='from'    headerText='Start Time' width='60' >
+                            <ng-template  #template let-data>
+                                <span >
+
+                                  {{data.from!=null?data.from:'Off'}}
+                                     </span>
+                             </ng-template>
+                          </e-column>
+                          <e-column field='to'     headerText='End Time' width='60' >
+                            <ng-template  #template let-data>
+                                <span >
+
+                                  {{data.to!=null?data.to:'Off'}}
+                                     </span>
+                             </ng-template>
+                          </e-column>
+                          <e-column field='' isPrimaryKey=true   headerText='' width=60>
+                              <ng-template  #template let-data>
+                                 <span class="col-xl-2" style="display: flex">
+
+                                    <label class=" kt-checkbox">
+                                        <input type="checkbox" id="off" [checked]="data.enable==true" 
+                                          (change)="onCheckChange($event,data.index)">
+                                        <span style=""></span>
+                                      </label>
+                                      <div style="">Off</div>
+                                      </span>
+                              </ng-template>
+                          </e-column>
+
+                            
+                        </e-columns>
+                    </ejs-grid>
+                    </mat-expansion-panel>
+
+                  </mat-accordion>
+
+
+              </div> 
+              <!-- <div class="form-group row" >
+               
+                <label class="col-xl-3 col-lg-3 col-form-label">Start Time</label>
+
+                <div class="col-lg-2 col-xl-2 col-sm-12">
+                    <div class="kt-input-icon materialPicker">
+                        <input class="form-control" placeholder="Enter Start time"
+                          (click)="startTimeChanged()" [ngxTimepicker]="startpicker" 
+                          [min]="minStartTime" [max]="maxEndTime" formControlName="startTime">
+                        <ngx-material-timepicker [defaultTime]="minStartTime" #startpicker></ngx-material-timepicker>
+                      
+                    </div>
+
+                </div>
+                <label class="col-form-label col-lg-2 col-xl-2">End Time</label>
+
+                <div class="col-lg-2 col-xl-2 col-sm-12">
+                    <div class="kt-input-icon">
+                        <input class="form-control" placeholder="Enter End time"  [min]="minEndTime"  [max]="maxEndTime" [ngxTimepicker]="picker"
+                          formControlName="endTime">
+                        <ngx-material-timepicker #picker></ngx-material-timepicker>
+                      </div>
+                </div>
+                
+            </div> -->
+            
+              <div class="form-group row">
+               
+                <!-- <label class="col-form-label col-lg-2 col-xl-2">Working Hours</label> -->
+                <label class="col-xl-3 col-lg-3 col-form-label">Working Hours</label>
+
+                <div class="col-lg-2 col-xl-2 col-sm-12">
+                        <select2   [data]="workHoursData" [options]="options" [value]="workHourValue"  (valueChanged)="changedWorkHrs($event)" ></select2>
+
+
+                </div>
+                <label class="col-form-label col-lg-2 col-xl-2">Date Format</label>
+
+                <div class="col-lg-2 col-xl-2 col-sm-12">
+                    <!-- <input class="form-control" type="text" value=""  placeholder="Date"> -->
+                    <select2   [data]="dateFormat" [options]="options" [value]="dateFormatValue"  (valueChanged)="changedDateFormat($event)" ></select2>
+
+                </div>
+                
+            </div>
+
+                
+
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Currency</label>
+                            
+    
+                            <div class="col-lg-2 col-xl-2 col-sm-12">
+                                    <!-- <input class="form-control" type="email" value="" formControlName="contact_type"  placeholder="Type"> -->
+                                    <select2   [data]="currencyData" [options]="options" [value]="currencyValue"  (valueChanged)="changedCurrency($event)" ></select2>
+    
+                            </div>
+                            <label class="col-form-label col-lg-2 col-xl-2">Time Zone</label>
+
+                            <div class="col-lg-2 col-xl-2 col-sm-12">
+                                <!-- <input class="form-control" type="text" value=""  placeholder="Date"> -->
+                                <!-- <select2   [data]="dateFormat" [options]="options" [value]="dateFormatValue"  (valueChanged)="changedDateFormat($event)" ></select2> -->
+                                <select2   [data]="timeZoneData" [options]="options" [value]="zoneValue"   (valueChanged)="changedTimeZone($event)" ></select2>
+
+                            </div>
+                            <div class="error-msg">
+                                    <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                                    <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+                                    <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                                    <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                                      ssfssscs                                                                                                                      
+                                    </div> -->
+                                    <div *ngIf="orgProfileForm.controls['contact_type'].errors && !orgProfileForm.controls['contact_type'].pristine" class="error-msg">
+                                        <div [hidden]="!orgProfileForm.controls['contact_type'].errors.required">Required.</div>
+                                        <div [hidden]="!orgProfileForm.controls['contact_type'].errors.patternInvalid">Enter a valid email or phone</div>
+                                      </div>
+                                     
+                                  </div>
+                        </div>
+                        <!-- <div class="form-group row">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Hours Frequency</label>
+  
+                          <div class="col-lg-9 col-xl-6">
+                                          
+                                  <input class="form-control"  value="" formControlName="hours_frequency"  placeholder="Hours">
+                                  <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                  "  >Note: Email will be sent automatically after every above hours.</div>
+                                </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Hours after working hours</label>
+
+                      <div class="col-lg-9 col-xl-6">
+                                      
+                              <input class="form-control"  value="" formControlName="hours_after_hours"  placeholder="Hours">
+                              <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                              "  >Note: Checkout after working hours if the user forgets to checkout.</div>
+                            </div>
+                </div> -->
+
+                <!-- Advanced Setup -->
+
+                <!-- <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                        
+  
+                  <div class="col-lg-2 col-xl-2 col-sm-12">
+                          <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                            <label class=" kt-checkbox">
+                              <input type="checkbox" [checked]="locValid"  [value]="locValid"  (change)="onLocValidChange($event)">
+                              <span  style=""></span>
+                      </label>
+                      <div class=""  style="color: black;">Location Validation</div>
+                          </div>
+                          <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                        "  >Note: Location validation through email.</div>
+                  </div>
+                  <label class="col-xl-2 col-lg-2 col-form-label">Hours Frequency</label>
+                      
+
+                      <div class="col-lg-2 col-xl-2 col-sm-12">
+                        <select2   [data]="freqHoursData" [options]="options" [value]="freqHourValue"  (valueChanged)="changedHrsFreq($event)" ></select2>
+
+                              <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                              "  >Note: Email will be sent automatically after every above hours.</div>
+                      </div>
+                     
+                   
+                  </div>
+
+                  <div class="form-group row">
+                  
+                    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+
+  
+                        <div class="col-lg-2 col-xl-2 col-sm-12">
+                         
+                            <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                              <label class=" kt-checkbox">
+                                <input type="checkbox" [checked]="autoCheck"  [value]="autoCheck"  (change)="onAutoCheckOutChange($event)">
+                                <span  style=""></span>
+                        </label>
+                        <div class=""  style="color: black;">Auto Checkout</div>
+                            </div>
+                            <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                              "  >Note: Auto checkout enable if user forgets to checkout.</div>
+                        </div>
+                        <label class="col-form-label col-lg-2 col-xl-2">Hours after working hours</label>
+
+                        <div class="col-lg-2 col-xl-2 col-sm-12">
+                        <select2   [data]="freqHoursData" [options]="options" [value]="workHourAfterValue"  (valueChanged)="changedWorkHrsAfter($event)" ></select2>
+                            <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                            "  >Note: Checkout after working hours if the user forgets to checkout.</div>
+                        </div>
+
+                      
+                     
+                    </div>
+
+                    <div class="form-group row">
+                  
+                      <label class="col-xl-3 col-lg-3 col-form-label"></label>
+  
+    
+                          <div class="col-lg-2 col-xl-2 col-sm-12">
+                           
+                              <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                                <label class=" kt-checkbox">
+                                  <input type="checkbox" >
+                                  <span  style=""></span>
+                          </label>
+                          <div class=""  style="color: black;">Screenshot</div>
+                              </div>
+                              <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                "  >Note: .</div>
+                          </div>
+                          <label class="col-form-label col-lg-2 col-xl-2">Screenshot Time</label>
+  
+                          <div class="col-lg-2 col-xl-2 col-sm-12">
+                           
+                            <ejs-maskedtextbox  mask='00:00'  formControlName="screenshot_time" (blur)="onMaskTxtInputChange($event)" floatLabelType= 'Always'></ejs-maskedtextbox>
+                              <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                              "  >Note: </div>
+                          </div>
+  
+                        
+                       
+                      </div>
+                      <div class="form-group row">
+                  
+                        <label class="col-xl-3 col-lg-3 col-form-label"></label>
+    
+      
+                            <div class="col-lg-2 col-xl-2 col-sm-12">
+                             
+                                <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                                  <label class=" kt-checkbox">
+                                    <input type="checkbox" >
+                                    <span  style=""></span>
+                            </label>
+                            <div class=""  style="color: black;">Track app</div>
+                                </div>
+                                <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                  "  >Note: .</div>
+                            </div>
+                            <label class="col-form-label col-lg-2 col-xl-2">Expiry Days</label>
+    
+                            <div class="col-lg-2 col-xl-2 col-sm-12">
+                                <input class="form-control"  value="" formControlName="max_days_expiry"  placeholder="Days">
+                                <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                "  >Note: </div>
+                            </div>
+    
+                          
+                         
+                        </div> -->
+            
+                </div>
+          </div>
+         
+          <!-- <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg"></div>
+          <div class="col-lg-9 col-xl-9" style="margin:0px auto;text-align: center;">
+              <button type="submit" class="btn green uppercase" >Save</button>
+
+          </div> -->
+
+          <div  class="kt-portlet__foot kt-portlet__foot--fit-x"><div  class="kt-form__actions"><div  class="row"><div  class="col-lg-10">
+                <!-- <button type="reset" class="btn btn-success" (click)="profileSubmit()">Save</button> -->
+                <button type="submit" class="btn btn-success" [disabled]="( disableNxtSetUp)" (click)="editable ? onEditSubmit() :profileSubmit()">Submit</button>
+                <button type="reset" class="btn btn-secondary" (click)="goToOrgList()" style="margin-left:10px;">Cancel</button></div></div></div></div>
+          <!-- <div class="kt-section kt-section--first">
+              <div class="kt-section__body">
+                  <div class="row">
+                      <label class="col-xl-3"></label>
+                      <div class="col-lg-9 col-xl-6">
+                          <h3 class="kt-section__title kt-section__title-sm">Security:</h3>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Login verification</label>
+                      <div class="col-lg-9 col-xl-6">
+                          <button type="button" class="btn btn-label-brand btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Setup login verification</button>
+                          <span class="form-text text-muted">
+                          After you log in, you will be asked for additional information to confirm your identity and protect your account from being compromised. 
+                          <a href="#" class="kt-link">Learn more</a>.
+                          </span>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Password reset verification</label>
+                      <div class="col-lg-9 col-xl-6">
+                          <div class="kt-checkbox-single">
+                              <label class="kt-checkbox">
+                                  <input type="checkbox"> Require personal information to reset your password.
+                                  <span></span>
+                              </label>
+                          </div>
+                          <span class="form-text text-muted">
+                          For extra security, this requires you to confirm your email or phone number when you reset your password.
+                          <a href="#" class="kt-link">Learn more</a>.
+                      </span>
+                      </div>
+                  </div>
+                  <div class="form-group row kt-margin-t-10 kt-margin-b-10">
+                      <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                      <div class="col-lg-9 col-xl-6">
+                          <button type="button" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Deactivate your account ?</button>
+                      </div>
+                  </div>
+              </div>
+          </div> -->
+
+      </div>
+  </div>
+</div>
+<div class="tab-pane" id="kt_user_edit_tab_3" role="tabpanel">
+    <div class="kt-form kt-form--label-right">
+        <div class="kt-form__body">
+            <div class="kt-section kt-section--first">
+                <div class="kt-section__body">
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Enter organization address<span class="required" style="color: red;">*</span> </label>
+
+                        <div class="col-lg-9 col-xl-6">
+                          <div class="form-group">
+                              <input type="text"  (focus)="focusFunction()" (keyup)="keyup($event)" (click)="clickFunction()" class="form-control" [value]="nearbyAddress"  placeholder="Search Nearest Location" autocorrect="off"  (change)="onSearchChange()" autocapitalize="off" spellcheck="off" type="text" #search>
+                              <div  *ngIf="!editable" style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                              "  >Note: Setup location to add new branch.</div>
+                      <div style='color:red' *ngIf=' orgProfileFormSubmit && locValue==""'>Required</div>
+
+                              <!-- <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search> -->
+                            </div>   
+                            <!-- <div  *ngIf="changed_country">Country- <span style="font-weight:bold;font-size: 12px;">{{changed_country?changed_country:''}} </span> </div>
+                            <div  *ngIf="changed_administrative_area_level_1">City- <span style="font-weight:400;font-size: 12px;">{{changed_administrative_area_level_1?changed_administrative_area_level_1:''}}</span> </div> -->
+<!-- <div class="pac-container form-group col-lg-12 col-sm-12 " *ngIf="showNearbyPlaces && parentOrg"  style="color:black;width:94%;margin-top: -2.8rem !important;height:185px;overflow-y: auto;
+margin-bottom: 8px;">
+<div class="pac-item " *ngFor="let place of nearbyPlaces; let i='index'" (click)="selectNearBy(place)">
+  <span *ngIf='i<11' class="pac-icon pac-icon-marker"></span>
+  <span *ngIf='i<11' class="pac-item-query"></span>
+  <span *ngIf='i<11'>{{place.name}}</span>
+</div>
+
+</div>      -->
+
+
+
+                            
+                        <div  >
+                        
+                    </div>
+                              </div>
+                  </div>
+               
+
+                 
+                  <div class="form-group row" >
+                    <label class="col-lg-3 col-xl-3 col-form-label">Radius</label>
+
+                      <div class="col-lg-9 col-xl-6">
+                        <input class="form-control" (change)='georadiuschange($event)' formControlName="orgRadius" min="0" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  class="form-control" [value]="georadius"  placeholder="Enter Radius"   type="number">
+                  <div style="color: red;" *ngIf="geofence && orgProfileForm.get('orgRadius').value=='' || orgProfileForm.get('orgRadius').value==''==null">Required</div>
+  
+                    </div>
+                  </div>
+                
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-xl-3 col-form-label"></label>
+                          
+    
+                    <div class="col-lg-4 col-xl-6 col-sm-12">
+                      <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                        <label class=" kt-checkbox">
+                          <input type="checkbox" [checked]="geofenceChecked"  [value]="geofenceValue"  (change)="onGeoFenceChange($event)" >
+                          <span  style=""></span>
+                  </label>
+              
+                  <div class=""  style="color: black;">Restrict Geofence<span  ngbPopover="Allow users to checkin only within specified range.If they are not within the specifed range then they can't checkin into work"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: 4px;
+                    margin-left: 5px;" container="body">
+                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                      color: #fff;
+                      font-size: 10px;
+                      "></i>
+                    </span></div>
+                      </div>
+                      <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                        "  >Note: If restrict geo-fence is not checked then user can checkin even if it's not inside range and it will appear inside<span style="font-weight: bold;font-size:12px;margin-left: 4px;">Exception Reports</span> </div>
+                    </div>
+              
+                   
+                       
+                     
+                    </div>
+                   
+                     <div class="form-group row"  *ngIf="parentOrg"> 
+                        <label class="col-xl-3 col-lg-3 col-form-label"></label>
+
+
+
+                        <!-- <button type="button" class="button button-fill button-rose" style="width: 100px !important;"
+                        (click)='addTask()' aria-haspopup="true" aria-expanded="false">
+                        <i class="flaticon2-plus"></i> Add Branch
+                      </button>   -->
+                      <div class="col-lg-9 col-xl-6" aria-haspopup="true" [ngClass]="disableAddBranch? 'disabledDiv':'enabledDiv'"  (click)="AddBranch()" aria-expanded="false" style="color:black;">
+                        <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                            color: #fff;
+                                            font-size: 8px;
+                                            "></i>
+                                            Add Branch
+                                            </a>
+
+
+
+                      </div>
+                    </div>   
+                    <div *ngIf="showAddBranch">
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Industry</label>
+                            <div class="col-lg-9 col-xl-6">
+                                  <select2   [data]="industryData" [options]="options" [value]="industryBranchValue"  (valueChanged)="changedBranchIndustry($event)" ></select2>
+                             
+                            </div>
+                        </div> 
+                        <div class="form-group row" *ngIf="showBrIndustryRemarks">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Enter Industry Type<span class="required" style="color: red;">*</span></label>
+                            <div class="col-lg-9 col-xl-6">
+                                <input class="form-control" type="text" value="" formControlName="brindustryType"  placeholder="Type">
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Branch Name</label>
+                            <div class="col-lg-9 col-xl-6">
+                                <input class="form-control" type="text" value="" formControlName="brName"  placeholder="Branch Name">
+    
+                            </div>
+                        </div>
+                        </div>
+                         <div [ngClass]="showAddBranch  ?'display':'hide'">
+                            <div class="form-group row" [ngClass]="showAddBranch  ?'display':'hide'">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Enter address</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input class="form-control" (focus)="focusBrFunction()" (keyup)="keyupBr($event)" (click)="clickBrFunction()" class="form-control" [value]="nearbyBrAddress"  placeholder="Search Nearest Location" autocorrect="off"  (change)="onSearchChange()" autocapitalize="off" spellcheck="off" type="text" #brsearch>
+        
+                                </div>
+                            </div>
+                            <div class="form-group row" >
+                              <label class="col-lg-3 col-xl-3 col-form-label">Branch Radius</label>
+          
+                                <div class="col-lg-9 col-xl-6">
+                                  <input class="form-control"  formControlName="brRadius" min="0" oninput="this.value = 
+                                  !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  class="form-control"   placeholder="Enter Branch Radius"   type="number">
+            <div style="color: red;" *ngIf="orgProfileForm.get('is_br_restrict').value==true && orgProfileForm.get('brRadius').value=='' || orgProfileForm.get('brRadius').value==''==null">Required</div>
+
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-lg-3 col-xl-3 col-form-label"></label>
+                                    
+              
+                              <div class="col-lg-4 col-xl-6 col-sm-12">
+                                <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                                  <label class=" kt-checkbox">
+                                    <input type="checkbox" [checked]="brgeofenceChecked"  (change)="onBrGeoFenceChange($event)" >
+                                    <span  style=""></span>
+                            </label>
+                        
+                            <div class=""  style="color: black;">Restrict Branch Geofence<span  ngbPopover="Allow users to checkin only within specified range.If they are not within the specifed range then they can't checkin into work"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: 4px;
+                              margin-left: 5px;" container="body">
+                                <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                                color: #fff;
+                                font-size: 10px;
+                                "></i>
+                              </span></div>
+                                </div>
+                                <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                  "  >Note: If restrict geo-fence is not checked then user can checkin even if it's not inside range and it will appear inside<span style="font-weight: bold;font-size:12px;margin-left: 4px;">Exception Reports</span> </div>
+                              </div>
+                        
+                             
+                                 
+                               
+                              </div>
+                            <!-- <div class="form-group row" [ngClass]="showAddBranch && parentOrg ?'display':'hide'">
+                                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div class="pac-container form-group col-lg-12 col-sm-12 " *ngIf="showBranchNearbyPlaces"  style="color:black;width:94%;margin-top: -1rem !important;height:185px;overflow-y: auto;
+                                    margin-bottom: 8px;">
+                                    <div class="pac-item " *ngFor="let place of nearbyPlaces; let i='index'" (click)="selectBrNearBy(place)">
+                                      <span *ngIf='i<11' class="pac-icon pac-icon-marker"></span>
+                                      <span *ngIf='i<11' class="pac-item-query"></span>
+                                      <span *ngIf='i<11'>{{place.name}}</span>
+                                    </div>
+                                    
+                                    </div>     
+                                </div>
+                            </div> -->
+                         </div>
+                         <!-- <div  *ngIf="changed_br_country">Country- <span style="font-weight:bold;font-size: 12px;">{{changed_country?changed_country:''}} </span> </div>
+                        <div  *ngIf="changed__br_administrative_area_level_1">City- <span style="font-weight:400;font-size: 12px;">{{changed_administrative_area_level_1?changed_administrative_area_level_1:''}}</span> </div> -->
+
+                        
+                       
+                        
+                        <div *ngIf="showAddBranch">
+      
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                            <div class="col-lg-9 col-xl-6" style="display: flex;justify-content: flex-end;">
+                            <button type="button" class="button button-fill button-rose" style="width: 75px !important;"
+                            (click)='saveBrAddress()' [disabled]="disableSaveBranch" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-check"></i> Save
+                          </button>  
+                          </div> 
+                        </div>
+                        </div>
+                        <div [ngClass]="showBranchList && parentOrg ?'display':'hide'">
+                            <div class="form-group row" >
+                                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <div style="margin-top:5px;">
+                                        <div class="kt-widget2">
+                                            <div class="kt-widget2__item kt-widget2__item--success"
+                                              *ngFor="let item of branchDataSource ; let i = index">
+                                              <!-- <div class="kt-widget2__checkbox">
+                                                <label class="kt-checkbox kt-checkbox--solid kt-checkbox--single">
+                                                  <input type="checkbox">
+                                                  <span></span>
+                                                </label>
+                                              </div> -->
+                          
+                                              <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                               >
+                                                <a class="kt-widget2__title">
+                                                  {{item.org_name}}
+                                                  <!-- <span style="font-size: 10px;"
+                                                    [ngClass]="item.status == 'Completed' ? 'status-code-success': (item.status == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status}}</span> -->
+                          
+                                                </a>
+                                                <!-- <a class="kt-widget2__username">
+                                                  {{item.type}}
+                          
+                                                </a> -->
+                                                <a class="kt-widget2__username">
+                                                    <!-- {{item.entityLocationViewModel}} -->
+                                                  {{item.EntityLocationViewModel?item.EntityLocationViewModel.geo_address:(item.entityLocationViewModel?item.entityLocationViewModel.geo_address:'')}}
+                          
+                          
+                                                </a>
+                                                <a class="kt-widget2__username" *ngIf='item.radius!="" || item.radius!=null '>
+                                               <span style="font-weight: bold;">Radius-</span> {{item.EntityLocationViewModel?item.radius:(item.entityLocationViewModel?item.radius:'')}}
+                        
+                        
+                                              </a>
+                                              <a class="kt-widget2__username">
+                                                <span style="font-weight: bold;margin-right: 4px;">Geofence Restriction -</span>{{item.is_restrict_checkin==true?'Yes':'No'}}
+                        
+                        
+                                              </a>
+                                              </div>
+                                              <div class="kt-widget2__actions" *ngIf="!editable">
+                                                <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                                  (click)="brDelete(i)"><i class="la la-trash"></i></a>
+                                              </div>
+                          
+                                            </div>
+                          
+                          
+                                          </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+
+                       
+
+                
+                        
+                     
+                        <div class="form-group row">
+                              <label class="col-xl-3 col-lg-3 col-form-label"></label>
+      
+                              <div class="col-lg-9 col-xl-6">
+                                <!-- <div class="form-group">
+                                    <input type="text"   class="form-control"  placeholder="Search Nearest Location" autocorrect="off"  autocapitalize="off" spellcheck="off" type="text" #branchSearch>
+    
+                                  </div>    -->
+                                                 
+    <!-- <div class="pac-container form-group col-lg-12 col-sm-12 " *ngIf="showNearbyPlaces"  style="color:black;width:94%;margin-top: -1rem !important;height:185px;overflow-y: auto;
+    margin-bottom: 8px;">
+      <div class="pac-item " *ngFor="let place of nearbyPlaces; let i='index'" (click)="selectNearBy(place)">
+        <span *ngIf='i<11' class="pac-icon pac-icon-marker"></span>
+        <span *ngIf='i<11' class="pac-item-query"></span>
+        <span *ngIf='i<11'>{{place.name}}</span>
+    </div>
+    
+    </div>      -->
+    
+    
+
+      <div style="position:relative">
+                                    
+                                 
+                                    <agm-map  [latitude]="brlatitude?brlatitude:latitude" [longitude]="brlongitude?brlongitude:longitude" [zoom]="zoom">
+                                      <agm-marker [latitude]="brlatitude?brlatitude:latitude" [longitude]="brlongitude?brlongitude:longitude" [markerDraggable]="true"
+                                        (dragEnd)="markerDragEnd($event)"></agm-marker>
+                                        <agm-circle *ngIf='georadius' [latitude]="latitude" [longitude]="longitude" [clickable]="false"
+                                        [draggable]="false" [editable]="false" [fillColor]="green" [fillOpacity]="0.5"
+                                        [radius]="georadius">
+                                      </agm-circle>
+                                    </agm-map>
+                                  </div>
+    
+                                  
+                              <div  >
+                             
+                            </div>
+                                    <label  style="color:grey;">Address: {{address}}</label>
+                                    </div>
+                        </div>
+                   
+
+                
+  
+                  
+                  
+                </div>
+            </div>
+           
+    
+  
+            <div  class="kt-portlet__foot kt-portlet__foot--fit-x">
+                <div  class="kt-form__actions">
+                    <div  class="row">
+                        <!-- <div data-toggle="tab" role="tab" data-href="#kt_user_edit_tab_2" (click)="nextTab('#kt_user_edit_tab_2')" class="col-lg-10"><button  class="btn btn-success" type="reset">Next</button>
+                        </div> -->
+                        <!-- <button type="button" class="btn btn-success"  aria-haspopup="true" aria-expanded="false">
+                              Next <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i> 	
+                      </button> -->
+  
+                      <!-- <button type="reset" class="btn btn-success tab-button"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                      </button> -->
+                      <button *ngIf='showparentOrg' type="reset"  [disabled]="(industryValue=='' || disableNxtSetUp)" class="btn btn-success tab-button" style="width: 92px;"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                      </button>   
+                      <button *ngIf='!showparentOrg' type="submit" class="btn btn-success" [disabled]="( disableNxtSetUp)" (click)="editable ? onEditSubmit() :profileSubmit()">Submit</button>
+                      <button *ngIf='!showparentOrg' type="submit" class="btn btn-secondary" (click)="goToOrgList()" style="margin-left:10px;">Cancel</button>
+                      </div></div></div>
+            <!-- <div class="kt-section kt-section--first">
+                <div class="kt-section__body">
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h3 class="kt-section__title kt-section__title-sm">Security:</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Login verification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <button type="button" class="btn btn-label-brand btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Setup login verification</button>
+                            <span class="form-text text-muted">
+                            After you log in, you will be asked for additional information to confirm your identity and protect your account from being compromised. 
+                            <a href="#" class="kt-link">Learn more</a>.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Password reset verification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="kt-checkbox-single">
+                                <label class="kt-checkbox">
+                                    <input type="checkbox"> Require personal information to reset your password.
+                                    <span></span>
+                                </label>
+                            </div>
+                            <span class="form-text text-muted">
+                            For extra security, this requires you to confirm your email or phone number when you reset your password.
+                            <a href="#" class="kt-link">Learn more</a>.
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group row kt-margin-t-10 kt-margin-b-10">
+                        <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <button type="button" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Deactivate your account ?</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+  
+        </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="kt_user_edit_tab_4" role="tabpanel">
+    <div class="kt-form kt-form--label-right">
+        <div class="kt-form__body">
+            <div class="kt-section kt-section--first">
+                <div class="kt-section__body">
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h3 class="kt-section__title kt-section__title-sm"></h3>
+                        </div>
+                    </div>
+                   
+              
+              
+                  <div class="form-group row">
+                    <label class="col-xl-2 col-lg-3 col-form-label"></label>
+                          
+    
+                    <div class="col-lg-3 col-xl-3 col-sm-12">
+                            <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                              <label class=" kt-checkbox">
+                                <input type="checkbox" [checked]="locValid"  [value]="locValid"  (change)="onLocValidChange($event)">
+                                <span  style=""></span>
+                        </label>
+                        <div class=""  style="color: black;">Location Validation</div>
+                            </div>
+                            <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                          "  >Note: Activate user's location validation through email.</div>
+                    </div>
+                  
+                       
+                     
+                    </div>
+
+                    
+                    <div class="form-group row" >
+                      <label class="col-xl-2 col-lg-2 col-form-label"></label>
+                            
+      
+                    
+                      <label class=" col-form-label" style="width: 212px;">Verify user location for every</label>
+                          
+    
+                          <div class="col-lg-2 col-xl-2 col-sm-12">
+                            <select2 [disabled]="!locValid"  [data]="freqHoursData" [options]="options" [value]="freqHourValue"  (valueChanged)="changedHrsFreq($event)" ></select2>
+                               
+                          </div>
+                      <label class="col-form-label">hours interval using email. </label>
+                         
+                       
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-lg-2 col-xl-2 col-form-label"></label>
+                              
+        
+                        <div class="col-lg-3 col-xl-3 col-sm-12">
+                          <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                            <label class=" kt-checkbox">
+                              <input type="checkbox" [checked]="autoCheck"  [value]="autoCheck"  (change)="onAutoCheckOutChange($event)">
+                              <span  style=""></span>
+                      </label>
+                      <div class=""  style="color: black;">Auto Checkout</div>
+                          </div>
+                          <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                            "  >Note: Activate auto checkout if user forgets to checkout.</div>
+                        </div>
+                      
+                           
+                         
+                        </div>
+                        <div class="form-group row"  >
+                          <label class="col-lg-2 col-xl-2 col-form-label"></label>
+                                
+          
+                        
+                          <label class=" col-form-label" style="width: 212px;">Get checkout reminder for every</label>
+                              
+        
+                              <div class="col-lg-2 col-xl-2 col-sm-12">
+                                <!-- <select2   [data]="screenShotData" [options]="options" [value]="freqHourValue"  (valueChanged)="changedHrsFreq($event)" ></select2> -->
+                                <select2 [disabled]="!autoCheck"  [data]="screenShotData" [options]="options" [value]="workHourAfterValue"  (valueChanged)="changedWorkHrsAfter($event)" ></select2>
+        
+                                   
+                              </div>
+                          <label class="col-form-label"> minutes if the user forgets to checkout</label>
+                             
+                           
+                          </div>
+
+                          <div class="form-group row">
+                            <label class="col-lg-2 col-xl-2 col-form-label"></label>
+                                  
+            
+                            <div class="col-lg-4 col-xl-4 col-sm-12">
+                              <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                                <label class=" kt-checkbox">
+                                  <input type="checkbox" [checked]="screenshot"  [value]="screenshot"  (change)="onScreenshotChange($event)" >
+                                  <span  style=""></span>
+                          </label>
+                          <div class=""  style="color: black;">Screenshot</div>
+                              </div>
+                              <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                "  >Note: Activate the screenshots feature for a more detailed view of your team’s efficiency and for monitoring remote employees. </div>
+                            </div>
+                          
+                               
+                             
+                            </div>
+                            <div class="form-group row" >
+                              <label class="col-lg-2 col-xl-2 col-form-label"></label>
+                                    
+              
+                            
+                              <label class=" col-form-label" style="width: 212px;">Get user's screenshot for every</label>
+                                  
+            
+                                  <div class="col-lg-2 col-xl-2 col-sm-12">
+                                    <select2 [disabled]="!screenshot"  [data]="screenShotData" [options]="options" [value]="screenShotValue"  (valueChanged)="changedHrsScreenshot($event)" ></select2>
+                                    <!-- <ejs-maskedtextbox  mask='00:00'  formControlName="screenshot_time" (blur)="onMaskTxtInputChange($event)" floatLabelType= 'Always'></ejs-maskedtextbox> -->
+            
+                                       
+                                  </div>
+                              <label class="col-form-label"> minutes after user login with the desktop application</label>
+                                 
+                               
+                              </div>
+
+                              <div class="form-group row">
+                                <label class="col-lg-2 col-xl-2 col-form-label"></label>
+                                      
+                
+                                <div class="col-lg-4 col-xl-5 col-sm-12">
+                                  <div style="display: flex;margin-top:5px;margin-right: 5px;">
+                                    <label class=" kt-checkbox">
+                                      <input type="checkbox" [checked]="trackApp"  [value]="trackApp"  (change)="onTrackAppChange($event)" >
+                                      <span  style=""></span>
+                              </label>
+                              <div class=""  style="color: black;">URL & App Tracking</div>
+                                  </div>
+                                  <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                    "  >Note: See what websites, programs, and applications your employees use, and categorize them into productive or unproductive for completing their work tasks..</div>
+                                </div>
+                              
+                                   
+                                 
+                                </div>
+                                <div class="form-group row" >
+                                  <label class="col-lg-2 col-xl-2 col-form-label"></label>
+                                        
+                  
+                                
+                                  <label class=" col-form-label" style="width: 212px;">Get user's application track for every</label>
+                                      
+                
+                                      <div class="col-lg-2 col-xl-2 col-sm-12">
+                                        <select2 [disabled]="!trackApp"  [data]="screenShotData" [options]="options" [value]="trackAppValue"  (valueChanged)="changedTrackAppHrs($event)" ></select2>
+                                        <!-- <ejs-maskedtextbox  mask='00:00'  formControlName="screenshot_time" (blur)="onMaskTxtInputChange($event)" floatLabelType= 'Always'></ejs-maskedtextbox> -->
+                
+                                           
+                                      </div>
+                                  <label class="col-form-label"> minutes after user login using desktop application. </label>
+                                     
+                                   
+                                  </div>
+                                  <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+
+                                  <div class="form-group row">
+                                <label class="col-xl-2 col-lg-2 col-form-label"></label>
+
+                                    <label class="col-xl-1 col-lg-1 col-form-label">Expiry days</label>
+            
+                                    <div class="col-lg-6 col-xl-4">
+                                <input class="form-control"  value="" formControlName="max_days_expiry"  placeholder="Days">
+                                <div   style="color: #6c757d!important;margin-top: 5px;font-size:11px
+                                "  >Note: Screenshot and track app data expiry days.</div>       
+                                            <!-- <label>Country</label> -->
+                                            <!-- <select2   [data]="yearData" [options]="options" [value]="yearValue"  (valueChanged)="changedYears($event)" ></select2> -->
+            
+                                            <!-- <span class="form-text text-muted">Please enter your full name</span> -->
+                                          </div>
+                              </div>
+              
+                     
+                         
+                     <!-- <div class="form-group row">
+                  
+                        <label class="col-xl-3 col-lg-3 col-form-label">Time Zone</label>
+                        <div class="col-lg-9 col-xl-6">
+                              <select2   [data]="timeZoneData" [options]="options" [value]="zoneValue"   (valueChanged)="changedTimeZone($event)" ></select2>
+                           
+                        </div>
+                    </div>  -->
+  
+                
+                  </div>
+            </div>
+           
+            <!-- <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg"></div>
+            <div class="col-lg-9 col-xl-9" style="margin:0px auto;text-align: center;">
+                <button type="submit" class="btn green uppercase" >Save</button>
+  
+            </div> -->
+  
+            <div  class="kt-portlet__foot kt-portlet__foot--fit-x"><div  class="kt-form__actions"><div  class="row"><div  class="col-lg-10">
+                  <!-- <button type="reset" class="btn btn-success" (click)="profileSubmit()">Save</button> -->
+                  <button type="submit" class="btn btn-success" [disabled]="( disableNxtSetUp)" (click)="editable ? onEditSubmit() :profileSubmit()">Submit</button>
+                  <button type="reset" class="btn btn-secondary" (click)="goToOrgList()" style="margin-left:10px;">Cancel</button></div></div></div></div>
+            <!-- <div class="kt-section kt-section--first">
+                <div class="kt-section__body">
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h3 class="kt-section__title kt-section__title-sm">Security:</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Login verification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <button type="button" class="btn btn-label-brand btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Setup login verification</button>
+                            <span class="form-text text-muted">
+                            After you log in, you will be asked for additional information to confirm your identity and protect your account from being compromised. 
+                            <a href="#" class="kt-link">Learn more</a>.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Password reset verification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="kt-checkbox-single">
+                                <label class="kt-checkbox">
+                                    <input type="checkbox"> Require personal information to reset your password.
+                                    <span></span>
+                                </label>
+                            </div>
+                            <span class="form-text text-muted">
+                            For extra security, this requires you to confirm your email or phone number when you reset your password.
+                            <a href="#" class="kt-link">Learn more</a>.
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group row kt-margin-t-10 kt-margin-b-10">
+                        <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <button type="button" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Deactivate your account ?</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+  
+        </div>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+</div>	</div>
+<!-- end:: Content -->				</div>
+

@@ -1,0 +1,239 @@
+.card1{
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px 14px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+}
+
+.rowimp{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.startdiv{
+  margin: 20px 25px;
+}
+
+.rowcard1{
+  background: white;
+  padding: 5px 35px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+
+.rowcard{
+  background: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+
+.tabseStyle2{
+  background: white;
+  height: 500px !important;
+}
+
+
+
+.topbot{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.empName{
+  cursor: pointer;
+  color: blue;
+  border-bottom: 1px solid #396dff;
+}
+
+.borderCard{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 70px;
+}
+
+.e-upload .e-upload-files{
+  display: none !important;
+}
+
+.e-upload .e-file-select-wrap, .e-bigger.e-small .e-upload .e-file-select-wrap{
+  padding: 0px !important;
+  margin:  0px !important;
+}
+
+.e-upload{
+  border: none;
+}
+
+.e-btn, .e-css.e-btn{
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  font-weight: 400;
+  font-size: 13px;
+  text-transform: inherit;
+}
+
+
+.hyperlink{
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  // word-wrap: break-word !important;
+  padding: 0px !important;
+  margin: 0px 20px 0px 30px !important;
+}
+
+
+.e-datepicker.e-popup{
+  display:flex !important;
+  justify-content: flex-start !important;
+}
+
+
+
+.approverDivCW {
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.approverDivCWadj {
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  margin-top: 10px;
+}
+
+.approverHeader{
+  color: #212529;
+  padding: 6px 10px 5px;
+  border-bottom: 1px solid #ced4da;
+}
+
+.approverBody{
+  padding: 4px 11px 10px;
+}
+
+.approve{
+  padding: 5px 7px;
+  color: #43a047;
+  font-weight: 600;
+}
+
+.pending{
+  padding: 5px 7px;
+  color: #ff77a9;
+  font-weight: 600;
+}
+
+.decline{
+  padding: 5px 7px;
+  color: #e53935;
+  font-weight: 600;
+}
+
+
+.drafted{
+  padding: 5px 7px;
+  color: #474646;
+  font-weight: 600;
+}
+
+.e-datepicker.e-popup{
+  display:flex !important;
+  justify-content: flex-start !important;
+}
+
+.selbox{
+  background-color: #f4f4f4;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.tabsepration{
+  padding: 10px;
+  width: 100%;
+}
+
+.e-ddl.e-input-group.e-control-wrapper .e-input {
+  padding-left: 10px;
+}
+
+span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input{
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+}
+
+span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard{
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+}
+
+span.e-input-group.e-control-wrapper.e-date-wrapper{
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+}
+span.e-input-group.e-control-wrapper.e-date-wrapper.e-input-focus{
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+}
+span.e-input-group.e-control-wrapper.e-date-wrapper.e-valid-input.e-input-focus{
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+}
+
+.e-ddl.e-input-group.e-control-wrapper.e-input-focus::before, .e-ddl.e-input-group.e-control-wrapper.e-input-focus::after {
+  background: #bb233d;
+  // border: 1px solid #caced1;
+  // border-radius: 0.25rem;
+}
+
+.custbtn {
+  /* Basic styling */
+  display: inline-block;
+  padding: 5px 5px;
+  margin-right: 10px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #e91e63; /* Primary blue color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+
+  /* Adding a box-shadow for a 3D effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.foreye{
+  padding: 0;
+  border: none;
+  background: none;
+  margin-right: 10px;
+  color:dimgrey;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.form-item {
+  flex: 1;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item label {
+  margin-bottom: 5px;
+}

@@ -1,0 +1,93 @@
+.startdiv{
+  margin: 20px 25px;
+}
+
+.rowimp{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.rowcard{
+  background: white;
+  padding: 12px 15px 30px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+
+.hyplink{
+  margin-bottom: 2px !important;
+  color: blue;
+  cursor: pointer;
+}
+
+.errorTxt{
+  color: #f35b5b;
+  background: none;
+  border: none;
+  padding: 3px;
+  margin-bottom: 0px;
+}
+
+.rowDivh{
+  border-bottom: 1px solid #ada8a8;
+  padding: 0px 0px 11px;
+  margin-bottom: 10px;
+}
+
+.btnColorAll{
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btnDiv{
+  text-align: end;
+  margin: auto;
+}
+
+.txtDiv{
+  font-size: 19px;
+  margin-bottom: 0px;
+}
+
+header {
+  display:table;
+  width:100%;
+  max-width:100%;
+}
+header div {
+  display:table-row;
+  line-height:1.5em;
+  font-size:2em;
+  white-space:nowrap;
+}
+header h1 {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+  width: 1px;
+}
+header span.spacer {
+  display:table-cell;
+}
+header h1 {
+  padding: 0 10px 0px 0px;
+}
+header span.spacer:after {
+  display: inline-block;
+  width: 100%;
+  content: ".";
+  font-size: 0;
+  color: transparent;
+  height: 1px;
+  background: #ada8a8;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.martop{
+  margin-top: 15px;
+}

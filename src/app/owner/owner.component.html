@@ -1,0 +1,11 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="sideBarOpen">
+    <owner-sidenav></owner-sidenav>
+  </mat-drawer>
+  <mat-drawer-container>
+    <owner-hearder (toggleSidebarForMe)="sideBarToggler()"></owner-hearder>
+    <div class="mainContent">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-container>
+</mat-drawer-container>

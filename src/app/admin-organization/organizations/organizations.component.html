@@ -1,0 +1,584 @@
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid" style=" margin-top: 16px;">
+  <div class="kt-grid__item" id="kt_subheader">
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+      <div class="kt-subheader__main">
+        <h3 class="kt-subheader__title">Overview</h3>
+        <span class="kt-subheader__separator kt-hidden"></span>
+        <div class="kt-subheader__breadcrumbs">
+          <a class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+          <span class="kt-subheader__breadcrumbs-separator"></span>
+          <a class="kt-subheader__breadcrumbs-link">Organization</a>
+        </div>
+      </div>
+
+      <div class="ownerAccess" *ngIf="showOwnerAccess">
+        <a routerLink="/oDashboard">Owner Access</a>
+      </div>
+    </div>
+  </div>
+  <div class="row ">
+    <div class="col-xl-6 col-lg-6 col-sm-6" *ngFor="let org of orgListArr;">
+            <div class="kt-portlet kt-portlet--height-fluid" >
+                <div class="kt-portlet__body kt-portlet__body--fit cardShadow">
+                    <div class="kt-widget kt-widget--project-1">
+                        <div *ngIf="org.parent_org_id" class=" kt-ribbon kt-ribbon--brand kt-ribbon--shadow kt-ribbon--left kt-ribbon--round" data-container="body" data-toggle="kt-tooltip" data-placement="top" title="" data-original-title="Upgrade">
+                            <div class="kt-ribbon__target" style="top: 4px; right: -2px;" >
+                                Branch
+                            </div>
+
+                        </div>
+                        <div class="kt-widget__head" style="padding-left: 12px !important;">
+                            <div class="kt-widget__label" (click)="toDashboard(org.org_id)">
+                                <div class="kt-widget__media">
+                                    <span class="kt-media kt-media--lg kt-media--circle">
+                                        <img [src]="org.img_url" onError="this.src='../../../assets/media/project-logos/3.png'" alt="image">
+                                    </span>
+                                </div>
+                                <div class="kt-widget__info kt-margin-t-5">
+
+                                    <a  class="kt-widget__title">
+                                        {{org.org_name}}
+                                      </a>
+                                      <span *ngIf="org.parent_org_id" class="kt-widget__desc" style="font-weight: bold;font-size: 10px;">
+                                        <i class="flaticon2-calendar-3"></i>  Branch of {{org.branchname?org.branchname:''}}
+                                      </span>
+                                    <span class="kt-widget__desc" >
+                                     {{org.entityLocation?org.entityLocation.geo_address:''}}
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="kt-portlet__head-toolbar" style="margin-top: 12px;">
+
+                                <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+                                    <ul class="kt-nav">
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                                                <span class="kt-nav__link-text">Reports</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-send"></i>
+                                                <span class="kt-nav__link-text">Messages</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                                                <span class="kt-nav__link-text">Charts</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                                                <span class="kt-nav__link-text">Members</span>
+                                            </a>
+                                        </li>
+                                        <li class="kt-nav__item">
+                                            <a href="#" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon flaticon2-settings"></i>
+                                                <span class="kt-nav__link-text">Settings</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="kt-widget__footer">
+                            <div class="kt-widget__wrapper" style="display: flex;
+                            padding: 10px 15px !important;">
+                                 <div class="kt-widget__section">
+                                    <div class="kt-widget__blog">
+                                        {{org.primary_cont_name?org.primary_cont_name:''}}
+
+                                    </div>
+
+                                    <div class="kt-widget__blog">
+                                        {{org.organizationSetup?org.organizationSetup.country:''}}
+                                    </div>
+                                </div>
+
+                                <div class="kt-widget__section" style="justify-content: flex-end;">
+                                  <div class="kt-portlet__head-actions" >
+                                    <a  ngbTooltip="Notification" tooltipClass="my-custom-class" (click)="onNotificationOrg(org.org_id,org.parent_org_id)"  class="btn btn-clean btn-sm btn-icon btn-icon-md">
+                                      <i class="fa fa-bell" aria-hidden="true"></i>
+                                    </a>
+                                    <a  ngbTooltip="Edit Organization" tooltipClass="my-custom-class" (click)="onSettingOrg(org.org_id,org.parent_org_id)"  class="btn btn-clean btn-sm btn-icon btn-icon-md">
+                                      <i class="fa fa-cogs" aria-hidden="true"></i>
+                                    </a>
+                                    <!-- <a *ngIf="!org.parent_org_id" ngbTooltip="Edit Organization" tooltipClass="my-custom-class" (click)="onEditOrg(org.org_id)"  class="btn btn-clean btn-sm btn-icon btn-icon-md"> -->
+                                      <a  ngbTooltip="Edit Organization" tooltipClass="my-custom-class" (click)="onEditOrg(org.org_id,org.parent_org_id)"  class="btn btn-clean btn-sm btn-icon btn-icon-md">
+                                      <i class="fa fa-edit" ></i>
+                                    </a>
+                                    <div class="btn btn-clean btn-sm btn-icon btn-icon-md">
+                                        <i (click)="onDelete(org.org_id)" class="la la-trash"></i>
+                                      </div>
+
+
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Widget -->
+                </div>
+            </div>
+            <!--end:: Portlet-->
+        </div>
+
+  </div>
+  <div class="modal center animated bounceInDown faster orgDiv" id="org_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content contentHeight" >
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Organization</h5>
+            </div>
+            <div class="modal-body">
+                    <div class="kt-demo-panel__body " style="text-align: center;">
+                        <div class="kt-demo-panel__item ">
+                                    <div class="kt-demo-panel__item-title">
+            <div class="userName"> Hello {{full_name}}! </div>
+        Let's set up your organization
+                                          <div class="buttonAlign">
+
+                            <button type="button"  (click)='AddForm()' class="button button-fill button-rose" > <i class="flaticon2-plus" ></i> New Organization </button>
+
+
+                                            </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+                </div>
+
+                <!-- <div class="row">
+
+                    <div class="col-lg-12 kt-align-right">
+
+                      <button type="Submit" class="button button-fill button-rose" (click)="checkedFalse()">Submit</button>
+
+                </div>
+              </div> -->
+            </div>
+
+        </div>
+    </div>
+</div>
+    </div>
+    <!-- <nav  class="navbar navbar-expand-lg navbar-light bg-light">
+        <a  class="navbar-brand"  href="#">Angular CRM</a>
+        <button  class="navbar-toggler"  type="button"  data-toggle="collapse"  data-target="#navbarSupportedContent"  aria-controls="navbarSupportedContent"  aria-expanded="false"  aria-label="Toggle navigation">
+        <span  class="navbar-toggler-icon"></span>
+        </button>
+    <div  class="collapse navbar-collapse"  id="navbarSupportedContent">
+        <ul  class="navbar-nav mr-auto">
+            <li  class="nav-item active">
+            <a  class="nav-link"  href="#">Home <span  class="sr-only">(current)</span></a>
+            </li>
+            <li  class="nav-item dropdown">
+            <a  class="nav-link dropdown-toggle"  href="#"  id="navbarDropdown"  role="button"  data-toggle="dropdown"  aria-haspopup="true"  aria-expanded="false">
+            Actions
+            </a>
+            <div  class="dropdown-menu"  aria-labelledby="navbarDropdown">
+            <a  class="dropdown-item" [routerLink]="'/accounts'"> Accounts </a>
+            <a  class="dropdown-item" [routerLink]="'/create-account'"> Create Account </a>
+            <div  class="dropdown-divider"></div>
+            <a  class="dropdown-item" [routerLink]="'/contacts'"> Contacts </a>
+            <a  class="dropdown-item" [routerLink]="'/create-contact'"> Create Contact </a>
+            <div  class="dropdown-divider"></div>
+            <a  class="dropdown-item" [routerLink]="'/leads'"> Leads </a>
+            <a  class="dropdown-item" [routerLink]="'/create-lead'"> Create Lead </a>
+            <div  class="dropdown-divider"></div>
+            <a  class="dropdown-item" [routerLink]="'/opportunities'"> Opportunities </a>
+            <a  class="dropdown-item" [routerLink]="'/create-opportunity'"> Create Opportunity </a>
+            </div>
+            </li>
+    </ul> -->
+
+
+    <div class="modal  animated slideInRight faster purchaseLogDiv" tabindex="-1" id="purchase_log_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content contentHeight" >
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Plan Summary</h5>
+                    <button type="button" class="close" data-dismiss="modal" (click)="OnPurchaseLogClose()" aria-label="Close"  >
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: 590px !important;overflow-y: auto;overflow-x: hidden;">
+
+                    <div class="kt-demo-panel__body " >
+                        <form [formGroup]="planForm" *ngIf="showPlanDetails" >
+
+                            <div class="kt-demo-panel__item " >
+                                <div class="kt-demo-panel__item-title">
+                                    <!-- <div style="margin:auto;padding-top:5px;">
+                                        <span class="kt-switch kt-switch--brand kt-switch--sm" >
+                                          <div>Administrative Tasks</div>
+                                          <label>
+                                            <input type="checkbox" [(ngModel)]="isAdmin"  (change)="flaticon2-add-1(isChecked?'A':'B')">
+                                            <span></span>
+                                          </label>
+                                          <label>Others</label>
+                                        </span>
+
+                                      </div> -->
+
+                                       <div style="display: flex;" >
+                                        <div style="    color: grey;
+
+                                                            margin-right: 5px;">Monthly</div>
+                                        <div style="margin-top: 4px;">
+                                          <label class="switch">
+                                            <input type="checkbox" name='Yearly' [checked]='isYearly' id="isYearly" (change)="changedOption($event)">
+                                            <span>
+
+                                            </span>
+                                          </label>
+
+
+                                        </div>
+                                        <div style="    color: grey;
+                                          margin-right: 5px;">Yearly</div>
+
+
+                                      </div>
+
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-sm-4 col-form-label">Selected Plan:</label>
+                                        <div class="col-lg-3 col-sm-3" style="    font-weight: bold;
+                                        text-transform: uppercase;">
+                                            {{planName}}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-sm-4 col-form-label">Cost:</label>
+                                        <div *ngIf="planPrice" class="col-lg-3 col-sm-4" style="    font-weight: bold;
+                                        text-transform: uppercase;">
+                                            {{planPrice}}  per user
+                                        </div>
+
+                                    </div>
+<!--
+                                      <div   style="margin-top: 4px;">
+
+                                        <label style="color: grey;">Plan</label>
+            <input type="email" class="form-control" placeholder="Enter Plan" formControlName="planName" readonly>
+
+
+                                      </div>
+                                       <div   style="margin-top: 4px;">
+
+                                        <label style="color: grey;">Billing</label>
+                                        <select2 [data]="billingData" [options]="activityOptions" [value]="selectebillingOptionValue"  (valueChanged)="changedOption($event)" ></select2>
+
+                                      </div> -->
+                                      <!-- <div   style="margin-top: 4px;">
+
+                                        <label style="color: grey;">Cost</label>
+            <input type="email" class="form-control" placeholder="Enter Plan" formControlName="planPrice" readonly>
+
+
+                                      </div> -->
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-sm-4 col-form-label">Number Of Users:</label>
+                                        <div class="col-lg-3 col-sm-4">
+                                            <input type="number" class="form-control" placeholder="Enter Number" (keyup)="calcPrice()" formControlName="users" >
+
+                                        </div>
+
+                                    </div>
+                                      <!-- <div   style="margin-top: 4px;">
+
+                                        <label style="color: grey;">Number Of Users</label>
+            <input type="number" class="form-control" placeholder="Enter Number" (keyup)="calcPrice()" formControlName="users" >
+
+
+                                      </div> -->
+
+                                      <div *ngIf="showPrice" style="    margin-top: 15px;
+                                      border-bottom: 1px solid #f0f0f0;
+                                      background-color: #fff7e5;
+                                      height: 55px;
+                                      padding: 15px;">Total Price:<span style="font-weight: bold;margin-left: 15px;">${{totalPrice}}</span></div>
+
+
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <div class="kt-portlet" style="margin-top:5px;" *ngIf="showCardDetails">
+                            <!-- <div class="kt-portlet__head">
+                              <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                  Plan Summary
+                                </h3>
+                              </div>
+
+                            </div> -->
+                            <div class="kt-portlet__body">
+                              <div class="kt-widget6">
+                                <div class="kt-widget6__head">
+                                  <div class="kt-widget6__item">
+                                    <span>PLAN</span>
+                                    <span>COST(USD)</span>
+
+                                    <span>TOTAL USERS</span>
+
+                                  </div>
+                                </div>
+                                <div class="kt-widget6__body">
+                                  <div class="kt-widget6__item" style="    border-bottom: 1px dashed #ebedf2;">
+                                    <span>{{planName}}</span>
+                                    <span class="kt-font-success kt-font-bold">{{planPrice}}</span>
+                                    <span class="kt-font-brand kt-font-bold">{{user}}</span>
+
+
+                                  </div>
+                                  <div *ngIf="showPrice" style="    margin-top: 15px;
+                                  border-bottom: 1px solid #f0f0f0;
+                                  background-color: #fff7e5;
+                                  height: 55px;
+                                  padding: 15px;">Total Price:<span style="font-weight: bold;margin-left: 15px;">${{totalPrice}}</span></div>
+
+
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        <form [formGroup]="paymentForm" *ngIf="showCardDetails" >
+
+                            <div class="kt-demo-panel__item ">
+                                <div class="kt-demo-panel__item-title">
+                                    <div style="margin:auto;padding-top:5px;">
+                                          <div>Payment Method Information</div>
+
+
+                                      </div>
+
+                                      <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>First Name:</label>
+                                                    <input class="form-control" [ngClass]="{ 'is-invalid': (f.firstName.dirty || f.firstName.touched) && f.firstName.errors }" type="text" placeholder="First Name" formControlName="firstName" autocomplete="off">
+
+                                                    <div *ngIf="!f.firstName.valid && (f.firstName.dirty || f.firstName.touched)" class="invalid-feedback">
+                                                      <div *ngIf="f.firstName.errors" class="alert alert-danger">Invalid Cardholder Name.</div>
+                                                  </div>
+
+
+
+                                        </div>
+                                        <div class="col-lg-6">
+
+                                            <label class="">Last Name:</label>
+
+                                                    <input class="form-control" [ngClass]="{ 'is-invalid': (f.lastName.dirty || f.lastName.touched) && f.lastName.errors }"  type="text" placeholder="Last Name" formControlName="lastName" autocomplete="off">
+
+
+                                                    <div *ngIf="!f.firstName.valid && (f.firstName.dirty || f.firstName.touched)" class="invalid-feedback">
+                                                      <div *ngIf="f.firstName.errors" class="alert alert-danger">Invalid Cardholder Name.</div>
+                                                  </div>
+                                            <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                                            <span class="form-text text-muted">Please enter your last name</span> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <label>Card Number:</label>
+                                                    <input class="form-control" type="number" placeholder="Card No" formControlName="cardNumber" [ngClass]="{ 'is-invalid': f.cardNumber.errors  && (f.cardNumber.dirty || f.cardNumber.touched)}" autocomplete="off">
+
+                                                    <div *ngIf="!f.cardNumber.valid && (f.cardNumber.dirty || f.cardNumber.touched)" class="invalid-feedback">
+                                                        <div *ngIf="f.cardNumber.errors" class="alert alert-danger">Invalid Card Number.</div>
+                                                    </div>
+                                                <!-- <div class="form-text text-muted">
+
+                                                    <div  *ngIf="isEmpProfileFieldValid('cardNo')">Required.</div>
+                                                  </div> -->
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Expiry:</label>
+                                                    <input class="form-control" type="text" placeholder="Month" formControlName="month" autocomplete="off">
+
+
+
+
+
+                                        </div>
+                                        <div class="col-lg-4" style="margin-top:5px;">
+
+                                            <label></label>
+
+
+                                                    <input class="form-control"  type="text" placeholder="Year" formControlName="year" autocomplete="off">
+
+
+
+                                        </div>
+                                        <div class="col-lg-4">
+
+                                            <label class="">CVV</label>
+
+                                                    <input class="form-control"  type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==3) return false;"  placeholder="" formControlName="cvv" autocomplete="off">
+
+
+
+                                        </div>
+                                    </div> -->
+                                    <div class="form-group expiry">
+                                      <label>Date of Expiration</label>
+                                      <input  class="form-control month" type="number"  formControlName="expirationMonth" placeholder="12" [ngClass]="{ 'is-invalid': !f.expirationMonth.valid && (f.expirationMonth.dirty || f.expirationMonth.touched) }">
+                                      <input  class="form-control year"   type="number" formControlName="expirationYear" placeholder="2017" [ngClass]="{ 'is-invalid': f.expirationYear.errors && (f.expirationYear.dirty || f.expirationYear.touched) }">
+                                      <div *ngIf="( !f.expirationMonth.valid && (f.expirationMonth.dirty || f.expirationMonth.touched) ) || ( !f.expirationYear.valid && (f.expirationYear.dirty || f.expirationYear.touched))" class="invalid-feedback">
+                                          <div *ngIf="f.expirationMonth.errors || f.expirationYear.errors" class="alert alert-danger">Invalid Date of Expiration.</div>
+                                      </div>
+                                  </div>
+
+                                  <div class="form-group cvc" style="margin-left: 15px;">
+                                    <label>CVV/CVC</label>
+                                    <input class="form-control"   type="number" formControlName="cardCVVNumber" placeholder="123" [ngClass]="{ 'is-invalid': f.cardCVVNumber.errors && (f.cardCVVNumber.dirty || f.cardCVVNumber.touched) }">
+                                      <div *ngIf="!f.cardCVVNumber.valid && (f.cardCVVNumber.dirty || f.cardCVVNumber.touched)" class="invalid-feedback">
+                                          <div *ngIf="f.cardCVVNumber.errors" class="alert alert-danger">Invalid CVV / CVC Number.</div>
+                                      </div>
+                                  </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Address Line1:</label>
+                                                    <input class="form-control" type="text" placeholder="" formControlName="adr1" autocomplete="off">
+
+
+                                                <!-- <div class="form-text text-muted">
+
+                                                    <div  *ngIf="isEmpProfileFieldValid('firstName')">First Name is required.</div>
+                                                  </div> -->
+
+
+                                        </div>
+                                        <div class="col-lg-6">
+
+                                            <label class="">Zip:</label>
+
+                                                    <input class="form-control"  type="text" placeholder="" formControlName="zip" autocomplete="off">
+
+
+                                                <!-- <div class="form-text text-muted">
+
+                                                    <div  *ngIf="isEmpProfileFieldValid('lastName')">Last Name is required.</div>
+                                                  </div> -->
+                                            <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                                            <span class="form-text text-muted">Please enter your last name</span> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Country:</label>
+                                                    <input class="form-control" type="text" placeholder="Country" formControlName="firstName" autocomplete="off">
+
+
+                                                <div class="form-text text-muted">
+
+                                                    <div  *ngIf="isEmpProfileFieldValid('firstName')">First Name is required.</div>
+                                                  </div>
+
+
+                                        </div>
+                                        <div class="col-lg-6">
+
+                                            <label class="">State:</label>
+
+                                                    <input class="form-control"  type="text" placeholder="" formControlName="lastName" autocomplete="off">
+
+
+                                                <div class="form-text text-muted">
+
+                                                    <div  *ngIf="isEmpProfileFieldValid('lastName')">Last Name is required.</div>
+                                                  </div>
+                                            <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                                            <span class="form-text text-muted">Please enter your last name</span> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <h3 class="center-block text-center">{{displayMessage}}</h3>
+                        </form>
+
+
+
+
+
+
+
+        <!-- <div class="row" *ngIf="showAdminTasks">
+
+          <div class="col-lg-12 kt-align-right">
+
+            <button type="Submit" class="button button-fill button-rose" (click)="editable ? onEditSubmit() : onAddSubmit()" >Add</button>
+
+        </div>
+        </div> -->
+
+
+
+
+
+
+                </div>
+                </div>
+                <!-- <div class="kt-align-right modal-footer" >
+
+                  <button type="Submit" class="button button-fill button-rose" (click)="" >Add</button>
+                  <button
+                  type="reset" class="btn btn-secondary" style="width: 90px;
+                  padding: 7px 14px;font-size: 11px;
+                  margin-top: -1px;" (click)="OnPurchaseLogClose()">CANCEL
+              </button>
+              </div> -->
+              <div  class=" kt-align-right modal-footer" style="bottom: 0px;">
+
+                <!-- <button type="Submit" id="startSession" [disabled]='selectedGroupVal=="empty" || selecteOptionValue==""'
+                  class="button button-fill button-rose" (click)="!teamAdd?onAddTimeSheet():onSubmitTeam()">Submit
+                </button> -->
+                <button type="reset" class="btn btn-secondary" style="width: 90px;
+                padding: 7px 14px;font-size: 11px;    background-color: #e91e63;
+    border: none !important;
+    border-color: #e91e63;
+    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12) !important;
+                margin-top: -1px;" (click)="!showCardDetails?onProceed():AddBilling()">{{!showCardDetails? 'PROCEED' :'SUBMIT'}}
+                </button>
+                <button type="reset" class="btn btn-secondary" style="width: 90px;
+                padding: 7px 14px;font-size: 11px;
+                margin-top: -1px;" (click)="OnPurchaseLogClose()">CANCEL
+                </button>
+
+
+              </div>
+
+            </div>
+        </div>
+    </div>
+
+
+

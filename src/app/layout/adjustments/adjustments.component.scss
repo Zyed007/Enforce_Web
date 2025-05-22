@@ -1,0 +1,133 @@
+.startdiv{
+  margin: 20px 25px;
+}
+
+.rowcard{
+  background: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+
+.rowimp{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.selfclaimtag{
+  background: #e91e63;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  display: flex;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.cardftrt{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 10px;
+}
+
+.errorTxt{
+  color: #f35b5b;
+  background: none;
+  border: none;
+  padding: 3px;
+  margin-bottom: 0px;
+}
+
+.Avgtime{
+  color: #43a047;
+  font-weight: 600;
+}
+
+.deltime{
+  color: #e52626;
+  font-weight: 600;
+}
+
+header {
+  display:table;
+  width:100%;
+  max-width:100%;
+}
+
+header div {
+  display:table-row;
+  line-height:1.5em;
+  font-size:2em;
+  white-space:nowrap;
+}
+
+header h1 {
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+  width: 1px;
+}
+
+header span.spacer {
+  display:table-cell;
+}
+
+header h1 {
+  padding: 0 10px 0px 0px;
+}
+
+header span.spacer:after {
+  display: inline-block;
+  width: 100%;
+  content: ".";
+  font-size: 0;
+  color: transparent;
+  height: 1px;
+  background: #ada8a8;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.martop10{
+  margin-top: 10px;
+}
+
+.font14{
+  font-size: 14px;
+}
+
+.btnColorAll{
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.savebtn{
+  margin: 15px 0px 0px;
+}
+
+.datedisplay{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  background: white;
+  height: -webkit-fill-available;
+  padding: 10px 22px;
+  border-radius: 5px;
+}
+
+.marbottp{
+  margin-bottom: 0px !important;
+  font-weight: 500;
+}
+
+.tabseStyle2{
+  display: inline-block;
+}
+
+.e-tab .e-tab-header .e-toolbar-item .e-tab-text {
+  text-transform: capitalize !important;
+}

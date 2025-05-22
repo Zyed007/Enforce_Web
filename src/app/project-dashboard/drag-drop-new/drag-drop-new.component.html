@@ -1,0 +1,448 @@
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />  -->
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid projLayout">
+  <div class="kt-grid__item" id="kt_subheader">
+
+
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+              <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title" >
+                  Overview
+                </h3>
+
+
+                <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                  <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                          <span class="kt-subheader__breadcrumbs-separator"></span>
+                      <a  class="kt-subheader__breadcrumbs-link">
+                          Projects                        </a>
+
+              </div>
+              <div style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;" [routerLink]="['/pricing']"  class="btn btn-bold btn-sm btn-font-sm btn-label-warning"  >UPGRADE</div>
+                  <div style="color:#2c77f4!important;margin-left: 10px;" >Upgrade to enable customer info & location</div>
+
+              </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+          </div>
+
+
+
+  </div>
+  <div class="kt-portlet ">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+      <div class="kt-portlet__head-label">
+
+        <!-- <mat-accordion  class="projAcc">
+          <mat-expansion-panel style="color: #74788d;" [(expanded)]="xpandStatus">
+            <mat-expansion-panel-header [collapsedHeight]="'32px'"
+            [expandedHeight]="'32px'">
+              <mat-panel-title>
+                <div> {{selectedValue?selectedValue:'Select Project'}}</div>
+
+              </mat-panel-title>
+              <mat-panel-description>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row " style="margin: 5px -8px -12px -8px;">
+              <div class="col-lg-12 accordionRadio" *ngFor="let option of projectData">
+                <label class="kt-option ">
+                  <span class="kt-option__control" style="margin-top:-6px;">
+                    <span class="kt-radio">
+                      <input type="radio" name="m_option_1" [value]="selecteOptionValue"
+                      [checked]="option.project_id===projectId" (change)="selectedOption(option)">
+                      <span></span>
+                    </span>
+                  </span>
+                  <span class="kt-option__label">
+                    <span class="kt-option__head">
+                      <span class="kt-option__title">
+                        {{option.project_name}}
+                      </span>
+                      <span class="kt-option__focus">
+
+                      </span>
+                    </span>
+
+                  </span>
+                </label>
+              </div>
+
+            </div>
+          </mat-expansion-panel>
+
+        </mat-accordion> -->
+      </div>
+      <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+  <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+      <i class="la la-long-arrow-left"></i>
+      Back
+  </a> -->
+  &nbsp;
+  <div class="dropdown dropdown-inline">
+      <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+      <!-- </button> -->
+      <!-- <button type="button" class="button button-fill button-rose" style="width: 115px !important;"
+        (click)='dragdrp()' aria-haspopup="true" aria-expanded="false">
+          <i class="flaticon2-indent-dots"></i> Drag & drop
+        </button> -->
+<!-- <button type="button"  (click)='AddForm()' class="button button-fill button-rose" > <i class="flaticon2-plus" ></i> Add New </button> -->
+<button type="button"  (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;" > <i class="fa fa-angle-left"></i> Back	</button>
+
+  </div>
+</div>		</div>
+  </div>
+  <div class="kt-portlet__body" style="padding-bottom: 8px;padding-top: 10px;">
+    <div class="kt-widget kt-widget--user-profile-3" >
+      <div style="display: flex;flex-wrap: wrap;">
+        <div class="kt-widget__top col-xl-6 col-lg-12 col-sm-12" >
+          <div class="kt-widget__media kt-hidden-" style="display: none;">
+            <img src="../../../assets/media/project-logos/3.png" alt="image">
+          </div>
+          <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden">
+            JM
+          </div>
+          <div class="kt-widget__content" style="padding-left: 0px;">
+            <div class="kt-widget__head" style="border-bottom: 1px dashed #ebedf2;">
+              <a class="kt-widget__username kt-hidden">
+                Jason Muller
+                <i class="flaticon2-correct"></i>
+              </a>
+
+              <a class="kt-widget__title">
+                <div style="margin-right: 5px;">{{projectPrefix}}</div>{{projectName}}
+              </a>
+              <!--
+                        <div class="kt-widget__action">
+                            <button type="button" class="btn btn-success btn-sm btn-upper" (click)="addActivity()">add milestone</button>&nbsp;
+                            <button type="button" class="btn btn-brand btn-sm btn-upper" (click)="addTask()">new task</button>
+                            <button type="button" class="btn btn-brand btn-sm btn-upper" (click)="addLocation()"> LOCATION </button>
+                        </div> -->
+            </div>
+
+            <div class="kt-widget__subhead kt-hidden">
+              <a><i class="flaticon2-new-email"></i>jason@siastudio.com</a>
+              <a><i class="flaticon2-calendar-3"></i>PR Manager </a>
+              <a><i class="flaticon2-placeholder"></i>Melbourne</a>
+            </div>
+
+            <div class="kt-widget__desc" style="margin-top: 4px; ">
+              {{cstName!=''?cstName:''}}
+            </div>
+            <div class="kt-widget__subhead" style="border-bottom: 1px dashed #ebedf2;">
+              <a *ngIf="primaryContact.name!='empty'"><i class="flaticon2-calendar-3"></i>
+                {{primaryContact!=''?primaryContact.first_name+' '+primaryContact.last_name:''}} </a>
+              <a *ngIf="primaryContact.email!='empty'"><i
+                  class="flaticon2-new-email"></i>{{primaryContact!=''?primaryContact.email:''}}</a>
+              <a *ngIf="primaryContact.phone!='empty'"><i
+                  class="fa fa-phone"></i>{{primaryContact!=''?primaryContact.phone:''}}</a>
+              <div style="
+              color: #74788d;
+              font-weight: 500;margin-top: 6px;" *ngIf="nearbyAddress!=''"><i
+                  class="flaticon2-placeholder"></i>{{nearbyAddress!=''?nearbyAddress:''}}</div>
+            </div>
+            <div class="kt-widget__info" style="">
+              <div class="kt-widget__desc">
+                {{project_desc}}
+              </div>
+
+
+            </div>
+            <div class="kt-widget__info" style="margin-top: 4px;display: flex; ">
+              <div class="" style="display: flex;">
+
+                <div class="kt-subheader   kt-grid__item" id="kt_subheader"
+                    style="padding:0px ;margin:0px !important">
+
+                    <div  class="kt-subheader__main">
+                      <div style="display: flex;flex-direction:column;">
+                        <div class="kt-subheader__title" style="padding-right: 25px;font-weight: 700;">
+                          Start Date
+                        </div>
+                        <div style="color: black;font-weight: bold;color: #2c77f4;padding-right: 10px;">{{project_end_date| date:'mediumDate'}}</div>
+                      </div>
+                      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+
+                      <div style="display: flex;flex-direction:column;">
+                        <div class="kt-subheader__title" style="padding-right: 25px;font-weight: 700;">
+                          End Date
+                        </div>
+
+                        <div style="color: black;font-weight: bold;padding-right: 10px;    color: #2c77f4;">{{project_end_date| date:'mediumDate'}}</div>
+                      </div>
+                      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+
+                      <div style="display: flex;flex-direction:column;">
+                        <div class="kt-subheader__title" style="padding-right: 10px; font-weight: 700;">
+                          Budgeted Hours
+                        </div>
+                        <div style="color: black;text-align: center;font-weight: bold;color: #2c77f4;;">{{projectProperty.projectBugetedHours| number : '1.2-2'}}</div>
+                      </div>
+                      <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+
+                      <div style="display: flex;flex-direction:column;">
+                        <div class="kt-subheader__title" style="padding-right: 10px;font-weight: 700;">
+                          Total Hours
+                        </div>
+                        <div style="color: black;text-align: center;font-weight: bold;color: #2c77f4;">{{projectProperty.projectWorkedHours| number : '1.2-2'}}</div>
+                      </div>
+
+
+
+
+                    </div>
+
+
+                  </div>
+              </div>
+
+
+
+
+
+            </div>
+
+            <div class="kt-widget__stats d-flex align-items-center flex-fill" >
+
+
+              <div class="kt-widget__item flex-fill" style="margin-top: 10px;" >
+                <span class="kt-widget__subtitel">Progress</span>
+                <div class="kt-widget__progress d-flex  align-items-center">
+                  <div class="progress" style="height: 5px;width: 100%;">
+                    <div class="progress-bar kt-bg-success" role="progressbar"
+                      [style.width]="projectProperty.projectProgressPercent? projectProperty.projectProgressPercent+'%'  : 0 +'%'" aria-valuenow="100"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <span class="kt-widget__stat" style="padding-left: 1rem;
+                  color: #48465b;
+                  font-weight: bold;
+                  font-size: 1.1rem;">
+                    {{projectProperty.projectProgressPercent}}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="costTable col-xl-6 col-lg-12 col-sm-12" style="margin-top: 10px;">
+          <table style="width:100%">
+            <tr>
+
+
+              <th>Gross Total (AED)</th>
+
+              <th>Total  </th>
+
+
+              <th>VAT (5%)</th>
+              <th>Net Total</th>
+
+
+
+            </tr>
+
+            <tr>
+
+              <td>
+                {{projectAttribute.gross_total_amount!=''?(projectAttribute.gross_total_amount| currency:'INR':''):'-'}}
+
+
+
+              </td>
+              <td>
+                {{projectAttribute.total_amount!=''?(projectAttribute.total_amount| currency:'INR':''):'-'}}
+
+
+              </td>
+              <td>
+                {{projectAttribute.vat_amount!=''?(projectAttribute.vat_amount| currency:'INR':''):'-'}}
+
+
+              </td>
+
+              <td>
+                {{projectAttribute.net_total_amount!=''?(projectAttribute.net_total_amount| currency:'INR':''):'-'}}
+
+
+              </td>
+
+
+            </tr>
+
+                </table>
+
+        </div>
+
+      </div>
+      <div>
+
+      </div>
+
+
+      <div class="kt-widget__bottom">
+
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-files-and-folders
+                      " style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.milestoneCount}} {{ projectProperty.milestoneCount>1?'Milestones':'Milestone'}} </span>
+          </div>
+        </div>
+
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.taskCount}}
+              {{projectProperty.taskCount &&  projectProperty.taskCount>1?'Tasks':'Task'}}</span>
+            <!-- <a class="kt-widget__value kt-font-brand">View</a> -->
+          </div>
+        </div>
+
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.overDueCount}}
+              {{projectProperty.overDueCount &&  projectProperty.overDueCount>1?'Overdue':'Overdue'}}</span>
+            <!-- <a class="kt-widget__value kt-font-brand">View</a> -->
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.dueTodayCount}}
+              {{projectProperty.dueTodayCount &&  projectProperty.dueTodayCount>1?'Due today':'Due today'}}</span>
+            <!-- <a class="kt-widget__value kt-font-brand">View</a> -->
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.openTaskCount}}
+              {{ projectProperty.openTaskCount>1?'Open':'Open'}}</span>
+            <!-- <a class="kt-widget__value kt-font-brand">View</a> -->
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.inProgressCount}}
+              {{projectProperty.inProgressCount>1?'In Progress':'In Progress'}}</span>
+
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.assignedCount}}
+              {{projectProperty.assignedCount>1?'Assigned':'Assigned'}}</span>
+
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.unAssignedCount}}
+              {{projectProperty.unAssignedCount>1?'Unassigned':'Unassigned'}}</span>
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+          <div class="kt-widget__icon">
+            <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+          </div>
+          <div class="kt-widget__details">
+            <span class="kt-widget__title">{{projectProperty.completedTaskCount}}
+              {{projectProperty.completedTaskCount>1?'Completed':'Completed'}}</span>
+          </div>
+        </div>
+        <div class="kt-widget__item" style="padding-top: 10px;">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="control-section">
+    <div class="content-wrapper milestAccordion ">
+ <div style="    background-color: white;margin-bottom: 15px;height: 500px;overflow-y: auto;
+">
+<ejs-accordion>
+  <e-accordionitems>
+    <e-accordionitem  expanded='true'>
+      <ng-template #header>
+        <div>Milestone</div>
+      </ng-template>
+      <ng-template #content>
+        <div class="milestoneTabs" style="width:100%">
+          <mat-button-toggle-group #actgroup="matButtonToggleGroup" style="width:100%;" [value]="milestoneTabValue"
+(change)="getAllTaskByActId(actgroup.value)">
+            <mat-button-toggle style="width:100%" *ngFor="let item of milestoneData; let i = index "  [value]="item.milestoneId"><span style="margin-right: 5px;"><i
+                  class="fa fa-tasks"></i></span> {{item.milestoneName}}</mat-button-toggle>
+
+          </mat-button-toggle-group>
+        </div>
+
+      </ng-template>
+    </e-accordionitem>
+
+
+  </e-accordionitems>
+</ejs-accordion>
+<ejs-kanban #kanbanObj cssClass='kanban-overview' (cardRendered)="subTaskItemRenderer($event)"  keyField='status_name'(cancel)='true' [dataSource]='taskDataSource' [cardSettings]='cardSettings' [swimlaneSettings]='swimlaneSettings' (dragStart)='showError($event)' (dragStop)='updateStatus($event)'>
+  <e-columns>
+    <e-column headerText='Open' keyField='Open'  >
+
+    </e-column>
+    <e-column headerText='In Progress' keyField='In Progress' ></e-column>
+
+    <e-column headerText='Completed' keyField='Completed' ></e-column>
+  </e-columns>
+
+
+</ejs-kanban>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+

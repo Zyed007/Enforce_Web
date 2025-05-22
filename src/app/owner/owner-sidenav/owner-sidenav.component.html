@@ -1,0 +1,12 @@
+<mat-nav-list class="padtop0">
+  <div class="logoDiv">
+    <img src="../../../../assets/images/EnforceLogo-white.png" class="responsive" alt="company logo">
+  </div>
+  <mat-divider></mat-divider>
+  <div class="navBar">
+    <a *ngFor="let value of owerMenuListing" mat-list-item routerLink="{{value.route}}" routerLinkActive="list-list-active">
+      <mat-icon>{{value.icon}}</mat-icon>
+      <p class="naveItem">{{value.text}}</p>
+    </a>
+  </div>
+</mat-nav-list>

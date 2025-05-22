@@ -1,0 +1,312 @@
+<div>
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Contract Type</h1>
+    </div>
+    <div class="col-6 teamDiv" *ngIf="serviceListing">
+      <button class='btn btnColorAll' style="margin-left: 20px;" (click)="addServiceDiv()">
+        <i class="fa fa-plus padreq" aria-hidden="true"></i>
+        Service
+      </button>
+      <button class='btn btnColorAll' style="margin-left: 20px;" (click)="backToEstimation()">
+        <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+        Back
+      </button>
+    </div>
+    <div class="col-6 teamDiv" *ngIf="!serviceListing">
+      <button class='btn btnColorAll' style="margin-left: 20px;" (click)="closeAddEditService()">
+        <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+        Back
+      </button>
+    </div>
+  </div>
+    <div class="row rowPad">
+      <div class="col-12 whitee" *ngIf="serviceListing">
+        <ejs-grid #serviceGrid [dataSource]='serviceTableData' (created)='serviceSearchKeyUp()'  [toolbar]='employeeGridToolItems' height='300px'>
+          <e-columns>
+            <e-column field='createdDate' headerText='Created Date'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column field='createdBy' headerText='Created By'></e-column>
+            <e-column field='serviceName' headerText='Service Name'>
+              <ng-template #template let-data>
+                <div style="display: flex;">
+                  <p style="margin-bottom: 0px;">{{data.serviceName}}</p>
+                  <span *ngIf="data.isDefault" class="defaulthjj">
+                    Default
+                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="this Contract Type will be set automatically while creating a new project." placement="top"></i>
+                  </span>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column headerText='No. of Milestone'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.milestone?.length}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column headerText='Action'>
+              <ng-template #template let-data>
+                <div>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editSingleService(data)"></i>
+                  <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteService(data)"></i>
+                </div>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+
+      <div class="col-11 whitee" *ngIf="!serviceListing">
+        <form [formGroup]="addServiceForm">
+          <div class="firstdiv">
+            <div class="row rowimp">
+              <div class="col-2 marAuto">
+                <label class="labimp">Add a Contract Type</label>
+              </div>
+              <div class="col-4">
+                <input type="text" formControlName="serviceName" class="e-input" placeholder="Enter a Contract Type">
+                <div class="errorTxt" *ngIf="serviceName?.invalid && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                  *Contract Type is required
+                </div>
+              </div>
+              <div class="col-3">
+                <ejs-checkbox label="set as Default Contract Type" formControlName="isDefault"></ejs-checkbox>
+                <i class="fa fa-info-circle matpointer" container="body" ngbTooltip="if checked then this Contract Type will be set automatically while creating a new project." placement="top"></i>
+              </div>
+            </div>
+            <div class="row rowimp" style="margin-top: 20px;">
+              <div class="col-2 marAuto">
+                <label class="labimp">Select a Service/MileStone</label>
+              </div>
+              <div class="col-4 marAuto" *ngIf="!newMilestone">
+                <ejs-dropdownlist formControlName="milestone" [dataSource]='milestoneDropDownData' [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Service/MileStone' (change)="changeMileStone($event)"></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="milestone?.invalid && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                  *Service/MileStone is required
+                </div>
+                <div style="padding-top: 10px;">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  <label style="margin-left: 5px;cursor: pointer;" class="labimp" (click)="addMilestoneModel()">Add a New Service/MileStone</label>
+                </div>
+              </div>
+              <div class="col-4 marAuto" *ngIf="newMilestone">
+                <div>
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  <label style="margin-left: 5px;cursor: pointer;" class="labimp" (click)="addMilestoneModel()">
+                    Please add a New Service/MileStone
+                  </label>
+                </div>
+              </div>
+              <div class="col-3" style="margin: auto;" *ngIf="!newMilestone">
+                <ejs-checkbox label="{{isWrapForMile ? 'Unbundle' : 'Bundle'}}" [checked]="isWrapForMile" (change)="isWrapMi($event)"></ejs-checkbox>
+                <i class="fa fa-info-circle matpointer" container="body" ngbTooltip="by checking the subsequent Milestone or Service. In the estimation page, tasks will be shown as Standalone Services and must be chosen one at a time" placement="top"></i>
+              </div>
+
+            </div>
+          </div>
+          <div class="row rowimp seconddiv" *ngIf="showMilestoneTaskTable">
+            <div class="col">
+              <table class="table" style="margin-bottom: 0rem;">
+                <thead>
+                  <tr>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col" style="width:10%">Hours</th>
+                    <th scope="col" style="width:10%">Minutes</th>
+                    <th scope="col" style="width:12%">Time in Decimal</th>
+                    <th scope="col" style="width:15%">Rule</th>
+                    <th scope="col" style="text-align: center;">Delete</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="taskList">
+                  <tr *ngFor="let task of taskList.controls; let i=index" [formGroupName]="i">
+                    <td>
+                      <input type="text" class="e-input" placeholder="Enter a Task Name" formControlName="taskName">
+                      <div class="errorTxt" *ngIf="taskList.controls[i].get('taskName')?.errors?.required && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                        *Task Name is required
+                      </div>
+                    </td>
+                    <td>
+                      <textarea rows="1" class="e-input" formControlName="taskDescription"></textarea>
+                    </td>
+                    <td>
+                      <input type="number" class="e-input" placeholder="Enter Hr" formControlName="taskHours">
+                    </td>
+                    <td>
+                      <input type="number" class="e-input" placeholder="Enter Min" formControlName="taskMinutes">
+                      <div class="errorTxt" *ngIf="taskList.controls[i].get('taskMinutes')?.errors?.max && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                        *Minutes can't be more than 60 minutes
+                      </div>
+                    </td>
+                    <td style="display: none;">
+                      {{retureHrsMinConvertedDecimal(task, i)}}
+                    </td>
+                    <td>
+                      <div style="text-align: center;">
+                        <input type="number" class="e-input impe" placeholder="Enter Time" formControlName="timeConverted">
+                      </div>
+                    </td>
+                    <td>
+                      <ejs-dropdownlist formControlName="rules" [dataSource]='ruleData' [fields]='commonFields'></ejs-dropdownlist>
+                      <div class="errorTxt" *ngIf="taskList.controls[i].get('rules')?.errors?.required && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                        *Rule is required
+                      </div>
+                    </td>
+                    <td>
+                      <div style="text-align: center;">
+                        <i class="fa fa-trash commonBtn" [ngClass]="checkRowToDisable() ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteTaskRow(i)"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <div>
+                    <button class="btn reqbtn"(click)="addNewTask()">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      <p style="margin-bottom: 4px; margin-top: 0px;">Add New Task</p>
+                    </button>
+                  </div>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <form [formGroup]="addCostInfltForm">
+            <div class="row rowimp extraMargin">
+
+
+
+
+
+                <div class="col-2" *ngIf="!newMilestone">
+                  <label class="labimpn"> Inflate Cost By
+
+                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="The subsequent Field Indicates the type of Area you wish to increase the pricing for." placement="top"></i>
+
+
+                  </label>
+                  <ejs-dropdownlist  formControlName="inflateby"    [dataSource]='costinflatorDropDownData' [fields]='commonFields' [allowFiltering]='true' placeholder = 'select a Cost inflator' (change)="changeCostInflator($event)"></ejs-dropdownlist>
+                </div>
+
+                <div class="col-3.5" *ngIf="!newMilestone">
+                  <label class="labimpn">Values above is effective upto<span *ngIf=" infltUnit === 'Floors'"> Floors </span> <span *ngIf=" infltUnit != 'Floors'"> sq-ft </span>
+
+                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="The subsequent Field Set the cutoff/Threshold point at which the cost inflation rule will take effect." placement="top"></i>
+
+                  </label>
+                  <input  formControlName="maxMeasur"    type="number" class="e-input limTxtInput" placeholder="Maximum sq-ft Area" >
+                </div>
+
+                <div class="col-3.5" *ngIf="!newMilestone">
+                  <label class="labimpn"> Above Threshold for Each  <span *ngIf=" infltUnit === 'Floors'"> Floors </span> <span *ngIf=" infltUnit != 'Floors'"> sq-ft </span>
+
+                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="The field  provide the cost rule based on the exceeded threshold." placement="top"></i>
+
+                  </label>
+                  <input formControlName="perIncMet" type="number" class="e-input limTxtInput"  placeholder="Enter Addtional sq-ft Area" >
+                </div>
+
+
+                <div class="col-3.5" *ngIf="!newMilestone">
+                  <label class="labimpn">Cost will Increase by following %
+
+                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="How much percent Cost that needs to be inflated" placement="top"></i>
+
+                  </label>
+                  <input formControlName="perIncPer" type="number" class="e-input limTxtInput" placeholder="Enter % of Cost Inflation" >
+                </div>
+
+              <!-- <div class="col-2" *ngIf="!newMilestone">
+                <button class="btn buttonSt btnScc" >
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px;">Save Metric </p>
+                </button>
+              </div> -->
+
+
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-12 text-center">
+                <b>  Note:  </b><label class="labimp">  The Cost Inflation Rule will be Applicable for all Milestone and Task of the given Contract Type</label>
+              </div>
+          </div>
+
+
+
+          <div class="row rowimp thirddiv">
+            <div class="col">
+              <button class="btn buttonSt btnScc" (click)="saveService()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                <p style="margin-bottom: 4px; margin-top: 0px;">Save Service</p>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" id="Add_Milestone_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 800px;">
+      <div class="modal-content notifyModal" >
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title">Add Service/MileStone</h5>
+          <button type="button" class="close" (click)="closeaddMilestoneModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          <form [formGroup]="addMilestoneNameForm">
+            <div class="row">
+              <div class="col-6">
+                <label for="nameArea" style="padding-right: 5px;">Service/MileStone Name</label>
+                <input formControlName="mileStoneName" type="text" class="e-input" placeholder="Enter a milestone name">
+                <div class="errorTxt" *ngIf="addMilestoneNameForm.get('mileStoneName').hasError('required') && formSubmitAttemptForMilestone">
+                  *Service/MileStone is required
+                </div>
+                <div class="errorTxt" *ngIf="milestoneSameNameError">
+                  *Service/MileStone name can not be the same in a same service.
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div style="margin-top: 23px;" *ngIf="allMilestoneDropDownData?.length !== 0">
+            <div class="row">
+              <div class="col-4" style="margin: auto 0px;">
+                <label>Select a Service/MileStone to copy from</label>
+              </div>
+              <div class="col-6">
+                <ejs-dropdownlist #copyTaskDropdown [dataSource]='allMilestoneDropDownData' [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Service/MileStone' (change)="choseAMileStone($event)"></ejs-dropdownlist>
+              </div>
+              <div class="col-2"></div>
+              <div class="col-12" *ngIf="showAllTaskTable">
+                <ejs-grid #allTaskGrid (rowSelected)='rowSelected()' (rowDeselected)="rowSelected()" style="margin-top: 15px;" [dataSource]='allTaskData' height='300px' allowTextWrap='true'>
+                  <e-columns>
+                    <e-column type='checkbox' width='50' textAlign='Center'></e-column>
+                    <e-column field='task_name' headerText='Task Name' width='70'></e-column>
+                    <e-column field='task_description' headerText='Description' width='70'></e-column>
+                    <e-column field='qty' headerText='Time in Decimal' width='80'></e-column>
+                    <e-column field='unit' headerText='Rule' width='80'></e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="footerdiv">
+          <button class="btn buttonSt btnScc" (click)="saveMileStone()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            <p style="margin-bottom: 4px;margin-top: 2px;">Save Service/MileStone</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

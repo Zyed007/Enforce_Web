@@ -1,0 +1,82 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Vendor Attachment Type</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openVenDoc('Add')" *ngIf="venDocListListing">Add Vendor Attachment Type</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToVendorDoc()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div *ngIf="venDocListListing">
+      <ejs-grid #vendDocGrid [dataSource]='docVendorTableData' (created)='serviceSearchKeyUp()' [toolbar]='docVenGridToolItems' height='300px'>
+        <e-columns>
+          <e-column field='createdDate' headerText='Created Date'>
+            <ng-template #template let-data>
+              <div>
+                <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field='createdBy' headerText='Created By'></e-column>
+          <e-column field='name' headerText='Activity'></e-column>
+          <e-column field='description' headerText='Description'></e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="openVenDoc(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteVendDoc(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="pad2515" *ngIf="!venDocListListing">
+      <div class="row" [formGroup]="docVendorForm">
+        <div class="col-6">
+          <label style="font-size: 15px;font-weight: 500;margin-bottom: 15px;">
+            Document Details
+          </label>
+          <p style="font-size: 10px; margin-bottom: 8px; color: #837d7d;">
+            You have the option to set the documents required to while adding new vendor. You will be able to track the expiry date if required and you will have the option to make the required document mandatory for creating a vendor.
+          </p>
+          <div class="row">
+            <div class="col-6">
+              <label class="labelcss">Document Name</label>
+              <input class="e-input" type="text" placeholder="Enter name" formControlName="docName" />
+              <div class="errorTxt" *ngIf="docVendorForm.controls['docName']?.errors?.required && formSubmitAttemptForDocument">
+                *Document Name is required
+              </div>
+            </div>
+            <div class="col-6">
+              <label class="labelcss">Description</label>
+              <textarea class="e-input" rows="1" formControlName="docDesc" placeholder="Enter Description"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label style="font-size: 15px;font-weight: 500;margin-bottom: 50px;">
+            Rules
+          </label>
+          <div style="margin-bottom: 15px;">
+            <label class="labelcss">This document is mandatory
+              <i class="fa fa-info-circle matpointer" container="body" ngbTooltip="You cannot proceed without adding this document" placement="top"></i>
+            </label>
+            <ejs-switch formControlName="isRequired" style="margin-left: 10px;"></ejs-switch>
+          </div>
+          <div>
+            <label class="labelcss">Track expire date</label>
+            <ejs-switch formControlName="isExpiryReq" style="margin-left: 10px;"></ejs-switch>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 20px;">
+        <button class='btn btnColorAlll' (click)="submitDoc()">
+          {{docFormTypeData === 'Add' ? 'Save' : 'Update'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

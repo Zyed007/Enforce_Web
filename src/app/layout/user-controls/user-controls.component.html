@@ -1,0 +1,469 @@
+<!-- begin:: Subheader -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css" />
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+
+              User Controls                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                          Controls                        </a>
+
+
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+
+    </div>
+</div>
+<!-- end:: Subheader -->
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content"  *ngIf="showUserControls">
+
+
+
+                            <!-- begin:: Content -->
+            <div  class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                    <!-- <span class="kt-portlet__head-icon">
+                        <i class="kt-font-brand flaticon2-line-chart"></i>
+                    </span> -->
+                    <h3 class="kt-portlet__head-title">
+                      Controls
+                    </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-wrapper">
+            <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                <i class="la la-long-arrow-left"></i>
+                Back
+            </a> -->
+            &nbsp;
+            <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-wrapper">
+            <div class="kt-portlet__head-actions">
+                <!-- <div class="dropdown dropdown-inline">
+                    <button type="button" class="button button-fill button-rose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="la la-download"></i> Export
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" style="">
+                        <ul class="kt-nav">
+
+                            <li class="kt-nav__item">
+                                <a (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Hifza'}})" class="kt-nav__link">
+                                    <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                                    <span class="kt-nav__link-text">Excel</span>
+                                </a>
+                            </li>
+                            <li class="kt-nav__item">
+                                    <a (click)="exporter.exportTable('json')" class="kt-nav__link">
+                                        <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                                        <span class="kt-nav__link-text">PDF</span>
+                                    </a>
+                                </li>
+
+                        </ul>
+                    </div>
+                </div> -->
+                &nbsp;
+                <div class="dropdown dropdown-inline">
+                        <!-- <button type="button" class="button button-fill button-rose"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+                                <i class="flaticon2-plus" ></i> Add New
+                            </button> -->
+ <button type="button"  (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;" > <i class="fa fa-angle-left"></i> Back	</button>
+
+
+                </div>
+
+            </div>
+            </div>		</div>
+
+          </div>		</div>
+            </div>
+
+
+            <div class="kt-portlet__body"  style=" border-bottom-color: #f0f3ff;height: 482px;
+            padding: 10px 25px;
+            color: #595d6e;" >
+
+                      <div class="kt-subheader   kt-grid__item" id="kt_subheader" *ngIf='headerText.length!=0' style="
+                      background-color: #ffff;margin-bottom: 0px;margin-top: 0px;"  >
+                        <ejs-tab id="element" heightAdjustMode='Auto'  overflowMode='Popup' (selected)="tabSelected($event)" [selectedItem]="index" >
+                          <e-tabitems>
+                                      <e-tabitem  *ngFor='let header of headerText' [header]='header'>
+                                        <ng-template #content *ngIf='header.text=="USER"' >
+                                            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+                                                                    <ejs-grid #grid [dataSource]='dataSource' allowTextWrap='true'  height="315px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                                                                    [allowExcelExport]='true' [allowPdfExport]='true'   >
+                                                                      <e-columns>
+
+
+
+                                                                        <e-column field='full_name' headerText='Employee Name' textAlign='' width=150>
+                                                                            <ng-template #template let-data>
+
+                                                                                <div>{{data.full_name}}, {{data.designation_name}}</div>
+                                                            <div>{{data.workemail}}</div>
+                                                                        </ng-template>
+                                                                          </e-column>
+
+
+                                                                          <e-column field='' headerText='' textAlign='' width=400>
+                                                                            <ng-template #template let-data>
+
+                                                                               <div style="display: flex;" >
+
+                                                                                        <div *ngFor="let role of data.EmployeeRole" style="border-radius: 2rem;
+                                                                                         color: #2c77f4;
+                                                                                         border-color: #2c77f4;" class="btn btn-elevate btn-pill">
+                                                                                             {{role.role_name}}<span (click)="removeEmpRoles(data.id,role.id,'User')"><i class="fa fa-times"></i></span>
+                                                                                         </div>
+
+                                                                            </div>
+
+
+                                                                        </ng-template>
+                                                                          </e-column>
+
+                                                                          <e-column type='' headerText=''  width='140'>
+                                                                            <ng-template #template let-data>
+                                                                              <div class="" style="text-align: left;
+                                                                              font-size: 10px;
+                                                                              font-weight: 800;">
+                                                                                <span  (click)='AddRoles(data.id,"User")' style="padding: 8px 15px; border-color: #ffdca7;
+                                                                                background-color: #fff9f0;
+                                                                                color: #fa9443;cursor: pointer;" class="">{{data.EmployeeRole.length==0?'ADD ROLES':'ADD ROLES'}}</span>
+
+
+                                                                              </div>
+                                                                               <!-- <button type="button" class="button button-fill button-rose" style="width: 75px !important;"
+                                                                              (click)='ConvertToProj(data.id)'   aria-haspopup="true" aria-expanded="false">
+                                                                               Convert<i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 4px;" ></i>
+                                                                            </button>   -->
+                                                                            </ng-template>
+                                                                        </e-column>
+                                                                      </e-columns>
+                                                                      </ejs-grid>
+
+                                                </div>
+                                      </ng-template>
+
+
+                                      <ng-template #content *ngIf='header.text=="DEPARTMENT"' >
+                                        <div  style="
+
+        ">
+                      <ejs-grid [dataSource]='deptList' #grid height="315px" [searchSettings]='searchOptions'   [sortSettings]='initialSort' [toolbar]='toolbar' (toolbarClick)='toolbarClick($event)'
+                      [allowExcelExport]='true' [allowPdfExport]='true'   >
+                        <e-columns>
+                            <e-column field='dep_name' headerText='Department Name' width=200></e-column>
+                            <e-column field='' headerText='' textAlign='' width=400>
+                              <ng-template #template let-data>
+
+                                 <div style="display: flex;" >
+
+                                          <div *ngFor="let role of data.DepartmentRole" style="border-radius: 2rem;
+                                           color: #2c77f4;
+                                           border-color: #2c77f4;" class="btn btn-elevate btn-pill">
+                                               {{role.role_name}}<span (click)="removeEmpRoles(data.id,role.id,'Department')"><i class="fa fa-times"></i></span>
+                                           </div>
+
+                              </div>
+
+
+                          </ng-template>
+                            </e-column>
+                            <!-- <e-column type='' headerText='Actions'  width='200'>
+                                <ng-template #template let-data>
+
+                                        <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.department_id)"> <i class="la la-edit"></i> </a>
+
+
+                                </ng-template>
+                            </e-column> -->
+                            <e-column type='' headerText=''  width='140'>
+                                <ng-template #template let-data>
+                                  <div class="" style="text-align: left;
+                                  font-size: 10px;
+                                  font-weight: 800;">
+                                    <!-- <span  (click)='ConvertToQtn(data.project_id,data.project_name)' style="padding: 8px 15px; border-color: #ffdca7;
+                                    background-color: #fff9f0;
+                                    color: #fa9443;cursor: pointer;" class="">ADD ROLES</span> -->
+                                    <span  (click)='AddRoles(data.id,"Department")' style="padding: 8px 15px; border-color: #ffdca7;
+                                    background-color: #fff9f0;
+                                    color: #fa9443;cursor: pointer;" class="">ADD ROLES</span>
+
+
+
+                                  </div>
+                                   <!-- <button type="button" class="button button-fill button-rose" style="width: 75px !important;"
+                                  (click)='ConvertToProj(data.id)'   aria-haspopup="true" aria-expanded="false">
+                                   Convert<i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 4px;" ></i>
+                                </button>   -->
+                                </ng-template>
+                            </e-column>
+
+                        </e-columns>
+                        </ejs-grid>
+
+                                        </div>
+                                     </ng-template>
+                                      </e-tabitem>
+
+                                  </e-tabitems>
+                              </ejs-tab>
+
+
+                      </div>
+
+
+
+
+
+            </div>
+        </div>
+    	</div>
+        <div class="rightModal">
+
+            <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="roles_modal" data-backdrop="static"
+                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content notifyModal">
+                    <div class="modal-header" style="padding: 8px 15px;">
+                      <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Role</h5>
+                      <button type="button" class="close" data-dismiss="modal" (click)="OnRoleClose()" aria-label="Close">
+                      </button>
+                    </div>
+
+
+                    <div class="modal-body" style="
+                        overflow-y: auto;
+                        overflow-x: hidden;">
+
+                      <div class="kt-demo-panel__body ">
+                        <div class="kt-demo-panel__item ">
+                            <div class="kt-widget2" style="width:100%;margin-left:-8px" >
+  <div *ngIf="showUserDetails" >
+
+                                <div class="kt-widget2__item kt-widget2__item--primary"
+                                >
+
+                                <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                  >
+                                  <a class="kt-widget2__username">
+                                     Employee Name
+                                    <!-- <span style="font-size: 10px;"
+                                      [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                                    </span> -->
+                                  </a>
+                                  <!-- <a class="kt-widget2__username">
+                                    {{item.priority}}
+
+                                  </a> -->
+                                  <a class="kt-widget2__title">
+                                  <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.full_name}}</span>
+                                  </a>
+
+
+                                </div>
+                            </div>
+                            <div class="kt-widget2__item kt-widget2__item--primary">
+
+                                <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                >
+                                <a class="kt-widget2__username">
+                                  Email
+                                  <!-- <span style="font-size: 10px;"
+                                    [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                                  </span> -->
+                                </a>
+                                <!-- <a class="kt-widget2__username">
+                                  {{item.priority}}
+
+                                </a> -->
+                                <a class="kt-widget2__title">
+                                  <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.workemail}}</span>
+
+                                </a>
+
+
+                              </div>
+                      </div>
+                            <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="employeeDetails.dep_name!=''">
+
+                                <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                >
+                                <a class="kt-widget2__username">
+                                  Department
+                                  <!-- <span style="font-size: 10px;"
+                                    [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                                  </span> -->
+                                </a>
+                                <!-- <a class="kt-widget2__username">
+                                  {{item.priority}}
+
+                                </a> -->
+                                <a class="kt-widget2__title">
+                                  <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.dep_name}}</span>
+
+                                </a>
+
+
+                              </div>
+                      </div>
+
+                                <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="employeeDetails['designation_name']!='' && employeeDetails.designation_name!=null ">
+
+                                <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                >
+                                <a class="kt-widget2__username">
+                                  Designation
+                                  <!-- <span style="font-size: 10px;"
+                                    [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                                  </span> -->
+                                </a>
+                                <!-- <a class="kt-widget2__username">
+                                  {{item.priority}}
+
+                                </a> -->
+                                <a class="kt-widget2__title">
+                                    <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.designation_name}}</span>
+                                </a>
+
+
+                              </div>
+                            </div>
+                            <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="employeeDetails.employeeRole.length!=0">
+
+                              <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                              >
+                              <a class="kt-widget2__username">
+                                Existing Roles
+                                <!-- <span style="font-size: 10px;"
+                                  [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                                </span> -->
+                              </a>
+                              <!-- <a class="kt-widget2__username">
+                                {{item.priority}}
+
+                              </a> -->
+                              <a class="kt-widget2__title">
+                                <!-- <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.dep_name}}</span> -->
+                                <div style="display: flex;" >
+
+                                  <div *ngFor="let role of employeeDetails.employeeRole;let isLast=last" >
+                                       {{role.role_name}}{{isLast ? '' : ', '}}
+                                   </div>
+
+                      </div>
+                              </a>
+
+
+                            </div>
+                    </div>
+
+
+                            </div>
+  <div *ngIf="!showUserDetails" >
+
+                            <div class="kt-widget2__item kt-widget2__item--primary">
+
+                              <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                              >
+                              <a class="kt-widget2__username">
+                                Department
+                                <!-- <span style="font-size: 10px;"
+                                  [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                                </span> -->
+                              </a>
+                              <!-- <a class="kt-widget2__username">
+                                {{item.priority}}
+
+                              </a> -->
+                              <a class="kt-widget2__title">
+                                <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.dep_name}}</span>
+
+                              </a>
+
+
+                            </div>
+                    </div>
+                    <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="employeeDetails.departmentRole && employeeDetails.departmentRole.length!=0">
+
+                      <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                      >
+                      <a class="kt-widget2__username">
+                        Existing Roles
+                        <!-- <span style="font-size: 10px;"
+                          [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                        </span> -->
+                      </a>
+                      <!-- <a class="kt-widget2__username">
+                        {{item.priority}}
+
+                      </a> -->
+                      <a class="kt-widget2__title">
+                        <!-- <span style="margin-right: 4px;"> </span> <span style="font-size: 13px;">{{employeeDetails.dep_name}}</span> -->
+                        <div style="display: flex;" >
+
+                          <div *ngFor="let role of employeeDetails.departmentRole;let isLast=last" >
+                               {{role.role_name}}{{isLast ? '' : ', '}}
+                           </div>
+
+              </div>
+                      </a>
+
+
+                    </div>
+            </div>
+                    </div>
+
+                            </div>
+                          <div class="form-group row" >
+                            <div class="col-lg-12 col-sm-12">
+            <form [formGroup]="rolesForm"   style="padding-left:4px; ">
+                <label for="exampleTextarea">Roles</label>
+
+                                    <ejs-multiselect id='multiselect-checkbox' #checkbox [dataSource]="employeeRole" [placeholder]='checkWaterMark' [enableSelectionOrder]='false' [fields]='checkFields'
+                                   [showDropDownIcon]='true' formControlName="roleModule" showSelectAll='true'  [filterBarPlaceholder]='filterBarPlaceholder' ></ejs-multiselect>
+              </form>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="kt-align-right modal-footer bottomBtn">
+
+                      <button type="Submit" [disabled]='' class="button button-fill button-rose"
+                       (click)="SubmitRoles()" >SUBMIT</button>
+
+                      <button type="reset" class="btn btn-secondary" style="width: 90px;
+                          padding: 7px 14px;font-size: 11px;
+                          margin-top: -1px;" (click)="OnRoleClose()">CANCEL
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+</div>
+<div *ngIf="!showUserControls" >
+  <app-not-found></app-not-found>
+</div>
+

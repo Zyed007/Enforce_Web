@@ -1,0 +1,148 @@
+<div>
+    <div class="row pad2515">
+      <div class="col">
+        <h1 class="labelMainHeader">Building Type</h1>
+      </div>
+      <div class="col-6 teamDiv" *ngIf="prjtListing" >
+        <button class='btn btnColorAll' style="margin-left: 20px;" (click)="addProjectClsSteps()">
+          <i class="fa fa-plus padreq" aria-hidden="true"></i>
+         Add Building Type
+        </button>
+        <button class='btn btnColorAll' style="margin-left: 20px;" (click)="backToProject()"    >
+          <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+          Back
+        </button>
+      </div>
+      <div class="col-6 teamDiv" *ngIf="!prjtListing">
+        <button class='btn btnColorAll' style="margin-left: 20px;" (click)="closeAddEditListing()"  >
+          <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+          Back
+        </button>
+      </div>
+    </div>
+
+
+    <div class="row rowPad">
+        <div class="col-12 whitee" *ngIf="prjtListing">
+            <!-- <h2> Listing Goes Here  </h2> -->
+          <ejs-grid #closingServGrid [dataSource]='closingStepsServ' (created)='serviceSearchKeyUp()'  [toolbar]='employeeGridToolItems' height='300px'>
+            <e-columns>
+              <e-column field='created_date' headerText='Created Date'>
+                <ng-template #template let-data>
+                  <div>
+                    <p style="margin-bottom: 0px;">{{data.created_date | date}}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field='createdByName' headerText='Created By'></e-column>
+              <e-column field='typeName' headerText='Template Name'>
+                <ng-template #template let-data>
+                  <div style="display: flex;">
+                    <p style="margin-bottom: 0px;">{{data.typeName}}</p>
+                    <!-- <span *ngIf="data.isDefault" class="defaulthjj">
+                      Default
+                      <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="this Contract Type will be set automatically while creating a new project." placement="top"></i>
+                    </span> -->
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column headerText='No. of Units'>
+                <ng-template #template let-data>
+                  <div>
+                    <p style="margin-bottom: 0px;">{{data.buildingEntity?.length}}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column headerText='Action'>
+                <ng-template #template let-data>
+                  <div>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Building type" container="body"  (click)="editTmplt(data)"  ></i>
+                    <!-- <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Template" container="body" ></i> -->
+                  </div>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+  
+        <div class="col-11 whitee" *ngIf="!prjtListing">
+            <!-- <h2> Create steps Form  </h2> -->
+          <form [formGroup]="addBuildingTypeFrm">
+            <div class="firstdiv">
+              <div class="row rowimp">
+                <div class="col-2 marAuto">
+                  <label class="labimp">Add Building Type Name
+                    <i class="fa fa-info-circle matpointer" placement="left" ngbTooltip="Building Type is an essential to identify the structure of the Scope of Work" container="body"></i> 
+                  </label>
+                </div>
+                <div class="col-4">
+                  <input type="text" formControlName="serTermName" class="e-input" placeholder="Enter a Building Type Name">
+                  <div class="errorTxt" *ngIf="addBuildingTypeFrm.controls['serTermName'].invalid">
+                    *Building Type Name  is required
+                  </div>
+                </div>
+              
+              </div>
+             
+            </div>
+            <div class="row rowimp seconddiv" >
+              <div class="col">
+                <table class="table" style="margin-bottom: 0rem;">
+                  <thead>
+                    <tr>
+                     
+                      <th scope="col">Units Name</th>
+                      <th scope="col">Description</th>
+              
+                 
+                      
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="taskList">
+                    <tr *ngFor="let task of taskList.controls; let i=index" [formGroupName]="i">
+
+                    
+
+                      <td>
+                        <input type="text" class="e-input" placeholder="Enter a Unit Name" formControlName="taskName">
+                        <div class="errorTxt" *ngIf="taskList.controls[i].get('taskName')?.errors?.required">
+                          *Task Name is required
+                        </div>
+                      </td>
+                      <td>
+                        
+                        <textarea rows="1" class="e-input" formControlName="taskDescription"></textarea>
+                      </td>
+                      <!--  -->
+
+                        
+                      <td>
+                        <div style="text-align: center;">
+                          <i class="fa fa-trash commonBtn" [ngClass]="checkRowToDisable() ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteTaskRow(i)"></i>
+                        </div>
+                      </td>
+                 
+                    </tr>
+                    <div>
+                      <button class="btn reqbtn"(click)="addNewTask()">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <p style="margin-bottom: 4px; margin-top: 0px;">Add New Unit</p>
+                      </button>
+                    </div>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row rowimp thirddiv">
+              <div class="col">
+                <button class="btn buttonSt btnScc" (click)="saveClosingSteps()" >
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px;">  {{ editMdSelected ? 'Update Building Type' : 'Save Building Type' }}    </p>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+</div>
+

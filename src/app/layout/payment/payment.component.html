@@ -1,0 +1,266 @@
+<div class="mainbox">
+  <div style="padding: 10px;display: flex;justify-content: flex-end;">
+    <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+      (click)="createPaymentVoucher()">Create Payment Voucher</button>
+
+  </div>
+  <ejs-tab id="element" #tabObjlist heightAdjustMode="Auto" overflowMode="None" (selected)='onTabChange($event)'>
+    <e-tabitems>
+      <e-tabitem *ngFor="let header of Tabs;let i = index" [header]="header" style="padding-bottom: 10px;">
+        <ng-template #content>
+          <ejs-grid #paymentVoucherGrid [dataSource]='filteredPaymentVouchers' height='400px'
+            [toolbar]="employeeGridToolItems" allowTextWrap='true'>
+            <e-columns>
+              <e-column field='created_date' headerText='Date' textAlign='' width=120>
+                <ng-template #template let-data>
+                  <span style="text-transform: capitalize;">{{data.created_date| date : "dd/MM/y"}}</span>
+                </ng-template>
+              </e-column>
+              <e-column field='voucher_id' headerText='Payment Voucher Id' width='120'></e-column>
+              <!-- <e-column field='name' headerText='Payroll' width='110'></e-column> -->
+              <e-column field='amount' headerText='Amount' width='110'></e-column>
+              <e-column field='method' headerText='Payment Method' width='110'></e-column>
+              <!-- <e-column field='emp_count' headerText='Employee Count' width='110'></e-column> -->
+              <e-column field='created_by' headerText='Created By' width='110'></e-column>
+              <e-column field='status' headerText='Status' width='110'></e-column>
+
+              <e-column type='' textAlign='' headerText='Actions' width='130' headerTextAlign="Center"
+                textAlign='Center'>
+                <ng-template #template let-data>
+                  <div *ngIf="i==0">
+                    <a title="Click to view details, edit, approve, or reject"
+                      class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="viewPaymentVoucherDetails(data)">
+                      <i class="fa fa-pencil-square-o"></i> </a>
+
+                  </div>
+
+                  <div *ngIf="i==2" style="display: flex;justify-content: center;gap: 2px;">
+                    <button title="Click to view details" class="custbtn" (click)="viewPaymentVoucherDetails(data)">Mark
+                      As
+                      Paid</button>
+                    <button title="Click to revert payroll" class="custbtn"
+                      (click)="handleRevertPaymentVoucher(data)">Revert</button>
+                  </div>
+                  <div *ngIf="i==4 || i==3">
+                    <a title="Click to view details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                      (click)="viewPaymentVoucherDetails(data)">
+                      <i class="fa fa-eye"></i> </a>
+                  </div>
+
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+        </ng-template>
+      </e-tabitem>
+    </e-tabitems>
+  </ejs-tab>
+
+</div>
+
+<ng-template #apprMarkPaidModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Payment Voucher</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="height: 720px;overflow-x: hidden	;overflow-y: scroll;">
+    <div>
+      <div class="d-flex justify-content-end p-3">
+        <button class="btn btn-primary " (click)="handleAdditonalInfo()">{{showAdditionalInfo?'Hide Details':'Show
+          Details'}}</button>
+      </div>
+
+      <div *ngIf="showAdditionalInfo">
+        <div class="mt-5">
+
+          <!-- Info Section in a Card -->
+          <div style="display: flex;justify-content: center;">
+            <div class="card" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 6px;width: 600px;">
+              <div class="card-body">
+                <h4 class="card-title mb-4 text-center">Employee Information</h4>
+                <hr style="border-top: 2px solid #e3165b; margin: 15px 0;">
+                <div style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+            ">
+                  <div style="
+                height: 80px;
+                width: 80px;
+                margin-bottom: 5px;
+                border-radius: 50%;
+                overflow: hidden;
+              ">
+                    <img class="images" [src]="singleEmployeeData.imgurl_id"
+                      style="width: 100%; height: 100%; object-fit: cover" />
+                  </div>
+
+                  <h3>{{ singleEmployeeData.full_name }}</h3>
+                </div>
+                <div class="row">
+                  <!-- Left Column -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <h6 class="text-muted">Last Working Day</h6>
+                      <p class="font-weight-bold">{{ finalSettlementData.last_work_date | date: 'longDate' }}</p>
+                    </div>
+                    <div class="mb-3">
+                      <h6 class="text-muted">Last Basic Salary</h6>
+                      <p class="font-weight-bold">{{ finalSettlementData.last_basic_salary | currency:'AED ' }}</p>
+                    </div>
+                    <div class="mb-3">
+                      <h6 class="text-muted">Joined Date</h6>
+                      <p class="font-weight-bold">{{ finalSettlementData.join_date | date: 'longDate' }}</p>
+                    </div>
+                    <div class="mb-3">
+                      <h6 class="text-muted">Labour Contract End Date</h6>
+                      <p class="font-weight-bold">{{ finalSettlementCalDetails.labour_exp_date | date: 'longDate' }}</p>
+                    </div>
+                  </div>
+
+                  <!-- Right Column -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <h6 class="text-muted">Termination Type</h6>
+                      <p class="font-weight-bold">{{ singleEmployeeData.term_type }}</p>
+                    </div>
+                    <div class="mb-3">
+                      <h6 class="text-muted">Years of Service</h6>
+                      <p class="font-weight-bold">{{ finalSettlementCalDetails.durationWords }}</p>
+                    </div>
+                    <div class="mb-3">
+                      <h6 class="text-muted">Contract Start Date</h6>
+                      <p class="font-weight-bold">{{ finalSettlementCalDetails.con_start | date: 'longDate' }}</p>
+                    </div>
+                    <div class="mb-3">
+                      <h6 class="text-muted">Contract End Date</h6>
+                      <p class="font-weight-bold">{{ finalSettlementCalDetails.con_end | date: 'longDate' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="unsettled-adjustments-statements" style="margin-top: 20px;">
+            <div class="final-settlement-total">
+              <h4 style="margin: 0;">Gratuity Calculation</h4>
+            </div>
+
+            <p class="d-flex justify-content-between mb-3"><strong>Status:</strong> <span>{{
+                gtData.status }}</span></p>
+            <p *ngIf="gratuityDesc.intro" class="mb-3">{{gratuityDesc.intro}}</p>
+            <p *ngIf="gratuityDesc.calculation" class="mb-3">{{ gratuityDesc.calculation }}</p>
+            <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+              <p class="d-flex justify-content-between mb-3">
+                <strong>Total Gratuity:</strong>
+                <strong>{{ finalSettlementCalDetails.gratuity_total | currency:'AED ' }}</strong>
+              </p>
+            </div>
+            <p class="d-flex  mb-3">
+              <strong>*Note:</strong>
+              <span>Gratuity calculated up to {{ finalSettlementData.last_work_date | date: 'longDate' }} </span>
+
+            </p>
+          </div>
+          <div class="final-salary-statements" style="margin-top: 20px;">
+            <div class="final-settlement-total">
+              <h4 style="margin: 0;">Salary Payment</h4>
+            </div>
+            <div *ngIf="holdSalaryDetails.length > 0">
+              <div *ngFor="let item of holdSalaryDetails">
+                <p class="d-flex justify-content-between mb-3"><strong>Salary for
+                    {{item.item_detail}} <span *ngIf="item.on_hold">(On Hold)</span>:</strong>
+                  <span>AED {{item.amount}}</span>
+                </p>
+              </div>
+            </div>
+            <div *ngIf="finalSalary">
+              <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                <p class="mb-3 d-flex justify-content-between">
+                  <strong>Final Salary:</strong>
+                  <strong>AED {{finalSalary}}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="additionsArr.length>0 || deducationsArr.length > 0 " class="final-salary-statements" style="margin-top: 20px;">
+            <div class="final-settlement-total">
+              <h4 style="margin: 0;">Other Deductions or Additions</h4>
+            </div>
+            <div>
+              <div *ngIf="additionsArr.length > 0" class="final-settlement-subheader">
+                <p style="margin: 0;">Additions:</p>
+              </div>
+              <div *ngIf="additionsArr.length > 0">
+                <div *ngFor="let item of additionsArr">
+                  <p class="d-flex justify-content-between mb-3"><span><strong>Adjustment:</strong>
+                      {{item.remarks}}</span>
+                    <span><strong>AED {{item.amount}}</strong></span>
+                  </p>
+                </div>
+              </div>
+              <div *ngIf="deducationsArr.length > 0" class="final-settlement-subheader">
+                <p style="margin: 0;">Deductions:</p>
+              </div>
+              <div *ngIf="deducationsArr.length > 0">
+                <div *ngFor="let item of deducationsArr">
+                  <p class="d-flex justify-content-between mb-3"><span><strong>Adjustment :</strong>
+                      {{item.remarks}}</span>
+                    <span>AED {{item.amount}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="final-salary-statements" style="margin-top: 20px;">
+            <div class="final-settlement-total">
+              <h4 style="margin: 0;">Leave Compensation</h4>
+            </div>
+            <div *ngIf="LeaveCompensation">
+              <div>
+                <p class="d-flex justify-content-between mb-3"><strong>Leave Compensation Amount:</strong>
+                  <span>({{LeaveCompensation.item_detail}}) <strong>AED {{LeaveCompensation.amount}} </strong></span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="final-salary-statements" style="margin-top: 10px;display: flex;justify-content: center;">
+            <div class="mt-5"
+              style="width: 70%;margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; padding: 15px; background-color: #f9f9f9;">
+              <div class="final-settlement-total" style="justify-content: center;">
+                <span>Final Settlement Details</span>
+              </div>
+              <div *ngFor="let item of finalSettlementData.detailList">
+                <div class="d-flex justify-content-between mb-3" style="padding: 5px 10px;">
+                  <span><strong>{{ item.type }} ({{item.item_detail}}):</strong></span>
+                  <span class="fw-bold ms-2">{{ item.amount | currency: 'AED ' : 'symbol' }}</span>
+                </div>
+              </div>
+              <hr style="border-top: 2px solid #e3165b; margin: 15px 0;">
+              <div class="final-settlement-amount">
+                <span>Total Settlement Amount:</span>
+                <span>AED {{ finalSettlementData.total_amount | number:'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div *ngIf="!showAdditionalInfo">
+        <app-payment-voucher [voucherData]="voucherData" (formDataEmitter)="handlePaymentVoucher($event)"
+          [mode]="mode"></app-payment-voucher>
+      </div>
+    </div>
+  </div>
+
+</ng-template>

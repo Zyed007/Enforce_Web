@@ -1,0 +1,3288 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet"
+  type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />
+<!-- <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet"> -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/handsontable@8.3.0/dist/handsontable.full.min.css" rel="stylesheet"
+  media="screen">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container--fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+
+        Estimation Management </h3>
+
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a class="kt-subheader__breadcrumbs-link">
+          Estimation </a>
+        <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+          Add Estimation </a>
+        <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+          Edit Estimation </a>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+<div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+  <div class="kt-portlet kt-portlet--mobile">
+    <div class="row">
+      <div class="col col-xl-12 col-lg-12">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+              Estimation
+            </h3>
+          </div>
+          <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+
+              &nbsp;
+              <div class="dropdown dropdown-inline">
+
+                <button type="button" *ngIf="showAddBtn" (click)='AddForm()' class="button button-fill button-rose"> <i
+                    class="flaticon2-plus"></i> Add New </button>
+                <button type="button" (click)='goBack()' class="button button-fill button-rose"
+                  style="margin-left:10px;"> <i class="fa fa-angle-left"></i> Back </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="kt-portlet__body" style=" border-bottom-color: #f0f3ff;padding-top: -15px;
+      color: #595d6e;" *ngIf="showList">
+
+          <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+
+            <ejs-grid #grid [dataSource]='tempProjectData' height="315px" [searchSettings]='searchOptions'
+              allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar' (toolbarClick)='toolbarClick($event)'
+              [allowTextWrap]='true' [allowExcelExport]='true' [allowPdfExport]='true'>
+              <e-columns>
+
+
+
+
+                <e-column field='project_prefix' headerText='Est No' textAlign='' width=180>
+                  <ng-template #template let-data>
+
+                    <span>{{data.project_prefix}}</span>
+
+
+                  </ng-template>
+                </e-column>
+                <e-column field='project_type_name' headerText='Project Type' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <span>{{data.project_type_name}}</span>
+
+
+                  </ng-template>
+                </e-column>
+                <e-column field='project_name' headerText='Project' textAlign='' width=120>
+                  <ng-template #template let-data>
+
+                    <span style="text-transform: capitalize;">{{data.project_name}} </span>
+
+                  </ng-template>
+                </e-column>
+                <e-column field='profit_margin_amount' headerText='Project Amount(AED)' textAlign='' width=140>
+                  <ng-template #template let-data>
+
+                    <span>{{data.profit_margin_amount!=''?(data.profit_margin_amount| currency:'INR':''):''}} </span>
+
+                  </ng-template>
+                </e-column>
+
+                <e-column field='cst_name' headerText='Customer' textAlign='' width=120>
+
+                </e-column>
+                <e-column field='email' headerText='Email' textAlign='' width=120>
+
+                </e-column>
+                <e-column field='phone' headerText='Phone' textAlign='' width=160>
+
+                </e-column>
+                <e-column field='ondate' headerText='Date' textAlign='' width=120>
+
+                </e-column>
+
+                <e-column type='' textAlign='' headerText='Actions' width='120'>
+                  <ng-template #template let-data>
+                    <a title="Edit details" *ngIf="showEditBtn" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                      (click)="newTaskEdit(data)"> <i class="la la-edit"></i> </a>
+
+                    <a title="Delete" *ngIf="showDeleteBtn" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                      (click)="taskDelete(data.project_id)"><i class="la la-trash"></i> </a>
+
+
+                  </ng-template>
+                </e-column>
+                <e-column type='' headerText='' width='140'>
+                  <ng-template #template let-data>
+                    <div class="" style="text-align: left;
+                    font-size: 10px;
+                    font-weight: 800;">
+                      <span *ngIf="showConvertBtn" (click)='ConvertToQtn(data.project_id,data.project_name)' style="padding: 8px 15px; border-color: #ffdca7;
+                      background-color: #fff9f0;
+                      color: #fa9443;cursor: pointer;" class="">CONVERT</span>
+
+                    </div>
+
+                  </ng-template>
+                </e-column>
+              </e-columns>
+            </ejs-grid>
+
+          </div>
+
+
+        </div>
+        <div *ngIf="!showList">
+          <app-not-found></app-not-found>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+  <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid estList">
+
+
+
+
+    <div class="kt-portlet kt-portlet--tabs">
+
+      <!--begin::Portlet-->
+
+      <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+
+          <h3 class="kt-portlet__head-title esthead" style="display: flex;">
+            Estimation ID - {{editProjectData.project_prefix}}
+            <p class="estdivimp" *ngIf="editProjectData.projectName">
+              (Extension of project - <span class="hyplink">{{ editProjectData.projectName }}</span>)
+            </p>
+          </h3>
+
+          <div style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;"
+            [routerLink]="['/pricing']" class="btn btn-bold btn-sm btn-font-sm btn-label-warning">UPGRADE</div>
+          <div style="color:#2c77f4!important;margin-left: 10px;">Upgrade to enable customer info & location</div>
+
+        </div>
+        <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+            <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+              <i class="la la-long-arrow-left"></i>
+              Back
+          </a> -->
+            &nbsp;
+            <div class="dropdown dropdown-inline">
+              <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+              <!-- </button> -->
+              <button type="button" (click)='TaskView()' class="button button-fill button-rose"> <i
+                  class="fa fa-angle-left"></i> Back </button>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="kt-portlet__head" *ngIf="editable">
+        <div class="kt-portlet__head-toolbar">
+          <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+            role="tablist">
+
+
+            <li class="nav-item" (click)="scroll(notes)">
+
+              <a class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24" />
+                    <path
+                      d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                      fill="#000000" fill-rule="nonzero" />
+                    <path
+                      d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                      fill="#000000" opacity="0.3" />
+                  </g>
+                </svg>
+                Notes
+              </a>
+            </li>
+            <li class="nav-item" (click)="scroll(attach)">
+
+              <a class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24" />
+                    <path
+                      d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                      fill="#000000" fill-rule="nonzero" />
+                    <path
+                      d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                      fill="#000000" opacity="0.3" />
+                  </g>
+                </svg>
+                Attachments
+              </a>
+            </li>
+            <li class="nav-item" (click)="scroll(openAct)">
+
+              <a class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24" />
+                    <path
+                      d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                      fill="#000000" fill-rule="nonzero" />
+                    <path
+                      d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                      fill="#000000" opacity="0.3" />
+                  </g>
+                </svg>
+                Open Activities
+              </a>
+            </li>
+            <li class="nav-item" (click)="scroll(closeAct)">
+
+              <a class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24" />
+                    <path
+                      d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                      fill="#000000" fill-rule="nonzero" />
+                    <path
+                      d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                      fill="#000000" opacity="0.3" />
+                  </g>
+                </svg>
+                Closed Activities
+              </a>
+            </li>
+
+
+
+
+          </ul>
+        </div>
+      </div>
+      <div class="kt-portlet__body">
+
+        <div class="kt-form kt-form--label-right">
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+
+
+              <form class="kt-form kt-form--label-right" [formGroup]="projectForm">
+
+                <div class="form-group row" style="display: none;" *ngIf="!editable">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Prefix:</label>
+                  <div class="kt-radio-inline col-lg-4 col-xl-4 accessRadio">
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="prefixVal" value="is_auto" (change)="customRadioChange()">
+                      Auto
+                      <span></span>
+                    </label>
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="prefixVal" value="is_custom" (change)="customRadioChange()">
+                      Custom
+                      <span></span>
+                    </label>
+
+                  </div>
+                </div>
+
+                <div *ngIf="showPrefixText  && !editable" class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Enter Prefix:</label>
+                  <div class="col-lg-4 col-xl-4 col-sm-4">
+                    <input type="email" class="form-control" placeholder="Enter Prefix" formControlName="prefix_name"
+                      (keyup)="customInputChange($event)">
+                  </div>
+                  <span style="margin-top: 5px;">{{customPrefix}}</span>
+                </div>
+                <div *ngIf="prefixExists && editable==false" style="color: red;">Prefix already exists. Please enter a
+                  new prefix.</div>
+                <div *ngIf="!showPrefixText && editable==false" class="form-group row"
+                  style="margin-bottom: 4px;margin-top:-12px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <span>{{prefixString}}</span>
+
+
+                  </div>
+                </div>
+                <div *ngIf="editable" class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <span>{{project_prefix_val}}</span>
+
+
+                  </div>
+                </div>
+
+                <div class="form-group row costForm">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Name<span class="required"
+                      style="color: red;">*</span></label>
+
+                  <div class="col-lg-4 col-xl-4">
+
+                    <input type="email" class="form-control projName"
+                      [ngClass]="showModification?'disabledInput':'enabledInput'" (keyup)="nameChange($event)"
+                      placeholder="Enter name" formControlName="project_name">
+                    <div *ngIf="addformSubmitted && projectForm.controls.project_name.valid==false">
+                      <label class="e-error" for="projName" id="OrderID-info">*Name is required</label>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Building Type:</label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <ejs-dropdownlist [dataSource]="buildingTypeData" [fields]="commonBuildingFields"
+                      formControlName="building_type" [allowFiltering]="true"
+                      placeholder="Select Type"></ejs-dropdownlist>
+                  </div>
+
+
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Plot No:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <input type="email" class="form-control projName" placeholder="Enter no" formControlName="plot_no">
+                  </div>
+
+
+                </div>
+
+                <!-- <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Packages:</label>
+                  <div class="col-lg-4 col-xl-4 packageForm">
+                     <select2 [data]="packageTypeData" [options]="taskOptions" [value]="pkgTypeVal"
+                      (valueChanged)="changedPkgType($event)"></select2> 
+                     
+                  </div>
+                 
+                  
+                </div>  -->
+                <div class="required-msg row" style="margin-top:-10px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <div *ngIf="isFieldValid('project_name')" class="error-msg">Required.</div>
+                  </div>
+                </div>
+
+
+                <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Customer Info</h3>
+
+                <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                  style="margin: 10px 0px !important;"></div>
+
+
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Customer</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [ngClass]="editable?'none':'show'" [data]="customerData" [options]="taskOptions"
+                      [value]="customerVal" (valueChanged)="changedCustomer($event)"></select2>
+                    <div [ngClass]="editable?'show':'none'">
+                      <input class="form-control" type="text" disabled='disabled' value="" formControlName="cst_name"
+                        placeholder="Name">
+
+                    </div>
+                  </div>
+                  <div [ngClass]="editable?'none':'show'" aria-haspopup="true" (click)="AddCst()" aria-expanded="false"
+                    style="color:black;margin-top:5px;">
+                    <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                        color: #fff;
+                                        font-size: 8px;
+                                        "></i>
+                      Add Customer
+                    </a>
+
+
+
+                  </div>
+
+
+                </div>
+
+                <div class="" aria-haspopup="true" (click)="AddContact()" aria-expanded="false"
+                  style="color:black;margin-bottom: 15px;">
+                  <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                      color: #fff;
+                                      font-size: 8px;
+                                      "></i>
+                    Add contact
+                  </a>
+
+
+
+                </div>
+                <form [formGroup]="customerContactForm">
+                  <div *ngIf="showAddContact">
+                    <div class="form-group row">
+
+
+                      <div class="col-lg-6">
+                        <label>First Name</label>
+                        <input class="form-control" type="text" value="" formControlName="fname"
+                          placeholder="Enter Name">
+
+                        <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                        <div class="form-text text-muted">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Last Name</label>
+                        <input class="form-control" type="text" value="" formControlName="lname"
+                          placeholder="Enter Name">
+
+                        <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                        <div class="form-text text-muted">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-group row">
+                      <div class="col-lg-6">
+                        <label>Phone Number</label>
+                        <!-- <input class="form-control" type="number" value="" formControlName="mobile"  placeholder="Enter Number"> -->
+                        <!-- <input class="form-control" type="text" value="" formControlName="mobile"  placeholder="Enter Number"> -->
+
+                        <!-- <input class="form-control" type="text" value="" formControlName="mobile"  placeholder="Enter Number"> -->
+                        <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                          [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                          [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                          [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                          [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                          name="mobile" formControlName="mobile">
+
+                        </ngx-intl-tel-input>
+                        <div style="color: red;"
+                          *ngIf="savedContactPh &&((customerContactForm.get('mobile').value!='' && customerContactForm.get('mobile').value!=null)&&!customerContactForm.controls['mobile'].pristine &&  customerContactForm.controls['mobile'].errors)  ">
+                          Please enter a valid mobile no
+                          <!-- {{empProfileForm.controls['mobile '].errors | json }} -->
+                        </div>
+                        <div style="color: red;"
+                          *ngIf="savedContactPh && (customerContactForm.get('mobile').value=='' || customerContactForm.get('mobile').value==null) ">
+                          Required
+                        </div>
+
+
+                        <!-- <div class="form-text text-muted">
+                              Eg: Phone number format (+XX-XXXXXXXX)  
+                              </div>
+                              <div *ngIf="customerContactForm.controls['mobile'].errors && !customerContactForm.controls['mobile'].pristine"
+                          class="error-msg">
+                          <div [hidden]="!customerContactForm.controls['mobile'].errors.patternInvalid">Enter a valid contact no 
+                              </div>
+                              </div> -->
+                      </div>
+                      <div class="col-lg-6">
+                        <label> Email</label>
+                        <input class="form-control" type="text" value="" formControlName="email"
+                          placeholder="Enter Email">
+                        <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                        <div
+                          *ngIf="customerContactForm.controls['email'].errors && !customerContactForm.controls['email'].pristine"
+                          class="error-msg">
+                          <div [hidden]="!customerContactForm.controls['email'].errors.pattern">Enter a valid email
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-lg-6">
+                        <label>Relationship</label>
+                        <select2 [data]="relationData" [options]="taskOptions" [value]="cstRelationValue"
+                          (valueChanged)="changedCstRelation($event)"></select2>
+                        <!-- <select2 id="selWidth" [data]="departmentData" [options]='taskOptions'  [value]="deptValue"    (valueChanged)="changedDept($event)"></select2> -->
+
+                        <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                        <div class="form-text text-muted">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Note</label>
+                        <input class="form-control" type="text" value="" formControlName="note"
+                          placeholder="Enter Notes">
+
+                        <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                        <div class="form-text text-muted">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                      <div class="col-lg-9 col-xl-9" style="display: flex;justify-content: flex-end;">
+                        <button type="button" class="button button-fill button-rose" style="width: 75px !important;"
+                          (click)='saveContactAddress($event)' [disabled]="disableSaveBranch" aria-haspopup="true"
+                          aria-expanded="false">
+                          <i class="la la-check"></i> Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div [ngClass]="showBranchList  ?'display':'hide'">
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                    <div class="col-lg-9 col-xl-4">
+                      <div style="margin-top:5px;">
+                        <div class="kt-widget2">
+                          <div class="kt-widget2__item kt-widget2__item--success"
+                            *ngFor="let item of branchDataSource ; let i = index">
+                            <!-- <div class="kt-widget2__checkbox">
+                                  <label class="kt-checkbox kt-checkbox--solid kt-checkbox--single">
+                                    <input type="checkbox">
+                                    <span></span>
+                                  </label>
+                                </div> -->
+
+
+                            <div class="kt-widget2__info"
+                              style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;display: flex;flex-flow: row;">
+                              <div ngbPopover="Mark as primary account" triggers="mouseenter:mouseleave">
+                                <span class="accessRadio">
+
+                                  <label class="kt-radio">
+                                    <input type="radio" name="prefixVal" [checked]="item.is_primary" [value]="i"
+                                      (change)="setPrimary(i)">
+
+                                    <span></span>
+                                  </label>
+
+
+                                </span>
+                              </div>
+                              <div>
+
+
+                                <div class="kt-widget2__title">
+                                  {{item.first_name}} <span style="margin-left: 3px;"> {{item.last_name}}</span> <span
+                                    *ngIf="item.email" style="font-weight: normal;font-size: 10px;">
+                                    ({{item.email}})</span>
+                                  <!-- <span style="font-size: 10px;"
+                                      [ngClass]="item.status == 'Completed' ? 'status-code-success': (item.status == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status}}</span> -->
+                                  <div class="kt-widget2__username">
+                                    {{item.phone}}
+                                  </div>
+                                  <div class="kt-widget2__username">
+                                    {{item.department}}
+                                  </div>
+                                  <div class="kt-widget2__username">
+                                    {{item.designation}}
+                                  </div>
+                                </div>
+                                <!-- <a class="kt-widget2__username">
+                                    {{item.type}}
+            
+                                  </a> -->
+                                <!-- <a class="kt-widget2__username">
+                                {{item.phone_no}}
+            
+            
+                                  </a> -->
+                              </div>
+                              <!-- <a class="kt-widget2__username">
+                                {{item.email}}
+            
+            
+                                  </a> -->
+                            </div>
+                            <div class="kt-widget2__actions">
+                              <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                (click)="brDelete(i)"><i class="la la-trash"></i></a>
+                            </div>
+
+                          </div>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+
+
+
+
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                style="margin: 10px 0px !important;"></div>
+              <form class="kt-form kt-form--label-right" [formGroup]="projectForm">
+
+
+
+                <div class="row">
+
+                </div>
+              </form>
+
+              <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Scope of Work</h3>
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                style="margin: 10px 0px !important;"></div>
+
+              <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Floors</h3>
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                style="margin: 10px 0px !important;"></div>
+              <div class="form-group row">
+                <label class="col-xl-1 col-lg-0 col-form-label"></label>
+
+                <label class="col-xl-2 col-lg-2 col-form-label" style="text-align: left;">Floor Name</label>
+                <div class="col-lg-4 col-xl-4">
+                  <select2 [data]="floorNo" [options]="taskOptions" [value]="extraunitTypeVal"
+                    (valueChanged)="changedExtraUnitType($event)"></select2>
+                </div>
+                <div aria-haspopup="true" (click)="AddExtraUnit(0)" aria-expanded="false"
+                  style="color:black;margin-top:5px;">
+                  <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                          color: #fff;
+                          font-size: 8px;
+                          "></i>
+                    Add Floor
+                  </a>
+
+
+
+                </div>
+              </div>
+
+              <form class="kt-form kt-form--label-right" [formGroup]="extraUnitForm">
+                <div class="form-group row" formArrayName="extras">
+                  <label class="col-xl-1 col-lg-0 col-form-label">
+                  </label>
+                  <div class="col-lg-12 col-xl-10 intfutTable" style="
+                  overflow-y: auto;
+                  height: auto;">
+                    <table>
+                      <tr>
+                        <th>Add Unit</th>
+                        <th>Description</th>
+                        <th>Typical</th>
+
+
+
+                        <th>Range</th>
+
+                        <th>Flat Type</th>
+
+                        <th>Remove Unit</th>
+
+                      </tr>
+                      <tr *ngFor="let email of extraUnitForm.get('extras')['controls']; let i = index"
+                        [formGroupName]="i">
+                        <td *ngIf="email.get('is_checkbox').value==false">
+                          <div aria-haspopup="true" (click)="AddExtraUnitDesc(i)" aria-expanded="false"
+                            style="color:black;margin-top:5px;text-align: center;">
+                            <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                              color: #fff;
+                                              font-size: 8px;
+                                              "></i>
+
+                            </a>
+
+
+                          </div>
+
+
+                        </td>
+                        <td *ngIf="email.get('is_checkbox').value==false ">
+                          <div class="form-group row" style="
+                     margin-left: 0px;
+                     margin-right: 0px;margin-bottom: 0px;
+                 ">
+                            <!-- <input type="text" placeholder="email" formControlName="id" style="display: none;"> -->
+
+                            <input type="email" class="form-control col-xl-10" placeholder="Label"
+                              formControlName="Label">
+
+                            <!-- <input  class="col-xl-1 form-control"   type="checkbox"  formControlName="is_typical" style="margin-left: 1px;" > -->
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group row" style="width: 90px;margin-bottom: 0px;">
+                            <label class=" kt-checkbox">
+                              <input type="checkbox" formControlName="is_typical">
+                              <!-- <input type="checkbox" id="billable" [value]="addCurrentUser"
+                                (change)="onCheckChange($event)"> -->
+                              <span style="margin-left:15px;margin-right: 5px;"></span>
+                            </label>
+                            <div style="margin-top: 2px;margin-left:8px;">Typical</div>
+
+
+                          </div>
+                        </td>
+
+                        <td class='e-bold' *ngIf="email.get('is_checkbox').value==false ">
+                          <div class='form-group row' style="
+                    margin-left: 0px;
+                    margin-right: 0px;margin-bottom: 0px;
+                ">
+                            <input *ngIf="email.get('is_typical').value==true" min='0' max='999'
+                              (keyup.enter)="keytab($event)" type="number"
+                              onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control col-xl-6"
+                              placeholder="From" formControlName="fromValue">
+
+                            <!-- <div class="col-xl-2 " style="margin-left:4px">to</div> -->
+                            <input *ngIf="email.get('is_typical').value==true" min='0' max='999' type="number"
+                              onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control col-xl-5"
+                              placeholder="To" formControlName="toValue" style="margin-left:4px;margin-right:0px;">
+                            <input *ngIf="email.get('is_typical').value==false" min='0' max='999' disabled='true'
+                              type="number" onkeyup="if(this.value<0){this.value= this.value * -1}"
+                              class="form-control col-xl-11" placeholder="Value" formControlName="Value"
+                              style="margin-left:4px;margin-right:0px;">
+
+                          </div>
+
+
+                        </td>
+                        <!-- <td class='e-bold' *ngIf="email.get('is_checkbox').value==false">
+                          <input type="number" class="form-control" (keyup)="hideMilestone()"  min="0" placeholder="Enter No"
+                            formControlName="size">
+                        </td> -->
+
+                        <td class='e-bold' style="
+                        margin-left: 0px;
+                        margin-right: 0px;
+                    " *ngIf="email.get('is_checkbox').value==false">
+
+                          <div class="question-container" formArrayName="flatType">
+                            <div [formGroupName]="j" *ngFor="let question of getFlatTypes(email); let j = index">
+                              <div class=' form-group row' style="
+                              margin-left: 0px;
+                              margin-right: 0px;margin-bottom: 0px;
+                          ">
+
+                                <!-- <div class="col-xl-2 " style="margin-left:4px">to</div> -->
+                                <div class="col-xl-6">
+                                  <ejs-dropdownlist formControlName="flatVal" style="margin-top: 5px;"
+                                    [dataSource]='flatTypesData' [fields]="{text: 'text', value: 'id' }"
+                                    allowFiltering="true" (change)="changedEjsMilest($event,i,j)"
+                                    placeholder="Choose Type" popupHeight='150px'>
+                                  </ejs-dropdownlist>
+                                  <div *ngIf="(addFlatTypeSubmit) && customerForm.get('customer_Name').value==''"
+                                    class="error-msg">Required.</div>
+
+                                </div>
+                                <div class="col-xl-4" style="margin-top:4px;">
+                                  <input class="form-control" type="text" (keyup.enter)="keytab($event)"
+                                    placeholder="No of units" formControlName="units">
+
+
+                                </div>
+                                <div class="col-xl-1" style="margin-top: 8px;
+        ">
+                                  <a (click)="addFlatTypes(i)"><i class="flaticon2-plus" style="cursor: pointer;margin-right:4px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+             color: #fff;
+             font-size: 8px;
+             "></i></a>
+                                  <span style="margin-left: 4px;" *ngIf="getFlatTypes(email).length > 1"
+                                    (click)="removeFlatTypes(i,j)"><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+             color: #fff;
+             font-size: 8px;
+             "></i></span>
+                                </div>
+                              </div>
+
+
+
+
+
+                              <!-- <hr> -->
+
+
+                            </div>
+                          </div>
+                          <!-- <input type="text" class="form-control" (keyup)="hideMilestone()"  placeholder="Enter Notes"
+                            formControlName="notes"> -->
+
+                        </td>
+
+                        <!-- <td class='e-bold' style="width:200px" *ngIf="email.get('is_checkbox').value==false">
+                              <ejs-multiselect #dropdown    style="margin-top:6px;width:200px" id='multiselectelement' mode='CheckBox' 
+                              formControlName="designType" (removing)="onRemoving($event,i)"  (close)="onSelectPopupClose($event,i)"  (select)='onCustomValueSelection($event,i)'  [dataSource]='email.get("tags").value' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                              <div *ngIf="addformSubmitted && email.get('designType').value==''">
+                                <label class="e-error" for="designType" id="OrderID-info" style="display: block;color: red;">*Tags is required</label>
+    
+                                </div>
+                             
+                            </td> -->
+                        <td *ngIf="email.get('is_checkbox').value==false">
+                          <div aria-haspopup="true"
+                            (click)="RemoveExtraUnitDesc(i,email.get('Label').value,email.get('designType').value,email.get('id').value)"
+                            aria-expanded="false" style="color:black;margin-top:5px;text-align: center;">
+                            <a><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                color: #fff;
+                                                font-size: 8px;
+                                                "></i>
+
+                            </a>
+
+
+
+                          </div>
+                        </td>
+                      </tr>
+
+
+                    </table>
+                    <div style="text-align: right;">
+                      <div style="margin-bottom: 5px;margin-top: 15px;" *ngIf="isHandleSave">
+                        <button type="button" id='width100' style="width: 100px !important;"
+                          class="button button-fill button-rose" (click)='handleSaveFlat()' aria-haspopup="true"
+                          aria-expanded="false">
+                          <!-- <i class="flaticon2-plus"></i>  -->
+                          Save
+                        </button>
+                      </div>
+                      <div style="margin-bottom: 5px;margin-top: 15px;" *ngIf="!isHandleSave">
+                          <button type="button" id='width100' style="width: 100px !important;"
+                          class="btn btn-success" aria-haspopup="true"
+                          aria-expanded="false">
+                             Saved
+                          </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div class="form-group row" style="margin-bottom: 0px;" *ngIf="showUnitLengthErr">
+                  <label class="col-xl-1 col-lg-0 col-form-label"></label>
+                  <label class="col-xl-3 col-lg-4 col-form-label" style="text-align: left;color:red"><span>Please add
+                      unit description</span></label>
+
+                </div>
+              </form>
+
+              <div class="container mt-3" style="background-color: transparent !important;">
+                <div
+                  style="display: flex; justify-content: center;align-items: center;gap: 10px;padding: 5px;background-color: #f1f1f1;">
+                  <h4 style="border-bottom: 2px solid;">Structure Summary</h4>
+
+                  <i class="fa"
+                    [ngClass]="isStructureTableVisible ? 'fa-chevron-up glowing-chevron' : 'fa-chevron-down glowing-chevron'"
+                    (click)="toggleTable()" style="cursor: pointer; font-size: 16px; "
+                    [attr.title]="isStructureTableVisible ? 'Click to collapse the view' : 'Click to expand the view'">
+                  </i>
+                </div>
+
+
+                <div class="collapse mt-3" [ngClass]="{ 'show': isStructureTableVisible }" id="summaryTable">
+                  <div class="card card-body" style="display: flex; justify-content: center; align-items: center;">
+                    <table border="1" class="floorSummary"
+                      style="max-width: 550px !important; width: 100%; text-align: center;">
+                      <thead>
+                        <tr style="border-bottom: 2px solid #f1f1f1;">
+                          <th style="text-align: center;">Label</th>
+                          <th style="text-align: center;">Flat Name</th>
+                          <th style="text-align: center;">Units</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngFor="let floor of structureSummary; let i = index">
+                          <tr>
+                            <td [attr.rowspan]="floor.data.length + 1"
+                              style="text-align: center; vertical-align: middle;">
+                              {{ floor.label }}
+                            </td>
+                          </tr>
+                          <tr *ngFor="let flat of floor.data; let j = index">
+                            <td style="text-align: center;">{{ flat.flatName }}</td>
+                            <td style="text-align: center;">{{ flat.units }}</td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="container mt-3" style="background-color: transparent !important;">
+                <div
+                  style="display: flex; justify-content: center;align-items: center;gap: 10px;padding: 5px;background-color: #f1f1f1;">
+                  <h4 style="border-bottom: 2px solid;">Unit Summary</h4>
+
+                  <i class="fa"
+                    [ngClass]="isUnitTableVisible ? 'fa-chevron-up glowing-chevron' : 'fa-chevron-down glowing-chevron'"
+                    (click)="toggleUnitTable()"
+                    [attr.title]="isUnitTableVisible ? 'Click to collapse the view' : 'Click to expand the view'"
+                    style="cursor: pointer; font-size: 16px;">
+                  </i>
+                </div>
+
+
+                <div class="collapse mt-3" [ngClass]="{ 'show': isUnitTableVisible }" id="summaryTable">
+                  <div class="card card-body" style="display: flex; justify-content: center; align-items: center;">
+
+                    <table border="1" class="floorSummary" style="max-width: 450px !important;">
+                      <thead>
+                        <tr style="border-bottom: 2px solid #f1f1f1;">
+                          <th style="text-align: center;">Flat Name</th>
+                          <th style="text-align: center;">Total Units</th>
+                        </tr>
+                        <tr *ngFor="let flat of flatunitSummary; let j = index">
+                          <td style="text-align: center;">{{ flat.flatName }}</td>
+                          <td style="text-align: center;">{{ flat.totalUnits }}</td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <!-- <div
+                style="display: flex;justify-content: center;align-items: center;flex-direction: column;margin-bottom: 10px;padding: 15px;"
+                *ngIf="enableFloorSummary">
+                <h4 style="border-bottom: 2px solid;">Unit Summary</h4>
+                <table border="1" class="floorSummary" style="max-width: 450px !important;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #f1f1f1;">
+                      <th style="text-align: center;">Flat Name</th>
+                      <th style="text-align: center;">Total Units</th>
+                    </tr>
+                    <tr *ngFor="let flat of flatunitSummary; let j = index">
+                      <td style="text-align: center;">{{ flat.flatName }}</td>
+                      <td style="text-align: center;">{{ flat.totalUnits }}</td>
+                    </tr>
+                  </thead>
+                </table>
+              </div> -->
+
+              <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Services</h3>
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                style="margin: 10px 0px !important;"></div>
+              <div class="form-group row">
+                <label class="col-xl-1 col-lg-0 col-form-label"></label>
+
+                <label class="col-xl-2 col-lg-2 col-form-label" style="text-align: left;">Service Name</label>
+                <div class="col-lg-4 col-xl-4">
+                  <select2 [data]="serviceNames" [options]="taskOptions" [value]="serviceNameVal"
+                    (valueChanged)="changedServiceName($event)"></select2>
+                </div>
+                <div aria-haspopup="true" (click)="AddServiceUnit(0)" aria-expanded="false"
+                  style="color:black;margin-top:5px;">
+                  <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                          color: #fff;
+                                          font-size: 8px;
+                                          "></i>
+                    Add Service
+                  </a>
+
+
+
+                </div>
+              </div>
+              <!-- <form class="kt-form kt-form--label-right" [formGroup]="projectForm">
+
+                <div class="form-group row">
+                  <label class="col-xl-1 col-lg-0 col-form-label"></label>
+                
+                  <label class="col-xl-2 col-lg-2 col-form-label" style="text-align: left;">Category Name</label>
+                  <div class="col-lg-12 col-xl-4 paddingLeft">
+                    <ejs-multiselect     style="margin-top:6px;" formControlName="serviceCategName"  mode='CheckBox' 
+                      (select)='changedServiceCategName($event)' [dataSource]='serviceCategNames' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                   
+                  </div>
+                  <div aria-haspopup="true" (click)="AddServiceUnit(0)" aria-expanded="false"
+                    style="color:black;margin-top:5px;">
+                    <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                          color: #fff;
+                                          font-size: 8px;
+                                          "></i>
+                      Add Service 
+                    </a>
+                
+                
+                
+                  </div>
+                </div>
+                </form> -->
+              <form class="kt-form kt-form--label-right" [formGroup]="servicesForm">
+                <div class="form-group row" formArrayName="services">
+                  <!-- <label class="col-xl-1 col-lg-0 col-form-label">
+                      </label> -->
+                  <div class="col-lg-12 col-xl-11 intfutTable" style="max-height: 490px;
+                    overflow-y: auto;
+                    height: auto;">
+                    <table>
+                      <tr>
+                        <th>Description</th>
+                        <th>Category</th>
+
+                        <th>Floors</th>
+                        <th>Remove Unit</th>
+
+                      </tr>
+                      <tr *ngFor="let email of servicesForm.get('services')['controls']; let i = index"
+                        [formGroupName]="i">
+
+                        <td *ngIf="email.get('is_checkbox').value==false">
+                          <input type="text" placeholder="email" formControlName="id" style="display: none;">
+                          <input type="email" class="form-control" placeholder="Label" formControlName="Label">
+                        </td>
+                        <td *ngIf="email.get('is_checkbox').value==false">
+                          <input type="email" class="form-control" readonly placeholder=""
+                            formControlName="serviceCateg">
+                        </td>
+                        <td class='e-bold' style="width:200px" *ngIf="email.get('is_checkbox').value==false">
+
+
+                          <button type="button" id='width120' style="width: 120px !important;"
+                            class="button button-fill button-rose"
+                            (click)="handleCustomization(email.get('id').value,email)" aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="flaticon2-plus"></i> Customization
+                          </button>
+
+                          <!-- <ejs-multiselect #dropdown    style="margin-top:6px;width:200px"  mode='CheckBox' 
+                                formControlName="designType"    (select)='onCustomValueSelection($event,i)'  [dataSource]='email.get("tags").value' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                                <div *ngIf="addformSubmitted && email.get('designType').value==''">
+                                  <label class="e-error" for="designType" id="OrderID-info" style="display: block;color: red;">*Tags is required</label>
+                                  </div> -->
+
+                        </td>
+                        <td *ngIf="email.get('is_checkbox').value==false">
+                          <div aria-haspopup="true"
+                            (click)="RemoveServiceDesc(i,email,email.get('Label').value,email.get('designType').value,email.get('id').value)"
+                            aria-expanded="false" style="color:black;margin-top:5px;text-align: center;">
+                            <a><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                  color: #fff;
+                                                  font-size: 8px;
+                                                  "></i>
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+
+
+                    </table>
+
+                  </div>
+
+                </div>
+
+                <div class="form-group row" style="margin-bottom: 0px;" *ngIf="showUnitLengthErr">
+                  <label class="col-xl-1 col-lg-0 col-form-label"></label>
+                  <label class="col-xl-3 col-lg-4 col-form-label" style="text-align: left;color:red"><span>Please add
+                      unit description</span></label>
+
+                </div>
+              </form>
+
+              <!-- <hot-table
+                [width]="1200"
+                licenseKey="non-commercial-and-evaluation"
+               [afterChange]="detectChanges"
+               [settings]="tableSettings"
+               [data]="dataset"></hot-table>  -->
+              <div class="form-group row">
+                <!-- <label class="col-xl-1 col-lg-0 col-form-label"></label> -->
+
+                <label class="col-xl-3 col-lg-4 col-form-label" style="text-align: left;"><span
+                    *ngIf="milestoneData.length==0">Please click calculate to update cost</span></label>
+                <div class="col-lg-8 col-xl-8" style="text-align: right;"
+                  *ngIf="servicesForm && servicesForm.controls.services && servicesForm.controls.services.length > 0">
+                  <div style="margin-bottom: 5px;display: flex;justify-content: right;gap: 8px;" *ngIf="isToBeUpdated">
+                    <!-- <button type="button" id='width100' style="width: 130px !important;" *ngIf="calculateSubmit"
+                      class="button button-fill button-rose" (click)='handleSummaryFullScreen()' aria-haspopup="true"
+                      aria-expanded="false">
+                      Edit
+                    </button> -->
+                    <button type="button" id='width100' style="width: 100px !important;"
+                      class="button button-fill button-rose" (click)='calcUnit()' aria-haspopup="true"
+                      aria-expanded="false">
+                      <i class="flaticon2-plus"></i> Update
+                    </button>
+                    <!-- <button type="button" id='width100' style="width: 100px !important;"
+                      class="button button-fill button-rose" (click)='generateSummaryExcelReport()' aria-haspopup="true"
+                      aria-expanded="false">
+                      Excel Export
+                    </button> -->
+                  </div>
+                  <div style="margin-bottom: 5px;display: flex;justify-content: right;gap: 8px;" *ngIf="!isToBeUpdated">
+                    <button type="button" id='width100' style="width: 100px !important;"
+                    class="btn btn-success" aria-haspopup="true"
+                    aria-expanded="false">
+                      <i class="fa fa-check" ></i> Updated
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                style="margin: 10px 0px !important;"></div>
+
+              <div class="intfutSummaryTable" *ngIf="showIntfutSummaryTable">
+                <div style="display: flex;justify-content: space-between;">
+                  <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Estimation Summary</h3>
+                  <div style="display: flex;gap: 5px;">
+                    <button type="button" id='width100' style="width: 130px !important;" *ngIf="calculateSubmit"
+                      class="button button-fill button-rose" (click)='handleTemplateSelection()' aria-haspopup="true"
+                      aria-expanded="false">
+                      Apply Template
+                    </button>
+                    <!-- <button type="button" id='width100' style="width: 130px !important;" *ngIf="calculateSubmit"
+                      class="button button-fill button-rose" (click)='handleSummaryFullScreen()' aria-haspopup="true"
+                      aria-expanded="false">
+                      Edit
+                    </button> -->
+                    <button type="button" id='width100' style="width: 100px !important;"
+                      class="button button-fill button-rose" (click)='generateSummaryExcelReport()' aria-haspopup="true"
+                      aria-expanded="false">
+                      Excel Export
+                    </button>
+                  </div>
+                </div>
+                <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                  style="margin: 10px 0px !important;"></div>
+
+                <mat-tab-group (selectedTabChange)="handleSummaryData($event)" #tabObj style="background-color: white;"
+                  [selectedIndex]="selectedServiceTabIndex">
+
+                  <mat-tab *ngFor="let tab of tabData; let index = index" [label]="tab.text">
+                    <ng-template mat-tab-label>
+                      {{ tab.text }}
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"
+                        style="font-size: 14px;cursor: pointer;color: #737373;margin-left: 5px;" placement="top"
+                        ngbTooltip="Edit this estimation data" container="body"
+                        (click)="handleSummaryEditData(tab.text,tab.id)" *ngIf="tab.text!=='All'"
+                        id="summaryEditIcon"></i>
+                      <i class="fa fa-check-circle" aria-hidden="true"
+                        style="font-size: 14px;cursor: pointer;color: #737373;margin-left: 5px;" placement="top"
+                        ngbTooltip="A template has been applied for this service" container="body"
+                        *ngIf="isTemplateAppliedForCurrentService(tab.text)"></i>
+
+
+                    </ng-template>
+                    <table style="margin-top: 5px;">
+                      <tr>
+                        <th>Service Name</th>
+                        <th>Primary Category</th>
+                        <th>Item Name</th>
+                        <th>Inventory Type</th>
+                        <th>Inventory Name</th>
+                        <th>Item Code</th>
+                        <th>Description</th>
+                        <th>Supplier Name</th>
+                        <th>Total Qty</th>
+                        <th>Buffer Qty</th>
+                        <th>Unit Price</th>
+                        <th>Currency</th>
+                        <th>Total Price</th>
+                        <th>Discount</th>
+                        <th>Final Price</th>
+                        <th>Remarks</th>
+                      </tr>
+                      <ng-container *ngFor="let task of SummaryMatTabVals; let i = index">
+                        <tr *ngIf="task.MainCat === selectedServiceTab || selectedServiceTab === 'All'">
+
+                          <td><label>{{ task.MainCat }}</label></td>
+                          <td><label>{{ task.MainType }}</label></td>
+                          <td><label>{{ task.type }}</label></td>
+                          <td><label>{{ task.inventoryType}}</label></td>
+                          <td><label>{{ task.inventoryItemName }}</label></td>
+
+                          <td><label>{{ task.itemCode }}</label></td>
+                          <td><label>{{ task.itemDescription }}</label></td>
+                          <td><label>{{ task.supplierName }}</label></td>
+                          <td><label>{{ task.qty }}</label></td>
+                          <td><label>{{ task.bufferQty }}</label></td>
+                          <td><label>{{ task.unitPrice }}</label></td>
+                          <td><label>{{ task.currency }}</label></td>
+                          <td><label>{{ task.totalPrice }}</label></td>
+                          <td><label>{{ task.discount }}<span
+                                *ngIf="task.discountType === 'percentage'">%</span></label>
+                          </td>
+                          <td><label>{{ task.finalPrice }}</label></td>
+                          <td><label>{{ task.remarks }}</label></td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </mat-tab></mat-tab-group>
+                <div style="display: flex;justify-content: flex-end;margin-top: 20px;" *ngIf="isNewChecked">
+                  <button type="button" id='width100' style="width: 100px !important;"
+                    class="button button-fill button-rose" (click)='saveBOQEstimate()' aria-haspopup="true"
+                    aria-expanded="false">{{isEstSummarySaved?"Update":"Save"}}
+                  </button>
+                </div>
+                <div style="display: flex; justify-content: flex-end;margin-top: 20px;" *ngIf="!isNewChecked">
+                  <button type="button" id="width100" style="width: 100px !important;" class="btn btn-success" aria-haspopup="true"
+                    aria-expanded="false">Updated
+
+                  </button>
+                </div>
+              </div>
+
+              <!-- Service Summary -->
+              <div *ngIf="serviceSummaryData.length>0">
+                <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">System Summary</h3>
+                <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                  style="margin: 10px 0px !important;"></div>
+                <div style="display: flex;justify-content: center;padding-bottom: 20px;">
+
+                  <div style="width: 700px;">
+                    <table class="serviceSummaryTable">
+                      <tr>
+                        <th>System</th>
+                        <th>NET Amount</th>
+                      </tr>
+                      <tr *ngFor="let system of serviceSummaryData">
+                        <td>{{system.service}}</td>
+                        <td>{{system.totalPrice}}</td>
+                      </tr>
+                    </table>
+                    <div style="margin-top: 10px;">
+                      <div style="display: flex;border-top: 1px solid black;padding-top: 5px;">
+                        <div style="flex: 1;text-align: right;">
+                          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Total</h3>
+                        </div>
+                        <div style="flex: 1;text-align: center;">
+                          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">
+                            {{serviceSummaryTotal}}</h3>
+                        </div>
+                      </div>
+                      <div style="display: flex;">
+                        <div style="flex: 1;text-align: right;">
+                          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Vat</h3>
+                        </div>
+                        <div style="flex: 1;text-align: center;">
+                          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">
+                            {{serviceSummaryVat}}</h3>
+                        </div>
+                      </div>
+                      <div style="display: flex;align-items: center;background-color: #f1f1f1;">
+                        <div style="flex: 1;text-align: right;">
+                          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 17px;"> Grand Total</h3>
+                        </div>
+                        <div style="flex: 1;text-align: center;">
+                          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 17px;">
+                            {{serviceSummaryNetTotal}}</h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Project Summary -->
+              <div *ngIf="serviceSummaryData.length>0">
+                <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Project Summary</h3>
+                <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+                  style="margin: 10px 0px !important;"></div>
+                <div style="display: flex;">
+                  <div style="flex: 1px;padding: 0px 65px;">
+                    <table class="projectSummaryTable">
+                      <tr>
+                        <th>System</th>
+                        <th>Material Cost</th>
+                        <th>Labor Cost</th>
+                        <th>Contribution</th>
+                        <th>NET Amount</th>
+                        <th>Total Cost</th>
+                        <th>Net Profit</th>
+                      </tr>
+                      <tr *ngFor="let system of serviceSummaryData">
+                        <td>{{system.service}}</td>
+                        <td>{{system.finalPrice}}</td>
+                        <td><input type="text" size="6" /></td>
+                        <td><input type="text" size="6" /></td>
+                        <td>{{system.totalPrice}}</td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end:: Content -->
+    <div [ngClass]="editable?'showNotes':'hideNotes'">
+
+      <div class="row" #notes style="margin-right: 0px;
+      margin-left: 0px;background-color: white;
+        margin-bottom: 15px;">
+        <div class="kt-portlet " style="margin-bottom: 0px;width: 50%;">
+          <div class="kt-portlet__head" style="height: 30px;">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title"> Notes </h3>
+            </div>
+          </div>
+          <div class="row" style="background-color:#f7f8fa;margin-left: 0px;margin-right: 0px;padding:10px 45px">
+            <div style="display:inline-block;
+          position:relative;width:100%">
+              <textarea style="display:block" *ngIf="!showTextArea4" class="form-control" (click)="showRows4()"
+                placeholder="Add Note" rows="1"></textarea>
+              <form class="kt-form kt-form--label-right" [formGroup]="notesForm">
+                <div *ngIf="showTextArea4">
+                  <input class="form-control" placeholder="Add Title" formControlName="title">
+                </div>
+                <textarea style="display:block" class="form-control" formControlName="notes" *ngIf="showTextArea4"
+                  placeholder="Add Note" rows="4"></textarea>
+              </form>
+              <div style="display: flex;position: absolute;
+           bottom: 10px;
+           right: 10px;">
+                <button *ngIf="showTextArea4" (click)="notesEditable?updateNotes():addNotes()" style="background-color: #28a745;color:#fff;border: none !important;
+          border-color: #28a745;">Save</button>
+                <button *ngIf="showTextArea4" (click)="cancelText()" style=" color: rgb(255, 255, 255);
+                  margin-left: 4px;
+                  border: none !important;
+                  background-color: #6c757d;
+                  border-color: #6c757d;">Cancel</button>
+              </div>
+
+              <!-- <button aria-expanded="false" aria-haspopup="true" style=" position:absolute;
+            bottom:10px;
+            right:10px; background-color: #e91e63;
+      border: none !important;
+          border-color: #e91e63;
+          width: 95px !important;
+          height: 30px !important;
+          box-shadow: 0 2px 2px 0 rgba(233,30,99,.14), 0 3px 1px -2px rgba(233,30,99,.2), 0 1px 5px 0 rgba(233,30,99,.12) !important;"   style="width: 100px !important;"> SUBMIT </button> -->
+            </div>
+
+          </div>
+          <div style="background-color: #f7f8fa;
+            padding: 0px 45px;
+            padding-bottom: 15px;">
+            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+
+              <ejs-grid #grid [dataSource]='notesData' height="200px" allowSorting='true' allowTextWrap='true'>
+                <e-columns>
+
+
+                  <!-- <e-column field='' headerText='No' textAlign='' width=60>
+              <ng-template #template let-data>
+                <div>{{(data.index)}}</div>
+              
+      
+              </ng-template>
+            </e-column> -->
+                  <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+                  <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+                  <e-column field='notes' headerText='Title' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                      <span>{{data.title}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='notes' headerText='Description' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                      <span>{{data.notes}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='createdby' headerText='Created By' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                      <span>{{data.createdby}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='created_date' headerText='Created Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                      <span>{{data.modified_date!=null?(data.modified_date | date : "dd/MM/y"):(data.created_date | date
+                        : "dd/MM/y")}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <!-- <e-column *ngIf="modified_date!=null" field='modified_date' headerText='Created Date' textAlign='' width=120>
+              <ng-template #template let-data>
+      
+                <span>{{data.modified_date | date :  "dd/MM/y"}}</span>
+      
+      
+              </ng-template>
+            </e-column> -->
+
+                  <e-column type='' textAlign='' headerText='Actions' width='120'>
+                    <ng-template #template let-data>
+                      <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                        (click)="notesEdit(data.id)"> <i class="la la-edit"></i> </a>
+
+                      <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                        (click)="notesDelete(data.id)"><i class="la la-trash"></i> </a>
+
+
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+              <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
+
+      </div>
+
+      <div class="row" #attach style="margin-right: 0px;
+      margin-left: 0px;background-color: white;
+        margin-bottom: 15px;">
+        <div class="kt-portlet " style="margin-bottom: 0px;">
+          <div class="kt-portlet__head" style="height: 30px;">
+            <div style="DISPLAY: flex;
+          WIDTH: 100%;
+          JUSTIFY-CONTENT: SPACE-BETWEEN;" class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title"> Attachments </h3>
+              <div class="dropdown">
+                <button style="background-color: white;color: #2c7bd0;" class="btn btn-secondary dropdown-toggle"
+                  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  Attach
+                </button>
+                <div (click)="openAttachModal()" class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                  x-placement="bottom-start"
+                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 36px, 0px);">
+                  <a class="dropdown-item" style="cursor: pointer;" data-toggle="kt-tooltip" title=""
+                    data-placement="right" data-skin="dark" data-container="body"
+                    data-original-title="Tooltip title">Upload file</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="height:50px;background-color:#f7f8fa;margin-left: 0px;margin-right: 0px;">
+
+
+          </div>
+        </div>
+
+
+
+
+
+
+      </div>
+
+
+      <div class="row" #openAct style="margin-right: 0px;
+      margin-left: 0px;background-color: white;
+        margin-bottom: 15px;">
+        <div class="kt-portlet " style="margin-bottom: 0px;width: 50%;">
+          <div class="kt-portlet__head" style="height: 30px;display: flex;justify-content: space-between;">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title"> Open Activities </h3>
+            </div>
+            <div class="row" style="margin-left: 0px;margin-right: 0px;">
+              <div style="display: flex;padding: 18px 25px;">
+                <div (click)="addTask()" style="font-size: 14px;
+              color: #2c7bd0;cursor: pointer;margin-right: 15px;font-weight: bold;"><i style="font-size: 10px;"
+                    class="flaticon2-plus"></i> Task</div>
+                <div (click)="addMeeting()" style="font-size: 14px; 
+              color: #2c7bd0;cursor: pointer;margin-right: 15px;font-weight: bold;"><i style="font-size: 10px;"
+                    class="flaticon2-plus"></i> Meeting</div>
+                <div (click)="addCall()" style="font-size: 14px; 
+              color: #2c7bd0;cursor: pointer;margin-right: 15px;font-weight: bold;"><i style="font-size: 10px;"
+                    class="flaticon2-plus"></i> Call</div>
+              </div>
+
+
+            </div>
+          </div>
+
+
+          <div style="background-color: #f7f8fa;
+            padding: 10px 45px;
+           ">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+
+              <ejs-grid #meetgrid [dataSource]='meetingData' height="200px" allowSorting='true'
+                [toolbar]='meetingToolbar' allowTextWrap='true'>
+                <e-columns>
+
+
+
+
+                  <e-column field='subject' headerText='Subject' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.subject}}</span>
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='entity_type' headerText='Type' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.entity_type}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <!-- <e-column field='remarks' headerText='Remarks' textAlign='' width=120>
+              <ng-template #template let-data>
+      
+                <span>{{data.remarks}}</span>
+      
+      
+              </ng-template>
+            </e-column> -->
+                  <e-column field='start_time' headerText='Start Time' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.start_time|date : "h:mm a"}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='end_time' headerText='End Time' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.end_time|date : "h:mm a"}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='status' headerText='Status' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.status}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='activity_owner' headerText='Owner' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.activity_owner}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='due_date' headerText='Due Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.due_date}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='ondate' headerText='Created Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.ondate}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+
+
+                  <e-column type='' textAlign='' headerText='Actions' width='120' style="display: none;">
+                    <ng-template #template let-data>
+                      <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                        (click)="meetEdit(data.id,data.entity_type)"> <i class="la la-edit"></i> </a>
+
+                      <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                        (click)="meetDelete(data.id)"><i class="la la-trash"></i> </a>
+
+
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+              <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+      </div>
+      <div class="row" #closeAct style="margin-right: 0px;
+      margin-left: 0px;background-color: white;
+        margin-bottom: 15px;">
+        <div class="kt-portlet " style="margin-bottom: 0px;width: 50%;">
+          <div class="kt-portlet__head" style="height: 30px;display: flex;justify-content: space-between;">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">Closed Activities </h3>
+            </div>
+
+          </div>
+
+
+          <div style="background-color: #f7f8fa;
+            padding: 10px 45px;
+           ">
+            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+
+              <ejs-grid #closegrid [dataSource]='closeData' height="200px" allowSorting='true' [toolbar]='closeToolbar'
+                allowTextWrap='true'>
+                <e-columns>
+
+
+
+
+                  <e-column field='subject' headerText='Subject' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+
+                      <span (click)='viewCloseAct(data.id)' popoverClass="remarksTooltip" container="body"
+                        [ngbPopover]="data.remarks" placement="top" triggers="mouseenter:mouseleave"
+                        style="text-transform: capitalize;color:blue;cursor: pointer;">{{data.subject}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <!-- <e-column field='remarks' headerText='Remarks' textAlign='' width=120>
+              <ng-template #template let-data>
+      
+                <span>{{data.remarks}}</span>
+      
+      
+              </ng-template>
+            </e-column> -->
+                  <e-column field='entity_type' headerText='Type' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.entity_type}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='start_time' headerText='Start Time' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.start_time|date : "h:mm a"}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='end_time' headerText='End Time' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.end_time|date : "h:mm a"}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='status' headerText='Status' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.status}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='activity_owner' headerText='Owner' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.activity_owner}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='due_date' headerText='Due Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.due_date}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+                  <e-column field='ondate' headerText='Created Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <span>{{data.ondate}}</span>
+
+
+                    </ng-template>
+                  </e-column>
+
+
+
+                  <!-- <e-column type='' textAlign='' headerText='Actions' width='90' style="display: none;">
+              <ng-template #template let-data>
+                <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                  (click)="meetEdit(data.id,data.entity_type)"> <i class="la la-edit"></i> </a>  
+      
+                 <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                  (click)="meetDelete(data.id)"><i class="la la-trash"></i> </a> 
+      
+      
+              </ng-template>
+            </e-column> -->
+
+                </e-columns>
+              </ejs-grid>
+              <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rightLogModal">
+  <!-- New Customize Modal -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="new_customization_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content customizeModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">BOQ Setup</h5>
+          <button type="button" #closBtn class="close" data-dismiss="modal" (click)="closeNewCustomModel()"
+            aria-label="Close">
+          </button>
+        </div>
+
+
+        <div class="modal-body" style="
+          overflow-y: auto;
+          overflow-x: hidden;">
+          <div class="col-8" style="display: flex;justify-content: space-between;">
+            <h5>
+              Streamline BOQ Creation: Simplify the Process with our Questionnaire
+            </h5>
+            <button type="button" class="button button-fill button-rose" aria-haspopup="true" aria-expanded="false"
+              (click)="showHiddenPrimaryCats()" style="width: 150px !important;">
+              {{showHiddenItems?"Hide Items":"Show Hidden Items"}} ({{hiddenPrimaryCatList.length}})
+            </button>
+          </div>
+          <div style="margin-top: 20px;" *ngIf="showHiddenItems">
+            <div class="modal-body" class="col-8"
+              style="overflow-x: none; height: 400px; padding: 20px; background-color: #f9f9f9; border-radius: 8px;display: flex;flex-direction: column;">
+              <!-- <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+              <label style="cursor: pointer;">
+                <input type="checkbox" (change)="onCategorySelectAll($event)" /> Select All
+              </label>
+            </div> -->
+
+              <strong style="font-size: 16px; color: #333; margin-bottom: 15px; display: block;">
+                Please select the required categories
+              </strong>
+              <div
+                style="display: flex;justify-content: space-between;flex-direction: column;flex: 1;overflow-x: auto;">
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;overflow-x: auto;">
+                  <div *ngFor="let item of primaryCatList.primaryCategory; let i = index"
+                    style="flex: 0 0 calc(33.33% - 10px); padding-bottom: 10px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 5px; padding: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                      <input type="checkbox" style="margin-right: 5px;" (change)="onHiddenCategorySelected($event,item)"
+                        [checked]="selectedPrimaryCatList.includes(item.id)" [disabled]="checkDisabled(item)" />
+                      {{ item.milestone_name }}
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <div style="color: gray;">
+                    *Note: Customized categories cannot be hidden until the associated customizations are removed.
+                  </div>
+                  <div class="modal-footer" style="display: flex;justify-content: flex-end;margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" (click)="showHiddenPrimaryCats()">Cancel</button>
+                    <button type="button" class="button button-fill button-rose" aria-haspopup="true"
+                      aria-expanded="false" (click)="handleHiddenCatsSubmit()" style="width: 150px !important;">
+                      Update Customization
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-8" style="margin-top: 20px;" *ngIf="summaryDataArr.length>0">
+            <h3 class="kt-section__title kt-section__title-lg"
+              style="font-size: 15px;border-bottom: 1px;border-bottom-style: inset;padding-bottom: 5px;">Summary Table
+            </h3>
+            <table style="border-collapse: collapse; width: 100%; text-align: center;">
+              <thead>
+                <tr>
+                  <th class="headStyle">Category</th>
+                  <th class="headStyle">Unit Type</th>
+                  <th class="headStyle">Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of summaryDataArr; let index = index">
+                  <tr *ngFor="let value of item.value; let valueIndex = index">
+                    <ng-container *ngIf="valueIndex === 0">
+                      <td [rowSpan]="item.value.length" class="bodyStyle">{{ item.categoryName }}</td>
+                    </ng-container>
+                    <td class="bodyStyle">{{ value.type }}</td>
+                    <td class="bodyStyle">{{ value.qty }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="row" style="padding: 10px;">
+            <div class="col-8" style="margin-top: 20px;">
+              <!-- Start of Main Type Accordion -->
+              <mat-accordion [multi]="false" #accordion="matAccordion" style="margin: 1.4rem;">
+                <mat-expansion-panel *ngFor="let data of colDataArr; let i = index" (closed)="onPanelClosed(data.text)"
+                  [disabled]="closeAccordion" (opened)="updateDropDownVals(data.text)">
+                  <mat-expansion-panel-header *ngIf="i>0">
+                    <mat-panel-title>
+                      Choose {{data.text}}
+                    </mat-panel-title>
+                    <mat-panel-description style="justify-content: flex-end;">
+                      <div style="padding: 2px 5px;border: 0.2px solid;border-radius: 3px;"
+                        *ngIf="data.textdesc?.length>0">
+                        <ng-container *ngFor="let item of data.textdesc;let last = last">
+                          <div>
+                            {{ item.type }}: {{ item.qty }}{{ !last ? ', ' : '' }}<br>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <form [formGroup]="myForm">
+                    <table class="table" style="border: 1px solid #dee2e6; font-size: 12px;">
+                      <thead>
+                        <tr style="text-align: center;">
+                          <th scope="col">Area Type <i class="fa fa-info-circle matpointer" placement="left"
+                              ngbTooltip="Indicates the Areas in which the Component/Device will be fixed"
+                              container="body"></i> </th>
+                          <th scope="col">Type of {{data.text}} <i class="fa fa-info-circle matpointer" placement="left"
+                              ngbTooltip="Indicates the Type of the Camera which will be fixed in Selected Area"
+                              container="body"></i> </th>
+                          <th scope="col"> Quantity <i class="fa fa-info-circle matpointer" placement="left"
+                              ngbTooltip="Indicates the Total Quantity in the Selected Area" container="body"></i> </th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="items">
+                        <tr *ngFor="let item of myForm.get('items').controls; let i = index" [formGroupName]="i">
+                          <td>
+                            <ejs-dropdownlist formControlName="areaName" [dataSource]='addAreasArr'
+                              [fields]='commonFields' [allowFiltering]="true" (filtering)="onFiltering($event)"
+                              placeholder='Select a Area Type'></ejs-dropdownlist>
+                            <div class="errorTxt">
+
+                              *Area Name is required
+                            </div>
+                          </td>
+                          <td>
+                            <ejs-dropdownlist formControlName="type" [dataSource]='addTypesArr' tabindex="0"
+                              [fields]='commonFields' (filtering)="onFiltering($event)" [allowFiltering]="true"
+                              placeholder='Select a Type of {{data.text}}'></ejs-dropdownlist>
+                          </td>
+                          <td>
+                            <input type="text" class="e-input" placeholder="Add Quantity" formControlName="qty">
+                            <div class="errorTxt">
+                              *Qty Name is required
+                            </div>
+                          </td>
+                          <td>
+                            <div style="text-align: center;">
+                              <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="item.value.isChanged"
+                                style="color: rgb(221, 163, 5);padding-right: 5px;"
+                                ngbTooltip="Quantity has been modified for this item in the BOQ sheet, Please view the BOQ sheet for further information"></i>
+                              <i class="fa fa-trash commonBtn" aria-hidden="true" (click)="removeItem(i)"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <div>
+                          <button class="btn reqbtn" (click)="addTypes()">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <!-- <p style="margin-bottom: 4px; margin-top: 0px;">Add New Area</p> -->
+                          </button>
+
+                          <button class="btn btn-secondary" style="margin:1.0rem" (click)="saveTypeForm(data.text)">
+                            <p style="margin-bottom: 4px; margin-top: 0px;"> Save</p>
+                          </button>
+
+                          <button class="btn btn-secondary" style="margin:1.0rem"
+                            (click)="openExcelGenPopup(data.text)">
+                            <p style="margin-bottom: 4px; margin-top: 0px;"> View/Edit BOQ Sheet </p>
+                          </button>
+
+                        </div>
+                      </tbody>
+                    </table>
+                  </form>
+                </mat-expansion-panel>
+              </mat-accordion>
+
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+        <div class="kt-align-left" style="margin: 1.3em;">
+          <button type="Submit" (click)="openAllGenExcelModal()" class="button button-fill button-rose-view">View Full
+            BOQ Sheet</button>
+
+        </div>
+
+
+        <div class="kt-align-right modal-footer">
+          <button type="Submit" (click)="showSummaryDetails()" class="button button-fill button-rose">Submit</button>
+          <button (click)="hideSummaryDetails()" #closBtn class="close" data-dismiss="modal" class="btn btn-secondary"
+            style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;">CANCEL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of  New Customize Modal -->
+
+  <!-- Generate Excel Modal -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="gen_xl_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content customizeModal">
+
+
+
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Scope of Work</h5>
+          <button type="button" #closBtn class="close" data-dismiss="modal" (click)="closeGenExcelModal()"
+            aria-label="Close">
+          </button>
+        </div>
+
+        &nbsp;
+        <div class=" exclExprtBtn dropdown dropdown-inline">
+          <button type="button" (click)="newReport()" class="button button-fill button-rose">
+            Excel Export </button>
+          <button type="button" (click)="closeGenExcelModal()" class="button button-fill button-rose"
+            style="margin-left:10px;"> <i class="fa fa-angle-left"></i> Back </button>
+        </div>
+
+
+
+        <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: scroll;">
+
+          <div *ngIf="showEstModalSpinner" class="spinner-overlayX">
+            <div class="spinner-border text-primary custom-spinner" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <!-- Start  Main BOQ Table -->
+          <table class="newTbl newScTable" id="tbl_exporttable_to_xls"
+            *ngIf="isEstimationModalEnabled && !showEstModalSpinner">
+            <tr>
+              <th class="newTbl lbl" *ngFor="let item of catgeryOnlyColumnArr; let i='index'">
+
+
+                {{item.text}} <span *ngIf="item.text==='Custom Number'">
+                  (Optional)
+                  <i class="fa fa-info-circle matpointer" placement="left"
+                    ngbTooltip="The following Column allows to enter a Customized Area Name or Room Name for Future Refrences"
+                    container="body"></i>
+                </span>
+
+
+                <table *ngIf="item.childItems !=  undefined">
+                  <tr class="newTbl">
+                    <th *ngFor="let el of item.childItems; let k='index'" class="newTbl"
+                      style="width: 25px !important;">
+                      {{el.subCategoryName}}</th>
+                  </tr>
+                </table>
+
+              </th>
+            </tr>
+
+            <tr *ngFor="let item of selTblData; let i='index'">
+              <td class="newTbl lbl">
+                {{ item.Label }}
+              </td>
+              <td>
+
+                <table class="newTbl">
+                  <tr class="newTbl" *ngFor="let it of item.fltDescription; let i='index'">
+                    <td>
+                      <input class="newTextPding" type="text" value="{{it.itemName}}" readonly size="4" />
+
+                    </td>
+
+                  </tr>
+                </table>
+
+              </td>
+              <td *ngFor="let cl of catgeryOnlycolDataArr; let k='index'">
+                <table class="newTbl">
+                  <tr class="newTbl" *ngFor="let it of item.fltDescription; let i='index'">
+                    <td *ngIf="cl.childItems ===  undefined && cl.text !==  'Custom Number'">
+                      <input class="newTextPding" type="text" size="3" />
+                    </td>
+                    <td *ngIf="cl.text === 'Custom Number'">
+                      <input class="newTextPding" type="text" size="3"
+                        (change)="updateCustomNumberCell($event, cl, item.Label, it.itemName, i)"
+                        [value]="getCustomNumber(item.Label,it.itemName, i)" />
+                    </td>
+
+                    <table *ngIf="cl.childItems != undefined">
+                      <td class="newTbl" *ngFor="let elm of cl.childItems; let j = 'index'">
+
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="getVal(elm, it, item.Label)"
+                          style="color: rgb(221, 163, 5);position: absolute;margin-top: 7px;padding-left: 5px;"
+                          ngbTooltip="Quantity has been modified for this item in the BOQ sheet"></i>
+
+                        <input type="text" size="2"
+                          (change)="updateTextInputCell($event, elm, cl, item.Label, it.itemName, i)"
+                          [style.background-color]="getVal(elm, it, item.Label) ? '#EEED09' : ''"
+                          style="text-align: center;" [value]="elm.detailsArr?getComputedValue(elm,it,item.Label):0" />
+
+                      </td>
+                    </table>
+                  </tr>
+                </table>
+
+              </td>
+
+
+
+            </tr>
+          </table>
+          <!-- End  Main BOQ Table -->
+        </div>
+        <div class="kt-align-right modal-footer">
+
+          <button type="Submit" class="button button-fill button-rose" (click)="saveDetails()">SAVE</button>
+
+          <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="closeGenExcelModal()">CANCEL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  End of Generate Excel Modal -->
+</div>
+
+
+
+<!-- <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" id="inventory_modal">
+  <div class="modal-dialog modal-lg"> -->
+
+<!-- </div>
+</div> -->
+
+<!-- Summary Modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fullScreenModal">
+  Open Full-Screen Modal
+</button> -->
+
+<!-- Full-Screen Modal -->
+
+
+<div class="modal fade" id="fullScreenModal" tabindex="-1" role="dialog" aria-labelledby="fullScreenModalLabel"
+  aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" role="document" style="margin: 10px; max-width: 100vw;">
+    <div class="modal-content" style="height: 800px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fullScreenModalLabel">Estimation Summary</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeFullScreenModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;">
+
+
+        <div *ngIf="calculateSubmit" class="intfutTable" style="
+        overflow-y: auto;             
+        overflow-x: scroll;
+        height: auto;
+        padding-bottom:10px;margin-bottom: 10px">
+          <!-- <mat-tab-group (selectedTabChange)="handleSummaryData($event)" #tabObj style="background-color: white;"
+            [selectedIndex]="selectedServiceTabIndex">
+            <mat-tab *ngFor="let tab of tabData; let index = index" [label]="tab.text">
+              <mat-spinner *ngIf="matTabSpinner"></mat-spinner> -->
+          <div style="padding-top: 10px;" *ngIf="!matTabSpinner">
+            <!-- <mat-spinner *ngIf="loadGridData"></mat-spinner> -->
+            <form [formGroup]="summaryFormArray">
+              <table formArrayName="taskList">
+                <tr>
+                  <th>Service Name</th>
+                  <th>Primary Category</th>
+                  <th>Item Name</th>
+                  <th>Inventory Type</th>
+                  <th>Inventory Name</th>
+                  <th>Item Code</th>
+                  <th>Description</th>
+                  <th>Supplier Name</th>
+                  <th>Total Qty</th>
+                  <th>Buffer Qty</th>
+                  <th>Unit Price</th>
+                  <th>Currency</th>
+                  <th>Total Price</th>
+                  <th>Discount</th>
+                  <th>Final Price</th>
+                  <th>Remarks</th>
+                </tr>
+                <ng-container *ngFor="let task of taskList.controls; let i = index">
+                  <tr [formGroupName]="i">
+                    <td><label>{{ task?.get('MainCat')?.value }}</label> <span *ngIf="task?.get('customAdded')?.value"
+                        class="circle-icon">
+                        <i class="fa fa-plus" aria-hidden="true" title="Custom Added"></i>
+                      </span></td>
+
+                    <td>
+                      <ng-container *ngIf="!task?.get('newValue')?.value; else dropdownTemplate">
+                        <label>{{ task?.get('MainType')?.value }}</label>
+                      </ng-container>
+                      <ng-template #dropdownTemplate>
+                        <ejs-dropdownlist [dataSource]="servicePrimaryCategory" placeholder="Select Material"
+                          formControlName="MainType" [fields]="commonFields" (change)="handleSubCategory($event)">
+                        </ejs-dropdownlist>
+                      </ng-template>
+                    </td>
+
+                    <td>
+                      <ng-container *ngIf="!task?.get('newValue')?.value; else xdropdownTemplate">
+                        <label>{{ task?.get('type')?.value }}</label>
+                      </ng-container>
+                      <ng-template #xdropdownTemplate>
+                        <ejs-dropdownlist [dataSource]="serviceSecondaryCategory" placeholder="Select Material"
+                          formControlName="type" [fields]="commonFields">
+                        </ejs-dropdownlist>
+                      </ng-template>
+                    </td>
+
+                    <!-- <td><label>{{ task?.get('type')?.value }}</label></td> -->
+                    <td style="width: 120px;">
+                      <div class="search-container">
+                        <input type="text" size="10" placeholder="Search..." [formControl]="task?.get('inventoryType')">
+                        <i class="fa fa-search" (click)="handleInvItemtype('Existing', i)"></i>
+                      </div>
+                    </td>
+                    <td style="text-align: center;">
+                      <input type="text" size="10" [formControl]="task?.get('inventoryItemName')" />
+                    </td>
+                    <td style="text-align: center;">
+                      <input type="text" size="10" [formControl]="task?.get('itemCode')" />
+                    </td>
+                    <td>
+                      <textarea style="display:block" class="form-control" placeholder="Item Description" rows="1"
+                        [formControl]="task?.get('itemDescription')"></textarea>
+                    </td>
+                    <td style="text-align: center;">
+                      <input type="text" size="10" [formControl]="task?.get('supplierName')" />
+                    </td>
+                    <td style="text-align: center;">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="task?.get('isModifiedQty')?.value"
+                      style="color: rgb(221, 163, 5);position: absolute;margin-top: 7px;padding-left: 40px;"
+                      ngbTooltip="Quantity has been modified for this item while applying rule"></i>
+
+                      <input type="text" size="4" [formControl]="task?.get('qty')"
+                        (change)="updateSummaryItemTotalPrice(i)" pattern="[0-9]*" />
+                    </td>
+                    <td style="text-align: center;">
+                      <input type="text" size="4" [formControl]="task?.get('bufferQty')"
+                        (change)="updateSummaryItemTotalPrice(i)" pattern="[0-9]*" />
+                    </td>
+
+                    <td style="text-align: center;">
+                      <input type="text" size="4" [formControl]="task?.get('unitPrice')"
+                        (change)="updateSummaryItemTotalPrice(i)" pattern="[0-9]*" />
+                    </td>
+                    <td>
+                      <ejs-dropdownlist [dataSource]="currencyList" placeholder="Select" [fields]="commonFields"
+                        [formControl]="task?.get('currency')" style="width: 70px;"></ejs-dropdownlist>
+                    </td>
+                    <td style="text-align: center;">
+                      <input type="text" size="4" [formControl]="task?.get('totalPrice')"
+                        (change)="updateSummaryItemFinalPrice(i)" pattern="[0-9]*" />
+                    </td>
+                    <td style="text-align: center;">
+                      <div style="display: flex; justify-content: center;" class="discountInputContainer">
+                        <input type="text" size="4" [formControl]="task?.get('discount')"
+                          (change)="updateSummaryItemFinalPrice(i)" pattern="[0-9]*" />
+                        <span *ngIf="task?.get('discountType')?.value === 'percentage'">%</span>
+                        <select style="width: 20px;" [formControl]="task?.get('discountType')"
+                          (change)="updateSummaryItemFinalPrice(i)">
+                          <option value="percentage">Percentage</option>
+                          <option value="value">Value</option>
+                        </select>
+                      </div>
+                    </td>
+                    <td style="text-align: center;">
+                      <input type="text" size="6" [formControl]="task?.get('finalPrice')" pattern="[0-9]*" />
+                    </td>
+                    <td>
+                      <div style="display: flex; justify-content: center; align-items: center;">
+                        <textarea style="display: block;" class="form-control" placeholder="Remarks" rows="1"
+                          [formControl]="task?.get('remarks')"
+                          [ngStyle]="{ 'height.px': showTextAreaStack[i] ? '100' : '45'}"></textarea>
+                        <span class="toggle-icon" (click)="toggleTextArea(i)">
+                          <i [class]="showTextAreaStack[i] ? 'fa fa-angle-up' : 'fa fa-angle-down'"></i>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+
+                </ng-container>
+              </table>
+              <div style="display: flex;justify-content: flex-end;gap: 2px;margin: 10px 0px;"> <button
+                  class="btn addNewItem" (click)="addNewSummaryItem()">
+                  Add New Item <i class="fa fa-plus" aria-hidden="true"></i>
+
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- </mat-tab>
+          </mat-tab-group> -->
+        </div>
+
+        <div style="justify-content: right;display: flex;margin-bottom: 5px;" *ngIf="calculateSubmit">
+          <button type="button" id='width100' style="width: 100px !important;" class="button button-fill button-rose"
+            (click)='submitServiceEdit()' aria-haspopup="true"
+            aria-expanded="false">{{isEstSummarySaved?"Update":"Save"}}
+          </button>
+        </div>
+        <!-- Service Summary -->
+        <div *ngIf="serviceSummaryData.length>0">
+          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">System Summary</h3>
+          <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+            style="margin: 10px 0px !important;"></div>
+          <div style="display: flex;justify-content: center;padding-bottom: 20px;">
+
+            <div style="width: 700px;">
+              <table class="serviceSummaryTable">
+                <tr>
+                  <th>System</th>
+                  <th>NET Amount</th>
+                </tr>
+                <tr *ngFor="let system of serviceSummaryData">
+                  <td>{{system.service}}</td>
+                  <td>{{system.totalPrice}}</td>
+                </tr>
+              </table>
+              <div style="margin-top: 10px;">
+                <div style="display: flex;border-top: 1px solid black;padding-top: 5px;">
+                  <div style="flex: 1;text-align: right;">
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Total</h3>
+                  </div>
+                  <div style="flex: 1;text-align: center;">
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">
+                      {{serviceSummaryTotal}}</h3>
+                  </div>
+                </div>
+                <div style="display: flex;">
+                  <div style="flex: 1;text-align: right;">
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;"> Vat</h3>
+                  </div>
+                  <div style="flex: 1;text-align: center;">
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">
+                      {{serviceSummaryVat}}</h3>
+                  </div>
+                </div>
+                <div style="display: flex;align-items: center;background-color: #f1f1f1;">
+                  <div style="flex: 1;text-align: right;">
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 17px;"> Grand Total</h3>
+                  </div>
+                  <div style="flex: 1;text-align: center;">
+                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 17px;">
+                      {{serviceSummaryNetTotal}}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Summary -->
+        <div *ngIf="serviceSummaryData.length>0">
+          <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Project Summary</h3>
+          <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"
+            style="margin: 10px 0px !important;"></div>
+          <div style="display: flex;">
+            <div style="flex: 1px;padding: 0px 65px;">
+              <table class="projectSummaryTable">
+                <tr>
+                  <th>System</th>
+                  <th>Material Cost</th>
+                  <th>Labor Cost</th>
+                  <th>Contribution</th>
+                  <th>NET Amount</th>
+                  <th>Total Cost</th>
+                  <th>Net Profit</th>
+                </tr>
+                <tr *ngFor="let system of serviceSummaryData">
+                  <td>{{system.service}}</td>
+                  <td>{{system.finalPrice}}</td>
+                  <td><input type="text" size="6" /></td>
+                  <td><input type="text" size="6" /></td>
+                  <td>{{system.totalPrice}}</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+  <!-- Custom Inventory modal -->
+
+
+</div>
+<!-- <ng-template #InvSelectionModal> -->
+<div id="customModal" *ngIf="showInvCustomModal" class="custom-Inv-modal-backdrop">
+  <div class="custom-Inv-modal">
+    <div style="height: 580px;">
+      <div *ngIf="selectedInventoryType === 'Existing'">
+
+        <div class="modal-header" style="background-color: #f1f1f1;">
+          <h4 class="modal-title" (click)="closeCustomModal()">
+            Inventory
+          </h4>
+          <div style="display: flex;gap: 10px;">
+            <div style="display: flex;gap: 5px;">
+              <button type="button" class="btn btn-primary"
+                (click)="isFullInventory?handleInvItemtype('Existing',i):handleFullInventoryListing()"
+                style="background-color: #e3165b;border: none;">{{isFullInventory?"Back to Inventory":"Full
+                Inventory"}}</button>
+              <button type="button" class="btn btn-primary" (click)="handleInvItemtype('New',i)"
+                style="background-color: #e3165b;border: none;">Add New Item</button>
+              <button type="button" class="btn btn-primary" (click)="handleInvItemtype('Provisional',i)"
+                style="background-color: #e3165b;border: none;">Add Provisional
+                Item</button>
+            </div>
+            <button type="button" class="close" (click)="closeCustomModal()" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+          </div>
+        </div>
+        <div style="position: relative;overflow-x: hidden;overflow-y: auto;height: 480px;">
+          <div style="padding: 15px 35px;">
+            <div class="modal-header" style="margin-bottom:5px;background-color: #f1f1f1;">
+              <h5 class="modal-title" (click)="closeCustomModal()">
+                Inventory Items
+              </h5>
+
+            </div>
+            <ejs-grid #inventoryListingGrid [dataSource]="inventoryData" [toolbar]="employeeGridToolItems"
+              height="300px" (rowSelected)="onExistingSelected($event)" [selectedRowIndex]="invselectedRowIndex">
+              <e-columns>
+                <e-column field="inv_img" headerText="Image">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <img
+                        [src]="data.invImage && data.invImage!='' && data.invImage!=null?data.invImage:inventoryPlaceholder"
+                        alt="Listing Image"
+                        (click)="enlargeImage(data.invImage && data.invImage!='' && data.invImage!=null?data.invImage:inventoryPlaceholder)"
+                        style="width: 40px; height: 25px; cursor: pointer;" />
+                    </div>
+                  </ng-template>
+                </e-column>
+                <e-column field="item_code" headerText="Item Code">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <p style="margin-bottom: 0px">{{ data.item_code }}</p>
+                    </div>
+                  </ng-template>
+                </e-column>
+                <e-column field="model_no" headerText="Model No">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <p style="margin-bottom: 0px">{{ data.model_no }}</p>
+                    </div>
+                  </ng-template>
+                </e-column>
+
+
+                <e-column field="item_name" headerText="Item Name">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <p style="margin-bottom: 0px">{{ data.item_name }}</p>
+                    </div>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="brand" headerText="Brand">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <p style="margin-bottom: 0px">{{ data.brand }}</p>
+                    </div>
+                  </ng-template>
+                </e-column>
+                <e-column field="status" headerText="Status">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <p style="margin-bottom: 0px">{{ data.status }}</p>
+                    </div>
+                  </ng-template>
+                </e-column>
+                <e-column field="quantity" headerText="Quantity">
+                  <ng-template #template let-data>
+                    <div style="display: flex">
+                      <p style="margin-bottom: 0px">{{ data.quantity }}</p>
+                    </div>
+                  </ng-template>
+                </e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+          <div style="padding-left: 35px;padding-right:35px ;padding-bottom: 35px;" *ngIf="showSupplierRatesTable">
+            <div class="modal-header" style="margin-bottom:5px;background-color: #f1f1f1;">
+              <h5 class="modal-title" (click)="closeCustomModal()">
+                Supplier Table
+              </h5>
+            </div>
+            <ejs-grid #supplierListingGrid [dataSource]="supplierRatesArr" (created)='serviceSearchKeyUp()'
+              [toolbar]="employeeGridToolItems" height="150px" (rowSelected)="onExistingVendorSelected($event)"
+              [selectedRowIndex]="supselectedRowIndex">
+              <e-columns>
+                <e-column field="created_date" headerText="Created Date" textAlign="center">
+                  <ng-template #template let-data>
+
+                    {{ data.created_date | date : "dd/MM/y" }}
+                  </ng-template>
+                </e-column>
+                <e-column field="supplier_name" headerText="Supplier Name" textAlign="center">
+                  <ng-template #template let-data>
+                    {{ data.supplier_name }}
+                  </ng-template>
+                </e-column>
+                <e-column field="supplier_rate" headerText="Supplier Rate" textAlign="center">
+                  <ng-template #template let-data>
+                    {{ data.supplier_rate }}
+                  </ng-template>
+                </e-column>
+                <e-column field="quantity" headerText="Quantity" textAlign="center">
+                  <ng-template #template let-data>
+                    {{ data.quantity }}
+                  </ng-template>
+                </e-column>
+                <e-column field="supplier_rate" headerText="Currency" textAlign="center">
+                  <ng-template #template let-data>
+                    {{ data.currency }}
+
+                  </ng-template>
+                </e-column>
+                <e-column field="conversionRate" headerText="Converted Rate to UAE Dirham" textAlign="center">
+                  <ng-template #template let-data>
+                    <div style="display: flex;justify-content: center;">
+                      {{ data.conversionRate }}
+                      <div *ngIf="data.is_default" style="position: absolute;padding-left: 65px;"><i class="fa fa-tag"
+                          aria-hidden="true" ngbTooltip="Default supplier" placement="bottom"></i></div>
+                    </div>
+
+                  </ng-template>
+                </e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+          <div *ngIf="isLoading" class="spinner-overlay">
+            <div class="spinner-border text-primary custom-spinner" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="OnInventoryItemSave()"
+            style="background-color: #e3165b;border: none;">Save changes</button>
+        </div>
+      </div>
+      <div *ngIf="selectedInventoryType === 'New' || selectedInventoryType === 'Provisional'">
+        <div class="addBox" *ngIf="addInventory">
+          <div class="modal-header" style="margin-bottom:15px;background-color: #f1f1f1;">
+            <h5 class="modal-title" (click)="closeCustomModal()">
+              {{selectedInventoryType === 'New'?"Add Inventory Item":"Add Provisional Inventory Item"}}
+            </h5>
+            <div style="display: flex;gap: 10px;">
+              <div style="display: flex;gap: 5px;">
+                <!-- <button type="button" class="btn btn-primary" (click)="handleFullInventoryListing()"
+                style="background-color: #e3165b;border: none;">Full Inventory</button> -->
+                <button type="button" class="btn btn-primary" (click)="handleInvItemtype('Existing',i)"
+                  style="background-color: #e3165b;border: none;">Back to Inventory</button>
+                <button type="button" class="btn btn-primary"
+                  (click)="handleInvItemtype(selectedInventoryType === 'New' ? 'Provisional' : 'New', i)"
+                  style="background-color: #e3165b;border: none;"> {{selectedInventoryType === 'New'?"Add Provisional
+                  Inventory Item":"Add Inventory Item"}}</button>
+              </div>
+              <button type="button" class="close" (click)="closeCustomModal()" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            </div>
+          </div>
+          <div>
+            <form [formGroup]="addInventoryTypeForm" (ngSubmit)="onSubmit()">
+              <div class="row" style="display: flex; justify-content: center">
+                <div class="col-5" style="display: block">
+                  <table style="width: 100%">
+                    <tbody>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Item Code</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <input type="text" class="form-control" id="model_No" formControlName="model_No"
+                            disabled="true" />
+                        </td>
+                      </tr>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Model No</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <input type="text" class="form-control" id="model_No" formControlName="model_No" />
+                          <div *ngIf="addInventoryTypeForm.get('model_No').hasError('required')"
+                            class="validationLabel">
+                            *Model No is required.
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Item Name</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <input type="text" class="form-control" id="itemName" formControlName="itemName" />
+                          <div *ngIf="addInventoryTypeForm.get('itemName').hasError('required')"
+                            class="validationLabel">
+                            *Item Name is required.
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Brand</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <input type="text" class="form-control" id="Brand" formControlName="brand" />
+                          <div *ngIf="addInventoryTypeForm.get('brand').hasError('required')" class="validationLabel">
+                            *Brand is required.
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Quantity</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <input type="text" class="form-control" id="quantity" formControlName="quantity" disabled />
+                        </td>
+                      </tr>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Unit</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <ejs-dropdownlist [dataSource]="InventoryUnitType" placeholder="Select Unit"
+                            [fields]="commonFields" formControlName="unit"></ejs-dropdownlist>
+                          <div *ngIf="addInventoryTypeForm.get('unit').hasError('required')" class="validationLabel">
+                            *Unit is required.
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- Add validation messages here -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Status</label>
+                          <i *ngIf="isItemDisabled" class="fa fa-info-circle matpointer" style="padding-left: 4px"
+                            placement="left" ngbTooltip="Disabled items will not be displayed in the inventory listing"
+                            container="body"></i>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <ejs-dropdownlist [dataSource]="statusArr" placeholder="Select Status" [fields]="commonFields"
+                            formControlName="status" (change)="handleStatusChange($event)"></ejs-dropdownlist>
+                          <div *ngIf="addInventoryTypeForm.get('status').hasError('required')" class="validationLabel">
+                            *Status is required.
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-5" style="display: block">
+                  <table style="width: 100%">
+                    <tbody>
+                      <!-- ... Other rows ... -->
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top" *ngIf="!addNewFeature">
+                        <td>
+                          <label>Features</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <ejs-multiselect [dataSource]="inventoryTags" formControlName="features"
+                            [fields]="commonFields" placeholder="Select a tag"></ejs-multiselect>
+                          <div *ngIf="addInventoryTypeForm.get('features').hasError('required')"
+                            class="validationLabel">
+                            *Features are required.
+                          </div>
+                          <span style="
+                                      display: grid;
+                                      justify-content: flex-end;
+                                      text-decoration: underline;
+                                    " (click)="showAddnewFeature()">Add a new feature</span>
+                        </td>
+                      </tr>
+                      <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Origin</label>
+
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <input type="text" class="form-control" id="origin" formControlName="origin" />
+                          <div *ngIf="addInventoryTypeForm.get('origin').hasError('required')" class="validationLabel">
+                            *Origin is required.
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- ... Other rows ... -->
+                      <tr style="margin-bottom: 20px; height: 50px; vertical-align: top">
+                        <td>
+                          <label>Item Description</label>
+                        </td>
+                        <span style="margin-right: 20px">:</span>
+                        <td>
+                          <textarea type="text" class="form-control" id="itemDesc"
+                            formControlName="itemDesc"></textarea>
+                          <div *ngIf="addInventoryTypeForm.get('itemDesc').hasError('maxlength')"
+                            class="validationLabel">
+                            *Item Description cannot exceed 200 characters.
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- ... Other rows ... -->
+
+                      <!-- ... Other rows ... -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+
+            </form>
+
+            <!-- <div style="display: flex ;justify-content: center;">
+
+            <div style="display: flex; justify-content: center; padding: 20px;width: 70%;flex-direction: column;"
+              *ngIf="showSupplierRatesTable">
+              <div style="display: flex;justify-content:flex-end;">
+                <button class="btn btnColorAll" style="margin-bottom: 10px" (click)="addSupplier()">
+                  <i class="fa fa-plus padreq" aria-hidden="true"></i>
+                  Add New Supplier Rate
+                </button>
+              </div>
+              <ejs-grid #closingServGrid [dataSource]="supplierRatesArr" (created)='serviceSearchKeyUp()'
+                [toolbar]="employeeGridToolItems" height="150px" *ngIf="showSupplierRatesTable">
+                <e-columns>
+                  <e-column field="created_date" headerText="Created Date" textAlign="center">
+                    <ng-template #template let-data>
+                      {{ data.created_date | date : "dd/MM/y" }}
+                    </ng-template>
+                  </e-column>
+                  <e-column field="supplier_name" headerText="Supplier Name" textAlign="center">
+                    <ng-template #template let-data>
+                      {{ data.supplier_name }}
+                    </ng-template>
+                  </e-column>
+                  <e-column field="supplier_rate" headerText="Supplier Rate" textAlign="center">
+                    <ng-template #template let-data>
+                      {{ data.supplier_rate }}
+                    </ng-template>
+                  </e-column>
+                  <e-column field="quantity" headerText="Quantity" textAlign="center">
+                    <ng-template #template let-data>
+                      {{ data.quantity }}
+                    </ng-template>
+                  </e-column>
+                  <e-column field="supplier_rate" headerText="Currency" textAlign="center">
+                    <ng-template #template let-data>
+                      {{ data.currency }}
+                    </ng-template>
+                  </e-column>
+                  <e-column field="conversionRate" headerText="Converted Rate to UAE Dirham" textAlign="center">
+                    <ng-template #template let-data>
+                      {{ data.conversionRate }}
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </div> -->
+            <div class="row rowimp thirddiv">
+              <div class="col" style="gap: 10px; display: flex" *ngIf="!dataForApproval">
+                <button class="btn buttonSt btnScc"
+                  (click)="selectedInventoryType === 'New' ? saveInventoryType() : saveProvisionalInventoryType()"
+                  style="display: flex;" type="submit" [disabled]="addInventoryTypeForm.invalid">
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px">
+                    Save
+                  </p>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class *ngIf="!addInventory">
+            <form [formGroup]="addSupplierForm">
+              <div class="modal-header" style="padding: 8px 15px">
+                <h5 class="modal-title" (click)="closeCustomModal()">
+                  Add Supplier Rates
+                </h5>
+                <button type="button" class="close" (click)="closeCustomModal()" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+              </div>
+              <div>
+                <div class="row rowimp seconddiv">
+                  <div class="col">
+                    <table class="table" style="margin-bottom: 0rem">
+                      <thead>
+                        <tr>
+                          <th scope="col">Supplier Name</th>
+                          <th scope="col">Supplier Rate</th>
+                          <th scope="col">Currency</th>
+                          <th scope="col">Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="supplierTaskList">
+                        <tr *ngFor="let task of supplierTaskList.controls; let i = index" [formGroupName]="i">
+                          <td>
+                            <ejs-dropdownlist [dataSource]="vendorArr" placeholder="Select Supplier"
+                              [fields]="commonFields" formControlName="SupplierName"></ejs-dropdownlist>
+                            <div class="errorTxt" *ngIf="
+                          supplierTaskList.controls[i].get('taskName')?.errors
+                                ?.required
+                            ">
+                              *Supplier Name is required
+                            </div>
+                          </td>
+                          <td>
+                            <input type="text" class="e-input" placeholder="Enter Supplier Rate"
+                              formControlName="SupplierRate" />
+                          </td>
+                          <td>
+                            <ejs-dropdownlist [dataSource]="currencyList" placeholder="Select Currency"
+                              [fields]="commonFields" formControlName="SupplierCurrency"></ejs-dropdownlist>
+                          </td>
+                          <td>
+                            <input type="text" class="e-input" placeholder="Enter Quantity"
+                              formControlName="SupplierQuantity" />
+                          </td>
+                          <td>
+                            <div style="text-align: center">
+                              <i class="fa fa-trash commonBtn" aria-hidden="true" (click)="deleteTaskRow(i)"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <div>
+                          <button class="btn reqbtn" (click)="addNewTask()" style="display: flex; flex-direction: row">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <p style="margin-bottom: 4px; margin-top: 0px">
+                              Add New Supplier Rate
+                            </p>
+                          </button>
+                        </div>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="row rowimp thirddiv">
+                  <div class="col" style="gap: 10px; display: flex">
+                    <button class="btn buttonSt btnScc" (click)="saveSupplierRates()" style="display: flex">
+                      <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                      <p style="margin-bottom: 4px; margin-top: 0px">
+                        Save Supplier Rates
+                      </p>
+                    </button>
+                    <button class="btn buttonStAdd btnScc" (click)="backToinventory()" style="display: flex">
+                      Back
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- </ng-template> -->
+
+<!-- Template Selection -->
+<div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 900px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Templates</h5>
+
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="templateListing && !templateRuleListing">
+        <ejs-grid #serviceGrid [dataSource]='templateListingData$ | async' (created)='serviceSearchKeyUp()'
+          [toolbar]='employeeGridToolItems' height='300px'>
+          <e-columns>
+            <e-column field='name' headerText='Template Name'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.name}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+
+            <e-column field='mainCategory' headerText='Service Name'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.mainCategory}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column field='mainCategory' headerText='Description'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.description}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+
+            <e-column field=''
+              [style]="'display: flex; justify-content: center; align-items: center; text-align: center;'">
+              <ng-template #template let-data>
+                <div style="display: flex; justify-content: center; align-items: center;gap:5px">
+                  <i class="fa fa-check" aria-hidden="true" style="font-size: 16px;cursor: pointer;" placement="top"
+                    ngbTooltip="Apply this template" container="body" (click)="handleApplyEstTemplate(data)"
+                    *ngIf="!isTemplateApplied(data.id)"></i>
+                  <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px;cursor: pointer;" placement="top"
+                    ngbTooltip="Remove this Template" container="body" (click)="removeAppliedTemplate(data)"
+                    *ngIf="isTemplateApplied(data.id)"></i>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top"
+                    ngbTooltip="Edit/View this Template" container="body" (click)="editTemplate(data)"></i>
+                  <i class="fa fa-list" aria-hidden="true" style="font-size: 16px;" placement="top"
+                    ngbTooltip="View template rules" container="body" (click)="viewTemplateRules(data)"></i>
+                </div>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+
+      </div>
+
+      <!-- <form [formGroup]="addServiceForm"> -->
+      <div class="firstdiv" *ngIf="!templateListing && !templateRuleListing">
+        <div *ngIf="!templateListing" style="display: flex;justify-content: flex-end;padding: 10px;">
+          <button type="button" (click)='closeAddServiceTemplate()' class="button button-fill button-rose"
+            style="margin-left:10px;border-radius: 2px;"> <i class="fa fa-angle-left"></i> Back </button>
+        </div>
+        <div style="display: flex;flex-direction: column;align-items: center;">
+          <!-- <div class="col-8" style="margin-top: 20px;"> -->
+          <!-- Start of Main Type Accordion -->
+          <div style="display: flex; flex-direction: column;width: 600px; padding: 20px;">
+
+            <Form [formGroup]="templateForm">
+              <div style="display: flex; justify-content: center;">
+                <h6 style="flex: 1;">Template Name</h6>
+                <input type="text" size="18" class="form-control" formControlName="name" style="flex: 1;" disabled>
+              </div>
+              <div style="display: flex; justify-content: center;margin-top: 10px;">
+                <h6 style="flex: 1;">Description</h6>
+                <input type="text" size="18" class="form-control" formControlName="description" style="flex: 1;"
+                  disabled>
+
+              </div>
+              <!-- <div style="display: flex; justify-content: center; margin-top: 10px;">
+                <h6 style="flex: 1;">Select Service </h6>
+                <ejs-dropdownlist formControlName="mainCategory" [dataSource]='serviceMainCategory'
+                  [fields]='commonFields' [allowFiltering]='true' placeholder='Select Type'
+                  (change)="handleMainCategorySelection($event)" style="width: 150px;flex: 1;"></ejs-dropdownlist>
+              </div> -->
+            </Form>
+          </div>
+          <div style="width: 600px;border: 1px solid;border-style: groove;">
+
+            <div
+              style="text-align: center;display: flex;justify-content: space-between;padding: 5px 0px;border-bottom: 2px;border-bottom-style: groove;background-color: #f1f1f1;">
+              <div style="width: 150px">Primary Category</div>
+              <div style="width: 150px">Secondary Category</div>
+              <div style="width: 150px">Brand</div>
+              <div style="width: 150px">Item Name</div>
+            </div>
+
+
+
+            <div *ngIf="templateUnitStack.length>0">
+              <div *ngFor="let item of templateUnitStack;let i=index"
+                [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'border-top': i !== 0 ? '1px solid #bdbdbd' : ''}">
+
+
+                <div *ngFor="let data of item.value"
+                  style="display: flex;flex-direction: row;justify-content: space-between;padding:5px 0px;width: 100%;text-align: center;">
+                  <div style="width: 150px;">
+                    {{item.id}}</div>
+                  <div style="width: 150px">
+                    {{data.secondaryCategoryName}}</div>
+                  <div style="width: 150px">
+                    {{data.inventory_brand}}</div>
+                  <div style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 150px;">
+                    {{data.inventory_name}}</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <mat-accordion [multi]="false" #accordion="matAccordion" style="margin: 1.4rem;width: 800px;">
+            <mat-expansion-panel *ngFor="let data of servicePrimaryCategory; let i = index"
+              (closed)="onPanelClosed(data.value)" [disabled]="closeAccordion"
+              (opened)="updateTemplateDropDownVals(data.value,data.id)">
+              <mat-expansion-panel-header *ngIf="i>0">
+                <mat-panel-title>
+                  Choose {{data.value}}
+                </mat-panel-title></mat-expansion-panel-header>
+              <Form [formGroup]="extraTemplateUnitForm">
+                <div formArrayName="extras">
+                  <table class="table" style="border: 1px solid #dee2e6; font-size: 12px;">
+                    <thead>
+                      <tr style="text-align: center;">
+                        <th scope="col">Type of {{data.value}} <i class="fa fa-info-circle matpointer" placement="left"
+                            ngbTooltip="Indicates the Type of the Camera which will be fixed in Selected Area"
+                            container="body"></i> </th>
+                        <th scope="col"> Select Inventory Item <i class="fa fa-info-circle matpointer" placement="left"
+                            ngbTooltip="Indicates the Total Quantity in the Selected Area" container="body"></i> </th>
+                        <th scope="col"> Inventory Name <i class="fa fa-info-circle matpointer" placement="left"
+                            ngbTooltip="Indicates the Total Quantity in the Selected Area" container="body"></i> </th>
+                        <th scope="col"> Inventory Brand <i class="fa fa-info-circle matpointer" placement="left"
+                            ngbTooltip="Indicates the Total Quantity in the Selected Area" container="body"></i> </th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let email of extraTemplateUnitForm.get('extras')['controls']; let i = index"
+                        [formGroupName]="i">
+                        <td>
+                          <ejs-dropdownlist formControlName="secondaryCategoryName"
+                            [dataSource]='serviceSecondaryCategory' [fields]='templateFields' [allowFiltering]='true'
+                            placeholder='Select Type' style="width: 150px;"></ejs-dropdownlist>
+                        </td>
+                        <td style="display: flex;justify-content: center;">
+                          <div class="search-container" style="display: flex;justify-content: center;">
+                            <input type="text" size="20" placeholder="Search..." formControlName="inventory_type">
+                            <i class="fa fa-search" (click)="handleInvItemtype('Existing',i)"></i>
+                            <!-- Assuming you are using Font Awesome for the search icon -->
+                          </div>
+                        </td>
+                        <td>
+                          <div style="display: flex;justify-content: center;"> <input type="text" size="20"
+                              formControlName="inventory_name">
+
+                            <!-- Assuming you are using Font Awesome for the search icon -->
+                          </div>
+                        </td>
+                        <td>
+                          <div style="display: flex;justify-content: center;"> <input type="text" size="20"
+                              formControlName="inventory_brand">
+
+                            <!-- Assuming you are using Font Awesome for the search icon -->
+                          </div>
+                        </td>
+                        <td>
+                          <div aria-haspopup="true" (click)="AddExtraTemplateUnitDesc(i)" aria-expanded="false"
+                            style="color:black;margin-top:5px;text-align: center;">
+                            <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                                      color: #fff;
+                                                                      font-size: 8px;
+                                                                      "></i>
+
+                            </a>
+                            <span style="margin-left: 4px;" (click)="removeTemplateItem(i)"><i class="flaticon2-cross"
+                                style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                     color: #fff;
+                                     font-size: 8px;
+                                     "></i></span>
+
+
+                          </div>
+                          <!-- <button (click)="SaveForm()">Save</button> -->
+                        </td>
+
+                      </tr>
+                      <div>
+
+                        <button class="btn btn-secondary" style="margin:1.0rem"
+                          (click)="saveTemplateTypeForm(data.value)">
+                          <p style="margin-bottom: 4px; margin-top: 0px;"> Save</p>
+                        </button>
+                      </div>
+                    </tbody>
+                  </table>
+                </div>
+              </Form>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <!-- </div> -->
+          <!-- </form> -->
+        </div>
+
+        <!-- <div class="row rowimp thirddiv">
+       
+        </div> -->
+      </div>
+      <div *ngIf="templateRuleListing" style="padding: 20px;">
+        <div style="display: flex;justify-content: flex-end;">
+          <button type="button" (click)='goBackToTemplate()' class="button button-fill button-rose"
+            style="margin-left:10px;margin-bottom: 10px;"> <i class="fa fa-angle-left"></i> Back </button>
+        </div>
+        <ejs-grid #serviceGrid [dataSource]='templateRuleList' (created)='serviceSearchKeyUp()'
+          [toolbar]='employeeGridToolItems' height='300px'>
+          <e-columns>
+            <e-column field='related_item_name' headerText='Name'> </e-column>
+            <e-column field='primary_item_name' headerText='Category'> </e-column>
+            <e-column field='masterSecondaryCat' headerText='Master Name'> </e-column>
+            <e-column field='masterPrimaryCat' headerText='Master Category'> </e-column>
+
+            <e-column field='rule' headerText='Rule'></e-column>
+            <e-column field=''
+              [style]="'display: flex; justify-content: center; align-items: center; text-align: center;'">
+              <ng-template #template let-data>
+                <div>
+                  <button type="button" (click)='applyTemplateRule(data)' class="button button-fill button-rose"> Apply
+                  </button>
+                </div>
+              </ng-template></e-column>
+
+          </e-columns></ejs-grid>
+
+      </div>
+
+
+      <div class="modal-footer" style="display: flex;justify-content: center;gap: 5px;" *ngIf="!templateListing">
+        <div class="col">
+          <button class="btn buttonSt btnScc" (click)="ApplyEditTemplate()" style="display: flex;">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            <p style="margin-bottom: 4px; margin-top: 0px;display: flex;">Apply Template</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="serviceSelectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document" style="max-width: 600px;max-height: 600px;">
+    <div class="modal-content" style="height: 550px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{primaryCatList.serviceName}} Service</h5>
+
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"
+        style="overflow-x: auto; height: 500px; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <label style="cursor: pointer;">
+            <input type="checkbox" (change)="onCategorySelectAll($event)" /> Select All
+          </label>
+        </div>
+
+        <strong style="font-size: 16px; color: #333; margin-bottom: 15px; display: block;">
+          Please select the required categories
+        </strong>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+          <div *ngFor="let item of primaryCatList.primaryCategory; let i = index"
+            style="flex: 0 0 calc(33.33% - 10px); padding-bottom: 10px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 5px; padding: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s;">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+              <input type="checkbox" style="margin-right: 5px;" (change)="onCategorySelected($event,item)"
+                [checked]="selectedPrimaryCatList.includes(item.id)" />
+              {{ item.milestone_name }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex;justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="button button-fill button-rose" aria-haspopup="true" aria-expanded="false"
+          (click)="proceedCustomization()" style="width: 150px !important;">
+          Proceed Customization
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="isSummaryModalOpen" class="custom-modal-backdrop">
+  <div class="custom-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">Estimation Summary Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="hideSummaryDetails()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="overflow-x: auto;">
+      <div *ngFor="let label of summaryDetailsArr | keyvalue" style="margin-bottom: 20px;">
+        <div style="text-align: center;background-color: #dadbdb;padding: 5px;border-bottom: 1px solid #ababab;">
+          <h3 style="margin-bottom: 0px !important; font-size: 1.2em; color: #333;">{{ label.key }}</h3>
+        </div>
+
+        <div style="display: table; width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+
+          <div *ngFor="let item of label.value | keyvalue" style="display: table-row;">
+            <div
+              style="display: table-cell; width: 20%; padding: 10px; border: 1px solid #ddd; vertical-align: middle;">
+              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                {{ item.key }}
+              </div>
+            </div>
+            <div style="display: table-cell; width: 75%; padding: 10px; border: 1px solid #ddd;">
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>
+                  <div
+                    style="border: 1px solid #ddd; padding: 5px; display: flex; justify-content: space-between; background-color: #f1f1f1;">
+                    <span style="flex: 1;">Item</span>
+                    <span style="flex: 1;">Type</span>
+                    <span style="flex: 1;">Quantity</span>
+                  </div>
+                </li>
+                <li *ngFor="let detail of item.value" style="margin-bottom: 5px;">
+                  <div style="border: 1px solid #ddd; padding: 5px;display: flex;justify-content: space-between;">
+                    <span style="flex: 1;">{{ detail.type }}</span>
+                    <span style="flex: 1;">{{ detail.primaryCat }}</span>
+                    <span style="flex: 1;">{{ detail.qty }}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    <div class="kt-align-right modal-footer">
+      <button type="Submit" (click)="submitEstimationData()" class="button button-fill button-rose">Submit</button>
+      <button (click)="hideSummaryDetails()" #closBtn class="close" data-dismiss="modal" class="btn btn-secondary"
+        style="width: 90px;
+        padding: 7px 14px;font-size: 11px;
+        margin-top: -1px;">CANCEL
+      </button>
+    </div>
+  </div>
+</div>

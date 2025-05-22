@@ -1,0 +1,109 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Field Management</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll marlef15" (click)="goBack()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div class="container" *ngIf="locListing">
+      <div class="row rowPad">
+          <div class="col-md-4 col-12" *ngFor="let item of locNames | filter:term">
+              <a class="card1" (click)="cardClick(item.location_desc)" style="color: black">
+                  <h3>{{item.work_location}}</h3>
+              </a>
+          </div>
+      </div>
+  </div>
+    <div *ngIf="fieldGroupListing && !locListing">
+      <ejs-grid [dataSource]='filteredFieldGroupData' height='300px'>
+        <e-columns>
+          <e-column field='field_group' headerText='Field Group' width="150"></e-column>
+          <e-column field='field_data_count' headerText='Field Item Count' width="150"></e-column>
+
+          <e-column headerText='Action' width="120">
+            <ng-template #template let-data>
+              <div class="action-icons">
+                <i class="fa fa-pencil-square-o" style="cursor: pointer;" aria-hidden="true" placement="top"
+                  ngbTooltip="Edit Group" container="body" (click)="editGroup(data)">
+                </i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+
+    </div>
+    <div class="pad2515" *ngIf="!fieldGroupListing && !locListing">
+      <div class="row">
+        <div class="col-12">
+          <form [formGroup]="fieldForm">
+            <div formArrayName="fields">
+
+              <div class="row mb-4">
+                <div class="col-md-4">
+                  <h5 class="fw-bold">Field Name</h5>
+                </div>
+                <div class="col-md-2">
+                  <h5 class="fw-bold">Required</h5>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+
+              <div *ngFor="let field of fields.controls; let i = index" [formGroupName]="i"
+                class="mb-4 border-bottom pb-3">
+                <div class="row align-items-center">
+
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold text-capitalize">
+                      <input type="text" class="form-control" formControlName="field_name"
+                        placeholder="Enter field name" style="width: 200px" disabled/>
+                    </label>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" formControlName="required" id="required-{{i}}" />
+                      <label class="form-check-label" for="required-{{i}}">Required</label>
+                    </div>
+                  </div>
+
+
+                  <!-- <div class="col-md-2">
+
+                    <a (click)="deleteField(i)"><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                      color: #fff;
+                      font-size: 8px;
+                      "></i>
+                    </a>
+                  </div>
+
+                 </div> -->
+              </div>
+
+              <!-- Add Field Button  -->
+               <!-- <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-secondary mb-3" (click)="addField()">Add Field</button>
+                </div> -->
+              </div>
+
+            </div>
+
+
+
+            <!-- Save Button -->
+            <div>
+              <button class="btn button button-rose" (click)="save()">Save</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

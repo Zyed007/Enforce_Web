@@ -1,0 +1,3119 @@
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+<div *ngIf="accessToPage" class="startdiv">
+
+  <!-- /////////////////////////        Main Header         ////////////////////////////// -->
+
+  <!-- Header Box -->
+  <div class="headerbox">
+    <h5>{{ payrollHeader }}</h5>
+    <div>
+      <button placement="bottom-right" *ngIf="mainTab" type="button" (click)="openPreviousPayrolls()" class="button">
+        <i class="fa fa-users"></i> Payroll History
+      </button>
+      <button ngbTooltip="Employee Salary Details" placement="bottom-right" *ngIf="mainTab" type="button"
+        (click)="openSalaryDetails()" class="button">
+        <i class="fa fa-users"></i> Salary Details
+      </button>
+      <!-- <button *ngIf="mainTab" type="button" (click)="openPayrollSettings()" class="button">
+      <i class="fa fa-gear"></i> PayRoll Settings
+    </button> -->
+      <button class="btn" (click)="goBack()" class="button">
+        <i class="fa fa-angle-left"></i> Back
+      </button>
+    </div>
+  </div>
+
+
+  <!-- /////////////////////////         PayRoll Main Section      ////////////////////////////// -->
+  <div *ngIf="mainTab" class="mainbox" style="min-height: 700px !important;">
+    <ng-container *ngIf="isMainTabLoading && !showPayTable; else mainTabcontent">
+      <div class="col-12 secondcard">
+        <div class="col-4">
+          <div class="row">
+            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+          </div>
+          <div class="row">
+            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+          </div>
+          <div class="row">
+            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="row">
+            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+          </div>
+          <div class="row">
+            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+          </div>
+          <div class="row">
+            <div class="skeleton skeleton-text" style="width: 70%;"></div>
+            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="row">
+            <!-- <div class="skeleton skeleton-box"></div> -->
+          </div>
+        </div>
+        <div class="col-2" style="display: flex;gap: 5px; align-items: center;">
+          <div class="skeleton skeleton-box" style="width: 76px;height: 31px;"></div>
+          <div class="skeleton skeleton-box" style="width: 76px;height: 31px;"></div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #mainTabcontent>
+
+      <div class="col-12 secondcard">
+        <div class="col-4">
+          <div class="row">
+            <div class="cardlabel">Payroll</div>
+            :
+            <div class="cardvalue">
+              <span>{{ payroll_name }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="cardlabel">Status</div>
+            :
+            <div class="cardvalue" [style.color]="statuscolor">{{ status }}</div>
+          </div>
+          <div class="row">
+            <div class="cardlabel">Payment Period</div>
+            :
+            <div class="cardvalue">
+              <span>{{ startDate }} to {{ endDate }} </span>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-4">
+          <div class="row">
+            <div class="cardlabel">Payment Due Date</div>
+            :
+            <div class="cardvalue">
+              <span>{{ dueDate }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="cardlabel">Total Employees</div>
+            :
+            <div class="cardvalue">{{employee_count}}</div>
+          </div>
+          <div class="row">
+            <div class="cardlabel">Net Pay</div>
+            :
+            <div class="cardvalue">AED {{netPayable}}</div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="row">
+            <!-- <button class="btn" style="background-color: #e91e63; color:white; font-weight: 600;" (click)="openPayRollTable()">Pay Table</button> -->
+          </div>
+        </div>
+        <div class="col-2" style="display: flex;gap: 5px;">
+          <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+            (click)="openPayRollTable()">
+            Pay Table
+          </button>
+          <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+            (click)="openPayrollTimeline()">
+            View Timeline
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    <div class="col-12 secondcard">
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Pending Payroll')" [class.active]="activeTabIndex==0">
+          <p class="headerA">
+            Pending Payroll
+            <!-- <i class="fa fa-info-circle" container="body" ngbTooltip="Number of Present Days in the selected date range: from {{
+                fromDate | date : 'MMMM d, y'
+              }} till {{ toDate | date : 'MMMM d, y' }}" placement="top"></i> -->
+          </p>
+          <div>
+            <p class="headerB">
+              {{isMainTabLoading?'Loading...':pendingPayrollCount}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Held Payments')" [class.active]="activeTabIndex==1">
+          <p class="headerA">
+            Held Payments
+            <!-- <i class="fa fa-info-circle" container="body" ngbTooltip="Number of Present Days in the selected date range: from {{
+                fromDate | date : 'MMMM d, y'
+              }} till {{ toDate | date : 'MMMM d, y' }}" placement="top"></i> -->
+          </p>
+          <div>
+            <p class="headerB">
+              {{isMainTabLoading?'Loading...':onHoldPaymentCount}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Pending Voucher')" [class.active]="activeTabIndex==3">
+          <p class="headerA">
+            Pending Payment Voucher
+            <!-- <i class="fa fa-info-circle" container="body" ngbTooltip="Number of Present Days in the selected date range: from {{
+                fromDate | date : 'MMMM d, y'
+              }} till {{ toDate | date : 'MMMM d, y' }}" placement="top"></i> -->
+          </p>
+          <div>
+            <p class="headerB">
+              {{isMainTabLoading?'Loading...':pendingVoucherCount}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Approved Voucher')" [class.active]="activeTabIndex==5">
+          <p class="headerA">
+            Payment Vouchers to be Paid
+            <!-- <i class="fa fa-info-circle" container="body" ngbTooltip="Number of Present Days in the selected date range: from {{
+                fromDate | date : 'MMMM d, y'
+              }} till {{ toDate | date : 'MMMM d, y' }}" placement="top"></i> -->
+          </p>
+          <div>
+            <p class="headerB">
+              {{isMainTabLoading?'Loading...':approvedVoucherCount}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 15px;height: 520px;">
+      <ejs-tab id="element" #tabObjlist heightAdjustMode="Auto" overflowMode="None" (selected)='onTabChange($event)'
+        *ngIf="payrollListing.length>0" [selectedItem]="activeTabIndex" allowTextWrap='true'>
+        <e-tabitems>
+          <e-tabitem *ngFor="let header of Tabs;let i = index" [header]="header" style="padding-bottom: 10px;">
+            <ng-template #content *ngIf="i == 0 || i == 2">
+              <ejs-grid #payrollGrid [dataSource]='filteredPayroll' height='400px' [toolbar]=" employeeGridToolItems"
+                allowTextWrap='true' allowSorting="true">
+                <e-columns>
+                  <e-column field='name' headerText='Payroll' width='110'></e-column>
+                  <e-column field='status' headerText='Status' width='110'></e-column>
+                  <e-column field='start_date' headerText='Start Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.start_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='end_date' headerText='End Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.end_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='pay_due_date' headerText='Due Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.pay_due_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='active_employees' headerText='Employee Count' width='110'></e-column>
+                  <e-column field='net_payable' headerText='Net Pay' width='110'></e-column>
+                  <!-- <e-column field='pendingNetpay' headerText='Pending Net Pay' width='110'></e-column> -->
+                  <e-column field='hold_employees' headerText='Hold Employees' width='110'></e-column>
+                  <e-column field='hold_amount' headerText='Hold Amount' width='110'></e-column>
+                  <e-column field='submit_remark' headerText='Remarks' width='150'>
+                    <ng-template #template let-data>
+                      <div style="max-height: 40px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        {{ data.submit_remark }}
+                      </div>
+                    </ng-template>
+                  </e-column>
+                  <e-column type='' textAlign='' headerText='Actions' width='200' headerTextAlign="Center"
+                    textAlign='Center'>
+                    <ng-template #template let-data>
+                      <div *ngIf="data.status=='Pending'">
+                        <a title="Click to view details, edit, approve, or reject"
+                          class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="onPaymentTableEdit(data.id,true)">
+                          <i class="fa fa-pencil-square-o"></i> </a>
+
+                        <!-- <a title="Approve" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                          (click)="apprvPayRollTable(data.id)"><i class="fa fa-check"></i> </a>
+                        <a title="Reject" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                          (click)="openPayrollRejectModal(data.id)"><i class="fa fa-times"></i> </a> -->
+                      </div>
+                      <div *ngIf="data.status=='Rejected' && data.remarks!=null">
+                        <div style="font-size: 12px;font-weight: 600;">Rejected due to the reason {{data.remarks}}</div>
+                      </div>
+                      <div *ngIf="data.status=='Approved'" style="display: flex;justify-content: center;gap: 2px;">
+                        <button title="Click to view details" class="custbtn"
+                          (click)="onPaymentTableApproved(data.id)">View Payroll</button>
+                        <button title="Click to revert payroll" class="custbtn"
+                          (click)="handleRevertPayroll(data.id)">Revert</button>
+                        <button title="Click to create payment vouchers" class="custbtn"
+                          (click)="MarkApprPaid(data)">Create Vouchers</button>
+                      </div>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+            <ng-template #content *ngIf="i == 3 || i == 4 || i == 5 || i==6 || i==7">
+              <ejs-grid #paymentVoucherGrid [dataSource]='filteredPaymentVouchers' height='400px'
+                [toolbar]="employeeGridToolItems" allowTextWrap='true'>
+                <e-columns>
+                  <e-column field='created_date' headerText='Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.created_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='voucher_id' headerText='Payment Voucher Id' width='120'></e-column>
+                  <e-column field='name' headerText='Payroll' width='110'></e-column>
+                  <e-column field='amount' headerText='Amount' width='110'></e-column>
+                  <e-column field='method' headerText='Payment Method' width='110'></e-column>
+                  <e-column field='emp_count' headerText='Employee Count' width='110'></e-column>
+                  <e-column field='created_by' headerText='Created By' width='110'></e-column>
+                  <e-column field='status' headerText='Status' width='110'></e-column>
+
+                  <e-column type='' textAlign='' headerText='Actions' width='130' headerTextAlign="Center"
+                    textAlign='Center'>
+                    <ng-template #template let-data>
+                      <div *ngIf="i==3">
+                        <a title="Click to view details, edit, approve, or reject"
+                          class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="viewPaymentVoucherDetails(data)">
+                          <i class="fa fa-pencil-square-o"></i> </a>
+
+                      </div>
+                      <div *ngIf="i==4" style="display: flex;justify-content: center;gap: 2px;">
+                        <a title="Click to edit payment voucher" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                          (click)="viewPaymentVoucherDetails(data)">
+                          <i class="fa fa-pencil-square-o"></i> </a>
+                        <a title="Click to delete payment voucher" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                          (click)="handleDeletePaymentVoucher(data)">
+                          <i class="fa fa-trash"></i> </a>
+                      </div>
+
+                      <div *ngIf="i==5" style="display: flex;justify-content: center;gap: 2px;">
+                        <button title="Click to view details" class="custbtn"
+                          (click)="viewPaymentVoucherDetails(data)">Mark As Paid</button>
+                        <button title="Click to revert payroll" class="custbtn"
+                          (click)="handleRevertPaymentVoucher(data)">Revert</button>
+                      </div>
+                      <div *ngIf="i==7">
+                        <a title="Click to view details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                          (click)="viewPaymentVoucherDetails(data)">
+                          <i class="fa fa-eye"></i> </a>
+                      </div>
+
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+
+            <ng-template #content *ngIf="i == 1">
+              <ejs-grid #payrollGrid [dataSource]='onHoldListing' height='400px' [toolbar]="employeeGridToolItems"
+                allowTextWrap='true' allowSorting="true">
+                <e-columns>
+                  <e-column field='name' headerText='Payroll' width='110'></e-column>
+                  <e-column field='status' headerText='Status' width='110'></e-column>
+                  <e-column field='start_date' headerText='Start Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.start_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='end_date' headerText='End Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.end_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='pay_due_date' headerText='Due Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.pay_due_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='active_employees' headerText='Employee Count' width='110'></e-column>
+                  <e-column field='net_payable' headerText='Net Pay' width='110'></e-column>
+                  <!-- <e-column field='pendingNetpay' headerText='Pending Net Pay' width='110'></e-column> -->
+                  <e-column field='hold_employees' headerText='Hold Employees' width='110'></e-column>
+                  <e-column field='hold_amount' headerText='Hold Amount' width='110'></e-column>
+                  <e-column field='submit_remark' headerText='Remarks' width='110'></e-column>
+                  <e-column type='' textAlign='' headerText='Actions' width='200' headerTextAlign="Center"
+                    textAlign='Center'>
+                    <ng-template #template let-data>
+                      <div>
+                        <a title="Click to view details, edit, approve, or reject"
+                          class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="onPaymentTableEdit(data.id,false)">
+                          <i class="fa fa-pencil-square-o"></i> </a>
+
+
+                      </div>
+
+
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+          </e-tabitem>
+        </e-tabitems>
+      </ejs-tab>
+    </div>
+  </div>
+  <div *ngIf="showPreviousPayrolls" class="mainbox" style="min-height: 700px !important;">
+    <div style="margin-top: 15px;height: 520px;">
+      <ejs-grid #previousPayrollGrid [dataSource]='previousPayrollListing' height='400px'
+        [toolbar]=" employeeGridToolItems" allowTextWrap='true' allowSorting="true">
+        <e-columns>
+          <e-column field='name' headerText='Payroll' width='100'></e-column>
+          <e-column field='status' headerText='Status' width='100'></e-column>
+          <e-column field='start_date' headerText='Start Date' width='100'>
+            <ng-template #template let-data>
+              <span style="text-transform: capitalize;">{{data.start_date| date : "dd/MM/y"}}</span>
+            </ng-template>
+          </e-column>
+          <e-column field='end_date' headerText='End Date' width='100'>
+            <ng-template #template let-data>
+              <span style="text-transform: capitalize;">{{data.end_date| date : "dd/MM/y"}}</span>
+            </ng-template>
+          </e-column>
+          <!-- <e-column field='pay_due_date' headerText='Due Date' width='110'>
+                    <ng-template #template let-data>
+                      <span style="text-transform: capitalize;">{{data.pay_due_date| date : "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column> -->
+          <e-column field='active_employees' headerText='Employee Count' width='130'></e-column>
+          <e-column field='net_payable' headerText='Net Pay' width='110'></e-column>
+          <e-column field='hold_employees' headerText='Hold Employees' width='130'></e-column>
+          <e-column field='hold_amount' headerText='Hold Amount' width='130'></e-column>
+          <e-column field='submit_remark' headerText='Remarks' width='110'></e-column>
+          <e-column type='' textAlign='' headerText='Actions' width='250' headerTextAlign="Center" textAlign='Center'>
+            <ng-template #template let-data>
+              <div style="display: flex;gap: 5px;justify-content: center;">
+
+                <a title="Click to view Payroll Details" class="custlink" (click)="openPayrollDetails(data)">Payroll
+                  Details</a>
+
+                <a title="Click to view Payroll Timeline" class="custlink"
+                  (click)="openPayrollTimeline(data.id)">Timeline</a>
+
+                <a title="Click to view Payroll Details" class="custlink"
+                  (click)="showMarkApprPaidVoucherDetails(data)">Voucher Details</a>
+
+
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+
+
+  <!-- /////////////////////////         Pay Table      ////////////////////////////// -->
+  <div *ngIf="showPayTable" class="mainbox">
+    <!--Summary -->
+    <div class="col-12 paytablecard">
+      <div class="fullrow">
+        <div class="flexstyle">
+          <label class="labSec"> Payroll cycle: </label>
+          <label class="labMonth" style="margin-right: 30px;">{{payroll_name}}</label>
+          <label class="labSec"> Status: </label>
+          <label class="labMonth" style="margin-right: 30px;">{{ selectedPayroll.status }}</label>
+          <label class="labSec"> Start Date: </label>
+          <label class="labMonth" style="margin-right: 30px;">{{selectedPayroll.start_date| date : "dd/MM/y"}}</label>
+          <label class="labSec"> End Date: </label>
+          <label class="labMonth" style="margin-right: 30px;">{{selectedPayroll.end_date| date : "dd/MM/y"}}</label>
+          <label class="labSec"> Due Date: </label>
+          <label class="labMonth" style="margin-right: 30px;">{{selectedPayroll.pay_due_date| date : "dd/MM/y"}}</label>
+        </div>
+      </div>
+      <div class="fullrow">
+        <div class="col-2">
+          <div class="tablecard">
+            <div class="borderCard">
+              <p class="headerA"> Total Employees <i class="fa fa-info-circle" container="body" ngbTooltip=""
+                  placement="top"></i></p>
+              <div>
+                <p class="headerB">
+                  {{selectedPayroll.active_employees}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="tablecard">
+            <div class="borderCard">
+              <p class="headerA">
+                Total Net Pay
+                <i class="fa fa-info-circle" container="body" ngbTooltip="" placement="top"></i>
+              </p>
+              <div>
+                <p class="headerB">
+                  AED {{selectedPayroll.net_payable}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="tablecard">
+            <div class="borderCard">
+              <p class="headerA">
+                Total Salary
+                <i class="fa fa-info-circle" container="body" ngbTooltip="" placement="top"></i>
+              </p>
+              <div>
+                <p class="headerB">
+                  AED {{selectedPayroll.net_additions}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="tablecard">
+            <div class="borderCard">
+              <p class="headerA">
+                Total Deductions
+                <i class="fa fa-info-circle" container="body" ngbTooltip="" placement="top"></i>
+              </p>
+              <div>
+                <p class="headerB">
+                  AED {{selectedPayroll.net_deductons}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2" *ngIf="selectedPayroll.onHoldAmount!=''">
+          <div class="tablecard">
+            <div class="borderCard">
+              <p class="headerA">
+                On Hold
+                <i class="fa fa-info-circle" container="body" ngbTooltip="" placement="top"></i>
+              </p>
+              <div>
+                <p class="headerB">
+                  {{selectedPayroll.hold_employees}} Employee
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2" *ngIf="selectedPayroll.onHoldAmount!=''">
+          <div class="tablecard">
+            <div class="borderCard">
+              <p class="headerA">
+                On Hold Amount
+                <i class="fa fa-info-circle" container="body" ngbTooltip="" placement="top"></i>
+              </p>
+              <div>
+                <p class="headerB">
+                  AED {{selectedPayroll.hold_amount}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="col-12">
+      <ejs-grid #employeeGrid [dataSource]='EmpSalData' height='400px' [toolbar]="employeeGridToolItems"
+        allowTextWrap='true' allowSorting='true' allowFiltering='true'>
+        <e-columns>
+          <e-column field='full_name' headerText='Name' width='150' headerTextAlign="Left" textAlign="Left">
+            <ng-template #template let-data>
+              <span class="empName" (click)="viewSingleEmployee(data)">{{ data.full_name }}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='basic_salary' headerText='Basic Salary' headerTooltip="Basic Salary tool tip" width='110'
+            textAlign='Center' headerTextAlign="Center" placement="left" ngbTooltip="Basic Salary"
+            container="body"></e-column>
+
+          <e-column field='fix_netpay' headerText='Fix Net Pay' width='100' textAlign='Center' headerTextAlign="Center"
+            placement="left" ngbTooltip="Fixed Gross" container="body">
+            <ng-template #template let-data>
+              <div ngbTooltip="This includes adjustments for salary changes that occur during the payroll period."
+                container="body">
+                <span>{{ data.fix_netpay }}</span>
+                <i *ngIf="data.is_change_in_salary == true" class="fa fa-exclamation-triangle" aria-hidden="true"
+                  style="color: rgb(221, 163, 5); padding-left: 2px;"></i>
+              </div>
+            </ng-template>
+          </e-column>
+
+          <e-column field='fix_deduc' headerText='M&V Deduc' width='100' textAlign='Center' headerTextAlign="Center"
+            placement="left" ngbTooltip="Mandatory and Voluntary Deduction" container="body"></e-column>
+
+          <e-column field='variablepay' headerText='Var Pay' width='100' textAlign='Center'
+            headerTextAlign="Center"></e-column>
+
+          <e-column field='adjustmentpay' headerText='Adj Pay' width='120' textAlign='Center' headerTextAlign="Center">
+            <ng-template #template let-data>
+              <div ngbTooltip="Includes Auto Adjustment" container="body">
+                <span>{{ data.adjustmentpay }}</span>
+                <i *ngIf="data.is_include_autodedect == true" class="fa fa-exclamation-triangle" aria-hidden="true"
+                  style="color: rgb(221, 163, 5); padding-left: 2px;"></i>
+              </div>
+            </ng-template>
+          </e-column>
+
+          <e-column field='workexpenss' headerText='Wrk Exp' width='100' textAlign='Center'
+            headerTextAlign="Center"></e-column>
+
+          <e-column field='loanpayments' headerText='Adv&Loan' width='100' textAlign='Center'
+            headerTextAlign="Center"></e-column>
+
+          <e-column field='netpayable' headerText='Net Payble' width='100' textAlign='Center'
+            headerTextAlign="Center"></e-column>
+
+          <e-column field='hold_remark' headerText='Hold Remarks ' width='150' textAlign='Center'
+            headerTextAlign="Center">
+            <ng-template #template let-data>
+              <span *ngIf="data.hold_remark && data.hold_remark!=''"><strong>Holded - </strong>{{ data.hold_remark
+                }}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='action' textAlign='Center' headerText='Actions' width='120' headerTextAlign="Center"
+            textAlign='Center' *ngIf="isPayrollActive">
+            <ng-template #template let-data>
+              <button (click)="onHoldPaymentModal(data.emp_id)" *ngIf="!data.on_hold"
+                [disabled]="!(selectedPayroll.status === 'Active' || onPayTableHold)">Hold</button>
+              <button (click)="onReleasePaymentModal(data.emp_id)" *ngIf="data.on_hold"
+                [disabled]="!(selectedPayroll.status === 'Active' || onPayTableHold)">Release</button>
+            </ng-template>
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+
+    </div>
+
+  </div>
+  <div class="customFooterbox" *ngIf="onPaytableEdit">
+
+    <div>
+      <div *ngIf="selectedPayroll.status!=='Active'">
+        <div style="margin-bottom: 10px;"><span style="font-weight: 500;">Remarks:
+          </span>{{selectedPayroll.submit_remark}}</div>
+        Payroll has been submitted for approval by <strong>{{selectedPayroll.submitted_by}}</strong>
+      </div>
+      <div style="width: fit-content; margin-bottom: 5px;">
+        <!-- <div class="approverBody">
+          <p style="margin-bottom: 2px">Level 1: {{payrollApprover1RoleName }}</p>
+          <p style="margin-bottom: 2px" *ngIf="isPayrollDualApprover"> Level 2:
+            {{payrollApprover1RoleName}} </p>
+        </div> -->
+        <div *ngIf="selectedPayroll.approver1_roleId">
+          <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Approval Status</strong> </u></p>
+          <p style="margin-bottom: 2px" *ngIf="selectedPayroll.status == 'Rejected' ">
+            Level 1: {{payrollApprover1RoleName}}
+            <span class="approve" *ngIf="selectedPayroll.is_approved_1 == true"> Approved</span>
+            <span class="decline" *ngIf="selectedPayroll.is_approved_1 == false"> Rejected</span>
+          </p>
+          <!-- <p style="margin-bottom: 2px" *ngIf="selectedPayroll.status == 'Rejected' ">
+            Level 2: {{payrollApprover1RoleName}}
+            <span class="decline" *ngIf="selectedPayroll.is_approved_2 == false"> Rejected</span>
+          </p> -->
+          <p style="margin-bottom: 2px" *ngIf="selectedPayroll.status != 'Rejected'">
+            Level 1:
+            <span class="pending" *ngIf="selectedPayroll.is_approved_1 == false"> Pending
+              ({{selectedPayroll.approver1_roleName}})</span>
+            <span class="approve" *ngIf="selectedPayroll.is_approved_1 == true"> Approved
+              ({{selectedPayroll.approver1_roleName}})</span>
+            <span *ngIf="selectedPayroll.is_approved_1"><strong>By {{selectedPayroll.approver1_name}}</strong></span>
+          </p>
+          <p style="margin-bottom: 2px"
+            *ngIf="selectedPayroll.approver2_roleId && selectedPayroll.status != 'Rejected' ">
+            Level 2:
+            <span class="pending" *ngIf="selectedPayroll.is_approved_2 == false"> Pending
+              ({{selectedPayroll.approver2_roleName}})</span>
+            <span class="approve" *ngIf="selectedPayroll.is_approved_2 == true"> Approved
+              ({{selectedPayroll.approver2_roleName}})</span>
+          </p>
+        </div>
+
+      </div>
+      <!-- <div *ngIf="payrollSubmitFullAccess"><strong>*Note:- This will be directly approved
+        since
+        you have full access.</strong></div> -->
+    </div>
+    <div style="display: flex;align-items: center;padding:10px;gap: 5px;" *ngIf="showApprovalSection">
+
+      <button class="btn" style="background-color: #07a913; color: white; font-weight: 600"
+        (click)="handleApprovePayroll()">
+        Approve
+      </button>
+      <button class="btn" style="background-color: #e91e1e; color: white; font-weight: 600"
+        (click)="openPayrollRejectModal()">
+        Reject
+      </button>
+    </div>
+  </div>
+
+  <div class="footerbox" *ngIf="onPayTableHold && selectedPayroll.status == 'Paid'">
+    <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600; margin-right: 5px;"
+      (click)="onReleaseMultiplePaymentModal()">
+      Create Payment Voucher
+    </button>
+  </div>
+
+  <div class="footerbox" *ngIf="selectedPayroll.status == 'Active' && showPayTable">
+    <button class="btn subPay" style="background-color: #e91e63; color: white; font-weight: 600"
+      (click)="submitTable()">
+      Submit Payroll
+    </button>
+  </div>
+
+
+
+  <!-- /////////////////////////         Employee Salary Details     ////////////////////////////// -->
+  <div *ngIf="showSalaryDetails" class="mainbox">
+    <div class="col-12">
+      <h6></h6>
+    </div>
+    <div class="col-12">
+      <ejs-grid #employeeGrid [dataSource]='TeamMemberSalData' height='400px' [toolbar]="employeeGridToolItems">
+        <e-columns>
+          <e-column field='full_name' headerText='Name' width='150' headerTextAlign="Left">
+            <ng-template #template let-data>
+              <span class="empName" (click)="viewSingleEmployee(data)">{{data.full_name}}</span>
+            </ng-template>
+          </e-column>
+          <e-column field='role_name' headerText='Role' width='130mmmmmm ' headerTextAlign="Left"></e-column>
+          <!-- <e-column headerText='Currency' field="currency" width='100' headerTextAlign="Left"
+            textAlign='Right'></e-column> -->
+          <e-column field='basic_salary' headerText='Basic Salary' width='120' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column field='accommod_allow' headerText='Accommodation' width='135' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column field='travel_allow' headerText='Travel' width='100' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column field='tax_deduc' headerText='Tax' width='100' textAlign='Right' headerTextAlign="Left"></e-column>
+          <e-column field='insurance_deduc' headerText='Insurance' width='100' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column field='gross_pay' headerText='GrossPay' width='100' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column field='net_deduc' headerText='Net Deduction' width='120' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column field='net_pay' headerText='Net Pay' width='120' textAlign='Right'
+            headerTextAlign="Left"></e-column>
+          <e-column headerText='Action'></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+
+  <!-- /////////////////////////         Single Employee Details      ////////////////////////////// -->
+  <div class="rightModal700">
+    <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="view_Commission_modal"
+      data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="width: 800px;">
+        <div class="modal-content notifyModal">
+          <div class="modal-header" style="padding: 8px 15px;">
+            <label class="modal-title labSec" id="exampleModalLabel"
+              style="font-size: 14px; margin-right: 20px;">Employee Payroll </label>
+            <label class="labSec"> Start Date: </label> <label class="labMonth"
+              style="margin-right: 20px;">{{startDate}}</label>
+            <label class="labSec"> End Date: </label> <label class="labMonth"
+              style="margin-right: 20px;">{{endDate}}</label>
+            <button type="button" class="close" (click)="closeEmpSalDiv()" aria-label="Close"></button>
+          </div>
+          <div style="margin: 13px; overflow: auto;">
+            <div class="EmpDetailcard">
+              <!-- <div class="col-12">
+              <div class="flexstyle">
+
+              </div>
+            </div> -->
+              <!-- <div class="col-12">
+              <div class="flexstyle">
+                <label class="labSec"> Number of Days: </label>  <label class="labMonth" style="margin-right: 30px;">30</label>
+                <label class="labSec"> Number of Working Days: </label>  <label class="labMonth" style="margin-right: 30px;">26</label>
+                <label class="labSec"> Number of Holidays: </label>  <label class="labMonth" style="margin-right: 30px;">4</label>
+              </div>
+            </div> -->
+              <!-- <div class="fullrow">
+              <div class="flexstyle ">
+                 <label class="labCont"
+                  style="margin-right: 30px; margin-left: 15px;">{{SinEmpData.full_name}}</label>
+                <label class="labSec">Role: </label> <label class="labCont">{{SinEmpData.role_name}}</label>
+              </div>
+            </div> -->
+
+            </div>
+            <div class="basicsalcard">
+              <div class="col-12 ">
+                <div style="display: flex;justify-content: flex-end;padding: 5px 25px;">
+                  <button class="btn" (click)="toProfile(SinEmpData.emp_id)"
+                    style="background-color: #e91e63; color: white; font-weight: 600;margin-right: 5px;"
+                    *ngIf="showPayTable">View Profile</button>
+                  <button class="btn"
+                    style="background-color: #e91e63; color: white; font-weight: 600;margin-right: 5px;"
+                    *ngIf="showPayTable" (click)="openAddAdjustment(SinEmpData.emp_id)">
+                    Add Adjustment
+                  </button>
+                </div>
+                <div class="col-12" style="display: flex; justify-content: space-between;">
+
+                  <div class="col-6" style="display: flex; justify-content: center;">
+                    <table class="salTable">
+                      <tr>
+                        <td>Name</td>
+                        <td style="font-weight: 500;">{{SinEmpData.full_name}}</td>
+                      </tr>
+                      <tr>
+                        <td>Role</td>
+                        <td style="font-weight: 500;">{{SinEmpData.role_name}}</td>
+                      </tr>
+                      <tr>
+                        <td>Status</td>
+                        <td style="font-weight: 500;">In service</td>
+                      </tr>
+                      <!-- <tr>
+                        <td>Present Days</td>
+                        <td style="font-weight: 500;">25 / 30</td>
+                      </tr> -->
+                    </table>
+                  </div>
+                  <div class="col-6">
+                    <!-- <div class="sslcard">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>Net Additions</td>
+                            <td class="labMonth">AED {{SinEmpData.netearning}}</td>
+                          </tr>
+                          <tr>
+                            <td>Net Deductions</td>
+                            <td class="labMonth"> AED - {{SinEmpData.netdeduction}}</td>
+                          </tr>
+                          <tr>
+                            <td>Total Salary</td>
+                            <td class="labMonth"> AED {{SinEmpData.netpayable}}</td>
+                          </tr>
+                          <tr>
+                            <td>Per Day Salary</td>
+                            <td class="labMonth"> AED 120.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="basicsalcard">
+              <div class="col-12 ">
+                <div class="col-12">
+                  <div class="PayslipCard">
+                    <table class="PayslipTb">
+                      <thead>
+                        <tr>
+                          <th colspan="3" class='tbPlaySlip'>Salary Slip</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class='tbMainHd' colspan="3">Fixed Salary</td>
+                        </tr>
+
+                        <tr>
+                          <th>Pay Item</th>
+                          <th>Remarks</th>
+                          <th>Amount</th>
+                        </tr>
+                        <tr class="accordion-content" (click)="openSalaryAccordPress()">
+                          <td><button class="acordbutton"><i *ngIf="openSalaryAccord" class="fa fa-angle-up"
+                                aria-hidden="true"></i>
+                              <i *ngIf="!openSalaryAccord" class="fa fa-angle-down" aria-hidden="true"></i></button>
+                            Salary <i class="fa fa-info-circle" aria-hidden="true"
+                              ngbTooltip="This is the final salary payable for the payroll period, reflecting any changes to the employee's salary, including adjustments from the start date of the salary change"></i>
+                          </td>
+                          <td></td>
+                          <td>
+                            {{SinEmpData.fix_netpay}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="3"></td>
+                        </tr>
+                        <ng-container *ngIf="openSalaryAccord">
+
+                          <ng-container *ngFor="let item of salaryHistory">
+                            <tr style="background-color: #f1f1f1; height: 5px;">
+                              <td colspan="2">StartDate: <strong>{{item.start_date | date : "dd/MM/y"}}</strong> to End
+                                Date: <strong>{{item.end_date? (item.end_date | date : "dd/MM/y"):"Active"}}</strong>
+                              </td>
+                              <td style="text-align: right;" colspan="2">
+                                <div style="display: flex;justify-content: space-between;">
+                                  <div>Days Effected :<strong> {{item.dateDiff}} days</strong></div>
+                                  <strong>{{item.net_pay}}</strong>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Basic Salary</td>
+                              <td></td>
+                              <td>{{item.basic_salary}}</td>
+                            </tr>
+                            <tr>
+                              <td>Tax</td>
+                              <td></td>
+                              <td>{{item.tax_deduc}}</td>
+                            </tr>
+                            <tr>
+                              <td>Travel</td>
+                              <td></td>
+                              <td>{{item.travel_allow}}</td>
+                            </tr>
+                            <tr>
+                              <td>Insurance</td>
+                              <td></td>
+                              <td>{{item.insurance_deduc}}</td>
+                            </tr>
+                            <tr>
+                              <td>Accomodation</td>
+                              <td></td>
+                              <td>{{item.accommed_allow}}</td>
+                            </tr>
+                            <tr *ngIf="item.a_one_name">
+                              <td>{{item.a_one_name}}</td>
+                              <td></td>
+                              <td>{{item.a_one}}</td>
+                            </tr>
+                            <tr *ngIf="item.a_two_name">
+                              <td>{{item.a_two_name}}</td>
+                              <td></td>
+                              <td>{{item.a_two}}</td>
+                            </tr>
+                            <tr *ngIf="SinEmpData.a_three_name">
+                              <td>{{item.a_three_name}}</td>
+                              <td></td>
+                              <td>{{item.a_three}}</td>
+                            </tr>
+                            <tr *ngIf="SinEmpData.d_one_name">
+                              <td>{{item.d_one_name}}</td>
+                              <td></td>
+                              <td>-{{item.d_one}}</td>
+                            </tr>
+                            <tr *ngIf="SinEmpData.d_two_name">
+                              <td>{{item.d_two_name}}</td>
+                              <td></td>
+                              <td>-{{item.d_two}}</td>
+                            </tr>
+                            <tr *ngIf="SinEmpData.d_three_name">
+                              <td>{{item.d_three_name}}</td>
+                              <td></td>
+                              <td>-{{item.d_three}}</td>
+                            </tr>
+
+
+                          </ng-container>
+                        </ng-container>
+
+                        <tr>
+                          <td class='tbMainHd' colspan="3">Earnings</td>
+                        </tr>
+                        <tr>
+                          <th>Pay Item</th>
+                          <th>Remarks</th>
+                          <th>Amount</th>
+                        </tr>
+                        <tr *ngIf="SinEmpData.a_one_name">
+                          <td>{{SinEmpData.a_one_name}}</td>
+                          <td></td>
+                          <td>{{SinEmpData.a_one}}</td>
+                        </tr>
+                        <tr *ngIf="SinEmpData.a_two_name">
+                          <td>{{SinEmpData.a_two_name}}</td>
+                          <td></td>
+                          <td>{{SinEmpData.a_two}}</td>
+                        </tr>
+                        <tr *ngIf="SinEmpData.a_three_name">
+                          <td>{{SinEmpData.a_three_name}}</td>
+                          <td></td>
+                          <td>{{SinEmpData.a_three}}</td>
+                        </tr>
+                        <tr *ngFor="let item of empvariableList">
+                          <td>Variable Pay : {{item.pay_item + " " +item.date_incurred}}</td>
+                          <td>{{item.remarks }}</td>
+                          <td>{{item.amount}}</td>
+                        </tr>
+                        <tr *ngFor="let item of empadjaddList">
+                          <td>Adjustment : {{item.pay_item + " " +item.date_incurred}}</td>
+                          <td>{{item.remarks }}</td>
+                          <td>{{item.amount}}</td>
+                        </tr>
+                        <tr *ngFor="let item of empexpenssList">
+                          <td>Work Expense : {{item.pay_item + " " +item.reference_id }}</td>
+                          <td>{{item.remarks }}</td>
+                          <td>{{item.amount}}</td>
+                        </tr>
+                        <tr>
+                          <td class='tbMainHd' colspan="3">Deductions</td>
+                        </tr>
+                        <!-- <tr>
+                          <td>Tax</td>
+                          <td></td>
+                          <td> {{SinEmpData.tax_deduc}}</td>
+                        </tr>
+                        <tr>
+                          <td>Insurance </td>
+                          <td></td>
+                          <td> {{SinEmpData.insurance_deduc}}</td>
+                        </tr> -->
+                        <tr *ngIf="SinEmpData.d_one_name">
+                          <td>{{SinEmpData.d_one_name}}</td>
+                          <td></td>
+                          <td>-{{SinEmpData.d_one}}</td>
+                        </tr>
+                        <tr *ngIf="SinEmpData.d_two_name">
+                          <td>{{SinEmpData.d_two_name}}</td>
+                          <td></td>
+                          <td>-{{SinEmpData.d_two}}</td>
+                        </tr>
+                        <tr *ngIf="SinEmpData.d_three_name">
+                          <td>{{SinEmpData.d_three_name}}</td>
+                          <td></td>
+                          <td>-{{SinEmpData.d_three}}</td>
+                        </tr>
+                        <tr *ngFor="let item of empadjdeducList">
+                          <td>Adjustment: {{item.pay_item + " " +item.date_incurred }}</td>
+                          <td>{{item.remarks }}</td>
+                          <td>-{{item.amount}}</td>
+                        </tr>
+
+                        <tr class="accordion-content" (click)="openAccordPress()">
+                          <td><button class="acordbutton"><i *ngIf="openAccord" class="fa fa-angle-up"
+                                aria-hidden="true"></i>
+                              <i *ngIf="!openAccord" class="fa fa-angle-down" aria-hidden="true"></i></button> Auto
+                            Deductions</td>
+                          <td> Items : {{autoCout}} </td>
+                          <td>Total: {{autototal}}</td>
+                        </tr>
+
+                        <ng-container *ngIf="openAccord">
+                          <tr *ngFor="let item of empadjautodeducList">
+                            <td>Adjustment: {{item.pay_item + " " +item.date_incurred }}</td>
+                            <td>{{item.remarks }}</td>
+                            <td>{{item.amount}}</td>
+                          </tr>
+                        </ng-container>
+                        <tr>
+                          <td></td>
+                          <td class="totsub"> Total Earnings </td>
+                          <td>AED {{SinEmpData.netearning}}</td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td class="totsub"> Total Deductions </td>
+                          <td>AED {{SinEmpData.netdeduction}}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td></td>
+                          <td>Total Payable </td>
+                          <td>AED {{SinEmpData.netpayable}}</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+<!-- Model for Payroll -->
+<ng-template #submitPaytableModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Submit the Payroll Table</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right">
+
+        <div class="kt-portlet__body">
+
+
+          <div class="form-group row">
+            <label class="col-xl-12 col-lg-12 col-form-label"> Please Verify the Payroll Table Details!</label>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Payroll cycle: </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{payroll_name}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Status: </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{ status }}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Start Date </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{startDate}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">End Date </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{endDate}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Due Date </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{dueDate}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Total Employee </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{employee_count}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> Total Additions </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label> AED {{netAddition}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> Total Deductions </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>AED {{netDeduction}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> Total Net Pay </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>AED {{selectedPayroll.net_payable}}</label>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled [(ngModel)]="singleData.reference_id">
+            </div>
+          </div>-->
+
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="handlesubmitPayroll()">Submit</button>
+    <button (click)="rejAJ(singleData)">Cancel</button>
+  </div>
+
+</ng-template>
+
+<!-- Model for Payroll Approval -->
+<ng-template #payrollApprovalModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Payroll Approval</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right">
+
+        <div class="kt-portlet__body">
+
+
+          <div class="form-group row">
+            <label class="col-xl-12 col-lg-12 col-form-label"> Please Verify the Payroll Table Details!</label>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Payroll cycle: </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{payroll_name}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Status: </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{ status }}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Start Date </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{startDate}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">End Date </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{endDate}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Due Date </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{dueDate}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Total Employee </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>{{employee_count}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> Total Additions </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label> AED {{netAddition}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> Total Deductions </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>AED {{netDeduction}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> Total Net Pay </label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label>AED {{netPayable}}</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"> On Hold Employees</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <label style="color: #e91e1e;"> {{onHoldCount}}</label>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled [(ngModel)]="singleData.reference_id">
+            </div>
+          </div>-->
+
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="onPayrollApproval()">Submit</button>
+    <button (click)="rejAJ(singleData)">Cancel</button>
+  </div>
+</ng-template>
+
+<!-- Create Voucher & Previous Payroll Modal -->
+<!-- <ng-template #apprMarkPaidModel style="background-color: #e91e1e;width: 650px;"> -->
+<div class="rightModal700" *ngIf="showMarkPaidModal">
+  <div class="modal animated slideInRight " id="apprMarkPaidModel" tabindex="-1" data-backdrop="static" role="dialog"
+    style="z-index: 1060;" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: scroll;">
+    <div class="modal-dialog importWid" role="document" style="width: 750px;">
+      <div class="modal-content" style="height: 100%;">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Payment Voucher</h4>
+          <button type="button" class="close" aria-label="Close" (click)="closeMarkPaidModel()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"
+          style="display: flex;flex-direction:column;justify-content: space-between;background-color: white;">
+          <div>
+            <form class="kt-form kt-form--label-right" [formGroup]="ApprMarkPaidForm">
+              <div class="kt-portlet__body">
+                <div>
+                  <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                      <div class="form-group row">
+                        <label class="col-form-label col-xl-4 col-lg-4">Employee Count</label>
+                        <div class="col-lg-8 col-xl-8" style="margin-top: 4px">
+                          <input type="text" class="form-control" disabled formControlName="employeesCount">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6">
+                      <div class="form-group row">
+                        <label class="col-form-label col-xl-4 col-lg-4">Date <span class="error-msg"
+                            style="color: red">*</span></label>
+                        <div class="col-lg-8 col-xl-8" style="margin-top: 4px">
+                          <input type="text" class="form-control" disabled formControlName="dateincurred">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-xl-6 col-lg-6">
+                      <div class="form-group row">
+                        <label class="col-form-label col-xl-4 col-lg-4">Payroll <span class="error-msg"
+                            style="color: red">*</span></label>
+                        <div class="col-lg-8 col-xl-8" style="margin-top: 4px">
+                          <input type="text" class="form-control" formControlName="name" disabled>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6">
+                      <div class="form-group row">
+                        <label class="col-form-label col-xl-4 col-lg-4">Amount<span class="error-msg"
+                            style="color: red">*</span></label>
+                        <div class="col-lg-8 col-xl-8" style="margin-top: 4px">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">AED</div>
+                            </div>
+                            <input type="text" class="form-control" disabled formControlName="amount">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style="display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #cdcdcd;margin-bottom: 10px;">
+                  <div style="font-weight: 700;
+              color: #48465b;padding-top: 5px;font-size: 15px;">Payment Voucher</div>
+                  <div style="display: flex;">
+                    <div style="margin-top: 2px;">
+                      <label class="switch">
+                        <input type="checkbox" formControlName="multipleVouchers"
+                          (change)="showMultipleVouchers($event)">
+                        <span>
+                        </span>
+                      </label>
+
+                    </div>
+                    <div style="font-weight: 500;
+                    color: #48465b;padding-top: 4px;">Multiple Payment Vouchers</div>
+                  </div>
+
+                </div>
+
+                <div *ngIf="singlePaymentMethod">
+                  <!-- Select Employees -->
+                  <div style="padding-bottom: 5px;">
+                    <span class="modal-title"
+                      style="font-size: 15px;font-weight: 600;text-decoration: underline;">Employee Salary
+                      Details</span>
+                  </div>
+                  <div style="margin-bottom: 20px;">
+                    <div style="display: flex; flex-direction: column;">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <ejs-grid #customEmployeeGrid [dataSource]="customEmpSalData" height="230"
+                            [toolbar]="employeeGridToolItems" [allowSorting]="true">
+                            <e-columns>
+                              <e-column field="full_name" headerText="Name" width="200"></e-column>
+                              <e-column field="netpayable" headerText="Net Pay" width="100"></e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                      </div>
+                      <div style="display: flex;align-items: center;justify-content: flex-end;padding:5px 0px;">
+                        <button type="button" class="btn btn-secondary" (click)="openEmpPayrollModal()"> Expand View <i
+                            class="fa fa-expand" aria-hidden="true"></i></button>
+                      </div>
+
+                    </div>
+                  </div>
+                  <form [formGroup]="PaymentMethodForm">
+                    <div style="margin-bottom: 20px;display: flex;flex-direction: column;gap: 10px;">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;display: flex;justify-content: space-between;"
+                              title="You can manually override the system-generated voucher number, and the system will adjust future voucher numbers accordingly.">
+                              <span>Id:</span><span><i class="fa fa-info-circle"></i></span>
+                            </div>
+                            <div>
+                              <input type="text" class="form-control" formControlName="voucherId">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Method:</div>
+                            <div>
+                              <ejs-dropdownlist [dataSource]="paymentModeArr" (change)="selectMode($event)"
+                                formControlName="mode" [fields]="commonFields"></ejs-dropdownlist>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Acc Ref Id:</div>
+                            <div>
+                              <input type="text" class="form-control" formControlName="accRefId">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;"
+                            *ngIf="PaymentMethodForm.get('mode').value=='Bank Transfer' || PaymentMethodForm.get('mode').value=='Cheque'">
+                            <div style="width: 150px;">Account to Debit:</div>
+                            <div>
+                              <ejs-dropdownlist [dataSource]="senderArr" (change)="selectMode($event)"
+                                formControlName="debitAcc" [fields]="commonFields"></ejs-dropdownlist>
+                              <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('sender')"
+                                *ngIf="PaymentMethodForm.get('debitAcc').value"
+                                style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                                View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                                  aria-hidden="true" style="margin-left: 5px;"></i>
+                              </a>
+                            </div>
+                          </div>
+                          <div style="display: flex; align-items: center; gap: 10px;"
+                            *ngIf="PaymentMethodForm.get('mode').value=='Cash'">
+                            <div style="width: 150px;">Paid By:</div>
+                            <div>
+                              <ejs-dropdownlist [dataSource]="paidByArr" (change)="selectMode($event)"
+                                [fields]="commonFields"></ejs-dropdownlist>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Amount:</div>
+                            <div>
+                              <input type="text" class="form-control" formControlName="amount" disabled>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Beneficiary Type:</div>
+                            <div>
+                              <ejs-dropdownlist [dataSource]="beneficiaryType" (change)="selectBeneficiaryType($event)"
+                                [fields]="commonFields" formControlName="beneficiaryType"></ejs-dropdownlist>
+                              <a *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Provisional Account'"
+                                href="javascript:void(0)" (click)="openBankAccModal()"
+                                style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                                View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                                  aria-hidden="true" style="margin-left: 5px;"></i>
+                              </a>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Additional Document:</div>
+                            <div style="display: flex; align-items: center;gap: 5px;">
+                              <ejs-uploader (selected)="onFileSelected($event,'additionalDoc')"
+                                allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true" [buttons]="{ browse: 'Upload' }"
+                                multiple="false"></ejs-uploader>
+                              <a (click)="goToLink(this.PaymentMethodForm.get('additionalDoc').value)" class="hyperlink"
+                                style="cursor: pointer;"
+                                *ngIf="this.PaymentMethodForm.get('additionalDoc').value!='' && this.PaymentMethodForm.get('additionalDoc').value!=null">
+                                <i class="fa fa-eye"></i>
+                              </a>
+                              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                ngbTooltip="Delete File" container="body"
+                                *ngIf="this.PaymentMethodForm.get('additionalDoc').value!='' && this.PaymentMethodForm.get('additionalDoc').value!=null"
+                                (click)="docDelete()"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div>
+                            <div style="display: flex; align-items: center; gap: 10px;"
+                              *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Employee Accounts'">
+                              <div style="width: 150px;">WPS Provider:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="recepientArr" (change)="selectMode($event)"
+                                  [fields]="commonFields" formControlName="beneficiaryAcc"></ejs-dropdownlist>
+                                <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('recepient')"
+                                  *ngIf="PaymentMethodForm.get('beneficiaryAcc').value"
+                                  style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                                  View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                                    aria-hidden="true" style="margin-left: 5px;"></i>
+                                </a>
+                              </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;"
+                              *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Individual Account'">
+                              <div style="width: 150px;">Employee:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="activeEmpList" [fields]="activeEmpCommonFields"
+                                  formControlName="empid" [allowFiltering]="true" [itemTemplate]="template"
+                                  (filtering)="onFiltering($event)">
+                                </ejs-dropdownlist>
+                                <ng-template #template let-data>
+                                  <div style="border-bottom: 1px solid #ccc;display: flex;flex-direction: column;">
+                                    <span style="font-weight: bold;">{{ data.text }}</span>
+                                    <span style="font-size: 12px;">ID: {{ data.emp_code }}</span>
+                                  </div>
+                                </ng-template>
+                                <a *ngIf="PaymentMethodForm.get('empid').value" href="javascript:void(0)"
+                                  (click)="getUserDetailsByEmpId()"
+                                  style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">
+                                  View Employee <i class="fa fa-eye" placement="top" ngbTooltip="View Employee"
+                                    aria-hidden="true" style="margin-left: 5px;"></i>
+                                </a>
+
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Employee Count:</div>
+                            <div>
+                              <input type="text" class="form-control" formControlName="empCount" disabled>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div *ngIf="PaymentMethodForm.get('mode').value=='Cheque'"
+                            style="display: flex;flex-direction: column;gap: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Attach Cheque:</div>
+                              <div style="display: flex; align-items: center;gap: 5px;">
+                                <ejs-uploader (selected)="onFileSelected($event,'cheque')"
+                                  allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true"
+                                  [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+                                <a (click)="goToLink(this.PaymentMethodForm.get('cheque').value)" class="hyperlink"
+                                  style="cursor: pointer;"
+                                  *ngIf="this.PaymentMethodForm.get('cheque').value!='' && this.PaymentMethodForm.get('cheque').value!=null">
+                                  <i class="fa fa-eye"></i>
+                                </a>
+                                <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                  ngbTooltip="Delete File" container="body"
+                                  *ngIf="this.PaymentMethodForm.get('cheque').value!='' && this.PaymentMethodForm.get('cheque').value!=null"
+                                  (click)="docDelete()"></i>
+                              </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Cheque Type:</div>
+                              <div>
+                                <div>
+                                  <ejs-radiobutton label="PDC" formControlName="chequeType" (change)="chequeType('PDC')"
+                                    value="PDC"></ejs-radiobutton>
+                                  <ejs-radiobutton label="CDC" formControlName="chequeType" style="margin-left: 12px;"
+                                    value="CDC" (change)="chequeType('CDC')"></ejs-radiobutton>
+                                </div>
+                                <div style="margin-top: 7px;">
+                                  <ejs-datepicker format='MMM d, y' formControlName="chequeDate"
+                                    [min]='maxDate'></ejs-datepicker>
+                                </div>
+                              </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Cheque Number:</div>
+                              <div>
+                                <input type="text" class="form-control" formControlName="chequeNumber">
+                              </div>
+                            </div>
+                          </div>
+                          <div style="display: flex; align-items: center; gap: 10px;"
+                            *ngIf="PaymentMethodForm.get('mode').value=='MasterCard' || PaymentMethodForm.get('mode').value=='Visa'">
+                            <div style="width: 150px;">Card:</div>
+                            <div>
+                              <ejs-dropdownlist [dataSource]="cardArr" (change)="selectMode($event)"
+                                formControlName="mode" [fields]="commonFields"></ejs-dropdownlist>
+                            </div>
+                          </div>
+
+                          <div style="display: flex; align-items: center; gap: 10px;"
+                            *ngIf="PaymentMethodForm.get('mode').value=='Bank Transfer' || PaymentMethodForm.get('mode').value=='Cash'">
+                            <div style="width: 150px;">{{PaymentMethodForm.get('mode').value=='Bank Transfer'?'Attach
+                              Document':'Attach Payment Voucher'}}</div>
+                            <div style="display: flex; align-items: center;gap: 5px;">
+                              <ejs-uploader (selected)="onFileSelected($event,'reciept')"
+                                allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true" [buttons]="{ browse: 'Upload' }"
+                                multiple="false"></ejs-uploader>
+                              <a (click)="goToLink(this.PaymentMethodForm.get('recieptDoc').value)" class="hyperlink"
+                                style="cursor: pointer;"
+                                *ngIf="this.PaymentMethodForm.get('recieptDoc').value!='' && this.PaymentMethodForm.get('recieptDoc').value!=null">
+                                <i class="fa fa-eye"></i>
+                              </a>
+                              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                ngbTooltip="Delete File" container="body"
+                                *ngIf="this.PaymentMethodForm.get('recieptDoc').value!='' && this.PaymentMethodForm.get('recieptDoc').value!=null"
+                                (click)="docDelete()"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;margin-bottom: 10px;">
+                            <div style="width: 150px;">Transfer Fees:</div>
+                            <div>
+                              <input type="text" class="form-control" formControlName="transferFees">
+                            </div>
+                          </div>
+                          <div style="display: flex; align-items: center;gap: 10px;">
+                            <div style="width: 150px;">Paid By:</div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div class="form-check"
+                                style="display: flex;flex-direction: column;justify-content: center;">
+                                <input class="form-check-input" type="radio" id="applicant" formControlName="paidBy"
+                                  value="applicant">
+                                <label class="form-check-label" for="applicant">Applicant</label>
+                              </div>
+                              <div class="form-check"
+                                style="display: flex;flex-direction: column;justify-content: center;">
+                                <input class="form-check-input" type="radio" id="beneficiary" formControlName="paidBy"
+                                  value="beneficiary">
+                                <label class="form-check-label" for="beneficiary">Beneficiary</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 150px;">Remarks:</div>
+                            <div>
+                              <textarea class="form-control" id="exampleTextarea" rows="4"
+                                formControlName="remarks"></textarea>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div *ngIf="!singlePaymentMethod">
+                  <div *ngIf="!addNewPaymentMethod">
+                    <div style="display: flex;flex-direction: column;" class="paymentMethodTable">
+                      <table class="paymentMethodTable" style="width: 100%; border-collapse: collapse;">
+                        <tr class="headerRow" style="background-color: #f2f2f2;">
+                          <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">No</th>
+                          <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Voucher Id</th>
+                          <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Employees</th>
+                          <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Method</th>
+                          <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Amount</th>
+
+                          <th></th>
+                        </tr>
+                        <tr *ngFor="let item of paymentMethods;let i=index">
+                          <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{i+1}}
+                          </td>
+                          <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{item.voucherId}}
+                          </td>
+                          <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{item.empCount}}
+                          </td>
+                          <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">{{item.mode}}
+                          </td>
+                          <td style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">
+                            {{item.amount}}</td>
+                          <td *ngIf="item.status=='Active'"><a title="Update details"
+                              class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="updatePaymentDetails(item)"> <i
+                                class="la la-edit"></i> </a></td>
+                          <td *ngIf="item.status!=='Active'"><a title="View details"
+                              class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="viewPaymentDetails(item)"> <i
+                                class="fa fa-eye"></i> </a></td>
+                        </tr>
+                        <tr class="headerRow" style="background-color: #f2f2f2;" *ngIf="paymentMethods.length>0">
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td><strong>Total Amount</strong></td>
+                          <td><strong>{{paymentVoucherAmount}}</strong></td>
+                          <td></td>
+
+                        </tr>
+                      </table>
+                      <div style="display: flex;justify-content: flex-end;gap: 2px;padding: 5px;"
+                        *ngIf="!singlePaymentMethod && editVoucherMode">
+                        Add payment method
+                        <a (click)="showPaymentMethod()"><i class="flaticon2-plus" style="cursor: pointer;margin-right:4px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+              color: #fff;
+              font-size: 8px;
+              "></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="addNewPaymentMethod">
+                    <form [formGroup]="PaymentMethodForm">
+                      <!-- Select Employees -->
+                      <div style="margin-bottom: 20px;">
+                        <div style="padding-bottom: 5px;">
+                          <span class="modal-title"
+                            style="font-size: 15px;font-weight: 600;text-decoration: underline;">Employee Salary
+                            Details</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <!-- ejs-grid section -->
+                              <ejs-grid #empSalGrid [dataSource]="filteredEmpSalData" height="230"
+                                [toolbar]="employeeGridToolItems" [allowSorting]="true">
+                                <e-columns>
+                                  <e-column field="select" headerText="Select" width="80" textAlign="Center"
+                                    [ngClass]="selectAll-class" [headerTemplate]="headerTemplate"
+                                    [template]="checkboxTemplate"></e-column>
+                                  <e-column field="full_name" headerText="Name" width="200"></e-column>
+                                  <e-column field="netpayable" headerText="Net Pay" width="100"></e-column>
+                                </e-columns>
+                              </ejs-grid>
+                              <ng-template #headerTemplate>
+                                <input type="checkbox" [disabled]="PaymentMethodForm.get('status')?.value !== 'Active'"
+                                  (change)="toggleSelectAll($event)"> Select All
+                              </ng-template>
+                              <ng-template #checkboxTemplate let-data>
+                                <input type="checkbox"
+                                  [checked]="PaymentMethodForm.get('empList')?.value?.includes(data.emp_id)"
+                                  (change)="toggleEmployeeSelection($event, data.emp_id)"
+                                  [disabled]="PaymentMethodForm.get('status')?.value !== 'Active'">
+                              </ng-template>
+                            </div>
+
+
+
+                          </div>
+
+                        </div>
+                        <div
+                          style="display: flex; align-items: center; justify-content: space-between; padding: 5px 0;">
+                          <span *ngIf="!viewOnlyMode" style="font-weight: 600;">*Note: Please select the employees for
+                            this payment voucher.</span>
+                          <div style="margin-left: auto;">
+                            <button type="button" class="btn btn-secondary" (click)="openEmpPayrollModal()"> Expand View
+                              <i class="fa fa-expand" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+
+                      <div style="margin-bottom: 20px;display: flex;flex-direction: column;gap: 10px;">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Id:</div>
+                              <div>
+                                <input type="text" class="form-control" formControlName="voucherId">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Method:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="paymentModeArr" (change)="selectMode($event)"
+                                  formControlName="mode" [fields]="commonFields"></ejs-dropdownlist>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Acc Ref Id:</div>
+                              <div>
+                                <input type="text" class="form-control" formControlName="accRefId">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;"
+                              *ngIf="PaymentMethodForm.get('mode').value=='Bank Transfer' || PaymentMethodForm.get('mode').value=='Cheque'">
+                              <div style="width: 150px;">Account to Debit:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="senderArr" (change)="selectMode($event)"
+                                  formControlName="debitAcc" [fields]="commonFields"></ejs-dropdownlist>
+                                <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('sender')"
+                                  *ngIf="PaymentMethodForm.get('debitAcc').value"
+                                  style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                                  View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                                    aria-hidden="true" style="margin-left: 5px;"></i>
+                                </a>
+                              </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;"
+                              *ngIf="PaymentMethodForm.get('mode').value=='Cash'">
+                              <div style="width: 150px;">Paid By:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="paidByArr" (change)="selectMode($event)"
+                                  [fields]="commonFields"></ejs-dropdownlist>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Amount:</div>
+                              <div>
+                                <input type="text" class="form-control" formControlName="amount" disabled>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Beneficiary Type:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="beneficiaryType"
+                                  (change)="selectBeneficiaryType($event)" [fields]="commonFields"
+                                  formControlName="beneficiaryType"></ejs-dropdownlist>
+                                <a *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Provisional Account'"
+                                  href="javascript:void(0)" (click)="openBankAccModal()"
+                                  style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                                  View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                                    aria-hidden="true" style="margin-left: 5px;"></i>
+                                </a>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Additional Document:</div>
+                              <div style="display: flex; align-items: center;gap: 5px;">
+                                <ejs-uploader (selected)="onFileSelected($event,'additionalDoc')"
+                                  allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true"
+                                  [buttons]="{ browse: 'Upload' }" multiple="false"
+                                  *ngIf="!viewOnlyMode && addNewPaymentMethod"></ejs-uploader>
+                                <a (click)="goToLink(this.PaymentMethodForm.get('additionalDoc').value)"
+                                  class="hyperlink" style="cursor: pointer;"
+                                  *ngIf="this.PaymentMethodForm.get('additionalDoc').value!='' && this.PaymentMethodForm.get('additionalDoc').value!=null">
+                                  <i class="fa fa-eye"></i>
+                                </a>
+                                <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                  ngbTooltip="Delete File" container="body"
+                                  *ngIf="this.PaymentMethodForm.get('additionalDoc').value!='' && this.PaymentMethodForm.get('additionalDoc').value!=null"
+                                  (click)="docDelete()"></i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div>
+                              <div style="display: flex; align-items: center; gap: 10px;"
+                                *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Employee Accounts'">
+                                <div style="width: 150px;">WPS Provider:</div>
+                                <div>
+                                  <ejs-dropdownlist [dataSource]="recepientArr" (change)="selectMode($event)"
+                                    [fields]="commonFields" formControlName="beneficiaryAcc"></ejs-dropdownlist>
+                                  <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('recepient')"
+                                    *ngIf="PaymentMethodForm.get('beneficiaryAcc').value"
+                                    style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                                    View Bank Account <i class="fa fa-eye" placement="top"
+                                      ngbTooltip="View Bank Account" aria-hidden="true" style="margin-left: 5px;"></i>
+                                  </a>
+                                </div>
+                              </div>
+                              <div style="display: flex; align-items: center; gap: 10px;"
+                                *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Individual Account'">
+                                <div style="width: 150px;">Employee:</div>
+                                <div>
+                                  <ejs-dropdownlist [dataSource]="activeEmpList" [fields]="activeEmpCommonFields"
+                                    formControlName="empid" [allowFiltering]="true" [itemTemplate]="template"
+                                    (filtering)="onFiltering($event)">
+                                  </ejs-dropdownlist>
+                                  <ng-template #template let-data>
+                                    <div style="border-bottom: 1px solid #ccc;">
+                                      <div style="font-weight: bold;">{{ data.text }}</div>
+                                      <div style="font-size: 12px;">ID: {{ data.emp_code }}</div>
+                                    </div>
+                                  </ng-template>
+                                  <a *ngIf="PaymentMethodForm.get('empid').value" href="javascript:void(0)"
+                                    (click)="getUserDetailsByEmpId()"
+                                    style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">
+                                    View Employee <i class="fa fa-eye" placement="top" ngbTooltip="View Employee"
+                                      aria-hidden="true" style="margin-left: 5px;"></i>
+                                  </a>
+
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Employee Count:</div>
+                              <div>
+                                <input type="text" class="form-control" formControlName="empCount" disabled>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div *ngIf="PaymentMethodForm.get('mode').value=='Cheque'"
+                              style="display: flex;flex-direction: column;gap: 20px;">
+                              <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 150px;">Attach Cheque:</div>
+                                <div style="display: flex; align-items: center;gap: 5px;">
+                                  <ejs-uploader (selected)="onFileSelected($event,'cheque')"
+                                    allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true"
+                                    [buttons]="{ browse: 'Upload' }" multiple="false"
+                                    *ngIf="!viewOnlyMode && addNewPaymentMethod"></ejs-uploader>
+                                  <a (click)="goToLink(this.PaymentMethodForm.get('cheque').value)" class="hyperlink"
+                                    style="cursor: pointer;"
+                                    *ngIf="this.PaymentMethodForm.get('cheque').value!='' && this.PaymentMethodForm.get('cheque').value!=null">
+                                    <i class="fa fa-eye"></i>
+                                  </a>
+                                  <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                    ngbTooltip="Delete File" container="body"
+                                    *ngIf="this.PaymentMethodForm.get('cheque').value!='' && this.PaymentMethodForm.get('cheque').value!=null"
+                                    (click)="docDelete()"></i>
+                                </div>
+                              </div>
+                              <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 150px;">Cheque Type:</div>
+                                <div>
+                                  <div>
+                                    <ejs-radiobutton label="PDC" formControlName="chequeType"
+                                      (change)="chequeType('PDC')" value="PDC"></ejs-radiobutton>
+                                    <ejs-radiobutton label="CDC" formControlName="chequeType" style="margin-left: 12px;"
+                                      value="CDC" (change)="chequeType('CDC')"></ejs-radiobutton>
+                                  </div>
+                                  <div style="margin-top: 7px;">
+                                    <ejs-datepicker format='MMM d, y' formControlName="chequeDate"
+                                      [min]='maxDate'></ejs-datepicker>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 150px;">Cheque Number:</div>
+                                <div>
+                                  <input type="text" class="form-control" formControlName="chequeNumber">
+                                </div>
+                              </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;"
+                              *ngIf="PaymentMethodForm.get('mode').value=='MasterCard' || PaymentMethodForm.get('mode').value=='Visa'">
+                              <div style="width: 150px;">Card:</div>
+                              <div>
+                                <ejs-dropdownlist [dataSource]="cardArr" (change)="selectMode($event)"
+                                  formControlName="mode" [fields]="commonFields"></ejs-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 10px;"
+                              *ngIf="PaymentMethodForm.get('mode').value=='Bank Transfer' || PaymentMethodForm.get('mode').value=='Cash'">
+                              <div style="width: 150px;">{{PaymentMethodForm.get('mode').value=='Bank Transfer'?'Attach
+                                Document':'Attach Payment Voucher'}}</div>
+                              <div style="display: flex; align-items: center;gap: 5px;">
+                                <ejs-uploader (selected)="onFileSelected($event,'reciept')"
+                                  allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true"
+                                  [buttons]="{ browse: 'Upload' }" multiple="false"
+                                  *ngIf="!viewOnlyMode && addNewPaymentMethod"></ejs-uploader>
+                                <a (click)="goToLink(this.PaymentMethodForm.get('recieptDoc').value)" class="hyperlink"
+                                  style="cursor: pointer;"
+                                  *ngIf="this.PaymentMethodForm.get('recieptDoc').value!='' && this.PaymentMethodForm.get('recieptDoc').value!=null">
+                                  <i class="fa fa-eye"></i>
+                                </a>
+                                <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                  ngbTooltip="Delete File" container="body"
+                                  *ngIf="this.PaymentMethodForm.get('recieptDoc').value!='' && this.PaymentMethodForm.get('recieptDoc').value!=null"
+                                  (click)="docDelete()"></i>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;margin-bottom: 10px;">
+                              <div style="width: 150px;">Transfer Fees:</div>
+                              <div>
+                                <input type="text" class="form-control" formControlName="transferFees">
+                              </div>
+                            </div>
+                            <div style="display: flex; align-items: center;gap: 10px;">
+                              <div style="width: 150px;">Paid By:</div>
+                              <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="form-check"
+                                  style="display: flex;flex-direction: column;justify-content: center;">
+                                  <input class="form-check-input" type="radio" id="applicant" formControlName="paidBy"
+                                    value="applicant">
+                                  <label class="form-check-label" for="applicant">Applicant</label>
+                                </div>
+                                <div class="form-check"
+                                  style="display: flex;flex-direction: column;justify-content: center;">
+                                  <input class="form-check-input" type="radio" id="beneficiary" formControlName="paidBy"
+                                    value="beneficiary">
+                                  <label class="form-check-label" for="beneficiary">Beneficiary</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <div style="width: 150px;">Remarks:</div>
+                              <div>
+                                <textarea class="form-control" id="exampleTextarea" rows="4"
+                                  formControlName="remarks"></textarea>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </form>
+
+                    <div class="card mt-3" style="margin: 10px 0px;" *ngIf="viewOnlyMode && showPreviousPayrolls">
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Voucher Paid Details</h4>
+                      </div>
+                      <div class="card-body">
+
+                        <form [formGroup]="paymentForm">
+                          <div style="display: flex; flex-direction: column">
+                            <!-- First Row: Receipt Number and Receipt Document -->
+                            <div class="form-row"
+                              style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                              <div class="form-group col-md-6" style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                  <label for="receiptNumber" class="mr-2" style="flex:1;">Receipt Number :</label>
+                                  <input type="text" class="form-control" id="receiptNumber" style="flex:1;"
+                                    formControlName="receiptNumber" placeholder="Enter receipt number">
+                                </div>
+
+                              </div>
+                              <div class="form-group col-md-6" style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                  <label for="receiptDocument" class="mr-2" style="flex:1;">Receipt Document :</label>
+                                  <div style="display: flex; align-items: center;gap: 5px;">
+                                    <a (click)="goToLink(this.paymentForm.get('receiptDocument').value)"
+                                      class="hyperlink" style="cursor: pointer;"
+                                      *ngIf="this.paymentForm.get('receiptDocument').value!='' && this.paymentForm.get('receiptDocument').value!=null">
+                                      <i class="fa fa-eye"></i>
+                                    </a>
+                                  </div>
+                                </div>
+                                <div
+                                  *ngIf="paymentForm.controls['receiptDocument'].invalid && paymentForm.controls['receiptDocument'].touched"
+                                  class="text-danger">
+                                  Receipt document is required.
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="form-row"
+                              style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                              <div class="form-group col-md-6" style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                  <label for="receiptDate" class="mr-2" style="flex:1;">Date :</label>
+                                  <ejs-datepicker formControlName="date" format="MMM d, y" style="flex:1;"
+                                    placeholder="Enter date"></ejs-datepicker>
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6" style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                  <label for="remarks" class="mr-2" style="flex:1;">Remarks :</label>
+                                  <textarea class="form-control" id="remarks" style="flex:1;" formControlName="remarks"
+                                    rows="3"></textarea>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- <div class="form-row"
+                              style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                              <div class="form-group col-md-6" style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                  <label for="transferFees" class="mr-2" style="flex:1;">Transfer Fees :</label>
+                                  <input type="text" class="form-control" id="transferFees" style="flex:1;"
+                                    formControlName="transferFees" placeholder="Enter transfer fees">
+                                </div>
+                                <div
+                                  *ngIf="paymentForm.controls['transferFees'].invalid && paymentForm.controls['transferFees'].touched"
+                                  class="text-danger">
+                                  Transfer fees is required.
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6" style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                  <label class="mr-2" style="flex:1;">Paid By :</label>
+                                  <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="form-check"
+                                      style="display: flex;flex-direction: column;justify-content: center;">
+                                      <input class="form-check-input" type="radio" id="applicant"
+                                        formControlName="paidBy" value="applicant">
+                                      <label class="form-check-label" for="applicant">Applicant</label>
+                                    </div>
+                                    <div class="form-check"
+                                      style="display: flex;flex-direction: column;justify-content: center;">
+                                      <input class="form-check-input" type="radio" id="beneficiary"
+                                        formControlName="paidBy" value="beneficiary">
+                                      <label class="form-check-label" for="beneficiary">Beneficiary</label>
+                                    </div>
+                                  </div>
+                                  <div
+                                    *ngIf="PaymentMethodForm.controls['paidBy'].invalid && PaymentMethodForm.controls['paidBy'].touched"
+                                    class="text-danger">
+                                    Selection is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div> -->
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </form>
+
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn" style="background-color: #292627; color: white; font-weight: 600"
+              *ngIf="singlePaymentMethod" (click)="closeMarkPaidModel()">Cancel
+            </button>
+            <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+              *ngIf="singlePaymentMethod && !showPreviousPayrolls" (click)="markAsPaid()">Create Payment
+              Voucher
+            </button>
+            <button class="btn" style="background-color: #292627; color: white; font-weight: 600"
+              (click)="backToVoucherListing()" *ngIf="addNewPaymentMethod">
+              Back</button>
+            <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+              (click)="submitMultipleVouchers()" [disabled]="!submitPaymentVouchers"
+              *ngIf="!addNewPaymentMethod && !singlePaymentMethod && !viewOnlyMode">
+              Submit Payment Vouchers</button>
+
+            <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+              (click)="addPaymentMethod()" *ngIf="showAddPaymentButton && addNewPaymentMethod && !viewOnlyMode">
+              Add Payment Method</button>
+
+            <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+              (click)="updateExistingPaymentMethod()" *ngIf="showUpdatePaymentButton && addNewPaymentMethod"
+              [disabled]="PaymentMethodForm.invalid">
+              Update Payment Method</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </ng-template> -->
+
+<!-- View Emp payroll -->
+<div *ngIf="isModalOpen" class="custom-modal-backdrop">
+  <div class="custom-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">Employee Salary Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeEmpPayrollModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="custom-modal-body" style="display: flex; flex-direction: column;">
+      <ejs-grid [dataSource]="customEmpSalData" [toolbar]="employeeGridToolItems" [allowSorting]="true" height="410">
+        <e-columns>
+          <e-column field="select" headerText="Select" width="120" textAlign="Center" [ngClass]="selectAll-class"
+            [headerTemplate]="headerTemplate" [template]="modalCheckboxTemplate"
+            *ngIf="(addNewPaymentMethod || updatePaymentMethod) && !showPreviousPayrolls"></e-column>
+          <e-column field="full_name" headerText="Name" width="200"></e-column>
+          <e-column field="basic_salary" headerText="Basic Salary" width="100"></e-column>
+          <e-column field="fix_netpay" headerText="Fix Net Pay" width="100"></e-column>
+          <e-column field="netdeduction" headerText="M&V Deduction" width="100"></e-column>
+          <e-column field="variablepay" headerText="Var Pay" width="100"></e-column>
+          <e-column field="adjustmentpay" headerText="Adj Pay" width="100"></e-column>
+          <e-column field="workexpenss" headerText="Work Exp" width="100"></e-column>
+          <e-column field="loanpayments" headerText="Adv&Loan" width="100"></e-column>
+          <e-column field="netpayable" headerText="Net Pay" width="100"></e-column>
+        </e-columns>
+      </ejs-grid>
+      <ng-template #headerTemplate>
+        <input type="checkbox" (change)="toggleSelectAllOnModal($event)"> Select All
+      </ng-template>
+      <ng-template #modalCheckboxTemplate let-data>
+        <input type="checkbox" [checked]="empSelectionArr.includes(data.emp_id)"
+          (change)="toggleEmployeeSelectionOnModal($event, data.emp_id)">
+      </ng-template>
+
+    </div>
+    <div style="display: flex; justify-content: flex-end;align-items: center;" class="modal-footer">
+      <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+        *ngIf="addNewPaymentMethod && !showPreviousPayrolls" (click)="submitSelectedEmployees()">
+        Submit</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Bank account Modal -->
+<!-- <ng-template #bankAccModal style="background-color: #e91e1e;width: 650px;"> -->
+<div *ngIf="showBankAccModal" class="custom-modal-backdrop">
+  <div class="custom-bank-modal" (click)="$event.stopPropagation()">
+    <div class="modal-content" style="width: 650px !important;" data-backdrop="static" aria-hidden="true" tabindex="-1"
+      id="bank_acc_modal">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Bank Account Details</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeBankAccModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form [formGroup]="bankAccountForm" (ngSubmit)="onSubmit()" class="form-container">
+            <div class="form-row">
+              <div class="form-item">
+                <label for="nickName" style="font-weight: bold;">Nick Name:</label>
+                <input type="text" id="nickName" formControlName="nick_name" class="form-control" disabled>
+
+              </div>
+              <div class="form-item">
+                <label for="role" style="font-weight: bold;">Type:</label>
+                <input type="text" id="role" formControlName="role" class="form-control" disabled>
+
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-item">
+                <label for="accountHolderName" style="font-weight: bold;">Account Holder's Name:</label>
+                <input type="text" id="accountHolderName" formControlName="acc_holder_name" class="form-control"
+                  disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="accountType" style="font-weight: bold;">Account Type:</label>
+                <input type="text" id="accountType" formControlName="acc_type" class="form-control" disabled>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="accountNumber" style="font-weight: bold;">Account Number:</label>
+                <input type="text" id="accountNumber" formControlName="acc_num" class="form-control" disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="bankName" style="font-weight: bold;">Bank Name:</label>
+                <input type="text" id="bankName" formControlName="bank_name" class="form-control" disabled>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="branchName" style="font-weight: bold;">Branch Name:</label>
+                <input type="text" id="branchName" formControlName="branch_name" class="form-control" disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="swiftBicCode" style="font-weight: bold;">SWIFT/BIC Code:</label>
+                <input type="text" id="swiftBicCode" formControlName="swift_bic" class="form-control" disabled>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-item">
+                <label for="iban" style="font-weight: bold;">IBAN:</label>
+                <input type="text" id="iban" formControlName="iban" class="form-control" disabled>
+
+              </div>
+
+              <div class="form-item">
+                <label for="currency" style="font-weight: bold;">Currency:</label>
+                <input type="text" id="currency" formControlName="currency" class="form-control" disabled>
+
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-item">
+                <label for="desc" style="font-weight: bold;">Description:</label>
+                <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc" disabled></textarea>
+              </div>
+              <div class="form-item">
+                <!-- <label for="is_wps" style="font-weight: bold;">WPS Provider:</label>
+                  <div style="display: flex;gap: 10px;">
+                      <input type="checkbox" formControlName="is_wps"/>
+                      <label for="wpsNo" style="margin-bottom: 0px !important;" >Add this account as a WPS provider</label>
+                  </div> -->
+              </div>
+            </div>
+
+          </form>
+
+
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="addProvisionalBankAcc">
+        <button ejs-button class="btn btnColorAll" (click)="closeModel()" [disabled]="bankAccountForm.invalid">Save and
+          Submit</button>
+        <button ejs-button class="btn btnColorAll" type="submit" (click)="submitBankAccountDetails()"
+          [disabled]="bankAccountForm.invalid">Submit</button>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </ng-template> -->
+
+<!-- Paid Payment Voucer Modal -->
+<div class="rightModal700" *ngIf="showPaymentVoucherModel">
+  <div class="modal animated slideInRight " id="paymentVoucherModal" tabindex="-1" data-backdrop="static" role="dialog"
+    style="z-index: 1060;" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: scroll;">
+    <div class="modal-dialog importWid" role="document" style="width: 750px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Payment Voucher Details</h4>
+          <button type="button" class="close" aria-label="Close" (click)="closePaymentVoucherDetails()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="margin-top: 5px;">
+          <div class="card mt-3" style="padding: 10px;">
+            <!-- Diabled -->
+            <div>
+              <form [formGroup]="PaymentMethodForm">
+                <div style="margin-bottom: 20px;display: flex;flex-direction: column;gap: 10px;">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Id:</div>
+                        <div>
+                          <input type="text" class="form-control" formControlName="voucherId" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Method:</div>
+                        <div>
+                          <ejs-dropdownlist [dataSource]="paymentModeArr" (change)="selectMode($event)"
+                            formControlName="mode" [fields]="commonFields"></ejs-dropdownlist>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Acc Ref Id:</div>
+                        <div>
+                          <input type="text" class="form-control" formControlName="accRefId">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;"
+                        *ngIf="PaymentMethodForm.get('mode').value=='Bank Transfer' || PaymentMethodForm.get('mode').value=='Cheque'">
+                        <div style="width: 150px;">Account to Debit:</div>
+                        <div>
+                          <ejs-dropdownlist [dataSource]="senderArr" (change)="selectMode($event)"
+                            formControlName="debitAcc" [fields]="commonFields"></ejs-dropdownlist>
+                          <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('sender')"
+                            *ngIf="PaymentMethodForm.get('debitAcc').value"
+                            style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                            View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                              aria-hidden="true" style="margin-left: 5px;"></i>
+                          </a>
+                        </div>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 10px;"
+                        *ngIf="PaymentMethodForm.get('mode').value=='Cash'">
+                        <div style="width: 150px;">Paid By:</div>
+                        <div>
+                          <ejs-dropdownlist [dataSource]="paidByArr" (change)="selectMode($event)"
+                            [fields]="commonFields" [enabled]="false"></ejs-dropdownlist>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Amount:</div>
+                        <div class="input-group" style="max-width: 150px;">
+                          <input type="text" class="form-control" formControlName="amount" disabled
+                            style="width: 100px;">
+                          <span class="input-group-text">AED</span>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Beneficiary Type:</div>
+                        <div>
+                          <ejs-dropdownlist [dataSource]="beneficiaryType" (change)="selectBeneficiaryType($event)"
+                            [fields]="commonFields" formControlName="beneficiaryType"></ejs-dropdownlist>
+                          <a *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Provisional Account'"
+                            href="javascript:void(0)" (click)="openBankAccModal()"
+                            style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                            View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                              aria-hidden="true" style="margin-left: 5px;"></i>
+                          </a>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Additional Document:</div>
+                        <div style="display: flex; align-items: center;gap: 5px;">
+                          <ejs-uploader (selected)="onFileSelected($event,'additionalDoc')"
+                            allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true" [buttons]="{ browse: 'Upload' }"
+                            multiple="false" [enabled]="false"></ejs-uploader>
+                          <a (click)="goToLink(this.PaymentMethodForm.get('additionalDoc').value)" class="hyperlink"
+                            style="cursor: pointer;"
+                            *ngIf="this.PaymentMethodForm.get('additionalDoc').value!='' && this.PaymentMethodForm.get('additionalDoc').value!=null">
+                            <i class="fa fa-eye"></i>
+                          </a>
+                          <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                            ngbTooltip="Delete File" container="body"
+                            *ngIf="this.PaymentMethodForm.get('additionalDoc').value!='' && this.PaymentMethodForm.get('additionalDoc').value!=null"
+                            (click)="docDelete()"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div>
+                        <div style="display: flex; align-items: center; gap: 10px;"
+                          *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Employee Accounts'">
+                          <div style="width: 150px;">WPS Provider:</div>
+                          <div>
+                            <ejs-dropdownlist [dataSource]="recepientArr" (change)="selectMode($event)"
+                              [fields]="commonFields" formControlName="beneficiaryAcc"></ejs-dropdownlist>
+                            <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('recepient')"
+                              *ngIf="PaymentMethodForm.get('beneficiaryAcc').value"
+                              style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 8px; border-radius: 5px;">
+                              View Bank Account <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account"
+                                aria-hidden="true" style="margin-left: 5px;"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;"
+                          *ngIf="PaymentMethodForm.get('beneficiaryType').value=='Individual Account'">
+                          <div style="width: 150px;">Employee:</div>
+                          <div>
+                            <ejs-dropdownlist [dataSource]="activeEmpList" [fields]="activeEmpCommonFields"
+                              formControlName="empid" [allowFiltering]="true" [itemTemplate]="template"
+                              (filtering)="onFiltering($event)">
+                            </ejs-dropdownlist>
+                            <ng-template #template let-data>
+                              <div style="border-bottom: 1px solid #ccc;display: flex;flex-direction: column;">
+                                <span style="font-weight: bold;">{{ data.text }}</span>
+                                <span style="font-size: 12px;">ID: {{ data.emp_code }}</span>
+                              </div>
+                            </ng-template>
+                            <a *ngIf="PaymentMethodForm.get('empid').value" href="javascript:void(0)"
+                              (click)="getUserDetailsByEmpId()"
+                              style="display: inline-block; text-decoration: none; background-color: #f0f0f0; padding: 5px 10px; border-radius: 5px;">
+                              View Employee <i class="fa fa-eye" placement="top" ngbTooltip="View Employee"
+                                aria-hidden="true" style="margin-left: 5px;"></i>
+                            </a>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Employee Count:</div>
+                        <div>
+                          <input type="text" class="form-control" formControlName="empCount" disabled>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div *ngIf="PaymentMethodForm.get('mode').value=='Cheque'"
+                        style="display: flex;flex-direction: column;gap: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <div style="width: 150px;">Attach Cheque:</div>
+                          <div style="display: flex; align-items: center;gap: 5px;">
+                            <ejs-uploader (selected)="onFileSelected($event,'cheque')"
+                              allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true" [buttons]="{ browse: 'Upload' }"
+                              multiple="false" [enabled]="false"></ejs-uploader>
+                            <a (click)="goToLink(this.PaymentMethodForm.get('cheque').value)" class="hyperlink"
+                              style="cursor: pointer;"
+                              *ngIf="this.PaymentMethodForm.get('cheque').value!='' && this.PaymentMethodForm.get('cheque').value!=null">
+                              <i class="fa fa-eye"></i>
+                            </a>
+                            <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                              ngbTooltip="Delete File" container="body"
+                              *ngIf="this.PaymentMethodForm.get('cheque').value!='' && this.PaymentMethodForm.get('cheque').value!=null"
+                              (click)="docDelete()"></i>
+                          </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <div style="width: 150px;">Cheque Type:</div>
+                          <div>
+                            <div>
+                              <ejs-radiobutton label="PDC" formControlName="chequeType" (change)="chequeType('PDC')"
+                                value="PDC"></ejs-radiobutton>
+                              <ejs-radiobutton label="CDC" formControlName="chequeType" style="margin-left: 12px;"
+                                value="CDC" (change)="chequeType('CDC')"></ejs-radiobutton>
+                            </div>
+                            <div style="margin-top: 7px;">
+                              <ejs-datepicker format='MMM d, y' formControlName="chequeDate"
+                                [min]='maxDate'></ejs-datepicker>
+                            </div>
+                          </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <div style="width: 150px;">Cheque Number:</div>
+                          <div>
+                            <input type="text" class="form-control" formControlName="chequeNumber">
+                          </div>
+                        </div>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 10px;"
+                        *ngIf="PaymentMethodForm.get('mode').value=='MasterCard' || PaymentMethodForm.get('mode').value=='Visa'">
+                        <div style="width: 150px;">Card:</div>
+                        <div>
+                          <ejs-dropdownlist [dataSource]="cardArr" (change)="selectMode($event)" formControlName="mode"
+                            [fields]="commonFields"></ejs-dropdownlist>
+                        </div>
+                      </div>
+
+                      <div style="display: flex; align-items: center; gap: 10px;"
+                        *ngIf="PaymentMethodForm.get('mode').value=='Bank Transfer' || PaymentMethodForm.get('mode').value=='Cash'">
+                        <div style="width: 150px;">{{PaymentMethodForm.get('mode').value=='Bank Transfer'?'Attach
+                          Document':'Attach Payment Voucher'}}</div>
+                        <div style="display: flex; align-items: center;gap: 5px;">
+                          <ejs-uploader (selected)="onFileSelected($event,'reciept')" allowedExtensions=".jpg,.png,.pdf"
+                            [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"
+                            [enabled]="false"></ejs-uploader>
+                          <a (click)="goToLink(this.PaymentMethodForm.get('recieptDoc').value)" class="hyperlink"
+                            style="cursor: pointer;"
+                            *ngIf="this.PaymentMethodForm.get('recieptDoc').value!='' && this.PaymentMethodForm.get('recieptDoc').value!=null">
+                            <i class="fa fa-eye"></i>
+                          </a>
+                          <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                            ngbTooltip="Delete File" container="body"
+                            *ngIf="this.PaymentMethodForm.get('recieptDoc').value!='' && this.PaymentMethodForm.get('recieptDoc').value!=null"
+                            (click)="docDelete()"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <div style="width: 150px;">Transfer Fees:</div>
+                        <div class="input-group" style="max-width: 150px;">
+                          <input type="text" class="form-control" formControlName="transferFees" style="width: 100px;">
+                          <span class="input-group-text">AED</span>
+                        </div>
+                      </div>
+
+
+                      <div style="display: flex; align-items: center;gap: 10px;">
+                        <div style="width: 150px;">Paid By:</div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <div class="form-check" style="display: flex;flex-direction: column;justify-content: center;">
+                            <input class="form-check-input" type="radio" id="applicant" formControlName="paidBy"
+                              value="applicant">
+                            <label class="form-check-label" for="applicant">Applicant</label>
+                          </div>
+                          <div class="form-check" style="display: flex;flex-direction: column;justify-content: center;">
+                            <input class="form-check-input" type="radio" id="beneficiary" formControlName="paidBy"
+                              value="beneficiary">
+                            <label class="form-check-label" for="beneficiary">Beneficiary</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Remarks:</div>
+                        <div>
+                          <textarea class="form-control" id="exampleTextarea" rows="4"
+                            formControlName="remarks"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div>
+                    <div>
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 150px;">Total Amount:</div>
+                        <div class="input-group" style="max-width: 150px;">
+                          <input type="text" class="form-control" formControlName="total_amount" disabled
+                            style="width: 100px;">
+                          <span class="input-group-text">AED</span>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <div class="row">
+                <div class="col-md-12">
+                  <ejs-grid #customEmployeeGrid [dataSource]="customEmpSalData" height="230"
+                    [toolbar]="employeeGridToolItems" [allowSorting]="true">
+                    <e-columns>
+                      <e-column field="full_name" headerText="Name" width="200"></e-column>
+                      <e-column field="netpayable" headerText="Net Pay" width="100" format="N2"></e-column>
+                    </e-columns>
+                  </ejs-grid>
+                </div>
+
+              </div>
+              <div style="display: flex;align-items: center;justify-content: flex-end;padding:5px 0px;">
+                <button type="button" class="btn btn-secondary" (click)="openEmpPayrollModal()"> Expand View <i
+                    class="fa fa-expand" aria-hidden="true"></i></button>
+              </div>
+
+            </div>
+          </div>
+          <!-- Mark Paid Modal Details -->
+          <div class="card mt-3" *ngIf="markPaidPaymentVoucher || paidPaymentVoucher" style="margin: 10px 0px;">
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Voucher Paid Details</h4>
+            </div>
+            <div class="card-body">
+
+              <form [formGroup]="paymentForm">
+                <div style="display: flex; flex-direction: column">
+                  <!-- First Row: Receipt Number and Receipt Document -->
+                  <div class="form-row"
+                    style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                    <div class="form-group col-md-6" style="flex: 1;">
+                      <div style="display: flex; align-items: center;">
+                        <label for="receiptNumber" class="mr-2" style="flex:1;">Receipt Number :</label>
+                        <input type="text" class="form-control" id="receiptNumber" style="flex:1;"
+                          formControlName="receiptNumber" placeholder="Enter receipt number">
+                      </div>
+                      <div
+                        *ngIf="paymentForm.controls['receiptNumber'].invalid && paymentForm.controls['receiptNumber'].touched"
+                        class="text-danger">
+                        Receipt number is required.
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6" style="flex: 1;">
+                      <div style="display: flex; align-items: center;">
+                        <label for="receiptDocument" class="mr-2" style="flex:1;">Receipt Document :</label>
+                        <div style="display: flex; align-items: center;gap: 5px;">
+                          <ejs-uploader (selected)="onFileSelected($event,'payment')" allowedExtensions=".jpg,.png,.pdf"
+                            [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"
+                            [enabled]="!paidPaymentVoucher"></ejs-uploader>
+                          <a (click)="goToLink(this.paymentForm.get('receiptDocument').value)" class="hyperlink"
+                            style="cursor: pointer;"
+                            *ngIf="this.paymentForm.get('receiptDocument').value!='' && this.paymentForm.get('receiptDocument').value!=null">
+                            <i class="fa fa-eye"></i>
+                          </a>
+                          <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                            ngbTooltip="Delete File" container="body"
+                            *ngIf="this.paymentForm.get('receiptDocument').value!='' && this.paymentForm.get('receiptDocument').value!=null"
+                            (click)="docDelete('payment')"></i>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="paymentForm.controls['receiptDocument'].invalid && paymentForm.controls['receiptDocument'].touched"
+                        class="text-danger">
+                        Receipt document is required.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Second Row: Date and Remarks -->
+                  <div class="form-row"
+                    style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                    <div class="form-group col-md-6" style="flex: 1;">
+                      <div style="display: flex; align-items: center;">
+                        <label for="receiptDate" class="mr-2" style="flex:1;">Date :</label>
+                        <ejs-datepicker formControlName="date" format="MMM d, y" style="flex:1;"
+                          placeholder="Enter date"></ejs-datepicker>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6" style="flex: 1;">
+                      <div style="display: flex; align-items: center;">
+                        <label for="remarks" class="mr-2" style="flex:1;">Remarks :</label>
+                        <textarea class="form-control" id="remarks" style="flex:1;" formControlName="remarks"
+                          rows="3"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div>
+            <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Payment Voucher Request Details</strong>
+              </u>
+            </p>
+            <p style="margin-bottom: 2px">Created by : {{selectedPaymentVoucher.created_by}}</p>
+            <p style="margin-bottom: 2px">Created Date : {{selectedPaymentVoucher.created_date | date }} </p>
+          </div>
+
+          <div *ngIf="selectedPaymentVoucher.approver1_roleId">
+            <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Approval Status</strong> </u></p>
+            <p style="margin-bottom: 2px" *ngIf="selectedPaymentVoucher.status == 'Reject' ">
+              Level 1: {{selectedPaymentVoucher.approver1_roleName}}
+              <span class="approve" *ngIf="selectedPaymentVoucher.is_approved_1 == true"> Approved</span>
+              <span class="decline" *ngIf="selectedPaymentVoucher.is_approved_1 == false"> Rejected</span>
+            </p>
+            <p style="margin-bottom: 2px" *ngIf="selectedPaymentVoucher.status == 'Reject' ">
+              Level 2: {{selectedPaymentVoucher.approver2_roleName}}
+              <span class="decline" *ngIf="selectedPaymentVoucher.is_approved_2 == false"> Rejected</span>
+            </p>
+            <p style="margin-bottom: 2px" *ngIf="selectedPaymentVoucher.status != 'Reject' ">
+              Level 1: {{selectedPaymentVoucher.approver1_roleName}}
+              <span class="pending" *ngIf="selectedPaymentVoucher.is_approved_1 == false"> Pending</span>
+              <span class="approve" *ngIf="selectedPaymentVoucher.is_approved_1 == true"> Approved</span>
+              <span *ngIf="selectedPaymentVoucher.is_approved_1"><strong>By
+                  {{selectedPaymentVoucher.approver1_name}}</strong></span>
+            </p>
+            <p style="margin-bottom: 2px"
+              *ngIf="selectedPaymentVoucher.approver2_roleId && selectedPaymentVoucher.status != 'Reject' ">
+              Level 2: {{selectedPaymentVoucher.approver2_roleName}}
+              <span class="pending" *ngIf="selectedPaymentVoucher.is_approved_2 == false"> Pending</span>
+              <span class="approve" *ngIf="selectedPaymentVoucher.is_approved_2 == true"> Approved</span>
+              <span *ngIf="selectedPaymentVoucher.is_approved_2"><strong>By
+                  {{selectedPaymentVoucher.approver2_name}}</strong></span>
+            </p>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <div *ngIf="editPaymentVoucher"> <button class="btn"
+              style="background-color: #e91e63; color: white; font-weight: 600"
+              (click)="submitPaymentVoucherAfterReject()">Submit Payment Voucher
+            </button></div>
+          <div *ngIf="markPaidPaymentVoucher"> <button class="btn"
+              style="background-color: #e91e63; color: white; font-weight: 600" (click)="handleMarkAsPaid()">Mark As
+              Paid
+            </button></div>
+          <div *ngIf="pendingPaymentVoucher" style="display: flex;gap: 2px;justify-content: center;">
+            <button class="btn" style="background-color: #07a913; color: white; font-weight: 600"
+              (click)="approvePaymentVoucher()">
+              Approve
+              <!-- <i class="fa fa-check"></i> -->
+            </button>
+            <button class="btn" style="background-color: #e91e1e; color: white; font-weight: 600"
+              (click)="handleRejectPaymentVoucher()">
+              Reject
+              <!-- <i class="fa fa-times"></i> -->
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Models -->
+<!--Add  Adjustment-->
+<div *ngIf="isAdjModalOpen" class="custom-modal-backdrop">
+  <div class="custom-adj-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">Add Adjustment</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeAdjModel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="!showAdjEmployeeData">
+        <form class="kt-form kt-form--label-right" [formGroup]="AddAdjustmentForm">
+          <div class="kt-portlet__body">
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+              <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+                <input type="text" class="form-control" formControlName="reffid" />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+              <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+                <ejs-dropdownlist [dataSource]="activeEmpList" [fields]="adjCommonFields" formControlName="empid">
+                </ejs-dropdownlist>
+              </div>
+              <i class="fa fa-eye" placement="top" ngbTooltip="View Employee" aria-hidden="true"
+                style="display: flex; align-items: center" *ngIf="AddAdjustmentForm.get('empid').value"
+                (click)="getAdjUserDetailsByEmpId()"></i>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+                  style="color: red">*</span></label>
+              <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+                <ejs-dropdownlist [dataSource]="adjType" (change)="changeAdjTyp($event)" formControlName="type"
+                  [fields]="adjCommonFields"></ejs-dropdownlist>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                  style="color: red">*</span></label>
+              <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+                <ejs-dropdownlist [dataSource]="adjItem" formControlName="item"
+                  [fields]="adjCommonFields"></ejs-dropdownlist>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                  style="color: red">*</span></label>
+              <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">AED</div>
+                  </div>
+                  <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount"
+                    (change)="generateTermDetails()" (keyup)="generateTermDetails()" />
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="showRecurring" class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Terms<span class="error-msg"
+                  style="color: red">*</span></label>
+              <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-light btn-sm" id="minus-btn" (click)="changeTermCount('minus')">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                  <span style="text-align: center; margin: 0px 10px 0px 10px">{{
+                    termCount
+                    }}</span>
+                  <div class="input-group-prepend">
+                    <button class="btn btn-light btn-sm" id="plus-btn" (click)="changeTermCount('plus')">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                  <div style="margin-left: 5px; margin-right: 10px">Months</div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="showRecurring" class="form-group row" style="margin-top: 0px !important">
+              <label class="col-xl-4 col-lg-4 col-form-label"></label>
+              <div class="col-lg-6 col-xl-6">
+                <table style="width: 100%; border-collapse: collapse">
+                  <thead>
+                    <tr style="background-color: lightgrey">
+                      <th style="font-weight: 500; text-align: center">Term</th>
+                      <!-- <th style="font-weight: 500; text-align: center"> Payroll </th> -->
+                      <th style="font-weight: 500; text-align: center">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of termDetails">
+                      <td style="text-align: center">{{ item.index }}</td>
+                      <!-- <td style="text-align: left">{{ item.payroll_term }}</td> -->
+                      <td style="text-align: right">{{ item.amountstring }}</td>
+                    </tr>
+                    <tr style="background-color: lightgrey">
+                      <td style="text-align: right">Total</td>
+                      <td style="text-align: right">{{ totalAmountString }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+                  style="color: red">*</span></label>
+              <div class="col-lg-6 col-xl-6">
+                <ejs-datepicker formControlName="dateincurred" format="MMM d, y"
+                  placeholder="Enter date"></ejs-datepicker>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+              <div class="col-lg-6 col-xl-6">
+                <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-xl-4 col-lg-4 col-form-label">Attach Document</label>
+              <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+                <ejs-uploader *ngIf="!isadjDocUp" (selected)="onFileSelected($event)" allowedExtensions=".jpg,.png,.pdf"
+                  [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+              </div>
+              <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+                <a (click)="goToLink()" class="hyperlink"> View Document </a>
+                <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                  ngbTooltip="Delete File" container="body" (click)="DocDelete()"></i>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="showAdjEmployeeData">
+        <div style="display: flex; justify-content: flex-end">
+          <button (click)="goAdjBack()" style="background-color: #e91e63; color: white; font-weight: 600">
+            <i class="fa fa-angle-left"></i> Back
+          </button>
+        </div>
+        <div>
+          <div style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+            ">
+            <div style="
+                height: 80px;
+                width: 80px;
+                margin-bottom: 5px;
+                border-radius: 50%;
+                overflow: hidden;
+              ">
+              <img class="images" [src]="selectedemployeeData.imgurl_id"
+                style="width: 100%; height: 100%; object-fit: cover" />
+            </div>
+
+            <h3>{{ selectedemployeeData.full_name }}</h3>
+          </div>
+          <div style="background-color: #f3f3f3; padding: 10px; border-radius: 5px">
+            <div style="display: flex; margin-top: 10px; margin-bottom: 10px">
+              <div style="display: flex; flex: 1">
+                <div>Email: {{ selectedemployeeData.workemail }}</div>
+              </div>
+              <div style="display: flex; flex: 1">
+                <div>
+                  Joining Date:
+                  {{ selectedemployeeData.joined_date | date : "d MMM, y" }}
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; margin-bottom: 10px">
+              <div style="display: flex; flex: 1">
+                <div>Phone: {{ selectedemployeeData.phone }}</div>
+              </div>
+              <div style="display: flex; flex: 1">
+                <div>
+                  Contract End Date:
+                  {{ selectedemployeeData.contract_enddate | date : "d MMM, y" }}
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; margin-bottom: 10px">
+              <div style="display: flex; flex: 1">
+                <div>Emp Code: {{ selectedemployeeData.emp_code }}</div>
+              </div>
+              <div style="display: flex; flex: 1">
+                <div>Gender: {{ selectedemployeeData.gender }}</div>
+              </div>
+            </div>
+            <div style="display: flex; margin-bottom: 10px">
+              <div style="display: flex; flex: 1">
+                <div>Department: {{ selectedemployeeData.dep_name }}</div>
+              </div>
+              <div style="display: flex; flex: 1">
+                <div>
+                  Designation: {{ selectedemployeeData.designation_name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!showAdjEmployeeData && !payrollSubmitFullAccess" class="approverDivCW"
+        style="width: fit-content; margin-bottom: 5px;">
+        <div class="approverHeader">Add Adjustment Request Approvers</div>
+        <div class="approverBody">
+          <p style="margin-bottom: 2px">Level 1: {{payrollApprover1RoleName }}</p>
+          <p style="margin-bottom: 2px" *ngIf="isPayrollDualApprover"> Level 2:
+            {{payrollApprover2RoleName}} </p>
+        </div>
+      </div>
+      <div *ngIf="payrollSubmitFullAccess && !showAdjEmployeeData"><strong>*Note:- This will be directly approved since
+          you have full access.</strong></div>
+
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btnColorAll btnScc" (click)="submitAdjustment()" [disabled]="showAdjEmployeeData"
+        style="background-color: #e91e63; color: white; font-weight: 600">
+        Submit
+      </button>
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #payrollTimelineModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Payroll Timeline</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="max-height: 700px; overflow-y: auto;">
+    <div class="container mt-5">
+      <div class="row" style="justify-content: center;background-color: white !important;">
+        <div *ngFor="let status of payrollTimelineData; let i = index" class="step-container">
+          <div class="step" (click)="toggleDetails(i)">
+            <div class="circle">{{ payrollTimelineData.length - i }}</div>
+            <div class="label">
+              <div><strong>{{status.is_voucher?'Payment Voucher':'Payroll'}} {{ status.status=='Reject' ||
+                  status.status=='Revert' ? status.status+'ed':status.status=='Delete' ? status.status+'d':
+                  status.status }}</strong> by <strong>{{ status.created_by }}</strong> on <strong>{{
+                  status.created_date | date : "dd/MM/yyyy hh:mm a" }}</strong></div>
+              <div class="details-table">
+                <table *ngIf="!status.is_voucher">
+                  <tr>
+                    <th>Active Employees</th>
+                    <th>Net Additions</th>
+                    <th>Net Deductions</th>
+                    <th>Net Payable</th>
+                    <th>Hold Employees</th>
+                    <th>Hold Amount</th>
+                  </tr>
+                  <tr>
+                    <td>{{ status.active_employees }}</td>
+                    <td>{{ status.net_additions | formatMoney}}</td>
+                    <td>{{ status.net_deductions | formatMoney }}</td>
+                    <td>{{ status.net_payable | formatMoney }}</td>
+                    <td>{{ status.hold_employees }}</td>
+                    <td>{{ status.hold_amount | formatMoney}}</td>
+                  </tr>
+                </table>
+                <table *ngIf="status.is_voucher">
+                  <tr>
+                    <th>Voucher Id</th>
+                    <th>Employee Count</th>
+                    <th>Method</th>
+                    <th>Amount</th>
+                  </tr>
+                  <tr>
+                    <td>{{ status.voucher_prefix }}</td>
+                    <td>{{ status.emp_count}}</td>
+                    <td>{{ status.method}}</td>
+                    <td>{{ status.amount | formatMoney }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div style="padding-top: 2px;">
+                <strong>Remarks: {{ status.remark }}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="i < payrollTimelineData.length - 1" class="line">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #revertActionModal>
+  <div class="modal-dialog" role="document"
+    style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+    <div class="modal-content" style="border: none; box-shadow: none;">
+      <div class="modal-body"
+        style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 10px;">
+        <div style="text-align: center;">
+          <h4>Please choose an action:</h4>
+          <p>Note: You won’t be able to revert this decision.</p>
+        </div>
+        <input #remarksInput type="text" class="form-control" />
+        <div style="display: flex; justify-content: center; gap: 5px;">
+          <button id="reject" class="btn btn-primary btn-lg"
+            (click)="handleRevertOrDeleteVoucher('reject', remarksInput.value)">Reject</button>
+          <button id="delete" class="btn btn-danger btn-lg"
+            (click)="handleRevertOrDeleteVoucher('delete', remarksInput.value)">Delete</button>
+          <button id="cancel" class="btn btn-secondary btn-lg" (click)="closeModel()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,822 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet"
+  type="text/css" />
+<div *ngIf="accessToPage">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">INVENTORY</h1>
+    </div>
+    <div style="display: flex;gap: 10px;flex-direction: row;">
+      <div class="teamDiv" *ngIf="inventoryListing" (click)="addInventoryType()">
+        <button class="btn btnColorAll">
+          <i class="fa fa-plus padreq" aria-hidden="true"></i>
+          Add Inventory Type
+        </button>
+
+      </div>
+      <div style="display: flex;align-items: end;">
+        <label class="btn btnColorAll" (click)="handleBulkUpload()">
+          <i class="fa fa-upload padreq" aria-hidden="true" ngbTooltip="Upload bulk data to inventory"></i>
+          Bulk Upload
+
+        </label>
+      </div>
+
+      <div class="teamDiv" *ngIf="!inventoryListing">
+        <button class="btn btnColorAll" (click)="backToInventory()">
+          <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row rowPad" style="justify-content: center">
+    <mat-tab-group (selectedTabChange)="handleStock($event)" *ngIf="inventoryListing" #tabObj
+      [selectedIndex]="selectedTab" style="background-color: white;">
+      <mat-tab *ngFor="let tab of tabData; let index = index" [label]="tab.text" style="background-color: #c1c1c1;">
+        <mat-spinner *ngIf="loadGridData"></mat-spinner>
+        <div class="col-12 whitee" *ngIf="inventoryListing">
+          <ejs-grid #closingServGrid [dataSource]="filteredData" [toolbar]="inventoryToolbar" height="550px" (toolbarClick)="inventoryBreakGridDownload($event)" [allowExcelExport]="true" [allowPdfExport]="true">
+            <e-columns>
+              <e-column field="inv_img" headerText="Image">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <img
+                      [src]="data.invImage && data.invImage!='' && data.invImage!=null?data.invImage:inventoryPlaceholder"
+                      alt="Listing Image"
+                      (click)="enlargeImage(data.invImage && data.invImage!='' && data.invImage!=null?data.invImage:inventoryPlaceholder)"
+                      style="width: 40px; height: 25px; cursor: pointer;" />
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field="model_no" headerText="Model No">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.model_no }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+
+              <e-column field="item_name" headerText="Item Name">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.item_name }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+
+              <e-column field="brand" headerText="Brand">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.brand }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field="status" headerText="Status">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.status }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field="quantity" headerText="Quantity">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.quantity }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field="unit" headerText="Unit">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.unit }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+
+              <e-column field="origin" headerText="Origin">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.origin }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field="main_category" headerText="System Category">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">
+                      {{ data.main_category }}
+                    </p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field="sub_category" headerText="Primary Category">
+                <ng-template #template let-data>
+                  <div style="display: flex">
+                    <p style="margin-bottom: 0px">{{ data.sub_category }}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+
+              <e-column headerText="Action">
+                <ng-template #template let-data>
+                  <div>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px" placement="top"
+                      ngbTooltip="Update this Inventory type" container="body" (click)="editTmplt(data)"></i>
+                    <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;"
+                      placement="top" ngbTooltip="Delete this Template" container="body"
+                      (click)="deleteInventoryItem(data)"></i>
+                  </div>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="addBox" *ngIf="!inventoryListing">
+    <!-- <div style="display: flex;flex-direction: row;justify-content: right;">
+      <div style="display: flex;flex-direction: row;">
+        <ejs-uploader (selected)="uploadInventoryImages($event, i)" allowedExtensions='.jpg,.png' [autoUpload]='true'
+          [buttons]="{ browse: 'Upload Image' }" multiple=false></ejs-uploader>
+        <a *ngIf="addInventoryTypeForm.get('invImage')?.value !== ''"
+          (click)="goToLink(addInventoryTypeForm.get('invImage')?.value)" class="hyperlink">
+          View Document
+        </a>
+      </div>
+      <div style="display: flex;flex-direction: row;">
+        <ejs-uploader (selected)="uploadInventoryImages($event, i)" allowedExtensions='.jpg,.png' [autoUpload]='true'
+          [buttons]="{ browse: 'Upload Image' }" multiple=false></ejs-uploader>
+        <a *ngIf="addInventoryTypeForm.get('invImage')?.value !== ''"
+          (click)="goToLink(addInventoryTypeForm.get('invImage')?.value)" class="hyperlink">
+          View Document
+        </a>
+      </div>
+    </div> -->
+    <form [formGroup]="addInventoryTypeForm">
+      <div class="row" style="display: flex; justify-content: center">
+        <div class="col-5" style="display: block">
+          <table style="width: 100%">
+            <tbody>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Item Code</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="item_Code" formControlName="item_Code" disabled="true" />
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Model No</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="model_No" formControlName="model_No" />
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Item Name</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="itemName" formControlName="itemName" />
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Brand</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="Brand" formControlName="brand" />
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Quantity</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="quantity" formControlName="quantity" disabled />
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Unit</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <ejs-dropdownlist [dataSource]="InventoryUnitType" placeholder="Select Unit" [fields]="commonFields"
+                    formControlName="unit"></ejs-dropdownlist>
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Status</label>
+                  <i *ngIf="isItemDisabled" class="fa fa-info-circle matpointer" style="padding-left: 4px"
+                    placement="left" ngbTooltip="Disabled items will not be displayed in the inventory listing"
+                    container="body"></i>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <ejs-dropdownlist [dataSource]="statusArr" placeholder="Select Status" [fields]="commonFields"
+                    formControlName="status" (change)="handleStatusChange($event)"></ejs-dropdownlist>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-5" style="display: block">
+          <table style="width: 100%">
+            <tbody>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>System Category</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <ejs-dropdownlist [dataSource]="serviceMainCategory" placeholder="Select Material"
+                    [fields]="commonFields" (change)="handleMainCategory($event)"
+                    formControlName="mainCategory"></ejs-dropdownlist>
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Primary Category</label>
+                  <i *ngIf="addTagDisable" class="fa fa-info-circle matpointer" style="padding-left: 4px"
+                    placement="left" ngbTooltip="Please select a system category" container="body"></i>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <ejs-dropdownlist [dataSource]="servicePrimaryCategory" placeholder="Select Material"
+                    [fields]="commonFields" formControlName="subCategory" [enabled]="!addTagDisable"
+                    (change)="handleSubCategory($event)"></ejs-dropdownlist>
+                </td>
+
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top" *ngIf="showSubCategory2">
+                <td>
+                  <label>Secondary Category</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <ejs-dropdownlist [dataSource]="serviceSecondaryCategory" placeholder="Select Material"
+                    [fields]="commonFields" formControlName="subCategory2"></ejs-dropdownlist>
+                </td>
+              </tr>
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top" *ngIf="!addNewFeature">
+
+                <td>
+                  <label>Features</label>
+                  <i *ngIf="addTagDisable" class="fa fa-info-circle matpointer" style="padding-left: 4px"
+                    placement="left" ngbTooltip="Please select a system category" container="body"></i>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <ejs-multiselect [dataSource]="filteredTags" formControlName="features" [fields]="commonFields"
+                    [enabled]="!addTagDisable" placeholder="Select a tag"></ejs-multiselect>
+                  <span style="
+                      display: grid;
+                      justify-content: flex-end;
+                      text-decoration: underline;
+                    " (click)="showAddnewFeature()">Add a new feature</span>
+                </td>
+              </tr>
+              <tr *ngIf="addNewFeature">
+                <td><label>New Feature</label></td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="newFeature" formControlName="newFeature" />
+
+
+                  <button (click)="addNewFeatureToList()" style="margin: 3px" class="btn btnColorAll"
+                    [disabled]="addTagDisable">
+                    Add Tag
+                  </button>
+                  <button (click)="closeAddNewFeature()" style="margin: 3px" class="btn btnColorAll">
+                    Back
+                  </button>
+                </td>
+              </tr>
+              <!-- <tr
+                style="margin-bottom: 10px; height: 50px; vertical-align: top"
+              >
+                <td>
+                  <label>Supplier Rate</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="suppRate"
+                    formControlName="suppRate"
+                  />
+                </td>
+              </tr> -->
+              <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Origin</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <input type="text" class="form-control" id="origin" formControlName="origin" />
+                </td>
+              </tr>
+              <tr style="margin-bottom: 20px; height: 50px; vertical-align: top">
+
+                <td>
+                  <label>Upload Image</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <div style="display: flex;flex-direction: row;">
+                    <ejs-uploader (selected)="uploadInventoryImages($event, i)" allowedExtensions='.jpg,.png'
+                      [autoUpload]='true' [buttons]="{ browse: 'Browse' }" multiple=false></ejs-uploader>
+                    <div style="display: flex;align-items: center;">
+                      <a *ngIf="addInventoryTypeForm.get('invImage')?.value !== '' && addInventoryTypeForm.get('invImage')?.value !== null && addInventoryTypeForm.get('invImage')?.value !== undefined"
+                        (click)="goToLink(addInventoryTypeForm.get('invImage')?.value)" class="hyperlink">
+                        View Image
+                      </a>
+                    </div>
+                  </div>
+
+                </td>
+              </tr>
+              <tr style="margin-bottom: 20px; height: 50px; vertical-align: top">
+
+                <td>
+                  <label>Upload Data Sheet</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <div style="display: flex;flex-direction: row;">
+                    <ejs-uploader (selected)="uploadInventoryDataSheet($event, i)" allowedExtensions='.pdf,.jpg,.png'
+                      [autoUpload]='true' [buttons]="{ browse: 'Browse' }" multiple=false></ejs-uploader>
+                    <div style="display: flex;align-items: center;">
+                      <a *ngIf="addInventoryTypeForm.get('invDataSheet')?.value !== '' && addInventoryTypeForm.get('invDataSheet')?.value !== null && addInventoryTypeForm.get('invDataSheet')?.value !== undefined"
+                        (click)="goToLink(addInventoryTypeForm.get('invDataSheet')?.value)" class="hyperlink">
+                        View Data Sheet
+                      </a>
+                    </div>
+                  </div>
+
+                </td>
+              </tr>
+              <tr style="margin-bottom: 20px; height: 50px; vertical-align: top">
+                <td>
+                  <label>Item Description</label>
+                </td>
+                <span style="margin-right: 20px">:</span>
+                <td>
+                  <textarea type="text" class="form-control" id="itemDesc" formControlName="itemDesc"></textarea>
+                </td>
+              </tr>
+
+              <!-- <tr style="margin-bottom: 20px; height: 50px; vertical-align: top">
+                <div *ngIf="showSupplierRatesTable">
+                  <ejs-grid
+                    #closingServGrid
+                    [dataSource]="supplierRatesArr"
+                    [toolbar]="employeeGridToolItems"
+                    height="150px"
+                    width="500px"
+                    *ngIf="showSupplierRatesTable"
+                  >
+                    <e-columns>
+                      <e-column field="supplier_name" headerText="Supplier Name">
+                        <ng-template #template let-data>
+                          {{ data.supplier_name }}
+                        </ng-template>
+                      </e-column>
+                      <e-column field="supplier_rate" headerText="Supplier Rate">
+                        <ng-template #template let-data>
+                          {{ data.supplier_rate }}
+                        </ng-template>
+                      </e-column>
+                    </e-columns>
+                  </ejs-grid>
+                </div>
+              </tr> -->
+            </tbody>
+          </table>
+          <!-- <div style="display: flex; justify-content: end; margin-top: 10px">
+            <button class="btn buttonStAdd btnScc" (click)="addSupplier()">
+              <i class="fa fa-money" aria-hidden="true"></i>
+              <p style="margin-bottom: 4px; margin-top: 0px">
+                Add Supplier Rates
+              </p>
+            </button>
+          </div> -->
+        </div>
+      </div>
+    </form>
+    <div style="display: flex ;justify-content: center;">
+
+      <div style="display: flex; justify-content: center; padding: 20px;width: 70%;flex-direction: column;"
+        *ngIf="showSupplierRatesTable">
+        <div style="display: flex;justify-content:flex-end;">
+          <button class="btn btnColorAll" style="margin-bottom: 10px" (click)="addSupplier()">
+            <i class="fa fa-plus padreq" aria-hidden="true"></i>
+            Add New Supplier Rate
+          </button>
+        </div>
+        <ejs-grid #closingServGrid [dataSource]="supplierRatesArr" (created)='serviceSearchKeyUp()'
+          [toolbar]="employeeGridToolItems" height="150px" *ngIf="showSupplierRatesTable">
+          <e-columns>
+            <e-column field="created_date" headerText="Created Date" textAlign="center">
+              <ng-template #template let-data>
+
+                {{ data.created_date | date : "dd/MM/y" }}
+              </ng-template>
+            </e-column>
+            <e-column field="supplier_name" headerText="Supplier Name" textAlign="center">
+              <ng-template #template let-data>
+                {{ data.supplier_name }}
+              </ng-template>
+            </e-column>
+            <e-column field="supplier_rate" headerText="Supplier Rate" textAlign="center">
+              <ng-template #template let-data>
+                {{ data.supplier_rate }}
+              </ng-template>
+            </e-column>
+            <e-column field="quantity" headerText="Quantity" textAlign="center">
+              <ng-template #template let-data>
+                {{ data.quantity }}
+              </ng-template>
+            </e-column>
+            <e-column field="supplier_rate" headerText="Currency" textAlign="center">
+              <ng-template #template let-data>
+                {{ data.currency }}
+
+              </ng-template>
+            </e-column>
+            <!-- <e-column
+            field="conversionRate"
+            headerText="Conversion Rate"
+            textAlign="center"
+          >
+            <ng-template #template let-data>
+              {{ data.CurrencyConversionRate }}
+            </ng-template>
+          </e-column> -->
+            <e-column field="conversionRate" headerText="Converted Rate to UAE Dirham" textAlign="center">
+              <ng-template #template let-data>
+                <div style="display: flex;justify-content: center;">
+                  {{ data.conversionRate }}
+                  <div *ngIf="data.is_default" style="position: absolute;padding-left: 65px;"><i class="fa fa-tag"
+                      aria-hidden="true" ngbTooltip="Default supplier" placement="bottom"></i></div>
+                </div>
+
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+    <div class="row rowimp thirddiv">
+      <div class="col" style="gap: 10px; display: flex" *ngIf="!dataForApproval">
+        <button class="btn buttonSt btnScc" (click)="saveInventoryType()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          <p style="margin-bottom: 4px; margin-top: 0px">
+            {{ editEnable ? "Update Inventory Type" : "Save Inventory Type" }}
+          </p>
+        </button>
+      </div>
+      <div class="btndiv" *ngIf="dataForApproval">
+        <button class='btn btnColorAll' (click)="approvalStatus('Approve')" style="margin-right: 10px;">
+          Approve
+        </button>
+        <button class='btn btnColorAll' (click)="approvalStatus('Decline')" style="margin-right: 10px;">
+          Decline
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rightModal700">
+  <!-- leave profile create module -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="Supplier_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1100px">
+      <div class="modal-content notifyModal">
+        <form [formGroup]="addSupplierForm">
+          <div class="modal-header" style="padding: 8px 15px">
+            <h5 class="modal-title" (click)="closeModal()">
+              Add Supplier Rates
+            </h5>
+            <button type="button" class="close" aria-label="Close" (click)="closeModal()"></button>
+          </div>
+          <div *ngIf="showSupplierRatesModal">
+            <div class="row rowimp seconddiv">
+              <div class="col">
+                <table class="table" style="margin-bottom: 0rem">
+                  <thead>
+                    <tr>
+                      <th scope="col">Supplier Name</th>
+                      <th scope="col">Supplier Rate</th>
+                      <th scope="col">Currency</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Default Price</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="taskList">
+                    <tr *ngFor="let task of taskList.controls; let i = index" [formGroupName]="i">
+                      <td>
+                        <ejs-dropdownlist [dataSource]="vendorArr" placeholder="Select Supplier" [fields]="commonFields"
+                          formControlName="SupplierName"></ejs-dropdownlist>
+                        <div class="errorTxt" *ngIf="
+                            taskList.controls[i].get('taskName')?.errors
+                              ?.required
+                          ">
+                          *Supplier Name is required
+                        </div>
+                      </td>
+                      <td>
+                        <input type="text" class="e-input" placeholder="Enter Supplier Rate"
+                          formControlName="SupplierRate" />
+                      </td>
+                      <td>
+                        <ejs-dropdownlist [dataSource]="currencyList" placeholder="Select Currency"
+                          [fields]="commonFields" formControlName="SupplierCurrency"></ejs-dropdownlist>
+                      </td>
+                      <td>
+                        <input type="text" class="e-input" placeholder="Enter Quantity"
+                          formControlName="SupplierQuantity" />
+                      </td>
+                      <td>
+                        <div
+                          style="display: flex;justify-content: center;align-items: center; padding-right: 18px;padding-top: 5px;">
+                          <label>
+                            <input type="checkbox" formControlName="IsDefaultPrice">
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div style="text-align: center">
+                          <i class="fa fa-trash commonBtn" aria-hidden="true" (click)="deleteTaskRow(i)"></i>
+                        </div>
+                      </td>
+                    </tr>
+                    <div>
+                      <button class="btn reqbtn" (click)="addNewTask()" style="display: flex; flex-direction: row">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <p style="margin-bottom: 4px; margin-top: 0px">
+                          Add New Supplier Rate
+                        </p>
+                      </button>
+                    </div>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row rowimp thirddiv">
+              <div class="col" style="gap: 10px; display: flex">
+                <button class="btn buttonSt btnScc" (click)="saveSupplierRates()">
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px">
+                    Save Supplier Rates
+                  </p>
+                </button>
+                <button class="btn buttonStAdd btnScc" (click)="addnewSupplier()">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px">
+                    Add New Supplier
+                  </p>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- NEW VENDOR FORM -->
+          <div *ngIf="showAddNewSupplierModal">
+            <div style="overflow-y: auto; overflow-x: hidden">
+              <div class="col-12" style="margin-top: 15px" [formGroup]="vendorForm">
+                <div style="display: flex; flex-direction: column">
+                  <div class="supplierRatesDiv">
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Vendor Name</label>
+                      <input type="text" class="e-input" formControlName="name" placeholder="Enter name" />
+                      <div class="errorTxt" *ngIf="vendorForm.controls['name']?.errors?.required">
+                        *Vendor name is required
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Vendor Type</label>
+                      <ejs-dropdownlist [dataSource]="vendorType" formControlName="type" [fields]="commonFields"
+                        [allowFiltering]="true" placeholder="Select a Vendor type"></ejs-dropdownlist>
+                      <div class="errorTxt" *ngIf="vendorForm.controls['type']?.errors?.required">
+                        *Vendor Type is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="supplierRatesDiv">
+                    <div class="col-5">
+                      <label for="horns">Select a Vendor Activity</label>
+                      <ejs-multiselect [dataSource]="vendorCategoryDropDown" formControlName="category"
+                        [fields]="commonFields" placeholder="Select a Vendor Activity"></ejs-multiselect>
+                      <div class="errorTxt" *ngIf="
+                          vendorForm.controls['category']?.errors?.required
+                        ">
+                        *Vendor activity is required
+                      </div>
+                    </div>
+
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Address 1</label>
+                      <textarea class="e-input" rows="1" placeholder="Enter Building, street"
+                        formControlName="address1"></textarea>
+                      <div class="errorTxt" *ngIf="
+                          vendorForm.controls['address1']?.errors?.required
+                        ">
+                        *Address is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="supplierRatesDiv">
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Address 2</label>
+                      <textarea class="e-input" rows="1" placeholder="Enter Landmark"
+                        formControlName="address2"></textarea>
+                    </div>
+                    <div class="col-5">
+                      <label style="padding-right: 5px">City</label>
+                      <input type="text" class="e-input" formControlName="city" placeholder="Enter city" />
+                      <div class="errorTxt" *ngIf="vendorForm.controls['city']?.errors?.required">
+                        *City is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="supplierRatesDiv">
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Country</label>
+                      <ejs-dropdownlist #resetDropDownVen [dataSource]="countryDataDropDown" formControlName="country"
+                        [fields]="commonFields" [allowFiltering]="true"
+                        placeholder="Select a Country"></ejs-dropdownlist>
+                      <div class="errorTxt" *ngIf="vendorForm.controls['country']?.errors?.required">
+                        *Country is required
+                      </div>
+                    </div>
+
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Vendor Phone Number</label>
+                      <ngx-intl-tel-input [enableAutoCountrySelect]="true" [enablePlaceholder]="false"
+                        [searchCountryFlag]="true" [searchCountryField]="[
+                          SearchCountryField.Iso2,
+                          SearchCountryField.Name
+                        ]" [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                        [tooltipField]="TooltipLabel.Name" [phoneValidation]="false" [separateDialCode]="true"
+                        formControlName="phone">
+                      </ngx-intl-tel-input>
+                      <div class="errorTxt" *ngIf="vendorForm.controls['phone']?.errors?.required">
+                        *Vendor Phone is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="supplierRatesDiv">
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Vendor Email</label>
+                      <input type="email" class="e-input" formControlName="email" placeholder="Enter Email" />
+                      <div class="errorTxt" *ngIf="vendorForm.controls['email']?.errors?.required">
+                        *Email is required
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <label style="padding-right: 5px">Vendor Status</label>
+                      <ejs-dropdownlist #resetDropDownVen [dataSource]="vendorStatusDropDown" formControlName="status"
+                        [fields]="commonFields" [allowFiltering]="true"
+                        placeholder="Select a Vendor status"></ejs-dropdownlist>
+                      <div class="errorTxt" *ngIf="vendorForm.controls['status']?.errors?.required">
+                        *Vendor status is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row rowimp thirddiv">
+              <div class="col" style="gap: 10px; display: flex">
+                <button class="btn buttonSt btnScc" (click)="saveInventoryType()">
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px">
+                    Save Supplier
+                  </p>
+                </button>
+                <button class="btn buttonSt btnScc" (click)="backToAddSupplierRates()">
+                  <p style="margin-bottom: 4px; margin-top: 0px">Back</p>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Do you want to download a template for bulk upload ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeBulkUpload()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <input type="file" accept=".csv" id="fileInput" (change)="onBulkUpload($event)" style="display: none;" />
+        <label for="fileInput" class="btn btn-secondary">No, Continue Upload</label>
+        <button type="button" class="btn btn-primary" (click)="onCreateTemplate()"
+          style="background-color: #e91e63;border: none;">Yes, Download template</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="bulkDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Bulk Upload</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closebulkDataModal()"></button>
+      </div>
+      <div class="modal-body" style="display: flex;justify-content: center;flex-direction: column;gap: 25px;">
+        <div class="invTable">
+          <table>
+            <tr>
+              <th>Item Code</th>
+              <th>Model No</th>
+              <th>Item Name</th>
+              <th>Item Desc</th>
+              <th>Origin</th>
+              <th>Brand</th>
+              <th>Status</th>
+            </tr>
+            <tr *ngFor="let data of bulkUploadData; let i = index">
+              <td>{{data.item_code}}</td>
+              <td>{{data.model_no}}</td>
+              <td>{{data.item_name }}</td>
+              <td>{{data.item_desc}}</td>
+              <td>{{data.origin}}</td>
+              <td>{{data.brand}}</td>
+              <td>{{data.status }}</td>
+
+            </tr>
+          </table>
+        </div>
+        
+        <div class="invTable" *ngIf="bulkUploadErr.length>0">
+          <h6 style="color:red;">*Warning: {{bulkUploadErr.length}} items has been found without identified categories!</h6>
+          <table>
+            <tr>
+              <th>Item Code</th>
+              <th>Model No</th>
+              <th>Item Name</th>
+              <th>Item Desc</th>
+              <th>Main Category</th>
+              <th>Primary Category</th>
+              <th>Sub Category</th>
+              <th>Origin</th>
+              <th>Brand</th>
+              <th>Status</th>
+            </tr>
+            <tr *ngFor="let data of bulkUploadErr; let i = index">
+              <td>{{data.item_code}}</td>
+              <td>{{data.model_no}}</td>
+              <td>{{data.item_name }}</td>
+              <td>{{data.item_desc}}</td>
+              <td>{{data.main_category}}</td>
+              <td>{{data.primary_category}}</td>
+              <td>{{data.sub_category}}</td>
+              <td>{{data.origin}}</td>
+              <td>{{data.brand}}</td>
+              <td>{{data.status }}</td>
+
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <input type="file" accept=".csv" id="fileInput" (change)="onBulkUpload($event)" style="display: none;" />
+        <label  class="btn btn-secondary" (click)="closebulkDataModal()">Cancel</label>
+        <button type="button" class="btn btn-primary" (click)="validateBulkUpload()"
+          style="background-color: #e91e63;border: none;">Continue Upload</button>
+      </div>
+    </div>
+  </div>
+</div>

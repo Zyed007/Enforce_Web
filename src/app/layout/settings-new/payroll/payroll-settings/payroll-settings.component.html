@@ -1,0 +1,395 @@
+<!-- Home Tab view -->
+<div class="kt-subheader kt-grid__item" id="kt_subheader">
+  <div class="kt-container kt-container--fluid">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">Set Up</h3>
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a class="kt-subheader__breadcrumbs-link"> Payroll</a>
+        <span class="kt-subheader__breadcrumbs-link"></span>
+        <!-- <a *ngIf="showAdd"  class="kt-subheader__breadcrumbs-link">Add Asset</a> -->
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+      </div>
+    </div>
+    <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+  </div>
+</div>
+
+<!-- /////////////////////////        Main Header         ////////////////////////////// -->
+
+<!-- Header Box -->
+<div class="headerbox">
+  <h5>Payroll Settings</h5>
+  <div>
+    <button type="button" (click)="goBack()" class="button">
+      <i class="fa fa-angle-left"></i> Back
+    </button>
+  </div>
+</div>
+
+<!-- /////////////////////////         PayRoll Settings       ////////////////////////////// -->
+<div  class="mainSettingBox">
+  <div class="settingsbox">
+
+
+    <!-- Payroll Cycle Selection -->
+    <div class="selectorDiv">
+      <h5>Select Settings</h5>
+
+      <!-- Payment Cycle for Month-->
+      <div>
+        <form [formGroup]="setPayRollForm">
+
+          <!-- Payment Starting Cycle Year and Month -->
+          <h6>Select Payroll Starting Year and Month</h6>
+          <div class="col-12" style="display: flex">
+            <div style="display: flex">
+              <label style="margin-left: 50px; margin-right: 20px">Year :</label>
+              <ejs-dropdownlist style="width: 100px; text-align: center" formControlName="setStartYear"
+                (change)="changeYear($event)" [dataSource]="setYearData" [enabled]="createSettings"></ejs-dropdownlist>
+            </div>
+            <div style="display: flex">
+              <label style="margin-left: 50px; margin-right: 20px">Month : </label>
+              <ejs-dropdownlist style="width: 100px; text-align: center" formControlName="setStartMonth"
+                (change)="changeMonth($event)" [dataSource]="setMonthData" [fields]="commonFields" [enabled]="createSettings"></ejs-dropdownlist>
+            </div>
+          </div>
+          <div class="col-12" style="margin-left: 50px">
+            <p style="color: #5e5e5c;">
+              <i class="fa fa-info-circle" container="body" style="margin-right: 5px" placement="top"></i>The
+              payroll cycle will be starting from the above selected
+              Year and Month
+            </p>
+          </div>
+
+          <!-- PayRoll Last Calculation day -->
+          <div>
+            <h6>Select Payroll Last Calculation Day:</h6>
+            <div style="margin-left: 50px">
+              <div>
+                <label>
+                  <input  style="margin-right: 5px" type="radio" name="monthday" value="last" (click)="clickDayOfMonth('last')" [checked]="radioButtonlast" />Last day of the Month</label>
+              </div>
+              <div style="display: flex">
+                <label><input style="margin-right: 5px" type="radio" value="specific" name="monthday" (click)="clickDayOfMonth('specific')" [checked]="radioButtonspecific" />
+                  Specific day of the Month </label>
+                <ejs-dropdownlist style="margin-left: 20px; width: 70px; text-align: center" formControlName="setEndDay" (change)="changelastDay($event)" [dataSource]="set28days" [enabled]="is_specific_day_of_month"></ejs-dropdownlist>
+              </div>
+            </div>
+            <div class="col-12" style="margin-left: 50px">
+              <p style="color: #5e5e5c;">
+                <i class="fa fa-info-circle" container="body" style="margin-right: 5px" placement="top"></i>This
+                payment cycle will generate the Payroll starting from
+                the <strong>{{ setstartDate }}</strong> to
+                <strong>{{ setlastDate }}</strong> and will continue same
+                sequence in every other upcoming month.
+              </p>
+            </div>
+          </div>
+
+          <!-- Payment Due Date -->
+          <div>
+            <h6>Select Payment Due Date</h6>
+            <div style="margin-left: 50px">
+              <div>
+                <label>
+                  <input style="margin-right: 5px" type="radio" name="dueday" value="last"
+                    (click)="clickDueRadio('last')" [checked]="radioDueLast" />
+                  By Last day of Payroll Month</label>
+              </div>
+              <div style="display: flex">
+                <label><input id="specificdayradio" style="margin-right: 5px" type="radio" name="dueday"
+                    value="specific" (click)="clickDueRadio('specific')" [checked]="radioDueSpecific" />Specific day
+                  of Next Month</label>
+                <ejs-dropdownlist style="margin-left: 20px; width: 70px; text-align: center" formControlName="setDueDay"
+                  [dataSource]="set28days" [enabled]="is_specific_day_of_next_month"
+                  (change)="changeDueDay($event)"></ejs-dropdownlist>
+              </div>
+            </div>
+            <div class="col-12" style="margin-left: 50px">
+              <p style="color: #5e5e5c;">
+                <i class="fa fa-info-circle" container="body" style="margin-right: 5px" placement="top"></i>
+                The payment due date for the selected month is at
+                <strong>{{ setDueDate }}</strong> .
+              </p>
+            </div>
+          </div>
+
+          <!-- Per Day Calculation Based on -->
+          <h6>
+            Calculate Per Day Salary based on
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="This will define the per-day salary, calculated by the given number of days"
+              placement="top"></i>
+          </h6>
+          <div style="margin-left: 50px">
+
+            <div>
+              <label>
+                <input style="margin-right: 5px;" type="radio" name="frequency" value="calcYear"
+                  (click)="changePerDaySalRadio('year')" [checked]="radioCalcYear" />
+                Total Days in Year <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="Per Day Salary = Gross Salary * 12 / 365 ie, total days in a year /total numbers of month"
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </label>
+              <!-- <strong style="color: #5e5e5c;" *ngIf="radioCalcYear">Per Day Salary = Salary {{perDayMessage}}</strong> -->
+            </div>
+
+            <div style="margin-top: 5px;">
+              <label>
+                <input style="margin-right: 5px" type="radio" name="frequency" value="calcActual"
+                  (click)="changePerDaySalRadio('month')" [checked]="radioCalcActual" />
+                Actual Days in Month <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="Per Day Salary = Gross Salary / Actual Number of days in the Payment Month"
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </label>
+              <!-- <strong style="color: #5e5e5c;" *ngIf="radioCalcActual">Per Day Salary = Salary {{perDayMessage}}</strong> -->
+            </div>
+
+            <!-- <div style="display: flex">
+              <label><input style="margin-right: 5px" type="radio" name="frequency" value="calcSpecific"
+                  (click)="changePerDaySalRadio('select')" [checked]="radioCalcSpecific" />Selected Work Days per Month</label>
+
+              <ejs-dropdownlist style="margin-left: 20px; width: 70px" formControlName="monthDays"
+                [dataSource]="set30days" [enabled]="is_select_days_per_month"
+                (change)="changeDaysPerMonth($event)"></ejs-dropdownlist> <strong style="color: #5e5e5c;" *ngIf="radioCalcSpecific">Per Day Salary = Salary {{perDayMessage}}</strong>
+            </div> -->
+
+            <!-- <div class="col-12">
+              <p style="color: #5e5e5c;">
+                <i class="fa fa-info-circle" container="body" style="margin-right: 5px" placement="top"></i>
+                <strong>Per Day Salary = Salary {{perDayMessage}}</strong>
+              </p>
+            </div> -->
+
+          </div>
+
+          <!-- Auto Deduction  -->
+          <h6>
+            Auto Deduction Options
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="This will enable or disable the automatic deduction options" placement="top"></i>
+          </h6>
+
+          <div style="margin-left: 50px">
+            <!-- Auto Deduct Absent -->
+            <div>
+              <label>
+                <ejs-checkbox label="Enable Auto deduction Penality for Absent." [(ngModel)]="enableAutoDeducAbsent" [ngModelOptions]="{standalone: true}" ></ejs-checkbox>
+                <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="This option will deduct the specified amount for absences that are not marked as leave or holiday. By default, absences are deducted. This option provides an additional penalty for absences under the given conditions."
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </label>
+            </div>
+
+            <div style="margin-left: 50px">
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="abperday" name="absentradio" (click)="changeAbsentradio('abperday')" [checked]="radioabsentperDay" />
+                    Per Day Salary
+                </label>
+              </div>
+
+              <div style="display: flex">
+                <label><input style="margin-right: 5px" type="radio" value="abnumberday" name="absentradio" (click)="changeAbsentradio('abnumberday')" [checked]="radioabsentnumberDay" />
+                  Number of Salary Days : </label>
+                <ejs-dropdownlist [enabled]="isabnumberdays" style="margin-left: 20px; width: 70px" [dataSource]="setdeducdays" formControlName="numberDaysAbsent" ></ejs-dropdownlist>
+              </div>
+
+              <div style="display: flex">
+                <label><input style="margin-right: 5px" type="radio" value="abfixamt" name="absentradio" (click)="changeAbsentradio('abfixamt')" [checked]="radioabsentfixAmount"/> Fixed Amount : </label>
+                <ejs-dropdownlist [enabled]="isabfixedamout" style="margin-left: 20px; width: 70px" [dataSource]="setdeducfixAmount" formControlName="fixdeducAbsent" ></ejs-dropdownlist>
+              </div>
+
+            </div>
+            <!-- Auto Deduct Less Hours -->
+            <div>
+              <label>
+                <ejs-checkbox label="Enable Auto deduction for Less Hours" [(ngModel)]="enableAutoDeducLessHour" [ngModelOptions]="{standalone: true}" ></ejs-checkbox>
+                <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="This option will deduct the given amount for the less hours of employee"
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </label>
+            </div>
+
+            <div style="margin-left: 50px">
+
+              <!-- <div style="display: flex">
+                <label>Select Less Hours Tolerance time :</label>
+                <ejs-dropdownlist style="margin-left: 20px; width: 70px; text-align: center"
+                  [dataSource]="lesstimedata" formControlName="lesstrminutes"
+                  [enabled]="islhallow"></ejs-dropdownlist> <Label>Minutes</Label>
+                  <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="Select the tolorence Minutes for Employee less hour, This option will not auto deduct the less hours for selected minutes"
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </div> -->
+
+              <!-- <div style="display: flex">
+                <label>Each Less Minutes will be consider as </label>
+                <ejs-dropdownlist style="margin-left: 20px; width: 70px; text-align: center"
+                  [dataSource]="lesstimedata" formControlName="lesstrminutes"
+                  [enabled]="islhallow"></ejs-dropdownlist> <Label> Minutes for the Deduction. </Label>
+                  <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="If the input field is set to 5 minutes and an employee is late by 2 minutes, those 2 minutes will be considered as 10 minutes when calculating the deduction."
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </div> -->
+
+              <div style="display: flex">
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="lhpermin" name="lesshourradio" (click)="changeLhradio('lhpermin')" [checked]="radiolhperMin"/>
+                  Per Less Minutes, each Less Minutes will be consider as </label>
+                <ejs-dropdownlist style="margin-left: 20px; width: 50px; text-align: center"
+                  [dataSource]="lesstimedata" formControlName="lesstrminutes"
+                  [enabled]="islhallow"></ejs-dropdownlist> <Label> Minutes for the Deduction</Label>
+                  <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="This option calculates deductions for employees who haven't completed their required working hours, based on their daily salary. If the working hours shortfall is 2 minutes and the minimum deduction unit is set to 5 minutes, those 2 minutes will be considered as 10 minutes when calculating the deduction."
+                  style="margin: 4px 0px 0px 5px" placement="top"></i>
+              </div>
+
+              <div style="display: flex; margin-left: 25px;">
+                <label>Maximum Deduction To :</label>
+                <ejs-dropdownlist style="margin-left: 20px; width: 130px; text-align: center"
+                [dataSource]="maxDeducData" formControlName="maxDeducTo"
+                (change)="changeMaxdeducdata($event)"
+                [enabled]="islhallow"></ejs-dropdownlist>
+                <div style="display: flex; margin-left: 5px;" *ngIf="showmaxDeducfixAmount">
+                  <label>. Select fixed Amount :</label>
+                  <ejs-dropdownlist style="margin-left: 20px; width: 70px; text-align: center"
+                  [dataSource]="setdeducfixAmount" formControlName="maxDeducTofixAmount"
+                  [enabled]="islhallow"></ejs-dropdownlist>
+                </div>
+              </div>
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="lhhalfday" name="lesshourradio" (click)="changeLhradio('lhhalfday')" [checked]="radiolhhalfDay"/>
+                  Half Day Salary
+                </label>
+              </div>
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="lhperday" name="lesshourradio" (click)="changeLhradio('lhperday')" [checked]="radiolhperDay"/>
+                  Per Day Salary
+                </label>
+              </div>
+
+              <div style="display: flex">
+                <label><input style="margin-right: 5px" type="radio" value="lhfixamt" name="lesshourradio"  (click)="changeLhradio('lhfixamt')" [checked]="radiolhfixamt" />
+                  Fixed Amount :
+                 </label>
+                 <ejs-dropdownlist [enabled]="islhfixedamout" style="margin-left: 20px; width: 70px" [dataSource]="setdeducfixAmount" formControlName="fixdeducLessHour" ></ejs-dropdownlist>
+              </div>
+
+            </div>
+
+            <!-- Auto Deduct Missing Checkout -->
+            <div>
+              <label>
+                <ejs-checkbox label="Enable Auto deduction for Missing CheckOut." [(ngModel)]="enableAutoDeducMissCheckout" [ngModelOptions]="{standalone: true}" ></ejs-checkbox>
+                <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="This option will deduct the given amount for Missing Checkout"
+                  style="margin: 4px 0px 0px 5px" placement="top" ></i>
+              </label>
+            </div>
+
+            <div style="margin-left: 50px">
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="cmphalfday" name="checkoutradio" (click)="changeCMRadio('cmphalfday')" [checked]="radiocmhalfday" />
+                  Half Day Salary
+                </label>
+              </div>
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="cmperday" name="checkoutradio" (click)="changeCMRadio('cmperday')" [checked]="radiocmperday" />
+                  Per Day Salary
+                </label>
+              </div>
+
+              <div style="display: flex">
+                <label><input style="margin-right: 5px" type="radio" value="cmfixamt" name="checkoutradio" (click)="changeCMRadio('cmfixamt')" [checked]="radiocmfixamt" /> Fixed Amount :
+                 </label>
+                 <ejs-dropdownlist [enabled]="iscmfixedamout" style="margin-left: 20px; width: 70px" [dataSource]="setdeducfixAmount" formControlName="fixdeducMissCheckout"></ejs-dropdownlist>
+              </div>
+
+            </div>
+
+            <!-- Auto Deduct Late Checkin -->
+            <div>
+              <label>
+                <ejs-checkbox label="Enable Auto deduction for Late CheckIn." [(ngModel)]="enableAutoDeducLateCheckin" [ngModelOptions]="{standalone: true}" ></ejs-checkbox>
+                <i class="fa fa-info-circle" container="body"
+                  ngbTooltip="This option will deduct the given amount for Late CheckIn"
+                  style="margin: 4px 0px 0px 5px" placement="top" ></i>
+              </label>
+            </div>
+
+            <div style="margin-left: 50px">
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="lchalfday" name="lcradio" (click)="changeLCRadio('lchalfday')" [checked]="radiolchalfday" />
+                  Half Day Salary
+                </label>
+              </div>
+
+              <div>
+                <label>
+                  <input style="margin-right: 5px;" type="radio" value="lcperday" name="lcradio" (click)="changeLCRadio('lcperday')" [checked]="radiolcperday" />
+                  Per Day Salary
+                </label>
+              </div>
+
+              <div style="display: flex">
+                <label><input style="margin-right: 5px" type="radio" value="lcfixamt" name="lcradio" (click)="changeLCRadio('lcfixamt')" [checked]="radiolcfixamt" /> Fixed Amount :
+                 </label>
+                 <ejs-dropdownlist [enabled]="islcfixedamout" style="margin-left: 20px; width: 70px" [dataSource]="setdeducfixAmount" formControlName="fixdeducLateCheckin"></ejs-dropdownlist>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Currency Selection -->
+          <!-- <h6>
+            Select payroll currency
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="Selected currency will be applied for upcoming payrolls" placement="top"></i>
+          </h6>
+          <div style="margin-left: 50px">
+            <div style="display: flex">
+              <label>Select Currency :</label>
+              <ejs-dropdownlist style="margin-left: 20px; width: 70px; text-align: center"
+                (change)="changeCurrency($event)" [dataSource]="currencyArr" [fields]="commonFields" formControlName="selectedCurrency"></ejs-dropdownlist>
+            </div>
+          </div> -->
+
+          <!-- Enable paid without Document -->
+          <h6>
+            Allow Marking as Paid Without Document Submission
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="This feature enables users to mark all payroll payments as 'paid' without submitting Documents"
+              placement="top"></i>
+          </h6>
+          <div style="margin-left: 50px">
+            <div style="display: flex">
+              <ejs-checkbox label="Enable Marking as Paid Without Submitting Relevant Documents" [(ngModel)]="enableNoDocReq" [ngModelOptions]="{standalone: true}" ></ejs-checkbox>
+            </div>
+          </div>
+
+          <div class="row saveDiv">
+            <button class="btn btnColorAll btnScc" (click)="savePayrollSettings()">
+              <p class="btndata">Save changes</p>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>

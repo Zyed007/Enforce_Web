@@ -1,0 +1,289 @@
+<div class="headerbox">
+  <h5>Travel Settings</h5>
+  <div>
+    <button type="button" (click)="goBack()" class="button">
+      <i class="fa fa-angle-left"></i> Back
+    </button>
+  </div>
+</div>
+
+<!-- /////////////////////////         PayRoll Settings       ////////////////////////////// -->
+<div class="mainSettingBox">
+  <Form [formGroup]="vehicleForm">
+    <div class="settingsbox">
+      <h5 class="mb-3">Vehicle Type Settings</h5>
+      <div class="defaultCard col-12">
+        <div formArrayName="vehicles">
+          <div *ngFor="let vehicle of vehicles.controls; let i = index" [formGroupName]="i"
+            class="row align-items-center mb-4"> <!-- Increased spacing between rows -->
+            <!-- First Row: Vehicle Type, Fuel Economy, Fuel Price -->
+            <div class="col-3 d-flex align-items-center" style="gap: 10px;">
+              <label for="vehicleType" class="flex-grow-1">Vehicle Type:</label>
+              <input id="vehicleType" formControlName="vehicleType" class="form-control form-control-sm"
+                style="width: 160px;" placeholder="Enter vehicle type" [disabled]="vehicle.get('added').value">
+            </div>
+            <!-- <div class="col-3 d-flex align-items-center" style="gap: 10px;">
+            <label for="fuelPrice" class="flex-grow-1">Fuel Price:</label>
+            <input id="fuelPrice" formControlName="fuelPrice" class="form-control form-control-sm" style="width: 160px;"
+              placeholder="Enter fuel price">
+          </div> -->
+            <div class="col-3 d-flex align-items-center" style="gap: 10px;"
+              *ngIf="vehicle.get('calc_type').value == 'fixed'">
+              <label for="fuelPrice" class="flex-grow-1">Price per km ({{currency}}):</label>
+              <input id="fuelPrice" formControlName="fuelPrice" class="form-control form-control-sm"
+                style="width: 160px;" placeholder="Enter price per km">
+            </div>
+            <div class="col-3 d-flex align-items-center" style="gap: 10px;"
+              *ngIf="vehicle.value.added && vehicle.get('calc_type').value == 'fixed'">
+              <label for="effectiveDate" class="flex-grow-1">Effective Date:</label>
+              <ejs-datepicker formControlName="effectiveDay" format="MMM d, y" style="width: 160px;"
+                placeholder="Enter date" [min]="minDate"></ejs-datepicker>
+            </div>
+
+            <div class="col-3 d-flex align-items-center mt-2" style="gap: 10px;">
+              <!-- <label class="me-2">Methodology:</label> -->
+              <label for="effectiveDate" class="flex-grow-1">Methodology:</label>
+              <i class="fa fa-info-circle" aria-hidden="true"
+                ngbTooltip="Methodology determines how travel claims are calculated. 'Actual' uses user-provided fuel price and distance to compute the claim based on fuel economy. 'Fixed' applies preset fuel price and economy values from the settings."></i>
+              <div class="d-flex align-items-center" style="width: 160px;gap: 10px;align-items: center;">
+                <input type="radio" id="actual" formControlName="calc_type" value="actual">
+                <label for="actual" style="margin-bottom: 0px !important;">Actual</label>
+                <input type="radio" id="fixed" formControlName="calc_type" value="fixed">
+                <label for="fixed" style="margin-bottom: 0px !important;">Fixed</label>
+              </div>
+            </div>
+            <div *ngIf="vehicle.value.lastUpdated != ''" class="col-12">
+              <span style="color: gray; font-style: italic;">*Last updated on {{ vehicle.value.lastUpdated |
+                date }}</span>
+            </div>
+            <!-- Actions: Right-Aligned and Centered -->
+            <div class="col-12 d-flex justify-content-end align-items-center mt-2" style="padding: 5px 20px;">
+              <div
+                style="display: flex;gap: 10px;flex: 1;justify-content: flex-end;border-bottom: 1px solid #d9d6d6;padding-bottom: 10px;">
+                <i class="fa fa-eye" aria-hidden="true" (click)="viewVehicleTypeHistory(i)" *ngIf="vehicle.value.added"
+                  ngbTooltip="View History"></i>
+                <button type="button" (click)="saveVehicleType(i)" class="buttonSt"
+                  *ngIf="!vehicle.value.added">Add</button>
+                <button type="button" (click)="updateVehicleType(i)" class="buttonSt"
+                  *ngIf="vehicle.value.added">Update</button>
+                <button type="button" (click)="removeVehicleType(i)" class="actionButton"
+                  *ngIf="vehicle.get('vehicleType').value !== 'Personal Car' && vehicle.get('vehicleType').value !== 'Company Car'">
+                  Remove
+                </button>
+              </div>
+
+            </div>
+            <!-- Last Updated -->
+
+          </div>
+        </div>
+        <div class="form-actions mt-3">
+          <i class="fa fa-plus-square actionButton" aria-hidden="true" style="margin-right: 5px; cursor: pointer;"
+            (click)="addVehicleType()"></i>
+          <span class="addleavetxt" (click)="addVehicleType()" style="cursor: pointer;">Add Vehicle Type</span>
+        </div>
+
+
+
+      </div>
+      <!-- <div class="defaultCard col-12">
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+
+          <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+            <label style="margin-bottom: 0 !important; width: 250px;">Maximum no of alphabets allowed:</label>
+            <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 80px;"
+              formControlName="max_str_len" >
+          </div>
+
+          <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+            <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 250px;">
+              Maximum no of numbers allowed :
+            </label>
+            <input type="number" id="exampleFormControlInput3" class="form-control" style="max-width: 80px;"
+              formControlName="max_num_len">
+          </div>
+          <div>
+            <button type="button" (click)="updateVehicleNumberConfig()" class="buttonSt"
+           >Update</button>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+
+
+  </Form>
+  <div class="settingsbox">
+    <h5 class="mb-3">Plate Code Settings</h5>
+    <div style="display: flex;justify-content: flex-end;">
+      <button type="button" (click)="openModal()" class="buttonSt">Add Plate Source</button>
+    </div>
+    <ejs-grid #vendActGrid [dataSource]='vehicleNumberConfigArr' (created)='serviceSearchKeyUp()'
+      [toolbar]='actVenGridToolItems' height='300px'>
+      <e-columns>
+        <e-column field='createdDate' headerText='Created Date'>
+          <ng-template #template let-data>
+            <div>
+              <p style="margin-bottom: 0px;">{{data.created_date | date}}</p>
+            </div>
+          </ng-template>
+        </e-column>
+        <e-column field='created_by' headerText='Created By'></e-column>
+        <e-column field='source' headerText='Plate Source'></e-column>
+        <e-column field='source' headerText='Alphabets Allowed'>
+          <ng-template #template let-data>
+            <div>
+              {{data.allow_alphabets?'Yes':'No'}}
+            </div>
+          </ng-template>
+        </e-column>
+        <e-column field='desc' headerText='Alphabet Combination'>
+          <ng-template #template let-data>
+            <div>
+              {{data.alphabet_com}} Letter
+            </div>
+          </ng-template>
+        </e-column>
+        <e-column field='source' headerText='Numbers Allowed'>
+          <ng-template #template let-data>
+            <div>
+              {{data.allow_numbers?'Yes':'No'}}
+            </div>
+          </ng-template>
+        </e-column>
+
+        <e-column field='number_com' headerText='Number Combination'>
+          <ng-template #template let-data>
+            <div>
+              {{data.number_com}} Number
+            </div>
+          </ng-template>
+        </e-column>
+        <e-column field='custom_codes' headerText='Custom codes'></e-column>
+        <e-column headerText='Action'>
+          <ng-template #template let-data>
+            <div>
+              <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top"
+                ngbTooltip="Update this Service" container="body" (click)="editVehicleNumberConfig(data)"></i>
+              <!-- <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top"
+                ngbTooltip="Delete this Service" container="body" (click)="deleteVendAct(data)"></i> -->
+            </div>
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>
+
+
+
+<ng-template #historyModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Vehicle Type History</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-bordered" *ngIf="vehicleTypeHistory.length > 0">
+      <thead>
+        <tr>
+          <th>Vehicle Type</th>
+          <th *ngIf="vehicleTypeHistory[0].vehicle_type !=='Personal Car'">Fuel Efficiency (km/l)</th>
+          <th *ngIf="vehicleTypeHistory[0].vehicle_type !=='Personal Car'">Fuel Cost (per liter)</th>
+          <th *ngIf="vehicleTypeHistory[0].vehicle_type =='Personal Car'">Price per km</th>
+
+          <th *ngIf="vehicleTypeHistory[0].vehicle_type=='Company Car'">Methodology</th>
+          <th>Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehicle of vehicleTypeHistory">
+          <td>{{ vehicle.vehicle_type }}</td>
+          <td *ngIf="vehicle.vehicle_type !=='Personal Car'">{{ vehicle.fuel_efficiency }}</td>
+          <td>{{ vehicle.fuel_cost | number: '1.2-2' }}</td>
+          <td *ngIf="vehicle.vehicle_type=='Company Car'">{{ vehicle.calc_type}}</td>
+          <td>{{ vehicle.modified_date | date: 'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+
+<ng-template #VehicleNumberModal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{isEditMode? 'Edit Plate Code Configuration' : 'Add Plate Code Configuration'}}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModel()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="vehicleConfigForm">
+      <div class="mb-3">
+        <label>Plate Source:</label>
+        <input formControlName="source" class="form-control">
+      </div>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <!-- Allow Alphabets Checkbox -->
+        <div class="d-flex" style="gap: 10px;">
+          <label class="" for="allowAlphabets">Allow Alphabets Plate Code</label>
+          <input type="checkbox" class="" formControlName="allowAlphabets" id="allowAlphabets">
+        </div>
+
+        <!-- Max Alphabet Combination Selector -->
+        <div class="d-flex" style="gap: 10px;">
+          <label class="me-2">Alphabet Combinations:</label>
+          <select class="form-control form-control-sm" formControlName="alphabetCom" style="width: 100px;">
+            <option *ngFor="let num of [1,2, 3, 4]" [value]="num">{{ num }}-letter</option>
+          </select>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <!-- Allow Alphabets Checkbox -->
+        <div class="d-flex" style="gap: 10px;">
+          <label class="" for="allowNumbers">Allow Numbers on Plate Code</label>
+          <input type="checkbox" class="" formControlName="allowNumbers" id="allowNumbers">
+        </div>
+
+        <!-- Max Alphabet Combination Selector -->
+        <div class="d-flex" style="gap: 10px;">
+          <label class="me-2">Number Combinations:</label>
+          <select class="form-control form-control-sm" formControlName="numberCom" style="width: 100px;" [disabled]="!vehicleConfigForm.get('allowNumbers').value">
+            <option *ngFor="let num of [1,2, 3, 4]" [value]="num">{{ num }}-digit</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="mb-3">
+        <label>Maximum no of numbers allowed on plate number :</label>
+        <input type="number" class="form-control" formControlName="maxNumLen">
+      </div>
+      <div class="mb-3">
+        <label>Custom Plate Codes:</label>
+        <div class="d-flex flex-wrap" style="gap: 8px;">
+          <span *ngFor="let code of getCustomCodes(editIndex).value; let j = index" class="badge bg-secondary px-3 py-2"
+            style="font-size: 14px; border-radius: 6px;">
+            {{ code }}
+            <i class="fa fa-times ms-2" style="cursor: pointer; font-size: 12px;"
+              (click)="removeCustomCode(editIndex, j)">
+            </i>
+          </span>
+        </div>
+
+        <div class="d-flex mt-2">
+          <input type="text" class="form-control me-2" #customCodeInput placeholder="Enter custom code">
+          <button class="btn btn-sm btn-primary"
+            (click)="addCustomCode(editIndex, customCodeInput.value); customCodeInput.value = ''">
+            Add
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModel()">Close</button>
+    <button type="button" class="btn buttonSt" (click)="isEditMode ? updateVehicleNumberConfig() : saveVehicleNumberConfig()">Save Changes</button>
+  </div>
+</ng-template>

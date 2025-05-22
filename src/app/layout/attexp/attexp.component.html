@@ -1,0 +1,763 @@
+
+<div *ngIf="accessToPage" class="startdiv">
+
+  <!-- Dashboard Details -->
+  <!-- <div class="row rowimp rowcard1" style="margin-top: 10px; display: flex; justify-content: flex-end; align-items: center; padding: 10px;">
+    <div class="col-12" style="display: flex; margin: 2px;">
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('In Service', 'employee')">
+          <p class="headerA">
+            In Service
+            <i class="fa fa-info-circle" container="body" ngbTooltip="Number of employees in service"
+              placement="top"></i>
+          </p>
+          <div>
+            <p class="headerB">
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Out Of Service', 'employee')">
+          <p class="headerA">
+            Out Of Service
+            <i class="fa fa-info-circle" container="body" ngbTooltip="Number of employees out of service"
+              placement="top"></i>
+          </p>
+          <div>
+            <p class="headerB">
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Profile Incomplete', 'employee')">
+          <p class="headerA">
+            Profile Incomplete
+            <i class="fa fa-info-circle" container="body" ngbTooltip="Number of employees without profile completed"
+              placement="top"></i>
+          </p>
+          <div style="display: flex; flex-direction: row;">
+            <p class="headerB">
+
+            </p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Without Team', 'employee')">
+          <p class="headerA">
+            Without Team
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="Number of employees which are not assigned with any Team" placement="top"></i>
+          </p>
+          <div>
+            <p class="headerB">
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> -->
+
+  <!-- Select Time Period -->
+  <div class="row rowimp rowcard1" style="margin-top: 10px; display: flex; justify-content: flex-end; align-items: center; padding: 10px;">
+    <div class="col" style="display: flex; justify-content: flex-end; align-items: center;">
+        <div style="display: flex; align-items: center;">
+            <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none; display: flex; margin-bottom: 0; padding-right: 0;">
+                <li class="nav-item" (click)="getTodaysData()" style="margin-right: 15px;">
+                    <a style="padding: 5px 0;" class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                        Today
+                    </a>
+                </li>
+                <li class="nav-item" (click)="getWeeksData()" style="margin-right: 15px;">
+                    <a style="padding: 5px 0;" class="nav-link" [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                        Week
+                    </a>
+                </li>
+                <li class="nav-item" (click)="getMonthsData()" style="margin-right: 0;">
+                    <a style="padding: 5px 0;" class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                        Month
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div style="display: flex; align-items: center; padding-left: 15px;">
+            <form [formGroup]="dateRangeForm" style="display: flex; align-items: center; width: auto;">
+                <ejs-daterangepicker format='dd MMMM yyyy' placeholder='Select a Date range' [max]="maxRangeDateTwo" formControlName='dateRange'>
+                    <e-presets>
+                        <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                        <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                        <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                        <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                    </e-presets>
+                </ejs-daterangepicker>
+            </form>
+        </div>
+        <div style="display: flex; align-items: center; padding-left: 15px;">
+            <ejs-dropdownlist id='ddlelement' #samples [dataSource]='employeeList' [fields]='fields' [placeholder]='emptext' [allowFiltering]='true' (change)='onFiltering($event)'></ejs-dropdownlist>
+        </div>
+    </div>
+  </div>
+
+  <div class="row rowimp rowcard" style="margin-top: 5px;">
+    <div class="col">
+      <div>
+        <ejs-grid #hrAttendanceGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true' (toolbarClick)='hrAtendanceGridDownload($event)'
+        [dataSource]='hrCheckAttData' allowTextWrap='true' height="350px" allowSorting='true'>
+        <e-columns>
+
+          <e-column field='day' headerText='Date' textAlign='' width=80>
+            <ng-template #template let-data>
+              <span>{{data.day  }}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='full_name' headerText='Employee Name' textAlign='' width=120>
+            <ng-template #template let-data>
+              <span>{{data.full_name}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='check_in' headerText='Check In' textAlign='' width=70>
+            <ng-template #template let-data>
+              <span>{{data.check_in }}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='check_out' headerText='Check Out' textAlign='' width=70>
+            <ng-template #template let-data>
+              <span>{{data.check_out }}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='tot_min' headerText='Total Hrs' textAlign='' width=70>
+            <ng-template #template let-data>
+              <span>{{data.tot_min}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='worklocation' headerText='Work Location' textAlign='' width=80>
+            <ng-template #template let-data>
+              <span>{{data.worklocation}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='weekday' headerText='Week Day' textAlign='' width=80>
+            <ng-template #template let-data>
+              <span>{{data.weekday}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='worktimestatus' headerText='WorkTime Status' textAlign='' width=100>
+            <ng-template #template let-data>
+              <span>{{data.worktimestatus}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='workdaystatus' headerText='WorkDay Status' textAlign='' width=100>
+            <ng-template #template let-data>
+              <span>{{data.workdaystatus}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='workdaystatus' headerText='Action' textAlign='' width=135>
+            <ng-template  #template let-data>
+              <span *ngIf="data.attexp_status == 'Pending'" class="pending">Pending</span>
+              <span *ngIf="data.attexp_status == 'Approved'" class="approve">Approved</span>
+              <span *ngIf="data.attexp_status != null">({{data.attexp_action}})</span>
+              <button *ngIf="data.attexp_status == null  && addattendenceException && data.workdaystatus == 'Absent'" class="custbtn" (click)="markpresent(data)">Manage Absent</button>
+              <button *ngIf="data.attexp_status == null  && addattendenceException && (data.worktimestatus == 'Lesshours' || data.worktimestatus == 'Checkout Missing')" class="custbtn" (click)="marktimecomplete(data)">Manage Worktime</button>
+            </ng-template>
+          </e-column>
+
+
+         </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+
+  <!-- For the Approval list -->
+  <div class="rowimp rowcard" style="margin-top: 5px;">
+    <div style="display: inline-block">
+      <ejs-tab id="element" #tabObjlist heightAdjustMode="Auto" overflowMode="Popup">
+        <e-tabitems>
+          <e-tabitem *ngFor="let header of Tabs" [header]="header">
+            <ng-template #content *ngIf="header.text == 'Pending'">
+              <div style="margin-top: 20px">
+                <ejs-grid #pendingExpGrid [toolbar]="singleEmpToolbar" [dataSource]="pendingList"
+                  [allowExcelExport]="true" (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true"
+                  height="500px" allowSorting="true">
+
+                  <e-columns>
+                    <e-column field="full_name" headerText="Employee Name" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.full_name }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="date_incurred" headerText="Date Incurred" width="60">
+                      <ng-template #template let-data>
+                        <span>{{    data.date_Incurred | date : 'MMM d, y'   }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="previous_status" headerText="Previous Status" width="50">
+                      <ng-template #template let-data>
+                        <span>{{ data.previous_status}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="action" headerText="Action" width="50">
+                      <ng-template #template let-data>
+                        <span>{{ data.action }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="remarks" headerText="Remark" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.remark }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="created_by_name" headerText="Created By" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_by_name }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="created_date" headerText="Requested Date" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_date | date : 'MMM d, y' }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText="Action" width="100">
+                      <ng-template #template let-data>
+                        <button class="foreye" (click)="viewattexp(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                        <button  class="custbtn"
+                          *ngIf=" (data.approver1_roleId == user_info.role_id && data.is_approved_1 == false)"
+                          (click)="aprRej(data)">Approve/Reject</button>
+                          <button  class="custbtn"
+                          *ngIf=" (data.approver2_roleId == user_info.role_id && data.is_approved_1 == true)"
+                          (click)="aprRej(data)">Approve/Reject</button>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+
+                </ejs-grid>
+              </div>
+            </ng-template>
+
+            <ng-template #content *ngIf="header.text == 'Rejected'">
+              <div style="margin-top: 20px">
+                <ejs-grid #pendingExpGrid [toolbar]="singleEmpToolbar" [dataSource]="rejectedList"
+                  [allowExcelExport]="true" (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true"
+                  height="500px" allowSorting="true">
+                  <e-columns>
+                    <e-column field="full_name" headerText="Employee Name" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.full_name }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="date_incurred" headerText="Date Incurred" width="60">
+                      <ng-template #template let-data>
+                        <span>{{    data.date_Incurred | date : 'MMM d, y'   }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="previous_status" headerText="Previous Status" width="50">
+                      <ng-template #template let-data>
+                        <span>{{ data.previous_status}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="action" headerText="Action" width="50">
+                      <ng-template #template let-data>
+                        <span>{{ data.action }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="remarks" headerText="Remark" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.remark }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="created_by_name" headerText="Created By" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_by_name }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="created_date" headerText="Requested Date" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_date | date : 'MMM d, y' }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText="Action" width="100">
+                      <ng-template #template let-data>
+                        <button class="foreye" (click)="viewattexp(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </ng-template>
+
+            <ng-template #content *ngIf="header.text == 'Approved'">
+              <div style="margin-top: 2px">
+                <ejs-grid #pendingExpGrid [toolbar]="singleEmpToolbar" [dataSource]="approvedList"
+                  [allowExcelExport]="true" (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true"
+                  height="500px" allowSorting="true">
+                  <e-columns>
+                    <e-column field="full_name" headerText="Employee Name" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.full_name }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="date_incurred" headerText="Date Incurred" width="60">
+                      <ng-template #template let-data>
+                        <span>{{    data.date_Incurred | date : 'MMM d, y'   }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="previous_status" headerText="Previous Status" width="50">
+                      <ng-template #template let-data>
+                        <span>{{ data.previous_status}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="action" headerText="Action" width="50">
+                      <ng-template #template let-data>
+                        <span>{{ data.action }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="remarks" headerText="Remark" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.remark }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="created_by_name" headerText="Created By" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_by_name }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="created_date" headerText="Requested Date" width="80">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_date | date : 'MMM d, y' }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText="Action" width="100">
+                      <ng-template #template let-data>
+                        <button class="foreye" (click)="viewattexp(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </ng-template>
+
+
+          </e-tabitem>
+        </e-tabitems>
+      </ejs-tab>
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+
+<!-- Manage Attendance Modal -->
+<ng-template #markpresentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Manage Absent</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="markpresentForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="empname" />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred</label>
+            <div class="col-lg-6 col-xl-6">
+              <input type="text" class="form-control" disabled formControlName="dateincurred" />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Action <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-dropdownlist [dataSource]="actionData" (change)="changeaction($event)" formControlName="action"
+                ></ejs-dropdownlist>
+            </div>
+            <button style="border: none; background: none;" (click)="helpWorkOption()">
+              <i *ngIf="!helpWork" style="margin-left: 2px;" class="fa fa-question-circle"
+                aria-hidden="true"></i>
+              <i *ngIf="helpWork" style="margin-left: 2px;" class="fa fa-times"
+                aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="form-group row" *ngIf="helpWork">
+            <div class="col-lg-4 col-xl-4"></div>
+            <div class="col-lg-8 col-xl-8">
+             <span *ngIf="selectedaction =='Leave'" >Leave: Marks the exception as a leave day, deducting it from the employee's available leave balance.</span>
+             <span *ngIf="selectedaction =='Present'" >Present: Treats the exception as if the employee was present, without affecting their attendance record.</span>
+             <span *ngIf="selectedaction =='Compensate'" >Compensate: Allows the employee to make up for the missed time by working extra hours on the same or a different day.</span>
+             <span *ngIf="selectedaction =='Overide WorkTime'" >Overide WorkTime: Allows the employee to make up for the missed time by working extra hours on the same or a different day.</span>
+            </div>
+          </div>
+
+          <div *ngIf="selectedaction =='Leave'" class="form-group row" >
+            <label class="col-xl-4 col-lg-4 col-form-label">Leave Name <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" formControlName="leaveName" />
+            </div>
+          </div>
+
+          <div  *ngIf="selectedaction =='Leave'" class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Leave Type <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="leaveTpe" formControlName="leavetype"
+               ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div *ngIf="selectedaction =='Present'  || selectedaction =='Overide WorkTime'" class="form-group row" >
+            <label class="col-xl-4 col-lg-4 col-form-label">CheckIn Type <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="checkintype" formControlName="checkintype"
+                ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div *ngIf="selectedaction =='Present' || selectedaction =='Overide WorkTime' " class="form-group row" >
+            <label class="col-xl-4 col-lg-4 col-form-label">CheckIn Time <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="starttime" formControlName="starttime" ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div *ngIf="selectedaction =='Present'  || selectedaction =='Overide WorkTime'" class="form-group row" >
+            <label class="col-xl-4 col-lg-4 col-form-label">Checkout Time <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="endtime" formControlName="endtime"
+                ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div *ngIf="selectedaction =='Compensate'" class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Compensate Date<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <!-- <ejs-datepicker formControlName="comdate" format="MMM d, y"
+                placeholder="  Enter date" ></ejs-datepicker> -->
+
+                <ejs-dropdownlist [dataSource]="comdateData" formControlName="comdate"
+                [fields]="commonFields" (change)="selectedcompdate($event)" ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div *ngIf="selectedaction =='Compensate'" class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Compensate Day Status</label>
+            <div class="col-lg-6 col-xl-6">
+              <input type="text" class="form-control" disabled formControlName="comdaystat" />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Attach Document</label>
+            <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+              <ejs-uploader *ngIf="!isadjDocUp" (selected)="onFileSelected($event)" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+            </div>
+            <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+              <a (click)="goToLink('')" class="hyperlink"> View Document </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" (click)="DocDelete()"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="approverDivCW" style="width: fit-content; margin-bottom: 5px;">
+      <div class="approverHeader">Request Approvers</div>
+      <div *ngIf="!addFullAccess" class="approverBody">
+        <p style="margin-bottom: 2px">Level 1: {{createApprover1rollName }}</p>
+        <p style="margin-bottom: 2px" *ngIf="isDualApprover"> Level 2: {{createApprover2rollName}} </p>
+      </div>
+      <div *ngIf="addFullAccess" class="approverBody">
+        <p style="margin-bottom: 2px">Self Approver</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitExeption()" [disabled]="showEmployeeData"
+      style="background-color: #e91e63; color: white; font-weight: 600">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<!-- View and Approve Modal-->
+<ng-template #viewSubmissionModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Attendence Exception Request Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body kt-form kt-form--label-right">
+
+    <div class="form-group row">
+      <div class="col-xl-12 col-lg-12">
+        <p class="header-text">Attendance Exception Request was submitted by <strong>{{submissionData?.created_by_name}}</strong> on <strong>{{submissionData?.created_date | date: 'MMM d, y'}}</strong></p>
+      </div>
+    </div>
+
+    <div class="kt-portlet__body">
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+        <div class="col-lg-6 col-xl-6">
+          <input type="text" class="form-control" [value]="submissionData?.full_name" disabled />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred</label>
+        <div class="col-lg-6 col-xl-6">
+          <input type="text" class="form-control" [value]="submissionData?.date_Incurred | date: 'MMM d, y'" disabled />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Action</label>
+        <div class="col-lg-6 col-xl-6">
+          <input type="text" class="form-control" [value]="submissionData?.action" disabled />
+        </div>
+      </div>
+
+      <div *ngIf="submissionData?.action === 'Leave'">
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Leave Name</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.leave_name" disabled />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Leave Type</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.leave_type" disabled />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="submissionData?.action === 'Present'">
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">CheckIn Type</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.checkIn_type" disabled />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">CheckIn Time</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.check_in" disabled />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Checkout Time</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.check_out" disabled />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="submissionData?.action === 'Compensate'">
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Compensate Date</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.compensate_date | date: 'MMM d, y'" disabled />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Compensate Day Status</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" [value]="submissionData?.compensate_day_status" disabled />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+        <div class="col-lg-6 col-xl-6">
+          <textarea class="form-control" rows="4" [value]="submissionData?.remark" disabled></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Attached Document</label>
+        <div class="col-lg-6 col-xl-6">
+          <a *ngIf="submissionData?.doc_url" (click)="goToLink(submissionData?.doc_url)" class="hyperlink"> View Document </a>
+          <p *ngIf="!submissionData?.doc_url">No document attached</p>
+        </div>
+      </div>
+
+      <div *ngIf="submissionData.approver1_roleId">
+        <p style="margin-bottom: 2px; color:rgb(98, 98, 98)" ><u> <strong>Approval Status</strong> </u></p>
+        <p style="margin-bottom: 2px" *ngIf="submissionData.status == 'Rejected' ">
+          Level 1: {{submissionData.approle1}}
+          <span class="approve" *ngIf="submissionData.is_approved_1 == true"> Approved</span>
+          <span class="decline" *ngIf="submissionData.is_approved_1 == false"> Rejected</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="submissionData.status == 'Rejected' ">
+          Level 2: {{submissionData.approle2}}
+          <span class="decline" *ngIf="submissionData.is_approved_2 == false"> Rejected</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="submissionData.status != 'Rejected' ">
+          Level 1: {{submissionData.approle1}}
+          <span class="pending" *ngIf="submissionData.is_approved_1 == false"> Pending</span>
+          <span class="approve" *ngIf="submissionData.is_approved_1 == true"> Approved</span>
+        </p>
+        <p style="margin-bottom: 2px" *ngIf="submissionData.approver2_roleId && submissionData.status != 'Rejected' ">
+          Level 2: {{submissionData.approle2}}
+          <span class="pending" *ngIf="submissionData.is_approved_2 == false"> Pending</span>
+          <span class="approve" *ngIf="submissionData.is_approved_2 == true"> Approved</span>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="!showapprbtn" class="btn btn-secondary" (click)="closeModel()">Close</button>
+    <button *ngIf="showapprbtn" class="btn btn-secondary" (click)="apr(submissionData)">Approve</button>
+    <button *ngIf="showapprbtn" class="btn btn-danger" (click)="rej(submissionData)">Reject</button>
+  </div>
+</ng-template>
+
+<!-- For view Auto Adjustment -->
+<ng-template #adjustemntmodal>
+  <div class="modal-header">
+    <h6 class="modal-title">Payroll Auto Adjustment: Attendance Exception Update</h6>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div style="padding: 20px 10px	0px 20px;">
+    <p style="font-size: 14px;">
+      The attendance for <strong>{{ deduction.full_name }}</strong> on <strong>
+        {{ deduction.date_incurred | date : 'MMM d, y' }}</strong> was updated.
+        A deduction had already been made in the previous payroll for <strong>{{ deduction.payroll_name }}</strong>.
+    </p>
+    <p  style="font-size: 14px;">
+      A new Auto Adjustment is created to reconcile this change in the upcoming payroll.
+    </p>
+  </div>
+
+  <div class="modal-body">
+    <div style="padding: 10px 30px 0px 30px;">
+
+      <h6 class="section-header">Deduction Details</h6>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Payroll:</div>
+        <div class="col-md-8">{{ deduction.payroll_name }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Description:</div>
+        <div class="col-md-8">{{ deduction.remarks }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Amount:</div>
+        <div class="col-md-8">AED {{ deduction.amount  }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Status:</div>
+        <div class="col-md-8">{{ deduction.status }}</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Deducted On:</div>
+        <div class="col-md-8">{{ deduction.paid_date | date : 'MMM d, y' }}</div>
+      </div>
+
+      <!-- Payroll Adjustment Section -->
+      <h6 class="section-header mt-4">Upcoming Payroll Adjustment</h6>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Type:</div>
+        <div class="col-md-8">Addition</div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-4 font-weight-normal">Amount:</div>
+        <div class="col-md-8">AED {{ deduction.amount  }}</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="closeModel()">Continue</button>
+  </div>
+
+</ng-template>
+
+
+
+
+

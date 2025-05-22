@@ -1,0 +1,65 @@
+.start{
+  margin-right: 0px;
+  margin-left: 0px;
+  padding: 0px 19px 13px;
+}
+
+.card {
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%);
+}
+
+.card {
+  cursor: pointer;
+  padding-bottom: 15px;
+  border: 0;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  border-radius: 6px;
+  color: #333;
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+.card .card-header {
+  border-bottom: none;
+  background: transparent;
+  display: flex;
+  height: 50px;
+}
+
+.card-icon{
+  border-radius: 3px;
+  background-color: #999;
+  padding: 7px 10px;
+  margin-top: -20px;
+  margin-right: 15px;
+  float: left;
+}
+
+.card-category{
+  margin-bottom: 0px;
+  color: #999;
+  font-size: 14px;
+}
+
+.card-title{
+  margin-bottom: 0px !important;
+}
+
+.otherdiv{
+  width: -webkit-fill-available;
+  text-align: end;
+}
+
+.material-icons{
+  font-size: 33px !important;
+}
+
+.dateDiv{
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 18px 0px 0px;
+  background: #fafafa;
+}

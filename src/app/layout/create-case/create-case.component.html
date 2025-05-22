@@ -1,0 +1,517 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css"/>
+
+<div class="mainProfileDiv" *ngIf="!noAccessToCasePage">
+
+  <div *ngIf="caseTabListing">
+    <div class="casemenu marTop18" *ngIf="addEditCaseHistory">
+      <button class='btn btnColorAll' (click)="addComplain()" *ngIf="!caseHistAddForm && !caseHistEditForm">
+        <div class="disflex">
+          <mat-icon class="martop-1">add</mat-icon>
+          <p class="marbott0">Add Case</p>
+        </div>
+      </button>
+    </div>
+
+    <div *ngIf="viewCaseStatistics" class="statics">
+      <div class="calander2">
+        <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;margin-bottom: 0px;">
+          <li class="nav-item" (click)="getTodaysData()">
+            <a class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+              Today
+            </a>
+          </li>
+          <li class="nav-item" (click)="getWeeksData()">
+            <a class="nav-link" [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+              Week
+            </a>
+          </li>
+          <li class="nav-item" (click)="getMonthsData()">
+            <a class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+              Month
+            </a>
+          </li>
+          <li class="nav-item">
+            <div style="width: 125%;">
+              <form [formGroup]="dateRangeForm">
+                <ejs-daterangepicker format='dd MMMM yyyy' placeholder='Select a Date range' [max]="maxRangeDateTwo" formControlName='dateRange'>
+                  <e-presets>
+                      <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                      <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                      <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                      <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                  </e-presets>
+                </ejs-daterangepicker>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display: flex;">
+        <p style="font-size: 16px;">Case type</p>
+        <i class="fa fa-info-circle matpointer" style="margin-top: 8px;" placement="top" ngbTooltip="case opened in the selected range" container="body"></i>
+      </div>
+      <div class="row rowTxtx">
+        <div class="col-2" *ngFor="let data of caseByOrgData">
+          <div tabindex="0" class="e-card" id="basic">
+            <div class="e-card-header">
+                <div class="e-card-header-caption" style="display: -webkit-inline-box;">
+                    <div class="e-card-title">{{data.case_name}}</div>
+                    <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Total number of {{data.case_name}}" container="body"></i>
+                </div>
+            </div>
+            <div class="e-card-content" style="padding: 0px 12px 7px !important;">
+              <div>
+                <p style="border-bottom: 1px solid #b3b9bf; padding-bottom: 10px;">Total Cases: {{data.total_count}}</p>
+                <div style="margin-top: 10px;">
+                  <p style="text-align: center; font-weight: 500;">Priority</p>
+                  <p style="margin-top: 4px;">Low: {{data.LowCount}}</p>
+                  <p style="margin-top: 4px;">Medium: {{data.MediumCount}}</p>
+                  <p style="margin-top: 4px;">High: {{data.HighCount}}</p>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row marTop18">
+      <div class="col">
+        <div class="CardRow cardBack">
+          <div class="filterdiv">
+            <ejs-dropdownlist (change)="changeCaseFilter($event)" [dataSource]='commonFilterValue' [placeholder]='commonPlaceholder' [value]="commonSelectedValue" class="ejsDrop" ></ejs-dropdownlist>
+          </div>
+          <ejs-grid #caseHistoryGrid [dataSource]='caseHistoryData' allowTextWrap='true' (created)='caseHistoryTypeGridSearchKeyUp()' [toolbar]='caseHistoryGridToolItems' height='500px' style="z-index: -1;">
+            <e-columns>
+              <e-column field='created_date' headerText='Created Date'>
+                <ng-template #template let-data>
+                  <p style="margin-bottom: 0px;">{{data.created_date | date}}</p>
+                </ng-template>
+              </e-column>
+              <e-column field='followup_date' headerText='follow Up Date'>
+                <ng-template #template let-data>
+                  <p style="margin-bottom: 0px;">{{data.followup_date | date}}</p>
+                </ng-template>
+              </e-column>
+              <e-column field='case_no' headerText='Case Name'></e-column>
+              <e-column field='case_name' headerText='Case Name'></e-column>
+              <e-column field='case_description' headerText='Description'></e-column>
+              <e-column field='reported_by' headerText='Reported By'></e-column>
+              <e-column field='reported_to' headerText='Reported To'></e-column>
+              <e-column field='assignedEmpName' headerText='Assigned To'></e-column>
+              <e-column headerText='Status' textAlign='center'>
+                <ng-template #template let-data>
+                  <span *ngIf="data.case_status === 'In progress'" class="pending">In-Progress</span>
+                  <span *ngIf="data.case_status === 'Completed'" class="approve">Completed</span>
+                </ng-template>
+              </e-column>
+              <e-column headerText='Action' textAlign='center'>
+                <ng-template #template let-data>
+                  <div class="row">
+                    <div class="col-6">
+                      <button *ngIf="resolveACaseAccess && data.checkinRequired === null" class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="Address this Case as it does not require checkin" container="body" (click)="addressCaseModel(data)">
+                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div class="col-6">
+                      <button *ngIf="addEditCaseHistory" class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="Update the Case" container="body" (click)="openEditHistForm(data)">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Add form -->
+  <div class="row marTop18" *ngIf="caseHistAddForm">
+    <div class="col">
+      <div class="CardRow">
+        <form #f="ngForm" [formGroup]="addCaseHistoryProcessForm" style="width: -webkit-fill-available;">
+          <div style="padding-top: 5px;">
+            <div class="borderSet">
+              <h1 class="fontSiz">Case Details</h1>
+              <button class='btn btnColorAll bcackforform' (click)="closeaddEditComplainModel()" *ngIf="caseHistAddForm || caseHistEditForm">
+                <div class="disflex">
+                  <mat-icon class="martop-1">arrow_back</mat-icon>
+                  <p class="marbott0">Back</p>
+                </div>
+              </button>
+            </div>
+            <div class="row displaydiv">
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Select Case Type</label>
+                <ejs-dropdownlist formControlName="caseID" [dataSource]='caseTypeData' [fields]='commonFields' [allowFiltering]='true' (change)="changeCaseType($event)"></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('caseID').hasError('required') && formSubmitAttempt">
+                  *Case Type is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Case Number</label>
+                <input formControlName="caseNo" type="text" class="form-control">
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Case Description</label>
+                <textarea formControlName="caseDescription" class="form-control" rows="1"></textarea>
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('caseDescription').hasError('required') && formSubmitAttempt">
+                  *Case Description is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Case Location</label>
+                <input formControlName="caseLocation" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('caseLocation').hasError('required') && formSubmitAttempt">
+                  *Case Location is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 25px;">
+            <div class="borderSet">
+              <h1 class="fontSiz">Reported Details</h1>
+            </div>
+            <div class="row displaydiv">
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Reported by</label>
+                <input formControlName="reportedBy" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('reportedBy').hasError('required') && formSubmitAttempt">
+                  *Reported by is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Reported by Email</label>
+                <input formControlName="reportedByEmail" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('reportedByEmail').hasError('required') && formSubmitAttempt">
+                  *Reported by Email is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Reported by Phone No.</label>
+                <ngx-intl-tel-input [cssClass]="'form-control'"
+                  [preferredCountries]="preferredCountries"
+                  [enableAutoCountrySelect]="true"
+                  [enablePlaceholder]="true"
+                  [searchCountryFlag]="true"
+                  [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                  [selectFirstCountry]="false"
+                  [selectedCountryISO]="CountryISO.UnitedArabEmirates"
+                  [maxLength]="15"
+                  [tooltipField]="TooltipLabel.Name"
+                  [phoneValidation]="true"
+                  [separateDialCode]="separateDialCode"
+                  formControlName="reportedByPhone">
+                </ngx-intl-tel-input>
+                <div class="errorTxt" *ngIf="f.form.controls['reportedByPhone'].invalid && formSubmitAttempt">
+                  *Reported To phone number is not valid
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <div>
+                  <label class="labelcss">Reported To</label>
+                  <ejs-switch (change)='changeReportedTo($event)' cssClass="e-small swithcss"></ejs-switch>
+                  <label class="labelcss">Self</label>
+                </div>
+                <input formControlName="reportedTo" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('reportedTo').hasError('required') && formSubmitAttempt">
+                  *Reported To is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 25px;">
+            <div class="borderSet">
+              <h1 class="fontSiz">Assigne Details</h1>
+            </div>
+            <div class="row displaydiv">
+              <div class="col-12 col-md-4 marTop10">
+                <div>
+                  <label class="labelcss">Assigned To</label>
+                  <ejs-switch (change)='changeAssignedTo($event)' cssClass="e-small swithcss"></ejs-switch>
+                  <label class="labelcss">Self</label>
+                </div>
+                <ejs-dropdownlist #searchDropdown formControlName="assignedTo" [dataSource]='empListByOrgIdData' [fields]='commonFields' [allowFiltering]='true'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('assignedTo').hasError('required') && formSubmitAttempt">
+                  *Assigned to is required
+                </div>
+              </div>
+              <div class="col-12 col-md-4 marTop10">
+                <label class="labelcss">Follow UP Date</label>
+                <ejs-datepicker format='MMM d, y' formControlName="followUpDate"></ejs-datepicker>
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('followUpDate').hasError('required') && formSubmitAttempt">
+                  *Follow UP Date is required
+                </div>
+              </div>
+              <div class="col-12 col-md-4 marTop10">
+                <label class="labelcss">Priority</label>
+                <ejs-dropdownlist formControlName="priority" [dataSource]='priorityType' [fields]='commonFields'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addCaseHistoryProcessForm.get('priority').hasError('required') && formSubmitAttempt">
+                  *Priority is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row displaydiv">
+            <div class="col-12 btnFooter">
+              <button id='add' class='btn btnColorAll' (click)="submitCaseHistAdd('single')">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Submit
+              </button>
+              <button id='add' class='btn btnColorAll marLeft20' (click)="submitCaseHistAdd('Multiple')">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Submit & New
+              </button>
+              <button id='add' class='btn btnColorAll marLeft20' (click)="closeaddEditComplainModel()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<!-- edit form -->
+  <div class="row marTop18" *ngIf="caseHistEditForm">
+    <div class="col">
+      <div class="CardRow">
+        <form #j="ngForm" [formGroup]="editCaseHistoryProcessForm" style="width: -webkit-fill-available;">
+          <div style="padding-top: 5px;">
+            <div class="borderSet">
+              <h1 class="fontSiz">Case Details</h1>
+              <button class='btn btnColorAll bcackforform' (click)="closeaddEditComplainModel()" *ngIf="caseHistAddForm || caseHistEditForm">
+                <div class="disflex">
+                  <mat-icon class="martop-1">arrow_back</mat-icon>
+                  <p class="marbott0">Back</p>
+                </div>
+              </button>
+            </div>
+            <div class="row displaydiv">
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Case Number</label>
+                <input formControlName="caseNo" type="text" class="form-control">
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label>Select Case Type</label>
+                <ejs-dropdownlist formControlName="caseID" [dataSource]='caseTypeData' [fields]='commonFields' [allowFiltering]='true' (change)="editChangeCaseType($event)"></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('caseID').hasError('required') && formSubmitAttempt">
+                  *Case Type is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label>Case Description</label>
+                <textarea formControlName="caseDescription" class="form-control" rows="1"></textarea>
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('caseDescription').hasError('required') && formSubmitAttempt">
+                  *Case Location is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label>Case Location</label>
+                <input formControlName="caseLocation" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('caseLocation').hasError('required') && formSubmitAttempt">
+                  *Case Location is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 25px;">
+            <div class="borderSet">
+              <h1 class="fontSiz">Reported Details</h1>
+            </div>
+            <div class="row displaydiv">
+              <div class="col-12 col-md-3 marTop10">
+                <label>Reported by</label>
+                <input formControlName="reportedBy" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('reportedBy').hasError('required') && formSubmitAttempt">
+                  *Reported by is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Reported by Email</label>
+                <input formControlName="reportedByEmail" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('reportedByEmail').hasError('required') && formSubmitAttempt">
+                  *Reported by Email is required
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label class="labelcss">Reported by Phone No.</label>
+                <ngx-intl-tel-input [cssClass]="'form-control'"
+                  [preferredCountries]="preferredCountries"
+                  [enableAutoCountrySelect]="true"
+                  [enablePlaceholder]="true"
+                  [searchCountryFlag]="true"
+                  [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                  [selectFirstCountry]="false"
+                  [selectedCountryISO]="CountryISO.UnitedArabEmirates"
+                  [maxLength]="15"
+                  [tooltipField]="TooltipLabel.Name"
+                  [phoneValidation]="true"
+                  [separateDialCode]="separateDialCode"
+                  formControlName="reportedByPhone">
+                </ngx-intl-tel-input>
+                <div class="errorTxt" *ngIf="j.form.controls['reportedByPhone'].invalid && formSubmitAttempt">
+                  *Reported To phone number is not valid
+                </div>
+              </div>
+              <div class="col-12 col-md-3 marTop10">
+                <label>Reported To</label>
+                <input formControlName="reportedTo" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('reportedTo').hasError('required') && formSubmitAttempt">
+                  *Reported To is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 25px;">
+            <div class="borderSet">
+              <h1 class="fontSiz">Assigne Details</h1>
+            </div>
+            <div class="row displaydiv">
+              <div class="col-12 col-md-4 marTop10">
+                <label>Assigned To</label>
+                <ejs-dropdownlist formControlName="assignedTo" [dataSource]='empListByOrgIdData' [fields]='commonFields' [allowFiltering]='true'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('assignedTo').hasError('required') && formSubmitAttempt">
+                  *Assigned to is required
+                </div>
+              </div>
+              <div class="col-12 col-md-4 marTop10">
+                <label>Assigned Date</label>
+                <ejs-datepicker format='MMM d, y' formControlName="followUpDate"></ejs-datepicker>
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('followUpDate').hasError('required') && formSubmitAttempt">
+                  *Assigned Date is required
+                </div>
+              </div>
+              <div class="col-12 col-md-4 marTop10">
+                <label>Priority</label>
+                <ejs-dropdownlist formControlName="priority" [dataSource]='priorityType' [fields]='commonFields'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="editCaseHistoryProcessForm.get('priority').hasError('required') && formSubmitAttempt">
+                  *Priority is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row displaydiv">
+            <div class="col-12 btnFooter">
+              <button id='add' class='btn btnColorAll' (click)="submitCaseHistEdit()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Update
+              </button>
+              <button id='add' class='btn btnColorAll marLeft20' (click)="closeaddEditComplainModel()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- add/edit case model -->
+  <div class="rightModal700">
+    <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="case_Activity_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog importWid" role="document" style="width: 550px;">
+        <div class="modal-content notifyModal">
+          <div class="modal-header" style="padding: 8px 15px;">
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Case Activity</h5>
+            <button type="button" class="close" (click)="closeCaseActivityModel()"></button>
+          </div>
+          <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+            <form [formGroup]="addEditCaseActivityProcessForm" class="cardboxxx">
+              <div class="row">
+                <div class="col-6">
+                  <label class="labelcss">Case Number</label>
+                  <input formControlName="caseID" type="text" class="form-control">
+                </div>
+                <div class="col-6">
+                  <label class="labelcss">Case Name</label>
+                  <input formControlName="caseName" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Case Description</label>
+                  <input formControlName="caseDescription" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Case Location</label>
+                  <input formControlName="caseLocation" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Reported By</label>
+                  <input formControlName="reportedBy" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Reported Email</label>
+                  <input formControlName="reportedByEmail" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Reported to</label>
+                  <input formControlName="reportedTo" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Assigned to</label>
+                  <input formControlName="assignedTo" type="text" class="form-control">
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">Start Time</label>
+                  <input class="form-control" [min]="minOfficeActInputTime" [max]='maxAddLogEndTime'
+                    placeholder="Enter Start time" (click)="startOfficeTimeChanged()" [ngxTimepicker]="startpicker" formControlName="startTime">
+                  <ngx-material-timepicker #startpicker [defaultTime]="minOfficeActInputTime"></ngx-material-timepicker>
+                  <div class="errorTxt" *ngIf="addEditCaseActivityProcessForm.get('startTime').hasError('required') && formSubmitAttempt">
+                    *Start time is required
+                  </div>
+                </div>
+                <div class="col-6 martop15">
+                  <label class="labelcss">End Time</label>
+                  <input class="form-control" [min]="minForEndTime" [max]='maxAddLogEndTime'
+                    placeholder="Enter End time" (click)="startOfficeTimeChanged()" [ngxTimepicker]="endpicker" formControlName="endTime">
+                  <ngx-material-timepicker #endpicker [defaultTime]="minOfficeActInputTime"></ngx-material-timepicker>
+                  <div class="errorTxt" *ngIf="addEditCaseActivityProcessForm.get('endTime').hasError('required') && formSubmitAttempt">
+                    *End time is required
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 martop15">
+                  <label class="labelcss">Activity Status</label>
+                  <ejs-dropdownlist formControlName="caseActStatus" [dataSource]='caseActivityStatus' [fields]='commonFields'></ejs-dropdownlist>
+                  <div class="errorTxt" *ngIf="addEditCaseActivityProcessForm.get('caseActStatus').hasError('required') && formSubmitAttempt">
+                    *Activity Status is required
+                  </div>
+                </div>
+                <div class="col-12 martop15">
+                  <label class="labelcss">Remark</label>
+                  <textarea formControlName="activityDescription" class="form-control" rows="4"></textarea>
+                  <div class="errorTxt" *ngIf="addEditCaseActivityProcessForm.get('activityDescription').hasError('required') && formSubmitAttempt">
+                    *Remark is required
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="kt-align-right modal-footer bottomBtn">
+            <button class="btn btnColorAll" (click)="submitCaseActivity()">
+              Submit
+            </button>
+            <button class="btn btnColorAll" (click)="closeCaseActivityModel()">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="noAccessToCasePage">
+    <app-not-found></app-not-found>
+  </div>
+
+
+

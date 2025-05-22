@@ -1,0 +1,386 @@
+
+<!-- <link href="../../../assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> -->
+
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+               Set Up                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                          Notification                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Notification Setup                    </a>
+                                            <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+                              Edit Notification Setup                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+       
+    </div>
+</div>
+<div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+  <!-- begin:: Subheader -->
+  <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid ">
+          <div class="kt-subheader__main">
+              <h3 class="kt-subheader__title">
+                  
+                 Tasks                           </h3>
+  
+                              <span class="kt-subheader__separator kt-hidden"></span>
+                 
+                      </div>
+          <div class="kt-subheader__toolbar">
+              <div class="kt-subheader__wrapper">
+                                    
+                  
+                
+              </div>
+          </div>
+      </div>
+  </div> -->
+  <!-- end:: Subheader -->
+<div class="kt-portlet kt-portlet--mobile">
+<div class="row">
+<div class="col col-xl-12 col-lg-12">
+  <div class="kt-portlet__head kt-portlet__head--lg">
+      <div class="kt-portlet__head-label">
+         
+          <h3 class="kt-portlet__head-title">
+            Notification Setup
+          </h3>
+      </div>
+      <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+  <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+      <i class="la la-long-arrow-left"></i>
+      Back
+  </a> -->
+  &nbsp;
+  <div class="dropdown dropdown-inline">
+      <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+            
+      <!-- </button> -->
+<button type="button"  (click)='AddForm()' class="button button-fill button-rose" > <i class="flaticon2-plus" ></i> Add New </button>
+<button type="button" style="margin-left: 15px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+   
+  </div>
+</div>		</div>
+  </div>
+   
+
+   <div class="kt-portlet__body"  style=" border-bottom-color: #f0f3ff;
+      color: #595d6e;" >
+                     <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="kt_table_1_length">
+                                      
+                                        </div></div>
+                                      
+  
+                                    </div>
+        
+                <ejs-grid #grid [dataSource]='dataSource' height="315px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                     >
+                    <e-columns>
+
+             
+                            
+                      <e-column field='notify_name' headerText='Name' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <div>{{data.notify_name}}</div>
+                      </ng-template>
+                        </e-column>
+                        <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+  
+                        <e-column field='notify_type' headerText='Type' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                              <span>{{data.notify_type}}</span>
+                               
+                                        
+                      </ng-template>
+                        </e-column>
+                        <e-column field='notify_desc' headerText='Description' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                              <span>{{data.notify_desc}}</span>
+                               
+                                        
+                      </ng-template>
+                        </e-column>
+
+                        
+                        
+                        <e-column type='' textAlign='' headerText='Action'  width='90'>
+                            <ng-template #template let-data>
+                              <!-- <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> -->
+                              <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskEdit(data.notify_id)"> <i class="la la-edit"></i> </a>
+                         
+                              <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskDelete(data.id)"><i class="la la-trash"></i>						</a>
+                            
+                            </ng-template>
+                        </e-column>
+                        <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                    </e-columns>
+                    </ejs-grid>
+                    <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+<!--          
+          <mat-table #table [dataSource]="dataSource" matSort>
+                 
+                  
+                  <ng-container matColumnDef="index">
+                      <mat-header-cell  *matHeaderCellDef> No. </mat-header-cell>
+                      <mat-cell   *matCellDef="let element; let j = index"> {{j+1}} </mat-cell>
+                    </ng-container>
+                  <ng-container matColumnDef="Action"  >
+              
+                    <mat-header-cell *matHeaderCellDef > Action </mat-header-cell>
+              
+                    <mat-cell *matCellDef="let element" >
+              
+                      <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskEdit(element.id)"> <i class="la la-edit"></i> </a>
+                   
+                      <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskDelete(element.id)"><i class="la la-trash"></i>						</a>
+              
+                    </mat-cell>
+              
+              
+                  </ng-container>
+                  
+              
+                 
+                  <ng-container matColumnDef="status_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.status_name}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="desc">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.status_desc}} </mat-cell>
+                  </ng-container>
+                  
+                  
+                 
+              
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table> -->
+                </div>
+              
+
+      </div>
+  
+</div>
+
+</div>
+</div>
+
+
+</div>
+
+<div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+         
+    
+ 
+
+       <div class="row">
+          <div class="col-lg-12">
+            <!--begin::Portlet-->
+            <div class="kt-portlet">
+                <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                       
+                        <h3 class="kt-portlet__head-title">
+                          Notification Setup
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="kt-portlet__head-wrapper">
+                <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                    <i class="la la-long-arrow-left"></i>
+                    Back
+                </a> -->
+                &nbsp;
+                <div class="dropdown dropdown-inline">
+                    <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+                          
+                    <!-- </button> -->
+              <button type="button"  (click)='TaskView()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+                 
+                </div>
+            </div>		</div>
+                </div>
+             
+              <!--begin::Form-->
+              <form class="kt-form kt-form--label-right" [formGroup]="statusForm">
+                <div class="kt-portlet__body">
+                  <!-- <div class="form-group row">
+                    <div class="col-lg-5">
+                      <label>Status:</label>
+                      <input type="email" class="form-control" placeholder="Enter Status" formControlName="statusName">
+                    </div>
+                   
+                  </div>	  -->
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label"> Notify To</label>
+                    <div class="col-lg-4 col-xl-4">
+                      <div class="toggleDept notifyTabs">
+                        <mat-button-toggle-group #group="matButtonToggleGroup" style="width: 100%;"
+                          [value]="selectedDeptVal" (change)="onEmpListByChange(group.value)">
+                          <mat-button-toggle value="Department">Department</mat-button-toggle>
+                          <mat-button-toggle value="Designation">Designation</mat-button-toggle>
+                          <mat-button-toggle value="Role">Role</mat-button-toggle>
+                          <mat-button-toggle value="Employee">Employee</mat-button-toggle>
+                        </mat-button-toggle-group>
+                      </div>
+</div>
+                  </div>
+                  
+                  <div class="form-group row packageForm" *ngIf="filterByDept">
+                    <label class="col-xl-3 col-lg-3 col-form-label"> Department</label>
+                    <div class="col-lg-4 col-xl-4">
+                   
+                      <ejs-multiselect  formControlName="deptList"  style="margin-top:6px;" mode='CheckBox' 
+                         [dataSource]='deptData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                         <div *ngIf="addformSubmit && statusForm.get('deptList').status=='INVALID'" style="color: red;">Required</div>
+
+                        </div>
+
+                  </div>
+
+
+                  <div class="form-group row packageForm" *ngIf="filterByDesgn">
+                    <label class="col-xl-3 col-lg-3 col-form-label"> Designation</label>
+                    <div class="col-lg-4 col-xl-4">
+                   
+                      <ejs-multiselect formControlName="desgnList"   style="margin-top:6px;" mode='CheckBox' 
+                      [dataSource]='desgnData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                      <div *ngIf="addformSubmit && statusForm.get('desgnList').status=='INVALID'" style="color: red;">Required</div>
+
+
+</div>
+                  </div>
+                  <div class="form-group row packageForm" *ngIf="filterByRoles">
+                    <label class="col-xl-3 col-lg-3 col-form-label"> Roles</label>
+                    <div class="col-lg-4 col-xl-4">
+                   
+                      <ejs-multiselect formControlName="rolesList"   style="margin-top:6px;" mode='CheckBox' 
+                      [dataSource]='rolesData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+                      <div *ngIf="addformSubmit && statusForm.get('rolesList').status=='INVALID'" style="color: red;">Required</div>
+
+
+</div>
+                  </div>
+                  <div class="form-group row packageForm" *ngIf="filterByEmp">
+                    <label class="col-xl-3 col-lg-3 col-form-label"> Employee</label>
+                    <div class="col-lg-4 col-xl-4">
+                   
+                      <ejs-multiselect formControlName="empList"   style="margin-top:6px;" mode='CheckBox' 
+                      [dataSource]='assigneeData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+
+                      <div *ngIf="addformSubmit && statusForm.get('empList').status=='INVALID'" style="color: red;">Required</div>
+
+</div>
+                  </div>
+
+
+
+               
+                  <!-- <div *ngIf="filterByRoles">
+
+                    <label style="color: grey;">Select Roles:</label>
+
+                   
+                      <ejs-multiselect formControlName="roleList"   style="margin-top:6px;" mode='CheckBox' 
+                      [dataSource]='desgnData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+
+
+                  </div> -->
+                
+                  <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Notification Type</label>
+                    <div class="col-lg-4 col-xl-4">
+                      <!-- <input  type="text"  class="form-control"  placeholder="Type" formControlName="statusName"> -->
+                      <select2 [data]="notifyTypeData" [options]="taskOptions" [value]="notifyTypeValue"
+                      (valueChanged)="changedNotifyType($event)"></select2>
+                    <div *ngIf="addformSubmit && (notifyTypeValue=='' || notifyTypeValue=='Select' || notifyTypeValue==undefined)" style="color: red;">Required</div>
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Notification Name</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <input  type="text"  class="form-control"  placeholder="Name" formControlName="Name">
+                    
+                    <div *ngIf="addformSubmit && (statusForm.get('Name').status=='INVALID')" style="color: red;">Required</div>
+
+                  </div>
+              </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Notify Date</label>
+                <div class="col-lg-4 col-xl-4">
+                  <ejs-datepicker  formControlName="notifyDate"   placeholder='Enter date'></ejs-datepicker>
+
+                </div>
+            </div>
+                 	                
+                      </div>
+          
+                      
+                      <div class="kt-portlet__foot">
+                  <div class="kt-form__actions">
+                    <div class="row">
+                      <div class="col-lg-6">
+                          <!-- <span *ngIf="AddNewSubmit">
+                              <button type="reset" class="btn btn-success" style="margin-right:10px;" (click)=" onAddNewSubmit()">Submit & New</button>
+                          </span> -->
+                          <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                          <button type="submit" class="btn btn-success" (click)="editable ? onEditSubmit() : onAddSubmit()">Push Notification</button>
+
+                          <button type="reset" class="btn btn-secondary" (click)='TaskView()' style="margin-left:10px;">Cancel</button>
+                          <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                         
+                        <!-- <button type="reset" class="btn btn-secondary" style="margin-left:5px;">Cancel</button> -->
+                      </div>
+                      <!-- <div class="col-lg-6 kt-align-right">
+                        <button type="reset" class="btn btn-danger">Delete</button>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              
+             
+              </form>
+          
+             
+              
+              
+          
+            </div>
+          
+          
+          </div>
+          </div>	
+<!-- end:: Content -->				</div>
+

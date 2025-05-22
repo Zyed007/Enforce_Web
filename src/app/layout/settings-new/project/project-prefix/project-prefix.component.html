@@ -1,0 +1,336 @@
+
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Project Prefix</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openProjectPrefix()" *ngIf="mainProjectPrefListing && allProjectPrefixData?.length === 0">Add Project Prefix</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainProjectPrefix()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div *ngIf="mainProjectPrefListing">
+      <ejs-grid [dataSource]='allProjectPrefixData' height='300px'>
+        <e-columns>
+          <e-column field='prefix_name' headerText='Name'></e-column>
+          <e-column field='prefix_for' headerText='Type'></e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editSingleProjectPre(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteProjectPre(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="pad2515" *ngIf="!mainProjectPrefListing">
+      <div class="row">
+
+        
+
+
+        <!-- <div>
+          <p class="impTxt">
+           Project Prefix utilized to identify the project is the project prefix. Project Prefix configuration is required prior to configuring other project prefix types.
+          </p>
+        </div> -->
+        <div class="row">
+            <div class="col-4">
+                  <div>
+                      <p class="impTxt">
+                      Project Prefix utilized to identify the project is the project prefix. Project Prefix configuration is required prior to configuring other project prefix types.
+                      </p>
+                  </div>
+            </div>
+            <div class="col-4">
+              <div>
+                  <p class="impTxt">
+                    Complimentary Project Prefix is used to assign a distinctive prefix that makes it simple to distinguish Complimentary project types from other types.
+                  </p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div>
+                  <p class="impTxt">
+                    Marketing Project Prefix is used to assign a distinctive prefix that makes it simple to distinguish Marketing project types from other types.
+                  </p>
+              </div>
+            </div>
+        </div>
+
+
+
+
+          
+          <div    class="col-4 " [formGroup]="projectPrefixForm">
+            <!-- <div>
+              <p>
+               Project Prefix utilized to identify the project is the project prefix. Project Prefix configuration is required prior to configuring other project prefix types.
+              </p>
+          </div> -->
+            <div class="firstCrdShdw">
+              
+
+              <h5> Setup  Project Prefix  
+                <i class="fa fa-pencil-square-o"   (click)="openEditOption('project')"  aria-hidden="true" style="font-size: 16px;margin-left: 12px;" placement="top" ngbTooltip="Update this Project Prefix" container="body" ></i>
+              </h5>
+
+              
+              <label class="labfont">Prefix Name</label>
+              <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
+                <div>
+                  <input class="e-input" type="text" placeholder="Enter Prefix" formControlName="prefix" style='text-transform:uppercase'/>
+                  <div class="errorTxt" *ngIf="prefixTxtError">
+                    *Prefix is required
+                  </div>
+                </div>
+                <span style="margin-left: 5px; margin-top: 2px;" *ngIf="showInputOpt">/</span>
+                <div style="margin-left: 5px;" *ngIf="showInputOpt">
+                  <input class="e-input" [type]="inputType" placeholder="Enter a start number" [value]="formattedPrefix" (keyup)="getInputValue($event)" [disabled]="disableSeqNum"/>
+                  <div class="errorTxt" *ngIf="sequenceNumberError">
+                    *Prefix is required
+                  </div>
+                </div>
+              </div>
+              <p style="margin-bottom: 1px;">{{exampletxt}}</p>
+              <p style="margin-bottom: 1px;" *ngIf="showInputOpt">{{example}}</p>
+              <div style="margin-bottom: 15px; margin-top: 15px;">
+                <label class="kt-radio" style="margin-right: 14px;">
+                  <input type="radio" formControlName="prefixFor" value="Default" (change)="changePrefixFor()">
+                    Default
+                  <span></span>
+                </label>
+  
+                <label class="kt-radio" style="margin-right: 14px;">
+                  <input type="radio" formControlName="prefixFor" value="Custom" (change)="changePrefixFor()">
+                    Custom
+                  <span></span>
+                </label>
+  
+                <label class="kt-radio">
+                  <input type="radio" formControlName="prefixFor" value="Sequence" (change)="changePrefixFor()">
+                    Sequence
+                  <span></span>
+                </label>
+              </div>
+              
+              <p  *ngIf="projectActvits != null && projectActvits.length > 0" style="margin-bottom: 1px;"> Last Modified By - {{ projectActvits[0].modifiedBy }}  on  {{ projectActvits[0].modifiedDate | date }}   </p>
+     
+              <p   *ngIf="projectActvits != null && projectActvits.length > 0"   class="viewLogsBtn" style="margin-bottom: 1px;" (click)="viewHistoryModal('project')" > Change Log </p>
+
+
+            <div *ngIf="updateProjectprefix" >
+              <button class='btn btnColorAlll' (click)="submitProjectPrefix()">
+                {{editProjectPrefixDiv ? 'Update' : 'Save'}}
+              </button>
+
+              <button class='btn btnColorAll' style="margin-left: 2rem;" (click)="cancelEditOption('project')" >
+                 Cancel
+              </button>
+            </div>
+            </div>
+
+             
+
+
+          </div>
+
+        
+       
+
+        <div class="col-4"  [formGroup]="compprojectPrefixForm"   >
+          <div>
+            <h5> Setup Complimentary Project Prefix  
+
+              <i class="fa fa-pencil-square-o"   (click)="openEditOption('project-comp')"  aria-hidden="true" style="font-size: 16px;margin-left: 12px;" placement="top" ngbTooltip="Update this Project Prefix" container="body" ></i>
+
+            </h5>
+            <label class="labfont"> Prefix Name</label>
+            <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
+              <div>
+                <input class="e-input" type="text" placeholder="Enter Prefix" formControlName="compprefix"   style='text-transform:uppercase'/>
+                <div class="errorTxt" *ngIf="cmpprefixTxtError">
+                  *Prefix is required
+                </div>
+              </div>
+              <span style="margin-left: 5px; margin-top: 2px;" >/</span>
+              <div style="margin-left: 5px;" *ngIf="compshowInputOpt">
+                <input class="e-input" [type]="compinputType"     placeholder="Enter a start number" [value]="compformattedPrefix" (keyup)="getCompInputValue($event)" [disabled]="compdisableSeqNum"/>
+                <div class="errorTxt" *ngIf="cmpsequenceNumberError">
+                  *Prefix is required
+                </div>
+              </div>
+            </div>
+            <p style="margin-bottom: 1px;">{{exampletxtComp}}</p>
+            <p style="margin-bottom: 1px;" *ngIf="showInputOpt">{{exampleComp}}</p>
+
+            
+
+
+            <div style="margin-bottom: 15px; margin-top: 15px;">
+              <label class="kt-radio" style="margin-right: 14px;"   >
+                <input type="radio" (change)="compchangePrefixFor()"  formControlName="compprefixFor"  value="Default" >
+                  Default
+                <span></span>
+              </label>
+              <label class="kt-radio" style="margin-right: 14px;">
+                <input type="radio"  (change)="compchangePrefixFor()"  formControlName="compprefixFor"  value="Sequence" >
+                   Sequence
+                <span></span>
+              </label>
+              <label class="kt-radio">
+                <input type="radio" (change)="compchangePrefixFor()"  formControlName="compprefixFor"   value="Project-Sequence" >
+                  Same as Project 
+                  <!-- <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="By selecting this option, you enable Complimentary Projects to follow the Project Prefix sequence." container="body"></i>  -->
+                <span></span>
+              </label>
+            </div>
+          </div>
+
+          <p *ngIf="projectActvits != null && projectActvits.length > 0" style="margin-bottom: 1px;"> Last Modified By - {{ projectActvitsCmp[0].modifiedBy }}  on  {{ projectActvitsCmp[0].modifiedDate | date }}   </p>
+          <p  *ngIf="projectActvits != null && projectActvits.length > 0"  class="viewLogsBtn" style="margin-bottom: 1px;" (click)="viewHistoryModal('project-comp')" > Change Log </p>
+
+          <div *ngIf="updateCompProjectprefix" >
+            <!-- <p style="margin-bottom: 1px;"> <b> Note:  </b> Project Extensions which are Complimentary will follow the Same Sequence as the Main Project</p> -->
+
+           
+
+            <button class='btn btnColorAlll' (click)="submitCmplmPrefix()">
+              {{ this.existCompPrefix.length > 0 ? 'Update' : 'Save' }}
+            </button>
+
+            <button class='btn btnColorAll' style="margin-left: 2rem;" (click)="cancelEditOption('project-comp')" >
+              Cancel
+           </button>
+
+          </div>
+        </div>
+
+       
+        <div class="col-4" [formGroup]="marprojectPrefixForm"  > 
+          <div>
+            <h5> Setup Marketing Project Prefix
+
+              <i class="fa fa-pencil-square-o"   (click)="openEditOption('project-mar')"  aria-hidden="true" style="font-size: 16px;margin-left: 12px;" placement="top" ngbTooltip="Update this Project Prefix" container="body" ></i>
+
+            </h5>
+            <label class="labfont"> Prefix Name</label>
+            <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
+              <div>
+                <input class="e-input"  formControlName="marprefix"     type="text" placeholder="Enter Prefix"  style='text-transform:uppercase'/>
+                <div class="errorTxt" *ngIf="marprefixTxtError">
+                  *Prefix is required
+                </div>
+              </div>
+              <span style="margin-left: 5px; margin-top: 2px;" *ngIf="showInputOpt">/</span>
+              <div style="margin-left: 5px;" *ngIf="marpshowInputOpt">
+                <input class="e-input"    [type]="inputType" placeholder="Enter a start number" [value]="marformattedPrefix" (keyup)="getMarInputValue($event)" [disabled]="marpdisableSeqNum"/>
+                <div class="errorTxt" *ngIf="marsequenceNumberError">
+                  *Prefix is required
+                </div>
+              </div>
+            </div>
+
+            <p style="margin-bottom: 1px;">{{exampletxtMRP}}</p>
+            <p style="margin-bottom: 1px;" *ngIf="showInputOpt">{{exampleMRP}}</p>
+
+
+            <div style="margin-bottom: 15px; margin-top: 15px;">
+              <label class="kt-radio" style="margin-right: 14px;">
+                <input type="radio"   (change)="marchangePrefixFor()"  formControlName="marprefixFor"     value="Default" >
+                  Default
+                <span></span>
+              </label>
+              <label class="kt-radio" style="margin-right: 14px;">
+                <input type="radio"   (change)="marchangePrefixFor()"   formControlName="marprefixFor"   value="Sequence" >
+                  Sequence
+                <span></span>
+              </label>
+
+              <label class="kt-radio">
+                <input type="radio" (change)="marchangePrefixFor()"  formControlName="marprefixFor"   value="Project-Sequence" >
+                  Same as Project 
+                  <!-- <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="By selecting this option, you enable Marketing Projects to follow the Project Prefix sequence." container="body"></i>  -->
+                <span></span>
+              </label>
+
+            </div>
+          </div>
+
+          <p  *ngIf="projectActvits != null && projectActvits.length > 0"  style="margin-bottom: 1px;"> Last Modified By - {{ projectActvitsMrp[0].modifiedBy }}  on  {{ projectActvitsMrp[0].modifiedDate | date }}   </p>
+          <p  *ngIf="projectActvits != null && projectActvits.length > 0" class="viewLogsBtn" style="margin-bottom: 1px;" (click)="viewHistoryModal('project-mar')" > Change Log </p>
+
+          <div *ngIf="updateMarkProjectprefix"  >
+            <button class='btn btnColorAlll'  (click)="submitMrktnPrefix()"  >
+              {{ this.existMarkPrefix.length > 0 ? 'Update' : 'Save' }}
+            </button>
+
+            <button class='btn btnColorAll' style="margin-left: 2rem;" (click)="cancelEditOption('project-mar')" >
+              Cancel
+           </button>
+
+          </div>
+        </div>
+        
+
+     
+
+     
+
+     
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" id="show_prefixHist_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 800px;">
+      <div class="modal-content notifyModal" >
+        <div class="modal-header" style="padding: 8px 15px;">
+          <!-- <h5 class="modal-title">Add Service/MileStone</h5> -->
+          <h5>Project Prefix change history </h5>  
+          <button type="button" class="close" (click)="closHistoryModal()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          
+
+       
+            <!-- <label class="labfont">Project Prefix change history</label> -->
+            <ejs-grid [dataSource]='prefixhistDt' height='300px' allowTextWrap='true'>
+              <e-columns>
+                <e-column field='modifiedBy' headerText='Modified By'></e-column>
+                <e-column field='project_prefixType' headerText='Type'></e-column>
+                <e-column field='description' headerText='Prefix'></e-column>
+                <e-column headerText='Created/Modified date'>
+                  <ng-template #template let-data>
+                    <div>
+                      {{data.fromDate | date: 'd MMM, y'}}
+                    </div>
+                  </ng-template>
+                </e-column>
+                <e-column headerText='To date'>
+                  <ng-template #template let-data>
+                    <div>
+                      {{data.modifiedDate | date: 'd MMM, y'}}
+                    </div>
+                  </ng-template>
+                </e-column>
+              </e-columns>
+            </ejs-grid>
+        
+
+        
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

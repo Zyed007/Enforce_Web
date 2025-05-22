@@ -1,0 +1,219 @@
+<div>
+  <div class="row" style="margin: 30px 0px;">
+    <div class="col">
+      <div class="defaultCard">
+        <div class="notHeader">
+          <h1 class="notText">Notifications</h1>
+        </div>
+        <div class="notbody">
+          <div>
+            <div>
+              <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                <li class="nav-item" style="display: flex;">
+                  <a class="nav-link active" data-toggle="tab" href="#NewNotification" (click)="tabevent('newNot')" role="tab">
+                    New notification
+                  </a>
+                  <div>
+                    <span class="smallDot">{{newNotificationData?.length}}</span>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#ReadNotification" (click)="tabevent('oldNot')" role="tab">
+                    Old notification
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="mainNotDiv">
+              <div *ngIf="NewNotificationDiv">
+                <div *ngFor="let newData of newNotificationData" class="list-group m-b">
+                  <a (click)="viewEditNotification(content, newData, 'newMessage')" [ngClass]="newData.message === 'Approval Requested for New Profile' ? 'b-l-primary': 'b-l-danger'" class="list-group-item">
+                    <span [ngClass]="newData.message === 'Approval Requested for New Profile' ? 'text-primary': 'text-danger'" class="pull-right">
+                      <i class="fa fa-circle text-xs"></i>
+                    </span>
+                    <div class="notDateDivMAIN">
+                      <div class="notDateDiv">
+                        <p class="notDateFont">{{newData.created_date | date:'MMM d, y, h:mm a'}}</p>
+                      </div>
+                      <div class="textDivnot">
+                        <p class="textMainnot">{{newData.created_by_name}}</p>
+                        <p style="margin-bottom: 0px; margin-top: 0px;">{{newData.message}}</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div *ngIf="newNotificationData.length === 0" class="list-group m-b">
+                  <a class="list-group-item b-l-primary">
+                    <div class="textDivnot">
+                      <p style="margin-bottom: 0px;">No New Notification</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="ReadNotificationDiv">
+                <div *ngFor="let readData of readNotificationData" class="list-group m-b">
+                  <a (click)="viewEditNotification(content, readData, 'oldMessage')" [ngClass]="readData.message === 'Approval Requested for New Profile' ? 'b-l-primary': 'b-l-danger'" class="list-group-item">
+                    <span [ngClass]="readData.message === 'Approval Requested for New Profile' ? 'text-primary': 'text-danger'" class="pull-right">
+                      <i class="fa fa-circle text-xs"></i>
+                    </span>
+                    <div class="notDateDivMAIN">
+                      <div class="notDateDiv">
+                        <p class="notDateFont">{{readData.created_date | date:'MMM d, y, h:mm a'}}</p>
+                      </div>
+                      <div class="textDivnot">
+                        <p class="textMainnot">{{readData.created_by_name}}</p>
+                        <p style="margin-bottom: 0px;margin-top: 0px;">{{readData.message}}</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div *ngIf="readNotificationData.length === 0" class="list-group m-b">
+                  <a class="list-group-item b-l-primary">
+                    <div class="textDivnot">
+                      <p style="margin-bottom: 0px;">No notification history</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- view single Notification model -->
+<ng-template #content let-modal>
+  <div *ngIf="applyLeaveDiv">
+    <div class="modal-header">
+      <h4 class="modal-title model-titleExt" id="modal-basic-title">{{viewEditNotificationModelData?.message}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeviewEditNotificationModel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <p><strong>{{viewEditNotificationModelData?.created_by_name}}</strong> has applied for <strong>{{viewEditNotificationModelData?.leave_name}}</strong> from <strong>{{viewEditNotificationModelData?.leave_start_date | date:'MMM d, y'}}</strong> to <strong>{{viewEditNotificationModelData?.leave_end_date | date:'MMM d, y'}}</strong>
+          for a duration of <strong>{{viewEditNotificationModelData?.leave_days_applied}}</strong> days.
+        <p>Reason mentioned for leave : {{viewEditNotificationModelData?.emp_notes}}</p>
+      </div>
+
+      <div class="contactBox">
+        <div class="contheader">
+          <h1 style="font-size: 13px;">Contact Details</h1>
+        </div>
+        <div style="padding: 3px 15px 15px 15px;">
+          <p style="margin-bottom: 0px;">Email: {{viewEditNotificationModelData?.email}}</p>
+          <p style="margin-bottom: 0px;">Phone: {{viewEditNotificationModelData?.phone}}</p>
+          <p style="margin-bottom: 0px;">Leave Location: {{viewEditNotificationModelData?.is_local_leave === true ? 'Local Leave': 'Outside Country'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="showButtonDiv">
+      <button type="button" class="btn approvebtn btn-outline-dark" (click)="approveNotification(viewEditNotificationModelData)">Approve</button>
+      <button type="button" class="btn declinebtn btn-outline-dark" (click)="declineNotification(viewEditNotificationModelData)">Decline</button>
+    </div>
+  </div>
+
+  <div *ngIf="applyOverwriteDiv">
+    <div class="modal-header">
+      <h4 class="modal-title model-titleExt" id="modal-basic-title">{{viewEditNotificationModelData?.message}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeviewEditNotificationModel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div>
+          <p><strong>{{viewEditNotificationModelData?.Onbehalf_fullname}}</strong> has applied for  Overwrite on <strong>{{viewEditNotificationModelData?.ondate | date:'MMM d, y, h:mm a'}}</strong> because of <strong>{{viewEditNotificationModelData?.reasons_desc !== null ? viewEditNotificationModelData?.reasons_desc :  viewEditNotificationModelData?.reason_desc}}</strong>
+          <p>Further are the Overwrite time details :</p>
+          <table class="table">
+            <thead>
+              <tr style="text-align: center;">
+                <th scope="col">For Date - {{viewEditNotificationModelData?.check_in_old | date:'MMM d, y'}}</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              <tr>
+                <td>
+                  <strong>Old time</strong>
+                </td>
+                <td>{{viewEditNotificationModelData?.check_in_old !== null ? (viewEditNotificationModelData?.check_in_old | date:'h:mm a') : '-'}}</td>
+                <td>{{viewEditNotificationModelData?.check_out_old !== null ? (viewEditNotificationModelData?.check_out_old | date:'h:mm a') : '-'}}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>New Time</strong>
+                </td>
+                <td>{{viewEditNotificationModelData?.check_in !== null ? (viewEditNotificationModelData?.check_in | date:'h:mm a') : '-'}}</td>
+                <td>{{viewEditNotificationModelData?.check_out !== null ? (viewEditNotificationModelData?.check_out | date:'h:mm a') : '-'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="showButtonDiv">
+      <button type="button" class="btn approvebtn btn-outline-dark" (click)="approveOwerwrite(viewEditNotificationModelData)">Approve</button>
+      <button type="button" class="btn declinebtn btn-outline-dark" (click)="declineOwerwrite(viewEditNotificationModelData)">Decline</button>
+    </div>
+  </div>
+
+  <div *ngIf="applyLeaveProfile">
+    <div class="modal-header">
+      <h4 class="modal-title model-titleExt" id="modal-basic-title">{{viewEditNotificationModelData?.message}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeviewEditNotificationModel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div>
+          <p>A profile named as <strong>{{viewEditNotificationModelData?.profileName}}</strong> was created by <strong>{{viewEditNotificationModelData?.created_by_emp}}</strong>
+            on {{viewEditNotificationModelData?.created_date | date:'MMM d, y, h:mm a'}}.</p>
+          <p style="margin-bottom: 0px;">Following are the Approvers for the leave profile</p>
+          <ol>
+            <li>{{viewEditNotificationModelData?.approver1_RoleName}}</li>
+            <li *ngIf="isApprov2View">{{viewEditNotificationModelData?.approver2_RoleName}}</li>
+          </ol>
+        </div>
+        <p style="margin-bottom: 0px;"><strong>Leave Summary</strong></p>
+        <table class="table innerBoxTab">
+          <thead>
+            <tr>
+              <th style="font-weight: 600;">Leave Name</th>
+              <th style="font-weight: 600;">Leave Type</th>
+              <th style="font-weight: 600;">Number of Days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let leaveData of viewEditNotificationModelData?.leaveDetails'>
+              <td>
+                <p style="margin-bottom: 1px;">{{leaveData.leave_name}}</p>
+                <p class="carryforwardDays" *ngIf="leaveData.leave_name === 'Annual leave' && (leaveData.carry_forward_days !== null && leaveData.carry_forward_days !== '')">
+                  Carrie forward Days: {{leaveData.carry_forward_days}}
+                </p>
+              </td>
+              <td>
+                <p>{{leaveData.leave_type}}</p>
+              </td>
+              <td>
+                <p>{{leaveData.entitled_leave_days}} <span *ngIf="leaveData.leave_name === 'Annual leave'">{{leaveData.is_calendar_days === true ? ' (Working days)' : ' (Calendar days)'}}</span></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="showButtonDiv">
+      <button type="button" class="btn approvebtn btn-outline-dark"  (click)="approveLeaveProfile(viewEditNotificationModelData)"   >Approve</button>
+      <button type="button" class="btn declinebtn btn-outline-dark" (click)="disapproveLeaveProfile(viewEditNotificationModelData)"  >Decline</button>
+    </div>
+  </div>
+
+</ng-template>

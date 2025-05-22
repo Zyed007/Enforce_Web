@@ -1,0 +1,910 @@
+<div>
+    <div class="row pad2515">
+        <div class="col">
+            <h1 class="labelMainHeader">Interfuture Service Estimation Templates</h1>
+        </div>
+        <div class="col-6 teamDiv" *ngIf="templateListing">
+            <button class='btn btnColorAll' style="margin-left: 20px;" (click)="addServiceTemplate()">
+                <i class="fa fa-plus padreq" aria-hidden="true"></i>
+                Add Template
+            </button>
+            <button class='btn btnColorAll' style="margin-left: 20px;" (click)="backToEstimation()">
+                <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+                Back
+            </button>
+        </div>
+        <div class="col-6 teamDiv" *ngIf="!templateListing">
+            <button class='btn btnColorAll' style="margin-left: 20px;" (click)="closeAddServiceTemplate()">
+                <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+                Back
+            </button>
+        </div>
+    </div>
+    <div class="row rowPad">
+        <div class="col-12 whitee" *ngIf="templateListing">
+            <ejs-grid #serviceGrid [dataSource]='templateListingData$ | async' (created)='serviceSearchKeyUp()'
+                [toolbar]='employeeGridToolItems' height='300px'>
+                <e-columns>
+                    <e-column field='created_date' headerText='Created Date'>
+                        <ng-template #template let-data>
+                            <div>
+                                <p style="margin-bottom: 0px;">{{data.created_date | date : "dd/MM/y" }}</p>
+                            </div>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='created_by' headerText='Created By'></e-column>
+                    <e-column field='name' headerText='Template Name'>
+                        <ng-template #template let-data>
+                            <div style="display: flex;">
+                                <p style="margin-bottom: 0px;">{{data.name}}</p>
+                                <!-- <span *ngIf="data.isDefault" class="defaulthjj">
+                                    Default
+                                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;"
+                                        container="body"
+                                        ngbTooltip="this Contract Type will be set automatically while creating a new project."
+                                        placement="top"></i>
+                                </span> -->
+                            </div>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='mainCategory' headerText='Service Name'>
+                        <ng-template #template let-data>
+                            <div style="display: flex;">
+                                <p style="margin-bottom: 0px;">{{data.mainCategory}}</p>
+                                <!-- <span *ngIf="data.isDefault" class="defaulthjj">
+                                    Default
+                                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;"
+                                        container="body"
+                                        ngbTooltip="this Contract Type will be set automatically while creating a new project."
+                                        placement="top"></i>
+                                </span> -->
+                            </div>
+                        </ng-template>
+                    </e-column>
+                    <e-column headerText='Action'>
+                        <ng-template #template let-data>
+                            <div>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;"
+                                    placement="top" ngbTooltip="Update this Service" container="body"
+                                    (click)="editTemplate(data)"></i>
+                                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;"
+                                    placement="top" ngbTooltip="Delete this Service" container="body"
+                                    (click)="DeleteTemplate(data.id)"></i>
+                            </div>
+                        </ng-template>
+                    </e-column>
+                </e-columns>
+            </ejs-grid>
+        </div>
+        <div class="col-11 whitee" *ngIf="!templateListing">
+            <!-- <form [formGroup]="addServiceForm"> -->
+            <div class="firstdiv">
+                <div style="display: flex;flex-direction: column;align-items: center;">
+                    <!-- <div class="col-8" style="margin-top: 20px;"> -->
+                    <!-- Start of Main Type Accordion -->
+                    <div style="display: flex; flex-direction: column;width: 600px; padding: 20px;">
+                        <Form [formGroup]="templateForm">
+                            <div style="display: flex; justify-content: center;">
+                                <h6 style="flex: 1;">Template Name</h6>
+                                <input type="text" size="18" class="form-control" formControlName="name"
+                                    style="flex: 1;">
+                            </div>
+                            <div style="display: flex; justify-content: center;margin-top: 10px;">
+                                <h6 style="flex: 1;">Description</h6>
+                                <input type="text" size="18" class="form-control" formControlName="description"
+                                    style="flex: 1;">
+
+                            </div>
+                            <div style="display: flex; justify-content: center; margin-top: 10px;">
+                                <h6 style="flex: 1;">Select Service </h6>
+                                <ejs-dropdownlist formControlName="mainCategory" [dataSource]='serviceMainCategory'
+                                    [fields]='commonFields' [allowFiltering]='true' placeholder='Select Type'
+                                    (change)="handleMainCategorySelection($event)"
+                                    style="width: 150px;flex: 1;"></ejs-dropdownlist>
+                            </div>
+                        </Form>
+                    </div>
+                    <div style="width: 600px;border: 1px solid;border-style: groove;">
+
+                        <div
+                            style="text-align: center;display: flex;justify-content: space-between;padding: 5px 0px;border-bottom: 2px;border-bottom-style: groove;background-color: #f1f1f1;">
+                            <div style="width: 150px">Primary Category</div>
+                            <div style="width: 150px">Secondary Category</div>
+                            <div style="width: 150px">Brand</div>
+                            <div style="width: 150px">Item Name</div>
+                        </div>
+
+
+
+                        <div *ngIf="templateUnitStack.length>0">
+                            <div *ngFor="let item of templateUnitStack;let i=index"
+                                [ngStyle]="{'display': 'flex', 'flex-direction': 'column', 'border-top': i !== 0 ? '1px solid #bdbdbd' : ''}">
+
+
+                                <div *ngFor="let data of item.value"
+                                    style="display: flex;flex-direction: row;justify-content: space-between;padding:5px 0px;width: 100%;text-align: center;">
+                                    <div style="width: 150px;">
+                                        {{item.id}}</div>
+                                    <div style="width: 150px">
+                                        {{data.secondaryCategoryName}}</div>
+                                    <div style="width: 150px">
+                                        {{data.inventory_brand}}</div>
+                                    <div
+                                        style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;width: 150px;">
+                                        {{data.inventory_name}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <mat-accordion [multi]="false" #accordion="matAccordion" style="margin: 1.4rem;width: 1000px;">
+                        <mat-expansion-panel *ngFor="let data of servicePrimaryCategory; let i = index"
+                            (closed)="onPanelClosed(data.value)" [disabled]="closeAccordion"
+                            (opened)="updateDropDownVals(data.value,data.id)">
+                            <mat-expansion-panel-header *ngIf="i>0">
+                                <mat-panel-title>
+                                    Choose {{data.value}}
+                                </mat-panel-title></mat-expansion-panel-header>
+                            <Form [formGroup]="extraUnitForm">
+                                <div formArrayName="extras">
+                                    <table class="table" style="border: 1px solid #dee2e6; font-size: 12px;">
+                                        <thead>
+                                            <tr style="text-align: center;">
+                                                <th scope="col">Type of {{data.value}} <i
+                                                        class="fa fa-info-circle matpointer" placement="left"
+                                                        ngbTooltip="Indicates the Type of the Camera which will be fixed in Selected Area"
+                                                        container="body"></i> </th>
+                                                <th scope="col"> Select Inventory Item <i
+                                                        class="fa fa-info-circle matpointer" placement="left"
+                                                        ngbTooltip="Indicates the Total Quantity in the Selected Area"
+                                                        container="body"></i> </th>
+                                                <th scope="col"> Inventory Name <i class="fa fa-info-circle matpointer"
+                                                        placement="left"
+                                                        ngbTooltip="Indicates the Total Quantity in the Selected Area"
+                                                        container="body"></i> </th>
+                                                <th scope="col"> Inventory Brand <i class="fa fa-info-circle matpointer"
+                                                        placement="left"
+                                                        ngbTooltip="Indicates the Total Quantity in the Selected Area"
+                                                        container="body"></i> </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let extra of extraUnitForm.get('extras').controls; let i = index"
+                                                [formGroupName]="i">
+                                                <td>
+                                                    <ejs-dropdownlist formControlName="secondaryCategoryName"
+                                                        [dataSource]='serviceSecondaryCategory' [fields]='commonFields'
+                                                        [allowFiltering]='true' placeholder='Select Type'
+                                                        style="width: 150px;"></ejs-dropdownlist>
+                                                </td>
+                                                <td style="display: flex; justify-content: center;">
+                                                    <div class="search-container"
+                                                        style="display: flex; justify-content: center;">
+                                                        <input type="text" size="20" placeholder="Search..."
+                                                            formControlName="inventory_type">
+                                                        <i class="fa fa-search"
+                                                            (click)="handleInvItemtype('Existing', i)"></i>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: center;">
+                                                        <input type="text" size="20" formControlName="inventory_name">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; justify-content: center;">
+                                                        <input type="text" size="20" formControlName="inventory_brand">
+                                                    </div>
+                                                </td>
+                                                <td style="display: flex; gap: 10px;">
+                                                    <div aria-haspopup="true" (click)="AddExtraUnitDesc(i)"
+                                                        style="color:black;margin-top:5px;text-align: center;">
+                                                        <a>
+                                                            <i class="flaticon2-plus"
+                                                                style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%; padding: 5px 6px; color: #fff; font-size: 8px;"></i>
+                                                        </a>
+                                                        <span style="margin-left: 4px;" (click)="removeItem(i)">
+                                                            <i class="flaticon2-cross"
+                                                                style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%; padding: 5px 6px; color: #fff; font-size: 8px;"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn reqbtn"
+                                                            (click)="OpenRelatedItemsModal(i,data.value)">
+                                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                                            {{ extra.get('related_items')?.length > 0 ? 'Edit' : 'Add'
+                                                            }} Related Items
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+
+
+                                        <div>
+                                            <button class="btn btn-secondary" style="margin:1.0rem"
+                                                (click)="saveTypeForm(data.value)">
+                                                <p style="margin-bottom: 4px; margin-top: 0px;"> Save</p>
+                                            </button>
+                                        </div>
+
+                                    </table>
+                                </div>
+                            </Form>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <!-- </div> -->
+                    <!-- </form> -->
+                </div>
+
+                <div class="row rowimp thirddiv">
+                    <div class="col">
+                        <button class="btn buttonSt btnScc" (click)="saveTemplate()" [disabled]="templateForm.invalid">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                            <p style="margin-bottom: 4px; margin-top: 0px;">{{ editEnable ? "Update Template" : "Save
+                                Template" }}</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Service selection template -->
+        <div class="modal fade" id="serviceSelectionModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Please select a service</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-footer" style="display: flex;justify-content: center;gap: 5px;">
+                        <div *ngFor="let item of serviceMainCategory">
+                            <button type="button" class="btn btn-primary" (click)="handleMainCategorySelection(item.id)"
+                                style="background-color: #e91e63;border: none;">{{item.value}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Modal -->
+        <ng-template #InvSelectionModal>
+            <div>
+                <div *ngIf="selectedInventoryType === 'Existing'">
+
+                    <div class="modal-header" style="background-color: #f1f1f1;">
+                        <h4 class="modal-title" (click)="closeCustomModal()">
+                            Inventory
+                        </h4>
+                        <div style="display: flex;gap: 10px;">
+                            <div style="display: flex;gap: 5px;">
+                                <button type="button" class="btn btn-primary"
+                                    (click)="isFullInventory?handleInvItemtype('Existing',i):handleFullInventoryListing()"
+                                    style="background-color: #e3165b;border: none;">{{isFullInventory?"Back to
+                                    Inventory":"Full
+                                    Inventory"}}</button>
+                                <button type="button" class="btn btn-primary" (click)="handleInvItemtype('New',i)"
+                                    style="background-color: #e3165b;border: none;">Add New Item</button>
+                                <button type="button" class="btn btn-primary"
+                                    (click)="handleInvItemtype('Provisional',i)"
+                                    style="background-color: #e3165b;border: none;">Add Provisional
+                                    Item</button>
+                            </div>
+                            <button type="button" class="close" (click)="closeCustomModal()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                        </div>
+                    </div>
+                    <div style="padding: 15px;">
+                        <div class="modal-header" style="margin-bottom:5px;background-color: #f1f1f1;">
+                            <h5 class="modal-title" (click)="closeCustomModal()">
+                                Inventory Items
+                            </h5>
+
+                        </div>
+                        <ejs-grid #inventoryListingGrid [dataSource]="inventoryData" [toolbar]="inventoryToolbar"
+                            height="300px" (rowSelected)="onExistingSelected($event)"
+                            [selectedRowIndex]="invselectedRowIndex">
+                            <e-columns>
+                                <e-column field="inv_img" headerText="Image">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <img [src]="data.invImage && data.invImage!='' && data.invImage!=null?data.invImage:inventoryPlaceholder"
+                                                alt="Listing Image"
+                                                (click)="enlargeImage(data.invImage && data.invImage!='' && data.invImage!=null?data.invImage:inventoryPlaceholder)"
+                                                style="width: 40px; height: 25px; cursor: pointer;" />
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="item_code" headerText="Item Code">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.item_code }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="model_no" headerText="Model No">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.model_no }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+
+                                <e-column field="main_category" headerText="System Category">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">
+                                                {{ data.main_category }}
+                                            </p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="sub_category" headerText="Primary Category">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.sub_category }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+
+                                <e-column field="item_name" headerText="Item Name">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.item_name }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+
+
+                                <e-column field="brand" headerText="Brand">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.brand }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="status" headerText="Status">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.status }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="quantity" headerText="Quantity">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex">
+                                            <p style="margin-bottom: 0px">{{ data.quantity }}</p>
+                                        </div>
+                                    </ng-template>
+                                </e-column>
+                            </e-columns>
+                        </ejs-grid>
+                    </div>
+                    <div style="padding-left: 35px;padding-right:35px ;padding-bottom: 35px;"
+                        *ngIf="showSupplierRatesTable">
+                        <div class="modal-header" style="margin-bottom:5px;background-color: #f1f1f1;">
+                            <h5 class="modal-title" (click)="closeCustomModal()">
+                                Supplier Table
+                            </h5>
+                        </div>
+                        <ejs-grid #supplierListingGrid [dataSource]="supplierRatesArr" (created)='serviceSearchKeyUp()'
+                            [toolbar]="employeeGridToolItems" height="150px"
+                            (rowSelected)="onExistingVendorSelected($event)" [selectedRowIndex]="supselectedRowIndex">
+                            <e-columns>
+                                <e-column field="created_date" headerText="Created Date" textAlign="center">
+                                    <ng-template #template let-data>
+
+                                        {{ data.created_date | date : "dd/MM/y" }}
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="supplier_name" headerText="Supplier Name" textAlign="center">
+                                    <ng-template #template let-data>
+                                        {{ data.supplier_name }}
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="supplier_rate" headerText="Supplier Rate" textAlign="center">
+                                    <ng-template #template let-data>
+                                        {{ data.supplier_rate }}
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="quantity" headerText="Quantity" textAlign="center">
+                                    <ng-template #template let-data>
+                                        {{ data.quantity }}
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="supplier_rate" headerText="Currency" textAlign="center">
+                                    <ng-template #template let-data>
+                                        {{ data.currency }}
+
+                                    </ng-template>
+                                </e-column>
+                                <e-column field="conversionRate" headerText="Converted Rate to UAE Dirham"
+                                    textAlign="center">
+                                    <ng-template #template let-data>
+                                        <div style="display: flex;justify-content: center;">
+                                            {{ data.conversionRate }}
+                                            <div *ngIf="data.is_default" style="position: absolute;padding-left: 65px;">
+                                                <i class="fa fa-tag" aria-hidden="true" ngbTooltip="Default supplier"
+                                                    placement="bottom"></i>
+                                            </div>
+                                        </div>
+
+                                    </ng-template>
+                                </e-column>
+                            </e-columns>
+                        </ejs-grid>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" (click)="OnInventoryItemSave()"
+                            style="background-color: #e3165b;border: none;">Save changes</button>
+                    </div>
+                </div>
+                <div *ngIf="selectedInventoryType === 'New' || selectedInventoryType === 'Provisional'">
+                    <div class="addBox" *ngIf="addInventory">
+                        <div class="modal-header" style="margin-bottom:15px;background-color: #f1f1f1;">
+                            <h5 class="modal-title" (click)="closeCustomModal()">
+                                {{selectedInventoryType === 'New'?"Add Inventory Item":"Add Provisional Inventory
+                                Item"}}
+                            </h5>
+                            <div style="display: flex;gap: 10px;">
+                                <div style="display: flex;gap: 5px;">
+                                    <!-- <button type="button" class="btn btn-primary" (click)="handleFullInventoryListing()"
+                          style="background-color: #e3165b;border: none;">Full Inventory</button> -->
+                                    <button type="button" class="btn btn-primary"
+                                        (click)="handleInvItemtype('Existing',i)"
+                                        style="background-color: #e3165b;border: none;">Back to Inventory</button>
+                                    <button type="button" class="btn btn-primary"
+                                        (click)="handleInvItemtype(selectedInventoryType === 'New' ? 'Provisional' : 'New', i)"
+                                        style="background-color: #e3165b;border: none;"> {{selectedInventoryType ===
+                                        'New'?"Add Provisional
+                                        Inventory Item":"Add Inventory Item"}}</button>
+                                </div>
+                                <button type="button" class="close" (click)="closeCustomModal()" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                            </div>
+                        </div>
+
+                        <form [formGroup]="addInventoryTypeForm" (ngSubmit)="onSubmit()">
+                            <div class="row" style="display: flex; justify-content: center">
+                                <div class="col-5" style="display: block">
+                                    <table style="width: 100%">
+                                        <tbody>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Item Code</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <input type="text" class="form-control" id="model_No"
+                                                        formControlName="model_No" disabled="true" />
+                                                </td>
+                                            </tr>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Model No</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <input type="text" class="form-control" id="model_No"
+                                                        formControlName="model_No" />
+                                                    <div *ngIf="addInventoryTypeForm.get('model_No').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Model No is required.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Item Name</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <input type="text" class="form-control" id="itemName"
+                                                        formControlName="itemName" />
+                                                    <div *ngIf="addInventoryTypeForm.get('itemName').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Item Name is required.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Brand</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <input type="text" class="form-control" id="Brand"
+                                                        formControlName="brand" />
+                                                    <div *ngIf="addInventoryTypeForm.get('brand').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Brand is required.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Quantity</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <input type="text" class="form-control" id="quantity"
+                                                        formControlName="quantity" disabled />
+                                                </td>
+                                            </tr>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Unit</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <ejs-dropdownlist [dataSource]="InventoryUnitType"
+                                                        placeholder="Select Unit" [fields]="commonFields"
+                                                        formControlName="unit"></ejs-dropdownlist>
+                                                    <div *ngIf="addInventoryTypeForm.get('unit').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Unit is required.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Add validation messages here -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Status</label>
+                                                    <i *ngIf="isItemDisabled" class="fa fa-info-circle matpointer"
+                                                        style="padding-left: 4px" placement="left"
+                                                        ngbTooltip="Disabled items will not be displayed in the inventory listing"
+                                                        container="body"></i>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <ejs-dropdownlist [dataSource]="statusArr"
+                                                        placeholder="Select Status" [fields]="commonFields"
+                                                        formControlName="status"
+                                                        (change)="handleStatusChange($event)"></ejs-dropdownlist>
+                                                    <div *ngIf="addInventoryTypeForm.get('status').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Status is required.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-5" style="display: block">
+                                    <table style="width: 100%">
+                                        <tbody>
+                                            <!-- ... Other rows ... -->
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top"
+                                                *ngIf="!addNewFeature">
+                                                <td>
+                                                    <label>Features</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <ejs-multiselect [dataSource]="inventoryTags"
+                                                        formControlName="features" [fields]="commonFields"
+                                                        placeholder="Select a tag"></ejs-multiselect>
+                                                    <div *ngIf="addInventoryTypeForm.get('features').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Features are required.
+                                                    </div>
+                                                    <span style="
+                                                display: grid;
+                                                justify-content: flex-end;
+                                                text-decoration: underline;
+                                              " (click)="showAddnewFeature()">Add a new feature</span>
+                                                </td>
+                                            </tr>
+                                            <tr style="margin-bottom: 10px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Origin</label>
+
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <input type="text" class="form-control" id="origin"
+                                                        formControlName="origin" />
+                                                    <div *ngIf="addInventoryTypeForm.get('origin').hasError('required')"
+                                                        class="validationLabel">
+                                                        *Origin is required.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- ... Other rows ... -->
+                                            <tr style="margin-bottom: 20px; height: 50px; vertical-align: top">
+                                                <td>
+                                                    <label>Item Description</label>
+                                                </td>
+                                                <span style="margin-right: 20px">:</span>
+                                                <td>
+                                                    <textarea type="text" class="form-control" id="itemDesc"
+                                                        formControlName="itemDesc"></textarea>
+                                                    <div *ngIf="addInventoryTypeForm.get('itemDesc').hasError('maxlength')"
+                                                        class="validationLabel">
+                                                        *Item Description cannot exceed 200 characters.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- ... Other rows ... -->
+
+                                            <!-- ... Other rows ... -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </form>
+
+                        <div style="display: flex ;justify-content: center;">
+
+                            <div style="display: flex; justify-content: center; padding: 20px;width: 70%;flex-direction: column;"
+                                *ngIf="showSupplierRatesTable">
+                                <div style="display: flex;justify-content:flex-end;">
+                                    <button class="btn btnColorAll" style="margin-bottom: 10px" (click)="addSupplier()">
+                                        <i class="fa fa-plus padreq" aria-hidden="true"></i>
+                                        Add New Supplier Rate
+                                    </button>
+                                </div>
+                                <ejs-grid #closingServGrid [dataSource]="supplierRatesArr"
+                                    (created)='serviceSearchKeyUp()' [toolbar]="employeeGridToolItems" height="150px"
+                                    *ngIf="showSupplierRatesTable">
+                                    <e-columns>
+                                        <e-column field="created_date" headerText="Created Date" textAlign="center">
+                                            <ng-template #template let-data>
+                                                {{ data.created_date | date : "dd/MM/y" }}
+                                            </ng-template>
+                                        </e-column>
+                                        <e-column field="supplier_name" headerText="Supplier Name" textAlign="center">
+                                            <ng-template #template let-data>
+                                                {{ data.supplier_name }}
+                                            </ng-template>
+                                        </e-column>
+                                        <e-column field="supplier_rate" headerText="Supplier Rate" textAlign="center">
+                                            <ng-template #template let-data>
+                                                {{ data.supplier_rate }}
+                                            </ng-template>
+                                        </e-column>
+                                        <e-column field="quantity" headerText="Quantity" textAlign="center">
+                                            <ng-template #template let-data>
+                                                {{ data.quantity }}
+                                            </ng-template>
+                                        </e-column>
+                                        <e-column field="supplier_rate" headerText="Currency" textAlign="center">
+                                            <ng-template #template let-data>
+                                                {{ data.currency }}
+                                            </ng-template>
+                                        </e-column>
+                                        <e-column field="conversionRate" headerText="Converted Rate to UAE Dirham"
+                                            textAlign="center">
+                                            <ng-template #template let-data>
+                                                {{ data.conversionRate }}
+                                            </ng-template>
+                                        </e-column>
+                                    </e-columns>
+                                </ejs-grid>
+                            </div>
+                        </div>
+                        <div class="row rowimp thirddiv">
+                            <div class="col" style="gap: 10px; display: flex" *ngIf="!dataForApproval">
+                                <button class="btn buttonSt btnScc"
+                                    (click)="selectedInventoryType === 'New' ? saveInventoryType() : saveProvisionalInventoryType()"
+                                    style="display: flex;" type="submit" [disabled]="addInventoryTypeForm.invalid">
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                    <p style="margin-bottom: 4px; margin-top: 0px">
+                                        Save
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class *ngIf="!addInventory">
+                        <form [formGroup]="addSupplierForm">
+                            <div class="modal-header" style="padding: 8px 15px">
+                                <h5 class="modal-title" (click)="closeCustomModal()">
+                                    Add Supplier Rates
+                                </h5>
+                                <button type="button" class="close" (click)="closeCustomModal()" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div>
+                                <div class="row rowimp seconddiv">
+                                    <div class="col">
+                                        <table class="table" style="margin-bottom: 0rem">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Supplier Name</th>
+                                                    <th scope="col">Supplier Rate</th>
+                                                    <th scope="col">Currency</th>
+                                                    <th scope="col">Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody formArrayName="supplierTaskList">
+                                                <tr *ngFor="let task of supplierTaskList.controls; let i = index"
+                                                    [formGroupName]="i">
+                                                    <td>
+                                                        <ejs-dropdownlist [dataSource]="vendorArr"
+                                                            placeholder="Select Supplier" [fields]="commonFields"
+                                                            formControlName="SupplierName"></ejs-dropdownlist>
+                                                        <div class="errorTxt" *ngIf="
+                                    supplierTaskList.controls[i].get('taskName')?.errors
+                                          ?.required
+                                      ">
+                                                            *Supplier Name is required
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="e-input"
+                                                            placeholder="Enter Supplier Rate"
+                                                            formControlName="SupplierRate" />
+                                                    </td>
+                                                    <td>
+                                                        <ejs-dropdownlist [dataSource]="currencyList"
+                                                            placeholder="Select Currency" [fields]="commonFields"
+                                                            formControlName="SupplierCurrency"></ejs-dropdownlist>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="e-input" placeholder="Enter Quantity"
+                                                            formControlName="SupplierQuantity" />
+                                                    </td>
+                                                    <td>
+                                                        <div style="text-align: center">
+                                                            <i class="fa fa-trash commonBtn" aria-hidden="true"
+                                                                (click)="deleteTaskRow(i)"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <div>
+                                                    <button class="btn reqbtn" (click)="addNewTask()"
+                                                        style="display: flex; flex-direction: row">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        <p style="margin-bottom: 4px; margin-top: 0px">
+                                                            Add New Supplier Rate
+                                                        </p>
+                                                    </button>
+                                                </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="row rowimp thirddiv">
+                                    <div class="col" style="gap: 10px; display: flex">
+                                        <button class="btn buttonSt btnScc" (click)="saveSupplierRates()"
+                                            style="display: flex">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                            <p style="margin-bottom: 4px; margin-top: 0px">
+                                                Save Supplier Rates
+                                            </p>
+                                        </button>
+                                        <button class="btn buttonStAdd btnScc" (click)="backToinventory()"
+                                            style="display: flex">
+                                            Back
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </ng-template>
+        <div class="rightModal700">
+            <div class="modal animated slideInRight faster myDiv" id="Add_RelativeItem_modal" data-backdrop="static"
+                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" style="width: 800px;">
+                    <div class="modal-content notifyModal">
+                        <div class="modal-header" style="padding: 8px 15px;">
+                            <h5 class="modal-title">Add Related Items</h5>
+                            <button type="button" class="close" (click)="closeRelativeItemModel()"></button>
+                        </div>
+
+
+
+
+                        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+
+                            <div>
+                                <span class="badge badge-primary">{{ masterSecondaryCat }}</span>
+                                <span style="margin-left: 8px; color: #6c757d;">
+                                    Please consider using <strong>M</strong> as the reference for this
+                                    category while creating rules.
+                                </span>
+                            </div>
+
+
+
+                            <form [formGroup]="addRelatedItemForm">
+                                <div class="row">
+                                    <div class="col">
+                                        <table class="table" style="margin-bottom: 0rem;">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"> Item Name</th>
+                                                    <th scope="col">Formula</th>
+
+                                                    <th scope="col" style="text-align: center;">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody formArrayName="relatedItems">
+                                                <tr *ngFor="let task of relatedItems.controls; let i=index"
+                                                    [formGroupName]="i">
+                                                    <td>
+                                                        <!-- <textarea rows="1" class="e-input" formControlName="typeOf"></textarea> -->
+
+                                                        <ejs-dropdownlist formControlName="related_item_id"
+                                                            [dataSource]='allServicesFiltered'
+                                                            [fields]='commonAllSerFields' [allowFiltering]='true'
+                                                            placeholder='Select a Type'>
+                                                            <!-- Custom template for displaying both id and name -->
+                                                            <ng-template #itemTemplate let-data>
+                                                                <span><strong>{{ data.primaryCat }}</strong>- {{ data.value }}</span>
+                                                            </ng-template>
+                                                        </ejs-dropdownlist>
+
+                                                    </td>
+
+                                                    <td>
+
+                                                        <input type="text" class="e-input" placeholder="Enter a Formula"
+                                                            formControlName="rule">
+                                                    </td>
+                                                    <td>
+                                                        <div style="text-align: center;">
+                                                            <i class="fa fa-trash commonBtn" aria-hidden="true"
+                                                                (click)="deleteRelatedItems(i)"></i>
+                                                        </div>
+                                                    </td>
+
+
+
+                                                </tr>
+                                                <div>
+                                                    <button class="btn reqbtn" (click)="AddRelatedItems()">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        <p style="margin-bottom: 4px; margin-top: 0px;">Add New Related
+                                                            Item</p>
+                                                    </button>
+                                                </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </form>
+
+
+
+
+
+                        </div>
+                        <div class="footerdiv">
+                            <button class="btn buttonSt btnScc" (click)="saveRelatedItems()">
+                                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                <p style="margin-bottom: 4px;margin-top: 2px;">Save Rule</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

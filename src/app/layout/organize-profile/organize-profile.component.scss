@@ -1,0 +1,27 @@
+.toggle-btn{
+    padding-right: 15px;
+}
+.kt-form__body label{
+    color: grey;
+}
+.btn .btn-success{
+    padding: 2px 14px;
+    font-size: 12px;
+}
+.profileTabsContainer{
+    @media (max-width: 600px){
+        .nav-tabs.nav-tabs-line.nav-tabs-space-xl .nav-item {
+            margin-right: 8px !important;
+        }
+        .nav-tabs.nav-tabs-line.nav-tabs-bold .nav-item .nav-link {
+            // font-weight: 500;
+            font-size: 10px;
+        }
+        .nav-tabs.nav-tabs-line .nav-link svg {
+             margin-right: 2px !important;
+            height: 10px !important;
+            width: 10px !important;
+        }
+    }
+  
+}

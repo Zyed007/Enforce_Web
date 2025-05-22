@@ -1,0 +1,640 @@
+<div *ngIf="accessToPage" class="startdiv">
+
+  <!-- Select Time Period -->
+  <div class="row rowimp rowcard1" style="margin-top: 10px;" *ngIf="getHeaderValue !== 'PENDING LEAVES'">
+    <div class="col" >
+      <div style="text-align: end;" >
+        <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+          role="tablist" style="border-bottom: none; display: inline-flex; margin-bottom: 0px; width: 30%;">
+          <li class="nav-item" (click)="getTodaysData()" style="margin-right: 15px;">
+            <a style="padding: 5px 0;" class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab"
+              href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+              Today
+            </a>
+          </li>
+          <li class="nav-item" (click)="getWeeksData()" style="margin-right: 15px;">
+            <a style="padding: 5px 0;" class="nav-link" [ngClass]="{'active': isWeekActive}" data-toggle="tab"
+              href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+              Week
+            </a>
+          </li>
+          <li class="nav-item" (click)="getMonthsData()" style="margin-right: 15px;">
+            <a style="padding: 5px 0;" class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab"
+              href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+              Month
+            </a>
+          </li>
+          <li class="nav-item">
+            <div style="width: 125%;">
+              <form [formGroup]="dateRangeForm">
+                <ejs-daterangepicker format='dd MMMM yyyy' placeholder='Select a Date range' [max]="maxRangeDateTwo"
+                  formControlName='dateRange'>
+                  <e-presets>
+                    <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                    <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                    <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                    <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                  </e-presets>
+                </ejs-daterangepicker>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Dashboard Details -->
+  <div class="row rowimp rowcard" style="margin-top: 5px;">
+    <!-- <div class="col-12" style="display: flex; margin: 2px;">
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('In Service', 'employee')">
+          <p class="headerA">
+            In Service
+            <i class="fa fa-info-circle" container="body" ngbTooltip="Number of employees in service"
+              placement="top"></i>
+          </p>
+          <div>
+            <p class="headerB">
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Out Of Service', 'employee')">
+          <p class="headerA">
+            Out Of Service
+            <i class="fa fa-info-circle" container="body" ngbTooltip="Number of employees out of service"
+              placement="top"></i>
+          </p>
+          <div>
+            <p class="headerB">
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Profile Incomplete', 'employee')">
+          <p class="headerA">
+            Profile Incomplete
+            <i class="fa fa-info-circle" container="body" ngbTooltip="Number of employees without profile completed"
+              placement="top"></i>
+          </p>
+          <div style="display: flex; flex-direction: row;">
+            <p class="headerB">
+
+            </p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="borderCard" (click)="cardClick('Without Team', 'employee')">
+          <p class="headerA">
+            Without Team
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="Number of employees which are not assigned with any Team" placement="top"></i>
+          </p>
+          <div>
+            <p class="headerB">
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="col">
+      <div>
+        <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)"
+          class="tabseStyle2">
+          <e-tabitems>
+            <e-tabitem *ngFor='let header of headerText' [header]='header'>
+
+              <ng-template #content *ngIf='header.text=="Summary"'>
+                <ejs-grid #empTabledataTableGrid [toolbar]="summaryToolbar" (created)="empTableSearchKeyUp()"
+                  [dataSource]="employeeSummaryList" (toolbarClick)="employeeSummaryListDownload($event)"
+                  [searchSettings]="searchOptions" allowTextWrap="true" [allowExcelExport]="true" height="350px"
+                  allowSorting="true">
+                  <e-columns>
+                    <e-column field="Name" headerText="Full Name" width="120">
+                      <ng-template #template let-data>
+                        <span class="empName" (click)="viewSingleEmpRequestFromSettings(data.emp_id)">{{
+                          data.Name}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="present_day" headerText="Present Days" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.present_day }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="absent_day" headerText="Absent Days" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.absent_day }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="leave_day" headerText="Leave Days" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.leave_day }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="lesshour_day" headerText="Less Hours" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.lesshour_day }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="overtime_day" headerText="Over Time" width="100">
+                      <ng-template #template let-data>
+                        <span>{{ data.overtime_day }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="break_day" headerText="Break Days" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.break_day }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="override_time" headerText="Override Request" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.override_time }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="leave_avail" headerText="Leave Available" width="110">
+                      <ng-template #template let-data>
+                        <span>{{ data.leave_avail }}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+
+              <ng-template #content *ngIf='header.text=="Attendence"'>
+                <div class="hremplist">
+                  <ejs-dropdownlist id='ddlelement' #samples [dataSource]='employeeList' [fields]='fields'
+                    [placeholder]='emptext' [allowFiltering]='true' (change)='onFiltering($event)'></ejs-dropdownlist>
+                </div>
+                <ejs-grid #hrAttendanceGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true'
+                  (toolbarClick)='hrAtendanceGridDownload($event)' [dataSource]='hrCheckAttData' allowTextWrap='true'
+                  height="350px" allowSorting='true'>
+                  <e-columns>
+
+                    <e-column field='theday' headerText='Date' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.theday}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='full_name' headerText='Employee Name' textAlign='' width=120>
+                      <ng-template #template let-data>
+                        <span>{{data.full_name}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='real_check_in' headerText='Real Check In' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.real_check_in }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='check_in' headerText='Check In (Adjusted to work start time)' textAlign=''
+                      width=140>
+                      <ng-template #template let-data>
+                        <span>{{data.check_in }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='check_out' headerText='Check Out' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.check_out }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='real_tot_min' headerText='Real Total Hrs' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.real_tot_min}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='tot_min' headerText='Total Hrs' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.tot_min}}</span>
+                      </ng-template>
+                    </e-column>
+                    <!-- <e-column field='reallessminutes' headerText='Real Less Hours' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.reallessminutes}}</span>
+                      </ng-template>
+                    </e-column> -->
+
+                    <e-column field='worklocation' headerText='Work Location' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.worklocation}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='weekday' headerText='Week Day' textAlign='' width=110>
+                      <ng-template #template let-data>
+                        <span>{{data.weekday}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='worktimestatus' headerText='WorkTime Status' textAlign='' width=120>
+                      <ng-template #template let-data>
+                        <span>{{data.worktimestatus}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='workdaystatus' headerText='WorkDay Status' textAlign='center' width=160>
+                      <ng-template #template let-data>
+                        <span>{{ data.workdaystatus }}</span>
+                        <!-- <span *ngIf="data.leave_applied"><br></span>
+                        <span *ngIf="data.leave_applied && data.leave_status!=='approved'" style="font-weight: 500;">
+                          {{ data.leavename }}
+                        </span>
+                        <br>
+                        <span *ngIf="data.leave_applied && data.leave_status!=='approved'" [ngClass]="{
+                          'text-danger': data.leave_status == 'rejected',
+                          'text-pink': data.leave_status == 'pending'
+                        }" style="font-weight: 500;">
+                          ({{ data.leave_status }})
+                        </span> -->
+                      </ng-template>
+
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+              <ng-template #content *ngIf='header.text=="Leave Requested"'>
+                <ejs-grid #leaveRequestGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true'
+                  (toolbarClick)='leaveRequestGridDownload($event)' [dataSource]='leaveRequestedData' allowTextWrap='true'
+                  height="350px" allowSorting='true' allowFiltering="true">
+                  <e-columns>
+
+                    <e-column field='emp_name' headerText='Name' textAlign='' width=110></e-column>
+                    <e-column field='leave_name' headerText='Leave Name' textAlign='' width=110></e-column>
+                    <e-column field='leave_start_date' headerText='Leave Start Date' textAlign='' width=140>
+                      <ng-template #template let-data>
+                        <span>{{data.leave_start_date | date }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='leave_end_date' headerText='Leave End Date' textAlign='' width=140>
+                      <ng-template #template let-data>
+                        <span>{{data.leave_end_date | date }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='leave_days_applied' headerText='Leave Days' textAlign='' width=80></e-column>
+                    <e-column field='leave_status' headerText='Leave Status' textAlign='' width=80>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.leave_status === 'pending'" class="pending">Pending</span>
+                        <span *ngIf="data.leave_status === 'approved'" class="approve">Approved</span>
+                        <span *ngIf="data.leave_status === 'declined'" class="decline">
+                          Declined
+                          <div *ngIf="data.decline_reason" class="decline-reason">({{data.decline_reason}})</div>
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="" textAlign="Centre" width="100" allowFiltering="false" showFilterBarOperator="false">
+                      <ng-template #template let-data>
+                        <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Asset Details" container="body" (click)="openApproverLeaveFormModel(data)" >
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                      </ng-template>
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+              <ng-template #content *ngIf='header.text=="Pending Leaves"'>
+                <ejs-grid #leaveRequestGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true'
+                  (toolbarClick)='leaveRequestGridDownload($event)' [dataSource]='pendingLeaveRequestedData' allowTextWrap='true'
+                  height="350px" allowSorting='true' allowFiltering="true">
+                  <e-columns>
+
+                    <e-column field='emp_name' headerText='Name' textAlign='' width=110></e-column>
+                    <e-column field='leave_name' headerText='Leave Name' textAlign='' width=110></e-column>
+                    <e-column field='leave_start_date' headerText='Leave Start Date' textAlign='' width=140>
+                      <ng-template #template let-data>
+                        <span>{{data.leave_start_date | date }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='leave_end_date' headerText='Leave End Date' textAlign='' width=140>
+                      <ng-template #template let-data>
+                        <span>{{data.leave_end_date | date }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='leave_days_applied' headerText='Leave Days' textAlign='' width=80></e-column>
+                    <e-column field='leave_status' headerText='Leave Status' textAlign='' width=80>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.leave_status === 'pending'" class="pending">Pending</span>
+                        <span *ngIf="data.leave_status === 'approved'" class="approve">Approved</span>
+                        <span *ngIf="data.leave_status === 'declined'" class="decline">
+                          Declined
+                          <div *ngIf="data.decline_reason" class="decline-reason">({{data.decline_reason}})</div>
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="" textAlign="Centre" width="100" allowFiltering="false" showFilterBarOperator="false">
+                      <ng-template #template let-data>
+                        <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Asset Details" container="body" (click)="openApproverLeaveFormModel(data)" >
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                      </ng-template>
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+
+              <ng-template #content *ngIf='header.text=="Break"'>
+                <ejs-grid #hrBreakGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true'
+                  (toolbarClick)='hrBreakGridDownload($event)' [dataSource]='hrBreakData' allowTextWrap='true'
+                  height="350px" allowSorting='true'>
+                  <e-columns>
+                    <e-column field='ondate' headerText='Date' textAlign='' width=80>
+                      <ng-template #template let-data>
+                        <span>{{data.ondate}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='createdby' headerText='Employee Name' textAlign='' width=120>
+                      <ng-template #template let-data>
+                        <span>{{data.createdby}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='break_in' headerText='Break In' textAlign='' width=120>
+                      <ng-template #template let-data>
+                        <span>{{data.break_in | date:'h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='break_out' headerText='Break Out' textAlign='' width=100>
+                      <ng-template #template let-data>
+                        <span>{{data.break_out | date:'h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='total_hrs' headerText='Total Hrs' textAlign='' width=100>
+                      <ng-template #template let-data>
+                        <span>{{data.total_hrs}}</span>
+                      </ng-template>
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+
+
+            </e-tabitem>
+          </e-tabitems>
+        </ejs-tab>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+<!-- view leave apply module -->
+<div class="modal fade" id="leave_apply_modul" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog importWid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+         Leave Request
+        </h5>
+        <button type="button" class="close" (click)="closeApproverLeaveFormModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="leaveData?.is_exception"><p><strong style="color: red">EXCEPTION LEAVE</strong></p></div>
+        <div>
+          <p>
+            <strong>{{ leaveData?.full_name }}</strong> has applied for
+            <strong>{{ leaveData?.leave_name }}</strong> from
+            <strong>{{
+              leaveData?.leave_start_date | date : "MMM d, y"
+              }}</strong>
+            to
+            <strong>{{ leaveData?.leave_end_date | date : "MMM d, y" }}</strong>
+            for a duration of
+            <strong>{{ leaveData?.leave_days_applied }}</strong> days.
+          </p>
+          <p>Leave Type : <strong>{{ leaveData?.leave_type }}</strong></p>
+          <p>Reason mentioned for leave : {{ leaveData?.emp_notes }}</p>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="contactBox">
+              <div class="contheader">
+                <h1 style="font-size: 13px">Contact Details</h1>
+              </div>
+              <div style="padding: 3px 15px 15px 15px">
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Email: {{ leaveData?.email }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Phone: {{ leaveData?.phone }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Leave Location:
+                  {{
+                  leaveData?.is_local_leave === true
+                  ? "Local Leave"
+                  : "Outside Country"
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="contactBox">
+              <div class="contheader">
+                <h1 style="font-size: 13px">Leave Details</h1>
+              </div>
+              <div style="padding: 3px 15px 15px 15px">
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Leave Name: {{ assignedLeavesToEmpData?.leave_name }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Total Available leave days:
+                  {{ assignedLeavesToEmpData?.available_leave_days !== null && assignedLeavesToEmpData?.available_leave_days !== undefined ? assignedLeavesToEmpData.available_leave_days : 'N/A' }}
+
+                  <i class="fa fa-info-circle" container="body"
+                    *ngIf="assignedLeavesToEmpData?.leave_name ? assignedLeavesToEmpData.leave_name.toLowerCase() === 'sick leave' : false"
+                    [ngbTooltip]="(sickLeaveProfileDetails?.is_accrued ? 'Calculation Method: Accrued Methodology'
+                    : 'Calculation Method: Full Availability') + ' ' +
+                    (sickLeaveProfileDetails?.is_full_eoy ? 'Based on Calendar End of Year'
+                    : 'Based on Contract Year') + ' Duration: ' + (lastsickDuration ? lastsickDuration : 'N/A')"
+                    placement="top">
+                  </i>
+                </p>
+
+
+                <p *ngIf="showLeaveFunBtn" style="margin-bottom: 0px; margin-top: 0px">
+                  Pending Leave Approval :{{ remaingpending }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Current Leave Request days:{{ leaveData?.leave_days_applied }}
+                </p>
+                <!-- <p style="margin-bottom: 0px;margin-top: 0px;">Available leave days : {{assignedLeavesToEmpData?.available_leave_days - pendingleaveapp}}</p> -->
+                <!-- <p *ngIf="!showLeaveFunBtn"style="margin-bottom: 0px;margin-top: 0px;">Balance leave days: {{assignedLeavesToEmpData?.available_leave_days}}</p> -->
+                <p *ngIf="showLeaveFunBtn" style="margin-bottom: 0px; margin-top: 0px">
+                  Balance leave days:
+                  {{
+                  assignedLeavesToEmpData?.available_leave_days -
+                  remaingpending -
+                  leaveData?.leave_days_applied | number : ".2"
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="statusBox" *ngIf="leaveData?.doc_url">
+          <div>
+            <span style="font-size: 14px; font-weight: 500; margin-right: 55px;">Document :</span>
+            <!-- <a style="font-size: 13px" (click)="ViewDoc(leaveData.doc_url)" class="hyperlink">View</a> -->
+            <a style="font-size: 13px"  (click)="ViewDoc(leaveData.doc_url)" class="hyperpoint"><i class="fa fa-eye" aria-hidden="true" style="font-size: medium;"></i></a>
+          </div>
+        </div>
+
+        <div class="statusBox">
+          <span style="font-size: 14px; font-weight: 500; margin-right: 30px;">All Leave Status</span>
+          <a *ngIf="!showleavestatus" style="font-size: 13px" (click)="showleave()" class="hyperpoint"><i class="fa fa-eye" aria-hidden="true" style="font-size: medium;"></i></a>
+          <a *ngIf="showleavestatus" style="font-size: 13px" (click)="showleave()" class="hyperpoint"><i class="fa fa-close" aria-hidden="true" style="font-size: medium;"></i></a>
+          <!-- <mat-icon (click)="showleave()" style="cursor: pointer">visibility</mat-icon> -->
+          <table class="table" style="margin: 10px 0px; border: 1px solid #e9ecef" *ngIf="showleavestatus">
+            <thead style="width: 100%; text-align: center">
+              <tr>
+                <th scope="col">Leave Name</th>
+                <th scope="col">Entitled Leave</th>
+                <th scope="col">Available Leave</th>
+              </tr>
+            </thead>
+            <tbody style="overflow: auto; text-align: center">
+              <tr *ngFor="let profile of otherAssignedLeavesToEmpData">
+                <td style="padding: 5px !important">
+                  {{ profile.leave_name }}
+                </td>
+                <td style="padding: 5px !important">
+                  {{ profile.entitled_leave_days }}
+                </td>
+                <td style="padding: 5px !important">
+                  {{ profile.available_leave_days }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="statusBox">
+          <h1 style="font-size: 13px">Request Status</h1>
+          <p style="margin-bottom: 0px" *ngIf="leaveData?.approver1_roleId == null">
+           <strong class="approve"> Self Approved</strong>
+          </p>
+          <p style="margin-bottom: 0px"  *ngIf="leaveData?.approver1_roleId != null">
+            Level 1: {{ leaveData?.approver1_Emp_Name }} (<strong>{{
+              leaveData?.approver1_Role_Name
+              }}</strong>) approval status is
+            <span style="padding: 0px" [ngClass]="
+                leaveData?.approval1_status == 'pending'
+                  ? 'pending'
+                  : leaveData?.approval1_status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ leaveData?.approval1_status }}</span>
+          </p>
+          <p style="margin-bottom: 0px" *ngIf="leaveData?.approver2_roleId !== null">
+            Level 2: {{ leaveData?.approver2_Emp_Name }} (<strong>{{
+              leaveData?.approver2_Role_Name
+              }}</strong>) approval status is
+            <span style="padding: 0px" [ngClass]="
+                leaveData?.approval2_status == 'pending'
+                  ? 'pending'
+                  : leaveData?.approval2_status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ leaveData?.approval2_status }}</span>
+          </p>
+        </div>
+
+
+        <div class="statusBox">
+          <h1 style="font-size: 13px">
+            Leave History - Total {{ employeeLeaveHistory?.length }} Leave Requests
+          </h1>
+          <h1 style="font-size: 13px;">
+            Leave Profile Start Date - {{ assignedLeavesToEmpData?.profile_effective_from_date | date: 'MMMM d, y' }} ({{datecalculator}})
+          </h1>
+          <h1 *ngIf="openbalancedays!=0" style="font-size: 13px;">
+            Open Balance Days  - {{ openbalancedays }}
+          </h1>
+
+          <div class="leave-filter">
+            <label class="radio-option">
+              <input type="radio" name="leaveType" value="all" checked (change)="filterLeaves('all')"> All Leaves ({{totalsepLeaveDays}} Days)
+            </label>
+            <label *ngFor="let leave of leavesHistory" class="radio-option" [for]="leave.leave_name">
+              <input
+                type="radio"
+                name="leaveType"
+                [value]="leave.leave_name"
+                (change)="filterLeaves(leave.leave_name)">
+                {{ leave.leave_name }} ({{ leave.total_days || 0 }} Days)
+                <i class="fa fa-info-circle" container="body" *ngIf="leave.leave_name == 'Sick Leave' && leaveData?.leave_name == 'Sick Leave'"
+                [ngbTooltip]="sickLeaveDetails"
+                placement="top">
+                </i>
+              </label>
+          </div>
+          <table class="table">
+            <thead style="width: 100%; display: inline-table">
+              <tr>
+                <th scope="col">Applied Date</th>
+                <th scope="col">Leave Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Total Days</th>
+              </tr>
+            </thead>
+            <tbody style="display: block; height: 90px; overflow: auto">
+              <tr *ngFor="let empData of leavebackup">
+                <td>{{ empData.ondate_applied | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_name }}</td>
+                <td>{{ empData.leave_start_date | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_end_date | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_days_applied }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showLeaveFunBtn">
+        <button type="button" class="btn approvebtn btn-outline-dark" (click)="approveNotificationLeave(leaveData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark" (click)="declineNotificationLeave(leaveData)">
+          Decline
+        </button>
+      </div>
+      <div class="modal-footer" *ngIf="showOwnerMessage">
+        <p>This request was approved directly by the Account Owner</p>
+      </div>
+    </div>
+  </div>
+</div>

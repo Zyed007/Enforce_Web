@@ -1,0 +1,758 @@
+<!-- begin:: Subheader -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css" />
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+               Set Up                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                            Customer                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Contact                    </a>
+                                            <span *ngIf="editable  && !showDeptList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showDeptList" class="kt-subheader__breadcrumbs-link">
+                              Edit Contact                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+
+                    </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+       
+    </div>
+</div>
+<!-- end:: Subheader -->
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+											
+    <!-- begin:: Subheader -->
+    
+    <!-- end:: Subheader -->
+                        
+                        <!-- begin:: Content -->
+        <div *ngIf="showDeptList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+    <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <!-- <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-line-chart"></i>
+                        </span> -->
+                        <h3 class="kt-portlet__head-title">
+                            Contacts 
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                        <!-- <div class="dropdown dropdown-inline">
+                            <button type="button" class="button button-fill button-rose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i> Export  	
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" style="">
+                                <ul class="kt-nav">
+                                  
+                                    <li class="kt-nav__item">
+                                        <a (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Hifza'}})" class="kt-nav__link">
+                                            <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                                            <span class="kt-nav__link-text">Excel</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-nav__item">
+                                            <a (click)="exporter.exportTable('json')" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                                                <span class="kt-nav__link-text">PDF</span>
+                                            </a>
+                                        </li>
+                              
+                                    
+                                </ul>
+                            </div>
+                        </div> -->
+                        &nbsp;
+
+
+                        <div class="dropdown dropdown-inline">
+                         
+                                <button type="button" class="button button-fill button-rose"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon2-plus" ></i> Add New  	
+                                    </button>
+        <button type="button" style="margin-left: 10px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+                      
+                        </div>
+                    </div>	
+                    </div>		</div>
+               
+                </div>
+           
+    
+       
+       <div class="kt-portlet__body "  style=" border-bottom-color: #f0f3ff;
+        color: #595d6e;" >
+       
+       
+                  
+                  <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                      
+          
+                  <ejs-grid [dataSource]='data12' #grid height="315px" allowTextWrap='true' [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                  [allowExcelExport]='true' [allowPdfExport]='true'   >
+                    <e-columns >
+                        
+                           
+
+                              
+                        <e-column field='name' headerText='Name'  width=120></e-column>
+                        <e-column field='email' headerText='Email'  width=120></e-column>
+                        <e-column field='phone' headerText='Phone'  width=150></e-column>
+                        
+                              
+                               <!-- <e-column type=''  headerText='Name' width=140 
+                               > 
+                                <ng-template #template let-data let-i=index > 
+                                  <div><span style="text-transform: capitalize;" >{{data.lead_name}}
+                                    </span><span *ngIf="data.is_company!=null?data.is_company==true:false"  ngbPopover="Organization Name"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                                    margin-left: 5px;" container="body">
+                                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                                      color: #fff;
+                                      font-size: 10px;
+                                      "></i>
+                                    </span></div>
+                                    <div>{{data.email}}</div>   
+                              </ng-template>
+                           
+                             
+
+                     </e-column> -->
+                        <!-- <e-column field='cst_name' headerText='Customer Name' width=120></e-column> -->
+                        <!-- <e-column field='company_name' headerText='Company'  width=120></e-column> -->
+                        <!-- <e-column field='lead_source' headerText='Source'  width=100></e-column>
+                        <e-column field='lead_status' headerText='Status'  width=120></e-column> -->
+                        <!-- <e-column field='rating_name' headerText='Rating'  width=100></e-column> -->
+                        <!-- <e-column field='no_of_employee' headerText='Employee Count'  width=120></e-column> -->
+                        <e-column field='industry_type_name' headerText='Industry'  width=120></e-column>
+                        <!-- <e-column field='ondate' headerText='Date'  width=120></e-column> -->
+
+                        <!-- <e-column field='annual_revenue' headerText='Revenue'  width=120></e-column> -->
+                        <!-- <e-column field='email' headerText='Email'  width=120></e-column> -->
+                        <!-- <e-column field='cst_name' headerText='Customer Name' width=120></e-column> -->
+
+                        <!-- <e-column field='phone' headerText='Phone' textAlign='Left' width=120></e-column> -->
+                        <e-column field='primary_name' headerText='Primary Name'  width=150></e-column>
+                        <e-column field='primary_email' headerText='Primary Email'  width=150></e-column>
+                        <e-column field='primary_phone' headerText='Primary Phone'  width=150></e-column>
+                        <e-column field='created_date' headerText='Date' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <!-- <button mat-menu-item (click)="openDialog(data)">Edit</button> -->
+                              <span style="text-transform: capitalize;" >{{data.created_date| date :  "dd/MM/y"}}</span>
+                               <!-- <div style="font-size: 11px;">Customer</div> -->
+                                        
+                      </ng-template>
+                        </e-column>
+                        <e-column type='' headerText='Actions'  width='110'>
+                          <ng-template #template let-data>
+                          
+                                  <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                  <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.id)"> <i class="la la-edit"></i> </a>
+                                   
+                                  <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.id)"><i class="la la-trash"></i>						</a>
+                                            
+                          </ng-template>
+                      </e-column>
+                      
+                        <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                    </e-columns>
+                    </ejs-grid>
+                    <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+                </div>
+
+        </div>
+    </div>
+  </div>
+
+    <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+    <div class="kt-portlet kt-portlet--tabs">
+           
+       
+                        <div class="row">
+                    <div class="col-lg-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet" style="margin-bottom: 0px;">
+                                <div class="kt-portlet__head kt-portlet__head--lg">
+                                        <div class="kt-portlet__head-label">
+                                            
+                                            <h3 class="kt-portlet__head-title">
+                                              Contact
+                                            </h3>
+                                        </div>
+                                        <div class="kt-portlet__head-toolbar">
+                                            <div class="kt-portlet__head-wrapper">
+                                    <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                                        <i class="la la-long-arrow-left"></i>
+                                        Back
+                                    </a> -->
+                                    &nbsp;
+                                    <div class="dropdown dropdown-inline">
+                                        <button type="button" class="button button-fill button-rose"  (click)='DeptView()' aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back	
+                                        </button>
+                
+                                  
+                                    </div>
+                                </div>		</div>
+
+                               
+                                    </div>
+                                    
+                            <!--begin::Form-->
+                            <div class="tab-content">
+
+                                <div class="tab-pane" id="kt_user_edit_tab_1"  [ngClass]="{ 'active':activeTab==='kt_user_edit_tab_1'}" role="tabpanel">
+                            <!-- <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                      Lead Information
+                                    </h3>
+                                </div>
+                            </div> -->
+                            <div class="kt-form kt-form--label-right leadForm"  >
+                                <div class="kt-portlet__body">
+                                  
+                                    <div class="kt-form kt-form--label-right">
+                                        <div class="kt-form__body">
+                                            <div class="kt-section kt-section--first" style="margin-bottom: 0px;">
+                                                <div class="kt-section__body">
+                            <form class="kt-form kt-form--label-right " [formGroup]="leadCustomerForm"  >
+                                  
+                                            
+                              <div class="form-group row leadForm">
+
+
+                                  <div class="col-lg-6 col-sm-12">
+              
+                                    <label style="color: grey;" for="exampleTextarea">Related To</label>
+                                    <select2  [data]="relatedToData" [options]="deptOptions" [value]="relatedValue"
+                                (valueChanged)="changedRelatedData($event)"></select2>
+                                    <!-- <div *ngIf="isActivityLogFieldValid('purpose')" style="color: red;">Required.</div>  -->
+              
+                                  </div>
+              
+              
+              
+              
+                                  <div class="col-lg-6 col-sm-12" *ngIf="(relatedValue!='' &&  relatedValue!='Select')">
+              
+                                    
+                                    <select2  [data]="typeData" [options]="deptOptions" [value]="typeValue"
+                                (valueChanged)="changedType($event)"></select2>
+                                <div style="display: flex;width: 100%;margin-bottom: 4px;" for="exampleTextarea"><div style="color: grey;">{{typeName}}</div><div (click)="openDetailedView('activityLog')" *ngIf="relatedValue!=''"   style="cursor:pointer; text-align: right;color: blue;width: 100%;
+                                   ">Search</div></div>
+                                    <!-- <div *ngIf="isActivityLogFieldValid('purpose')" style="color: red;">Required.</div>  -->
+              
+              
+                                  </div>
+
+                               </div>
+                                                
+                                               
+                                               
+                                               
+                                            
+
+                                                    <div style="margin-top: 15px;">
+
+                                                       
+                                                            <div class="form-group row"  >
+                                                            
+                                                          
+                                                            <div class="col-lg-6">
+                                                                <label for="exampleTextarea">First Name</label>
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        <input class="form-control" type="text" value="" formControlName="fname" placeholder="Name">
+                        <div *ngIf="(addCstformSubmitted) && (leadCustomerForm.get('fname').value==''||leadCustomerForm.get('fname').value==null)" class="error-msg">Required.</div>  
+                                                            </div>
+                                                            <div class="col-lg-6" >
+                                                               
+                                                                      <label for="exampleTextarea">Last Name</label>
+
+                                                                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                                                                      <input class="form-control" type="text" value="" formControlName="lname" placeholder="Name">
+                                                                      <div *ngIf="(addCstformSubmitted) && (leadCustomerForm.get('lname').value==''||leadCustomerForm.get('lname').value==null)" class="error-msg">Required.</div>  
+                                                                
+                                                            </div>
+                                                        </div>
+                                                      
+                                                     
+                                                      
+                                                        <div class="form-group row" >
+                                                            <div class="col-lg-6">
+                                                              <label for="exampleTextarea">Contact Number</label>
+                                                              <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Enter Number">
+                                                              <div class="form-text text-muted">
+                                                                Eg: Phone number format (+XX-XXXXXXXX)  
+                                                                </div>
+                                                              <div *ngIf="(addCstformSubmitted) && (leadCustomerForm.get('phone').value==''||leadCustomerForm.get('phone').value==null)" class="error-msg">Required.</div>  
+                                      
+                                                              <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                                                              <div *ngIf="leadCustomerForm.controls['phone'].errors && !leadCustomerForm.controls['phone'].pristine"
+                                                              class="error-msg">
+                                                              
+                                            
+                                                              <div [hidden]="leadCustomerForm.controls['phone'].errors && !leadCustomerForm.controls['phone'].errors.patternInvalid">Enter a valid contact no 
+                                                                  </div>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                              <label for="exampleTextarea">Contact Email</label>
+
+                                                              <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                                                              <input class="form-control" type="email" value="" formControlName="email" placeholder="Email">
+                                                              <div *ngIf="(addCstformSubmitted) && (leadCustomerForm.get('email').value==''||leadCustomerForm.get('email').value==null)" class="error-msg">Required.</div>  
+                                      
+                                                              <div *ngIf="leadCustomerForm.controls['email'].errors && !leadCustomerForm.controls['email'].pristine"
+                                                              class="error-msg">
+                                        
+                                                              <div [hidden]="!leadCustomerForm.controls['email'].errors.pattern">Enter a valid email 
+                                                                  </div>
+                                                                  </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" >
+
+                                                          <div class="col-lg-6">
+                                                            <label>Relationship</label>
+                                                            <select2 [data]="relationData" [options]="taskOptions" [value]="cstRelationValue"
+                          (valueChanged)="changedCstRelation($event)"></select2>
+                                                            <!-- <input class="form-control" type="text" value="" formControlName="relationship"  placeholder="Enter Relationship"> -->
+                                                            <!-- <select2 id="selWidth" [data]="departmentData" [options]='taskOptions'  [value]="deptValue"    (valueChanged)="changedDept($event)"></select2> -->
+                                
+                                                            <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                                           
+                                                                <div class="form-text text-muted">
+                                                                  </div>
+                                                        </div>
+                                                        <div class="col-lg-6" *ngIf="showOrgDetails">
+                                                          <label>Designation</label>
+                                                          <input class="form-control" type="text" value="" formControlName="designation"  placeholder="Enter Designation">
+                                                          <!-- <select2  [data]="desgnData" [options]='taskOptions'  [value]="desgnValue"    (valueChanged)="changedDesgn($event)"></select2> -->
+                              
+                                                          <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                                         
+                                                              <div class="form-text text-muted">
+                                                                </div>
+                                                      </div>
+                                                          </div>
+                                                        <div class="form-group row" >
+
+                                                        
+                                                          <div class="col-lg-6">
+                                                            <label>Note</label>
+                                                            <input class="form-control" type="text" value="" formControlName="note"  placeholder="Enter Notes">
+                                
+                                                            <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                                           
+                                                                <div class="form-text text-muted">
+                                                                  </div>
+                                                        </div>
+                                                            </div>
+                                                    
+                                                   
+                                                </div>
+                                                    
+                                                    </form>
+                                                    <div style="padding: 0px 150px;">
+                                           
+                                              </div>
+                                               
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                    
+                                </div>
+                                <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                  <div class="kt-form__actions">
+                <!-- <div class="required-msg" *ngIf="addformSubmitted && (ownerValue=='' || leadSourceValue=='' ||  statusValue=='')">Please fill the required fields</div> -->
+
+                                      <div class="row">
+                                          <!-- <div class="col-lg-2"></div> -->
+                                          <div class="col-lg-10">
+                                                  <span *ngIf="AddNewSubmit" style="margin-right: 10px;">
+                                                          <button type="reset" class="btn btn-success" (click)=" onAddNewSubmit($event)">Submit & New</button>
+                                                      </span>
+                                                  <button type="reset" class="btn btn-success" (click)="editable ? onEditSubmit($event) : onAddSubmit($event)">Submit</button>
+                                                  <button type="reset" class="btn btn-secondary"  (click)='DeptView()' style="margin-left:10px;">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                                <!-- <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <button type="submit" (click)="search('kt_user_edit_tab_2')"   class="btn btn-success" style="width: 92px;"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                                                </button>  
+                                            
+                                                  </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                              </div>
+                            <!--end::Form-->
+                           </div>
+                     
+
+                           </div>
+                        </div>
+                     
+                    </div>
+                </div>	
+    <!-- end:: Content -->				</div>
+    
+    </div>
+
+</div>
+   
+
+   
+<div #poup2 class="modal  animated slideInDown faster myDiv" tabindex="-1" id="details_view_modal" data-backdrop="static"
+role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content centerModal">
+    <div class="modal-header" style="padding: 8px 15px;">
+      <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Select</h5>
+      <button type="button" class="close" data-dismiss="modal" (click)="closeDetailsViewModal()"
+        aria-label="Close">
+      </button>
+    </div>
+
+
+    <div class="modal-body" style="
+overflow-y: auto;
+overflow-x: hidden;">
+<!-- <button (click)="closeDetailsViewModal()"
+class="button button button-fill button-rose">Checkout</button> -->
+      <div class="kt-demo-panel__body ">
+        <div class="kt-demo-panel__item ">
+          <div class="kt-demo-panel__item-title">
+            <ejs-grid *ngIf="typeName=='Lead'" [dataSource]='leadSourceData' height="250px" allowTextWrap='true'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='relatedSearchToolbar'  
+              >
+              <e-columns >
+                  
+                     
+ <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+ <e-column type='' headerText=''  width='80'>
+  <ng-template #template let-data>
+    <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio" style="margin-top: -20px;" >
+
+      <label class="kt-radio">
+        <input type="radio" name="callType" value="current" (change)="selectedLead(data.id)">
+     
+        <span></span>
+      </label>
+
+
+    </div>
+        
+  </ng-template>
+</e-column>
+                  <e-column field='deal_prefix' headerText='Deal No'  width=120></e-column>
+
+                  <e-column field='deal_name' headerText='Deal'  width=120></e-column>
+                  <e-column field='lead_name' headerText='Name'  width=120></e-column>
+                  <e-column field='email' headerText='Email'  width=120></e-column>
+                  <e-column field='phone' headerText='Phone'  width=150></e-column>
+                  
+                        
+                  <e-column field='lead_source' headerText='Source'  width=100></e-column>
+                  <e-column field='lead_status' headerText='Status'  width=120></e-column>
+                  <e-column field='industry_type_name' headerText='Industry'  width=120></e-column>
+                  <e-column field='ondate' headerText='Date'  width=120></e-column>
+
+                  <!-- <e-column field='ondate' headerText='Date' textAlign='' width=160>
+
+                  </e-column> -->
+                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+              </e-columns>
+              </ejs-grid>
+              <ejs-grid *ngIf="typeName=='Estimation'" [dataSource]='estSourceData' height="250px" allowTextWrap='true'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='relatedSearchToolbar'  
+              >
+              <e-columns >
+                  
+                     
+ <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+ <e-column type='' headerText=''  width='80'>
+  <ng-template #template let-data>
+    <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio" style="margin-top: -20px;" >
+
+      <label class="kt-radio">
+        <input type="radio" name="estType" value="estVal" (change)="selectedLead(data.project_id)">
+     
+        <span></span>
+      </label>
+      
+
+
+    </div>
+        
+  </ng-template>
+</e-column>
+<e-column field='project_prefix' headerText='Cst No' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+  <span>{{data.project_prefix}}</span>
+
+
+</ng-template>
+</e-column>
+<e-column field='project_type_name' headerText='Project Type' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+  <span>{{data.project_type_name}}</span>
+
+
+</ng-template>
+</e-column>
+<e-column field='project_name' headerText='Project' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span style="text-transform: capitalize;" >{{data.project_name}} </span>
+</ng-template>
+</e-column>
+<!-- <e-column field='profit_margin_amount' headerText='Project Amount(AED)' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.profit_margin_amount!=''?(data.profit_margin_amount| currency:'INR':''):''}} </span>
+
+</ng-template>
+</e-column> -->
+
+<e-column field='cst_name' headerText='Customer' textAlign='' width=120>
+           
+</e-column>
+<e-column field='email' headerText='Email' textAlign='' width=120>
+           
+</e-column>
+<e-column field='phone' headerText='Phone' textAlign='' width=160>
+
+</e-column>
+<e-column field='ondate' headerText='Date' textAlign='' width=160>
+
+</e-column>
+
+                
+                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+              </e-columns>
+              </ejs-grid>
+              
+              <ejs-grid *ngIf="typeName=='Quotation'" [dataSource]='qtnSourceData' height="250px" allowTextWrap='true'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='relatedSearchToolbar'  
+              >
+              <e-columns >
+                  
+                     
+ <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+ <e-column type='' headerText=''  width='80'>
+  <ng-template #template let-data>
+    <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio" style="margin-top: -20px;" >
+
+      <label class="kt-radio">
+        <input type="radio" name="qtnType" value="qtnVal" (change)="selectedLead(data.id)">
+     
+        <span></span>
+      </label>
+      
+
+
+    </div>
+        
+  </ng-template>
+</e-column>
+<e-column field='quotation_prefix' headerText='Qtn No' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+  <span>{{data.quotation_prefix}}</span>
+
+
+</ng-template>
+</e-column>
+<e-column field='project_name' headerText='Project' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+  <span style="text-transform: capitalize;"  >{{data.project_name}} </span>
+  <!-- <div style="font-size: 11px;">Customer</div> -->
+
+</ng-template>
+</e-column>
+<!-- <e-column field='gross_total_amount' headerText='Gross Amount(AED)' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.gross_total_amount!=''?(data.gross_total_amount| currency:'INR':''):''}} </span>
+
+</ng-template>
+</e-column>
+<e-column field='net_total_amount' headerText='Project Amount(AED)' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.net_total_amount!=''?(data.net_total_amount| currency:'INR':''):''}} </span>
+
+</ng-template>
+</e-column>
+<e-column field='total_hours' headerText='Total Hours' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.total_hours!=''?(data.total_hours):''}} </span>
+
+</ng-template>
+</e-column> -->
+<e-column field='stage_name' headerText='Stage' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.stage_name}} </span>
+
+</ng-template>
+</e-column>
+<e-column field='lead_name' headerText='Customer' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.lead_name}} </span>
+
+</ng-template>
+</e-column>
+<e-column field='ondate' headerText='Date' textAlign='' width=120>
+<ng-template #template let-data>
+
+  <span  >{{data.ondate}} </span>
+
+</ng-template>
+</e-column>
+<e-column field='email' headerText='Email' textAlign='' width=120>
+           
+</e-column>
+<e-column field='phone' headerText='Phone' textAlign='' width=160>
+
+</e-column>
+
+                
+              </e-columns>
+              </ejs-grid>
+              <ejs-grid *ngIf="typeName=='Project'" [dataSource]='projSourceData' height="250px" allowTextWrap='true'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='relatedSearchToolbar'  
+              >
+              <e-columns >
+                  
+                     
+ <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+ <e-column type='' headerText=''  width='80'>
+  <ng-template #template let-data>
+    <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio" style="margin-top: -20px;" >
+
+      <label class="kt-radio">
+        <input type="radio" name="projType" value="projVal" (change)="selectedLead(data.project_id)">
+     
+        <span></span>
+      </label>
+      
+
+
+    </div>
+        
+  </ng-template>
+</e-column>
+<e-column field='project_prefix' headerText='Job No' textAlign='' width=120>
+<ng-template #template let-data>
+  
+    <span>{{data.project_prefix}}</span>
+     
+              
+</ng-template>
+</e-column>
+<e-column field='project_name' headerText='Project' textAlign='' width=120>
+<ng-template #template let-data>
+  
+    <span style="text-transform: capitalize;" >{{data.project_name}}</span>
+              
+</ng-template>
+</e-column>
+
+<e-column field='project_status_name' headerText='Status' width=120></e-column>
+
+<e-column field='cst_name' headerText='Customer' textAlign='' width=120>
+<ng-template #template let-data>
+  
+    <span>{{data.cst_name}}</span>
+
+</ng-template>
+</e-column>
+<e-column field='email' headerText='Email' textAlign='' width=150>
+<ng-template #template let-data>
+  
+    <span>{{data.email}}</span>
+
+</ng-template>
+</e-column>
+<e-column field='phone' headerText='Phone' textAlign='' width=160>
+<ng-template #template let-data>
+  
+    <span>{{data.phone}}</span>
+
+</ng-template>
+</e-column>
+<e-column field='ondate' headerText='Date'  width=120></e-column>
+
+  
+                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+              </e-columns>
+              </ejs-grid>
+          
+
+
+
+          </div>
+
+
+
+          <!-- <div class=""> 
+                          
+                      <label style="color: grey;">Job</label>
+                      <select2 [data]="selectedCategData" [options]="activityOptions" [value]="selecteOptionValue"  (valueChanged)="changedOption($event)" ></select2>
+
+                    </div> -->
+
+
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+
+ 
+

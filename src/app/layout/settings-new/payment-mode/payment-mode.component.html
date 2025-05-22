@@ -1,0 +1,421 @@
+<div class="mainProfileDiv">
+    <div class="row pad2515">
+        <div class="col">
+            <h1 class="labelMainHeader">{{is_common?'Payment Modes':'Bank Accounts'}}</h1>
+        </div>
+        <div class="col addProfilesection">
+            <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainPayment()">Back</button>
+        </div>
+    </div>
+    <div class="profiletabGrid">
+        <div *ngIf="paymentModesListing">
+            <ejs-grid [dataSource]='paymentModeArr' height='300px'>
+                <e-columns>
+                    <e-column field='id' headerText='Id'></e-column>
+                    <e-column field='value' headerText='Mode'></e-column>
+                    <e-column field='createdBy' headerText='Created By'></e-column>
+                    <e-column field='createdDate' headerText='Created Date'></e-column>
+
+                    <e-column headerText='Action'>
+                        <ng-template #template let-data>
+                            <div>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;"
+                                    placement="top" ngbTooltip="Update this Service" container="body"
+                                    (click)="editPaymentMode(data.value)"></i>
+                                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;"
+                                    placement="top" ngbTooltip="Delete this Service" container="body"
+                                    (click)="deleteCommissionPref(data)"></i>
+                            </div>
+                        </ng-template>
+                    </e-column>
+                </e-columns>
+            </ejs-grid>
+        </div>
+        <div *ngIf="!paymentModesListing">
+            <div class="row" *ngIf="selectedPaymentMethod=='Bank Transfer'">
+                <div
+                    style="height: 50px;background-color: #fff;width: 100%;padding: 10px;display: flex;justify-content: space-between;margin-bottom: 2px;">
+                    <h4 style="margin-bottom: 0px;display: flex;align-items: center;">{{paymentModeType=='finance'?
+                        'Company Bank Accounts':paymentModeType=='individual'? 'WPS Provider Bank
+                        Accounts':paymentModeType=='employee'?'Employees Bank Accounts':'Bank Accounts'}}</h4>
+                    <button ejs-button class="btn btnColorAll" (click)="addNewBankAccount()">Add Bank Account</button>
+                </div>
+                <ejs-grid #bankDetailsGrid [dataSource]='bankAccountDetails' height='300px'>
+                    <e-columns>
+                        <e-column field='acc_holder_name' headerText='Account Holder'></e-column>
+                        <e-column field='acc_type' headerText='Account Type'></e-column>
+                        <e-column field='acc_num' headerText='Account Number'></e-column>
+                        <e-column field='bank_name' headerText='Bank Name'></e-column>
+                        <e-column field='branch_name' headerText='Branch Name'></e-column>
+                        <e-column field='swift_bic' headerText='SWIFT/BIC Code'></e-column>
+                        <e-column field='iban' headerText='IBAN'></e-column>
+                        <e-column field='currency' headerText='Currency'></e-column>
+                        <!-- <e-column field='role' headerText='Role'></e-column> -->
+
+                        <e-column headerText='Action'>
+                            <ng-template #template let-data>
+                                <div>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;"
+                                        placement="top" ngbTooltip="View this Bank Account" container="body"
+                                        (click)="editBankAccount(data)"></i>
+                                    <i class="fa fa-trash" aria-hidden="true"
+                                        style="font-size: 16px; margin-left: 10px;" placement="top"
+                                        ngbTooltip="Delete this Bank Account" container="body"
+                                        (click)="deletePaymentModeDetailsConfirmation(data)" *ngIf="!is_employee"></i>
+                                </div>
+                            </ng-template>
+                        </e-column>
+                    </e-columns>
+                </ejs-grid>
+            </div>
+            <div class="row" *ngIf="selectedPaymentMethod=='MasterCard'||selectedPaymentMethod=='Visa'">
+                <div
+                    style="height: 50px;background-color: #fff;width: 100%;padding: 10px;display: flex;justify-content: space-between;margin-bottom: 2px;">
+                    <h4 style="margin-bottom: 0px;display: flex;align-items: center;">{{selectedPaymentMethod}}</h4>
+                    <button ejs-button class="btn btnColorAll" (click)="addCardDetails()">Add
+                        {{selectedPaymentMethod}} Card</button>
+                </div>
+                <ejs-grid #cardDetailsGrid [dataSource]='cardDetails' height='300px'>
+                    <e-columns>
+                        <e-column field='nick_name' headerText='Nick Name'></e-column>
+                        <e-column field='card_holder_name' headerText='Card Holder'></e-column>
+                        <e-column field='card_type' headerText='Card Type'></e-column>
+                        <e-column field='card_num' headerText='Card Number'></e-column>
+                        <e-column field='expiry_date' headerText='Expiry Date'></e-column>
+                        <e-column field='cvv' headerText='CVV'></e-column>
+                        <e-column field='issuer' headerText='Issuer'></e-column>
+                        <e-column field='currency' headerText='Currency'></e-column>
+
+                        <e-column headerText='Action'>
+                            <ng-template #template let-data>
+                                <div>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;"
+                                        placement="top" ngbTooltip="Update this Card" container="body"
+                                        (click)="editCardData(data)"></i>
+                                    <i class="fa fa-trash" aria-hidden="true"
+                                        style="font-size: 16px; margin-left: 10px;" placement="top"
+                                        ngbTooltip="Delete this Card" container="body"
+                                        (click)="deletePaymentModeDetailsConfirmation(data)"></i>
+                                </div>
+                            </ng-template>
+                        </e-column>
+                    </e-columns>
+                </ejs-grid>
+            </div>
+            <div class="row" *ngIf="selectedPaymentMethod=='Cash'">
+                <div
+                    style="height: 50px;background-color: #fff;width: 100%;padding: 10px;display: flex;justify-content: space-between;margin-bottom: 2px;">
+                    <h4 style="margin-bottom: 0px;display: flex;align-items: center;">{{selectedPaymentMethod}}</h4>
+                    <button ejs-button class="btn btnColorAll" (click)="addNewCashRecepient()">Add
+                        Recepient</button>
+                </div>
+                <ejs-grid #cashDetailsGrid [dataSource]='cashDetails' height='300px'>
+                    <e-columns>
+                        <e-column field='name' headerText='Name'></e-column>
+                        <e-column field='phone' headerText='Phone'></e-column>
+                        <e-column field='email' headerText='E-mail'></e-column>
+                        <e-column field='document' headerText='Document'></e-column>
+                        <e-column field='national_id' headerText='National Id'></e-column>
+                        <e-column field='street' headerText='Street'></e-column>
+                        <e-column field='city' headerText='City'></e-column>
+                        <e-column field='country' headerText='Country'></e-column>
+
+                        <e-column headerText='Action'>
+                            <ng-template #template let-data>
+                                <div>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;"
+                                        placement="top" ngbTooltip="Update this recepient" container="body"
+                                        (click)="editCashRecepient(data)"></i>
+                                    <i class="fa fa-trash" aria-hidden="true"
+                                        style="font-size: 16px; margin-left: 10px;" placement="top"
+                                        ngbTooltip="Delete this recepient" container="body"
+                                        (click)="deletePaymentModeDetailsConfirmation(data)"></i>
+                                </div>
+                            </ng-template>
+                        </e-column>
+                    </e-columns>
+                </ejs-grid>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #bankAccModal style="background-color: #e91e1e;width: 650px;">
+    <div class="modal-content" style="width: 650px !important;" data-backdrop="static" aria-hidden="true" tabindex="-1"
+        id="bank_acc_modal">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{editBankAcc && !is_employee ?'Update Bank
+                Account':!editBankAcc && !is_employee?'Add Bank Account':'Bank Account Details'}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <form [formGroup]="bankAccountForm" (ngSubmit)="onSubmit()" class="form-container">
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="nickName" style="font-weight: bold;">Nick Name:</label>
+                            <input type="text" id="nickName" formControlName="nick_name" class="form-control">
+
+                        </div>
+                        <div class="form-item">
+                            <label for="role" style="font-weight: bold;">Type:</label>
+                            <input type="text" id="role" formControlName="role" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="accountHolderName" style="font-weight: bold;">Account Holder's Name:</label>
+                            <input type="text" id="accountHolderName" formControlName="acc_holder_name"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="form-item">
+                            <label for="accountType" style="font-weight: bold;">Account Type:</label>
+                            <input type="text" id="accountType" formControlName="acc_type" class="form-control">
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="accountNumber" style="font-weight: bold;">Account Number:</label>
+                            <input type="text" id="accountNumber" formControlName="acc_num" class="form-control">
+
+                        </div>
+
+                        <div class="form-item">
+                            <label for="bankName" style="font-weight: bold;">Bank Name:</label>
+                            <input type="text" id="bankName" formControlName="bank_name" class="form-control">
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="branchName" style="font-weight: bold;">Branch Name:</label>
+                            <input type="text" id="branchName" formControlName="branch_name" class="form-control">
+
+                        </div>
+
+                        <div class="form-item">
+                            <label for="swiftBicCode" style="font-weight: bold;">SWIFT/BIC Code:</label>
+                            <input type="text" id="swiftBicCode" formControlName="swift_bic" class="form-control">
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="iban" style="font-weight: bold;">IBAN:</label>
+                            <input type="text" id="iban" formControlName="iban" class="form-control">
+
+                        </div>
+
+                        <div class="form-item">
+                            <label for="currency" style="font-weight: bold;">Currency:</label>
+                            <input type="text" id="currency" formControlName="currency" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="desc" style="font-weight: bold;">Description:</label>
+                            <textarea class="form-control" id="exampleTextarea" rows="4"
+                                formControlName="desc"></textarea>
+                        </div>
+                        <div class="form-item">
+                            <ng-container *ngIf="paymentModeType === 'common'">
+                                <label for="is_wps" style="font-weight: bold;">WPS Provider:</label>
+                                <div style="display: flex;gap: 10px;">
+                                    <input type="checkbox" formControlName="is_wps" />
+                                    <label for="wpsNo" style="margin-bottom: 0px !important;">Add this account as a WPS
+                                        provider</label>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+        <div class="modal-footer" *ngIf="!is_employee">
+            <button ejs-button class="btn btnColorAll" [disabled]="bankAccountForm.get('is_default').value"
+                (click)="setAsDefault('Bank Transfer')" *ngIf="editBankAcc">Set As Default</button>
+            <button ejs-button class="btn btnColorAll" type="submit" [disabled]="bankAccountForm.invalid"
+                (click)="editBankAcc ? updateBankAccountDetails() : submitBankAccountDetails()">Submit</button>
+            <button ejs-button class="btn btnColorAll" (click)="closeModel()">Cancel</button>
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #cardDetailsModal style="background-color: #e91e1e;width: 650px;">
+    <div class="modal-content" style="width: 650px !important;" data-backdrop="static">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{editBankAcc?'Update Card Details':'Add Card Details'}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <form [formGroup]="cardDetailsForm" (ngSubmit)="onSubmit()" class="form-container">
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="nickName" style="font-weight: bold;">Nick Name:</label>
+                            <input type="text" id="nickName" formControlName="nick_name" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="currency" style="font-weight: bold;">Currency:</label>
+                            <input type="text" id="currency" formControlName="currency" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="cardHolderName" style="font-weight: bold;">Card Holder's Name:</label>
+                            <input type="text" id="cardHolderName" formControlName="card_holder_name"
+                                class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="cardType" style="font-weight: bold;">Card Type:</label>
+                            <input type="text" id="cardType" formControlName="card_type" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="cardNumber" style="font-weight: bold;">Card Number:</label>
+                            <input type="text" id="cardNumber" formControlName="card_num" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="expiryDate" style="font-weight: bold;">Expiry Date:</label>
+                            <!-- <input type="text" id="expiryDate" formControlName="expiryDate" class="form-control"> -->
+                            <ejs-datepicker formControlName="expiry_date" format="MMM d, y"
+                                placeholder="Enter date"></ejs-datepicker>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="cvv" style="font-weight: bold;">CVV:</label>
+                            <input type="text" id="cvv" formControlName="cvv" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="issuer" style="font-weight: bold;">Issuer:</label>
+                            <input type="text" id="issuer" formControlName="issuer" class="form-control">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ejs-button class="btn btnColorAll" [disabled]="cardDetailsForm.get('is_default').value"
+                (click)="setAsDefault('Card')" *ngIf="editCardDetails">Set As Default</button>
+            <button ejs-button class="btn btnColorAll" type="submit" (click)="submitCardDetails()"
+                [disabled]="cardDetailsForm.invalid">Submit</button>
+            <button ejs-button class="btn btnColorAll" (click)="closeModel()">Cancel</button>
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #cashDetailsModal style="background-color: #e91e1e;width: 650px;">
+    <div class="modal-content" style="width: 650px !important;" data-backdrop="static">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{editCashDetails?'Update Recepient Details':'Add Recepient
+                Details'}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <form [formGroup]="cashDetailsForm" (ngSubmit)="onSubmit()" class="form-container">
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="name" style="font-weight: bold;">Name:</label>
+                            <input type="text" id="name" formControlName="name" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="phone" style="font-weight: bold;">Phone:</label>
+                            <input type="text" id="phone" formControlName="phone" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="email" style="font-weight: bold;">Email:</label>
+                            <input type="text" id="email" formControlName="email" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="document" style="font-weight: bold;">Document:</label>
+                            <div style="display: flex; align-items: center;gap: 5px;">
+                                <ejs-uploader (selected)="onFileSelected($event,'document')"
+                                    allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true"
+                                    [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+                                <a (click)="goToLink(this.cashDetailsForm.get('document').value)" class="hyperlink"
+                                    style="cursor: pointer;"
+                                    *ngIf="this.cashDetailsForm.get('document').value!='' && this.cashDetailsForm.get('document').value!=null">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                                    ngbTooltip="Delete File" container="body"
+                                    *ngIf="this.cashDetailsForm.get('document').value!='' && this.cashDetailsForm.get('document').value!=null"
+                                    (click)="docDelete()"></i>
+                            </div>
+                            <!-- <input type="text" id="document" formControlName="document" class="form-control"> -->
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="nationalId" style="font-weight: bold;">National Id:</label>
+                            <input type="text" id="nationalId" formControlName="national_id" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="street" style="font-weight: bold;">Street:</label>
+                            <!-- <input type="text" id="expiryDate" formControlName="expiryDate" class="form-control"> -->
+                            <input type="text" id="street" formControlName="street" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="city" style="font-weight: bold;">City</label>
+                            <input type="text" id="city" formControlName="city" class="form-control">
+                        </div>
+
+                        <div class="form-item">
+                            <label for="country" style="font-weight: bold;">Country:</label>
+                            <input type="text" id="country" formControlName="country" class="form-control">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ejs-button class="btn btnColorAll" [disabled]="cashDetailsForm.get('is_default').value"
+                (click)="setAsDefault('Card')" *ngIf="editCardDetails">Set As Default</button>
+            <button ejs-button class="btn btnColorAll" type="submit"
+                [disabled]="cashDetailsForm.invalid">Submit</button>
+            <button ejs-button class="btn btnColorAll" (click)="closeModel()">Cancel</button>
+
+        </div>
+    </div>
+</ng-template>

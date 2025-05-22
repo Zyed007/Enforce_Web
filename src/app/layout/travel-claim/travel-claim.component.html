@@ -1,0 +1,155 @@
+<div *ngIf="noAccessToTravelPage">
+  <app-not-found></app-not-found>
+</div>
+
+<div *ngIf="!noAccessToTravelPage">
+  <div class="pad2515" *ngIf="viewTravelHistory">
+    <div class="rowDes">
+      <h1 class="allHeader">Travel History</h1>
+    </div>
+    <div class="row rowDes rowZeroMar">
+      <div class="col-12 col-md-6">
+        <div>
+          <form [formGroup]="dateRangeForm">
+            <ejs-daterangepicker format='dd MMMM yyyy' placeholder='Select a Date range' [max]="maxRangeDateTwo" formControlName='dateRange'>
+              <e-presets>
+                  <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                  <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                  <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                  <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+              </e-presets>
+            </ejs-daterangepicker>
+          </form>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div>
+          <ejs-dropdownlist id='searchDropdown' #searchDropdown placeholder='Please Select a Employee' [dataSource]='allEmpData' [fields]='commonFields' [allowFiltering]='true' (change)="changeEmployee($event)"></ejs-dropdownlist>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 15px;">
+      <div class="row rowZeroMar">
+        <ejs-grid #travelTableGrid [toolbar]='travelToolbar' [allowExcelExport]='true' [allowPdfExport]='true' (toolbarClick)='travelGridDownload($event)'
+         [dataSource]='employeeData' allowTextWrap='true' height='500px'>
+          <e-columns>
+              <e-column field='createdby' headerText='Employee' width=15></e-column>
+              <e-column field='created_date' headerText='Created Date' width=15>
+                <ng-template #template let-data>
+                  <p class="marbott">{{data.created_date}}</p>
+                </ng-template>
+              </e-column>
+              <e-column field='checkout_project' headerText='Project/Place' width=15>
+                <ng-template #template let-data>
+                  <p class="marbott">{{data.checkout_project !== null ? data.checkout_project : 'NA'}}</p>
+                </ng-template>
+              </e-column>
+              <!-- <e-column field='checkout_formatted_address' headerText='Checkin' width=15>
+                <ng-template #template let-data>
+                  <p class="wraptxt" placement="top" [ngbTooltip]="data.checkout_formatted_address" container="body">{{data.checkout_formatted_address}}</p>
+                </ng-template>
+              </e-column> -->
+              <e-column field='checkout_formatted_address' headerText='Starting Point' width=15>
+                <ng-template #template let-data>
+                  <p class="wraptxt" placement="top" [ngbTooltip]="data.checkout_formatted_address" container="body">{{data.checkout_formatted_address}}</p>
+                </ng-template>
+              </e-column>
+              <e-column field='checkin_project' headerText='Project/Place' width=15>
+                <ng-template #template let-data>
+                  <p class="marbott">{{data.checkin_project !== null ? data.checkin_project : 'Office'}}</p>
+                </ng-template>
+              </e-column>
+              <e-column field='checkin_formatted_address' headerText='Ending Point' width=15>
+                <ng-template #template let-data>
+                  <p class="wraptxt" placement="top" [ngbTooltip]="data.checkin_formatted_address" container="body">{{data.checkin_formatted_address}}</p>
+                </ng-template>
+              </e-column>
+              <!-- <e-column field='checkin_formatted_address' headerText='End Point' width=15>
+                <ng-template #template let-data>
+                  <p class="wraptxt" placement="top" [ngbTooltip]="data.checkout_formatted_address" container="body">{{data.checkout_formatted_address}}</p>
+                </ng-template>
+              </e-column> -->
+              <e-column field='distance' headerText='Distance' width=12>
+                <ng-template #template let-data>
+                  <p class="marbott">{{data.distance | number : '1.2-2'}}</p>
+                </ng-template>
+              </e-column>
+              <e-column headerText='Map' width=12>
+                <ng-template #template let-data>
+                  <mat-icon (click)="viewMapModel(data)" style="cursor: pointer;">map</mat-icon>
+                </ng-template>
+              </e-column>
+          </e-columns>
+          </ejs-grid>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="map_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 1rem;">Location</h5>
+          <button type="button" class="close" #mapCloseBtn  (click)="OnClose()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;background: #f1f0ee;padding-top: 8px;">
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item mapModel cardBorder">
+              <div class="userDetails">
+                <div class="kt-portlet kt-portlet--fit kt-portlet--head-noborder kt-portlet--height-fluid-half" style="margin-bottom: 0px;">
+                  <div class="row modelRow">
+                    <div class="col-sm-4">
+                      <div style="display: flex;">
+                        <mat-icon>event</mat-icon>
+                        <h1 class="username">Date : {{selectedDate}}</h1>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div style="display: flex;">
+                        <mat-icon>person</mat-icon>
+                        <h1 class="username">Employee : {{currentEmployeeName}}</h1>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div style="display: flex;">
+                        <mat-icon>add_road</mat-icon>
+                        <h1 class="username">Total Distance : {{empTotalDistance | number : '1.2-2'}} KM</h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mapdiv">
+                <agm-map style="height: 550px !important;" [latitude]="lat" [longitude]="lng" [zoom]="15" [disableDefaultUI]="false" [zoomControl]="false">
+                  <!-- <agm-marker *ngFor="let coordinate of start_end_marker; let i=index"
+                    [latitude]="coordinate[0]" [longitude]="coordinate[1]" [agmFitBounds]="true">
+                  </agm-marker> -->
+                  <agm-marker *ngFor="let coordinate of start_end_marker; let i=index"
+                    [latitude]="coordinate.lat" [longitude]="coordinate.lng" [agmFitBounds]="true">
+
+                    <agm-info-window>
+                      <strong>{{coordinate.label}}</strong>
+                    </agm-info-window>
+
+                  </agm-marker>
+                  <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'#FF0000'">
+                    <agm-polyline-point *ngFor="let coordinate of selectedLatLong; let i=index" [latitude]="coordinate[0]" [longitude]="coordinate[1]"></agm-polyline-point>
+                  </agm-polyline>
+                </agm-map>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="OnClose()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

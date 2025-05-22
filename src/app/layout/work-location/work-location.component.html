@@ -1,0 +1,98 @@
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+
+            Work Location                         </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                            Location                        </a>
+                                            <span *ngIf="showAddForm && !editEnabled" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editEnabled" class="kt-subheader__breadcrumbs-link">
+                              Add Location                    </a>
+                                            <span *ngIf="editEnabled  && !workLocationListing" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editEnabled && !workLocationListing" class="kt-subheader__breadcrumbs-link">
+                              Edit Location                          </a>
+                </div>
+                    </div>
+
+    </div>
+</div>
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Work Location</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="addNewWorkLocation()" *ngIf="workLocationListing" >Add Work Location</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="back()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+  <div *ngIf="workLocationListing" >
+    <ejs-grid #vendSatGrid [dataSource]='workLocationData' [toolbar]='employeeGridToolItems' (created)="serviceSearchKeyUp" height='300px'>
+      <e-columns>
+        <e-column field='work_location' headerText='Work Location'></e-column>
+        <e-column field='location_desc' headerText='Description'></e-column>
+        <!-- <e-column field='created_by' headerText='Created By'></e-column> -->
+        <!-- <e-column field='created_date' headerText='Created Date'>
+          <ng-template #template let-data>
+            <div>
+              <p style="margin-bottom: 0px;">{{data.created_date | date : "dd/MM/y"}}</p>
+            </div>
+          </ng-template>
+        </e-column>
+        <e-column field='modified_by' headerText='Modified By'></e-column>
+        <e-column field='modified_date' headerText='Modified Date'>
+          <ng-template #template let-data>
+            <div>
+              <p style="margin-bottom: 0px;">{{data.modified_date | date : "dd/MM/y"}}</p>
+            </div>
+          </ng-template>
+        </e-column> -->
+
+        <e-column headerText='Action'>
+          <ng-template #template let-data>
+            <div>
+              <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor: pointer;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editLocationData(data)"></i>
+              <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;cursor: pointer;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteLocationData(data)"></i>
+            </div>
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+    <div *ngIf="isLoading" class="spinner-overlay">
+      <div class="spinner-border text-primary custom-spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div class="pad2515" *ngIf="!workLocationListing">
+    <div class="row" [formGroup]="locationForm">
+      <div class="col-6">
+        <label class="labelcss">Work Location</label>
+        <input class="e-input" type="text" placeholder="Enter work location" formControlName="work_location" />
+        <div class="errorTxt" *ngIf="locationForm.controls['work_location']?.errors?.required ">
+          *Work Location is required
+        </div>
+      </div>
+      <div class="col-6">
+        <label class="labelcss">Description</label>
+        <textarea class="e-input" rows="1" formControlName="desc" placeholder="Enter Description"></textarea>
+      </div>
+    </div>
+    <div style="margin-top: 20px;">
+      <button class='btn btnColorAlll' (click)="submitStatus()">
+        Submit
+      </button>
+    </div>
+  </div>
+  </div>
+</div>
+
+

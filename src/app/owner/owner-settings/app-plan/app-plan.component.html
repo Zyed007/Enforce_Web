@@ -1,0 +1,288 @@
+<div class="mailDiv">
+  <div class="row pad2515" >
+    <div class="col-6">
+      <h1 class="teamMemberTxt">Subscription Plan</h1>
+    </div>
+    <div class="col-6 teamDiv">
+      <button class='btn btnColorAll' (click)="backToSettings()">
+        <div class="matIconDiv">
+          <mat-icon class="matIconSize">arrow_back</mat-icon>
+          <p class="matIcontext">Back</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="planTableDiv" *ngIf="pricingTableDiv">
+    <div class="col">
+      <div class="CardRow">
+        <div class="addbtndiv">
+          <button class='btn btnColorAll' (click)="openAddPlanDiv()">
+            <div class="matIconDiv">
+              <mat-icon class="matIconSize">add</mat-icon>
+              <p class="matIcontext">Add plan</p>
+            </div>
+          </button>
+        </div>
+        <ejs-grid #planTable [dataSource]='planDetailData' (created)='planSearchKeyUp()' [toolbar]='planGridToolItems' height='500px'>
+          <e-columns>
+            <e-column field='plan_name' headerText='Created Date' textAlign='Centre'>
+              <ng-template #template let-data>
+                <p style="margin-bottom: 0px;">{{data.created_date | date}}</p>
+              </ng-template>
+            </e-column>
+            <e-column field='plan_name' headerText='Plan Name' textAlign='Centre'></e-column>
+            <e-column field='plan_description' headerText='Description'></e-column>
+            <e-column field='plan_type' headerText='Type'>
+              <ng-template #template let-data>
+                <p style="margin-bottom: 0px;">{{data.plan_type}}</p>
+                <div *ngIf="data.plan_type === 'Monthly'">
+                  <p style="margin-bottom: 0px; font-size: 10px;">({{data.plan_duration}} month)</p>
+                </div>
+                <div *ngIf="data.plan_type === 'Yearly'">
+                  <p style="margin-bottom: 0px; font-size: 10px;">({{data.plan_duration}} year)</p>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column field='plan_cost' headerText='Cost'>
+              <ng-template #template let-data>
+                <p style="margin-bottom: 0px;">AED. {{data.plan_cost}}</p>
+              </ng-template>
+            </e-column>
+            <e-column field='no_of_users' headerText='Users'></e-column>
+            <e-column headerText='Actions' textAlign='Centre'>
+              <ng-template #template let-data>
+                <button class="btn buttonSt  edbtnSt" placement="top" ngbTooltip="Update" container="body" (click)="openEditForm(data)">
+                  <mat-icon class="matIconSize">edit</mat-icon>
+                </button>
+                <button class="btn buttonSt  edbtnSt" placement="top" ngbTooltip="Update" container="body" (click)="openDeleteModel(data)">
+                  <mat-icon class="matIconSize">delete</mat-icon>
+                </button>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add plan form -->
+  <div class="row marTop18 rowImp" *ngIf="addPlanDiv">
+    <div class="col">
+      <div class="CardRow">
+        <form [formGroup]="addPlanForm" class="formCs">
+          <div>
+            <p class="textBtm">Plan Details</p>
+          </div>
+          <div class="topCss">
+            <div class="row displaydiv">
+              <div class="col-12 col-md-6 marTop10">
+                <label class="labelTxt">Plan Name</label>
+                <input formControlName="planName" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="addPlanForm.get('planName').hasError('required') && formSubmitAttempt">
+                  *Plan Name is required
+                </div>
+              </div>
+              <div class="col-12 col-md-6 marTop10">
+                <label class="labelTxt">Plan Description</label>
+                <input formControlName="planDescription" type="text" class="form-control">
+                <div class="errorTxt" *ngIf="addPlanForm.get('planDescription').hasError('required') && formSubmitAttempt">
+                  *Plan Description is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topCss">
+            <div class="row displaydiv">
+              <div class="col-12 col-md-6 marTop10">
+                <label class="labelTxt">Plan Type</label>
+                <ejs-dropdownlist formControlName="planType" [dataSource]='planTypeData' [fields]='commonFields' [allowFiltering]='true' (change)="changePlanType($event)"></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addPlanForm.get('planType').hasError('required') && formSubmitAttempt">
+                  *Plan Type is required
+                </div>
+              </div>
+              <div class="col-12 col-md-6 marTop10">
+                <div *ngIf="monthDiv">
+                  <label class="labelTxt">Enter number of Months</label>
+                  <input formControlName="planDurationM" type="text" class="form-control">
+                  <div class="errorTxt" *ngIf="checkplanDurationErrorDiv">
+                    {{checkplanDurationError}}
+                  </div>
+                </div>
+                <div *ngIf="yearDiv">
+                  <label class="labelTxt">Enter number of Year</label>
+                  <input formControlName="planDurationY" type="text" class="form-control">
+                  <div class="errorTxt" *ngIf="checkplanDurationErrorDiv">
+                    {{checkplanDurationError}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topCss">
+            <div class="row displaydiv">
+              <div class="col-12 col-md-6 marTop10">
+                <label class="labelTxt">Plan Cost (AED)</label>
+                <input formControlName="planCost" type="number" class="form-control">
+                <div class="errorTxt" *ngIf="addPlanForm.get('planCost').hasError('required') && formSubmitAttempt">
+                  *Plan amount is required
+                </div>
+              </div>
+              <div class="col-12 col-md-6 marTop10">
+                <label class="labelTxt">Number of user</label>
+                <input formControlName="noUser" type="number" class="form-control">
+                <div class="errorTxt" *ngIf="addPlanForm.get('noUser').hasError('required') && formSubmitAttempt">
+                  *Plan amount is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row rowImp topCss">
+            <div class="col-12 btnFooter">
+              <button id='add' class='btn btnColorAll' (click)="submitPlan()">
+                <div class="matIconDiv">
+                  <mat-icon class="matIconSize">save</mat-icon>
+                  <p class="matIcontext">Submit</p>
+                </div>
+              </button>
+              <button id='add' class='btn btnColorAll marLeft20' (click)="closeSubmitPlan()">
+                <div class="matIconDiv">
+                  <mat-icon class="matIconSize">cancel</mat-icon>
+                  <p class="matIcontext">Cancel</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- edit plan form -->
+  <div class="row marTop18 rowImp" *ngIf="editPlanDiv">
+    <div class="col">
+      <div class="CardRow">
+        <div class="row rowImp">
+          <div class="col-12 col-md-7">
+            <form [formGroup]="editPlanForm" class="formCs">
+              <div>
+                <p class="textBtm">Plan Details</p>
+              </div>
+              <div class="topCss">
+                <div class="row">
+                  <div class="col-12 col-md-6 marTop10">
+                    <label class="labelTxt">Plan Name</label>
+                    <input formControlName="planName" type="text" class="form-control">
+                    <div class="errorTxt" *ngIf="editPlanForm.get('planName').hasError('required') && formSubmitAttempt">
+                      *Plan Name is required
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 marTop10">
+                    <label class="labelTxt">Plan Description</label>
+                    <input formControlName="planDescription" type="text" class="form-control">
+                    <div class="errorTxt" *ngIf="editPlanForm.get('planDescription').hasError('required') && formSubmitAttempt">
+                      *Plan Description is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topCss">
+                <div class="row">
+                  <div class="col-12 col-md-6 marTop10">
+                    <label class="labelTxt">Plan Type</label>
+                    <ejs-dropdownlist formControlName="planType" [dataSource]='planTypeData' [fields]='commonFields' [allowFiltering]='true' (change)="editChangePlanType($event)"></ejs-dropdownlist>
+                    <div class="errorTxt" *ngIf="editPlanForm.get('planType').hasError('required') && formSubmitAttempt">
+                      *Plan Type is required
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 marTop10">
+                    <div *ngIf="monthDiv">
+                      <label class="labelTxt">Enter number of Months</label>
+                      <input formControlName="planDurationM" type="text" class="form-control">
+                      <div class="errorTxt" *ngIf="checkplanDurationErrorDiv">
+                        {{checkplanDurationError}}
+                      </div>
+                    </div>
+                    <div *ngIf="yearDiv">
+                      <label class="labelTxt">Enter number of Year</label>
+                      <input formControlName="planDurationY" type="text" class="form-control">
+                      <div class="errorTxt" *ngIf="checkplanDurationErrorDiv">
+                        {{checkplanDurationError}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topCss">
+                <div class="row displaydiv">
+                  <div class="col-12 col-md-6 marTop10">
+                    <label class="labelTxt">Plan Cost (AED)</label>
+                    <input formControlName="planCost" type="number" class="form-control">
+                    <div class="errorTxt" *ngIf="editPlanForm.get('planCost').hasError('required') && formSubmitAttempt">
+                      *Plan amount is required
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 marTop10">
+                    <label class="labelTxt">Number of user</label>
+                    <input formControlName="noUser" type="number" class="form-control">
+                    <div class="errorTxt" *ngIf="editPlanForm.get('noUser').hasError('required') && formSubmitAttempt">
+                      *Plan amount is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-12 col-md-5">
+            <form class="formCs">
+              <div>
+                <p class="textBtm">Module Details</p>
+              </div>
+              <div class="topCss">
+                <div>
+                  <button class='btn btnColorAll' (click)="addNewModule()">
+                    <div class="matIconDiv">
+                      <mat-icon class="matIconSize">add_circle_outline</mat-icon>
+                      <p class="matIcontext">Add Module</p>
+                    </div>
+                  </button>
+                </div>
+                <div class="row rowImp row height">
+                  <div class="col-12 marTop10">
+                    <div class="row" *ngFor="let moduleData of editPlanForm.get('modules')['controls'];let i = index" [formGroup]="moduleData" style="margin-bottom: 15px;">
+                      <div class="col-8">
+                        <ejs-dropdownlist formControlName="moduleName" placeholder='Select a Module' [dataSource]='moduleListData' [fields]='commonFields' [allowFiltering]='true' (change)="callModeleChange($event)"></ejs-dropdownlist>
+                      </div>
+                      <div class="col-4">
+                        <div class="matIconDiv" (click)="deleteCurrentModule(i, moduleData)">
+                          <mat-icon class="matIconSize">delete</mat-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row rowImp footerDiv">
+          <div class="col-12 btnFooter">
+            <button id='add' class='btn btnColorAll' (click)="editSubmitPlan()">
+              <div class="matIconDiv">
+                <mat-icon class="matIconSize">update</mat-icon>
+                <p class="matIcontext">Update</p>
+              </div>
+            </button>
+            <button id='add' class='btn btnColorAll marLeft20' (click)="closeSubmitPlan()">
+              <div class="matIconDiv">
+                <mat-icon class="matIconSize">cancel</mat-icon>
+                <p class="matIcontext">Cancel</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

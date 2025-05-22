@@ -1,0 +1,344 @@
+<div *ngIf="accessToPage" class="startdiv">
+  <div class="row rowimp rowcard" style="margin-top: 25px;" *ngIf="workForcePage">
+    <div class="col-6" style="margin: auto">
+      <h1 class="txtDiv">WorkForce Management</h1>
+    </div>
+    <div class="col-6 btnDiv">
+      <button class='btn btnColorAll' (click)="addWorkForce()">
+        <i class="fa fa-user-plus" aria-hidden="true" style="margin-top: -1px;"></i>
+        <p style="display: contents;">Add WorkForce Management</p>
+      </button>
+    </div>
+    <div class="col-12">
+      <ejs-grid #workForcedataTableGrid [toolbar]='invoiceToolbar' (created)='wfSearchKeyUp()' [dataSource]='workForceTeamsByOrgIdData'
+      allowTextWrap='true' height="450px" allowSorting='true' style="margin: 10px;">
+        <e-columns>
+          <e-column field='teamLeadName' headerText='Team Lead' width=90>
+            <ng-template #template let-data>
+              <span>{{data.teamLeadName}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='description' headerText='Description' width=80>
+            <ng-template #template let-data>
+              <span>{{data.description}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='totalMembersCount' headerText='Members Count' width=100>
+            <ng-template #template let-data>
+              <span>{{data.totalMembersCount}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column field='totalProjectCount' headerText='Project Count' width=90>
+            <ng-template #template let-data>
+              <span>{{data.totalProjectCount}}</span>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText='Action' width=40>
+            <ng-template #template let-data>
+              <i (click)="viewMode(data)" class="fa fa-pencil-square-o" style="cursor: pointer;font-size: 18px;" aria-hidden="true"></i>
+              <i (click)="deleteMode(data)" class="fa fa-trash" style="cursor: pointer;font-size: 18px;margin-left: 10px;" aria-hidden="true"></i>
+            </ng-template>
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+
+  <div *ngIf="!workForcePage" class="rowcard">
+    <div class="row rowimp rowDivh">
+      <div class="col-11">
+        <h1 style="font-size: 16px; margin-bottom: 0px;">{{formType}} WorkForce Management</h1>
+        <p style="margin-bottom: 0px;margin-top: 0px;" *ngIf="formType === 'Add'">{{displayTxt}}</p>
+      </div>
+      <div class="col-1" style="text-align: end; margin: auto 0px;">
+        <button class='btn btnColorAll' (click)="closeAddWorkForce()">
+          <i class="fa fa-chevron-left" aria-hidden="true" style="margin-top: -1px;"></i>
+          <p style="display: contents;">Back</p>
+        </button>
+      </div>
+    </div>
+    <div class="row rowimp" [formGroup]="addWorkForceForm">
+      <div class="col-3">
+        <label style="font-size: 14px;">Select a Team lead</label>
+        <ejs-dropdownlist #resetDropDown (change)="checkLeadError($event)" [dataSource]='employeeListingDropData' formControlName="teamLead" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Employee'></ejs-dropdownlist>
+        <div class="errorTxt" *ngIf="addWorkForceForm.controls['teamLead']?.errors?.required && !formSubmitAttemptForWF">
+          *Team Lead is required
+        </div>
+        <div *ngIf="sameLeadError" class="errorTxt">
+          The Employee is already a WorkForce Lead
+        </div>
+      </div>
+      <div class="col-6">
+        <label style="font-size: 14px;">Team lead role description</label>
+        <textarea class="e-input" rows="1" formControlName="description"></textarea>
+      </div>
+      <div class="col-12">
+        <header class="martop">
+          <div>
+            <h1>Search team member or project under supervision</h1>
+            <span class="spacer"></span>
+          </div>
+        </header>
+        <div class="row">
+          <div class="col-6" style="display: grid;">
+            <label class="font14">Select Multiple Projects</label>
+            <button class='btn btnColorAll' style="width: fit-content;" (click)="openProjectSearchModel()">
+              <i class="fa fa-search" aria-hidden="true" style="margin-top: -1px;"></i>
+              <p style="display: contents;">Advance Projects Search</p>
+            </button>
+          </div>
+          <div class="col-6" style="display: grid;">
+            <label class="font14">Select Multiple Employee</label>
+            <button class='btn btnColorAll' style="width: fit-content;" (click)="openEmployeeSearchModel()">
+              <i class="fa fa-search" aria-hidden="true" style="margin-top: -1px;"></i>
+              <p style="display: contents;">Advance Employee Search</p>
+            </button>
+          </div>
+          <div class="col-12" *ngIf="projectORemployeeReq" style="margin-top: 10px;">
+            <p class="errorTxt">*Please select a team member or project under supervision to proceed.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" *ngIf="selectedProject.length !== 0 || selectedEmployee.length !== 0">
+        <header class="martop">
+          <div>
+            <h1>Selected team member or project under supervision</h1>
+            <span class="spacer"></span>
+          </div>
+        </header>
+        <div class="row">
+          <div class="col-6">
+            <h1 *ngIf="formType === 'Update' && loadProject" style="font-size: 15px; margin-top: 10px; font-weight: 400;">Loading Project under supervision....</h1>
+            <div *ngIf="selectedProject.length !== 0">
+              <h1 style="font-size: 15px; margin-top: 10px; font-weight: 400;">Project under supervision</h1>
+              <ejs-grid [dataSource]='selectedProject' allowTextWrap='true' height="300px" allowSorting='true' style="margin: 10px;">
+                <e-columns>
+
+                  <e-column width=40>
+                    <ng-template #template let-data>
+                      <i (click)="removeFromSelected('project', data)" class="fa fa-times-circle" style="cursor: pointer;font-size: 18px; color: #e91e63;" aria-hidden="true"></i>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='project_prefix' headerText='Job. No' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.project_prefix}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='project_name' headerText='Project' width=160>
+                    <ng-template #template let-data>
+                      <span>{{data.project_name}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='name' headerText='Customer' width=160>
+                    <ng-template #template let-data>
+                      <span>{{data.name}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='phone' headerText='Phone' width=160>
+                    <ng-template #template let-data>
+                      <span>{{data.phone}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='email' headerText='Email' width=160>
+                    <ng-template #template let-data>
+                      <span>{{data.email === '' ? 'No email added' : data.email}}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </div>
+          <div class="col-6">
+            <h1 *ngIf="formType === 'Update' && loadEmployee" style="font-size: 15px; margin-top: 10px; font-weight: 400;">Loading Member....</h1>
+            <div *ngIf="selectedEmployee.length !== 0">
+              <h1 style="font-size: 15px; margin-top: 10px; font-weight: 400;">Team Member</h1>
+              <ejs-grid [dataSource]='selectedEmployee' allowTextWrap='true' height="300px" allowSorting='true' style="margin: 10px;">
+                <e-columns>
+
+                  <e-column width=40>
+                    <ng-template #template let-data>
+                      <i (click)="removeFromSelected('employee', data)" class="fa fa-times-circle" style="cursor: pointer;font-size: 18px; color: #e91e63;" aria-hidden="true"></i>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='full_name' headerText='Full Name' width=150>
+                    <ng-template #template let-data>
+                      <span>{{data.full_name}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='workemail' headerText='Email'width=150>
+                    <ng-template #template let-data>
+                      <span>{{data.workemail}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='employee_type_name' headerText='Type' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.employee_type_name}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='role_name' headerText='Role' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.role_name}}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <header class="martop">
+          <div>
+            <h1>Action</h1>
+            <span class="spacer"></span>
+          </div>
+        </header>
+        <button class='btn btnColorAll' style="width: 100px; height: 35px; margin-top: 10px;" (click)="formType === 'Add' ? saveWorkForce() : editWorkForce()">
+          <p style="display: contents;">{{formType === 'Add' ? 'Save' : 'Update'}}</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="Search_project_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1300px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Advance Search for Project</h5>
+          <button type="button" class="close" (click)="closeProjectSearchModel()" aria-label="Close"></button>
+        </div>
+        <div>
+          <ejs-grid #searchProjectdataTableGrid [toolbar]='invoiceToolbar' (created)='projectSearchKeyUp()'
+          [dataSource]='projectListingData' allowTextWrap='true' height="450px" allowSorting='true'>
+            <e-columns>
+              <e-column width='50' textAlign='Center'>
+                <ng-template #template let-data>
+                  <ejs-checkbox [checked]="data?.isChecked" (change)="isChecked($event, data, 'project')"></ejs-checkbox>
+                </ng-template>
+              </e-column>
+
+              <e-column field='accountsId' headerText='Acc. No' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.accountsId}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='project_prefix' headerText='Job. No' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.project_prefix}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='project_name' headerText='Project' width=80>
+                <ng-template #template let-data>
+                  <span class="hyplink" (click)="toProjectLayout(data.project_id)">{{data.project_name}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='name' headerText='Customer' width=100>
+                <ng-template #template let-data>
+                  <span>{{data.name}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='phone' headerText='Phone' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.phone}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='email' headerText='Email' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.email === '' ? 'No email added' : data.email}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='empCount' headerText='Employee Working' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.empCount}}</span>
+                </ng-template>
+              </e-column>
+
+            </e-columns>
+          </ejs-grid>
+          <div style="text-align: end; padding: 7px 12px 1px;">
+            <button class='btn btnColorAll' style="width: 133px;" (click)="continueWithSelectedProj()">
+              <p style="display: contents;">Save</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="Search_employee_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1300px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Advance Search for Employee</h5>
+          <button type="button" class="close" (click)="closeEmployeeSearchModel()" aria-label="Close"></button>
+        </div>
+        <div>
+          <ejs-grid #empTabledataTableGrid [toolbar]='invoiceToolbar' (created)='empTableSearchKeyUp()'
+          [dataSource]='employeeListingData' allowTextWrap='true' height="450px" allowSorting='true'>
+            <e-columns>
+              <e-column width='50' textAlign='Center'>
+                <ng-template #template let-data>
+                  <ejs-checkbox [checked]="data?.isChecked" (change)="isChecked($event, data, 'employee')"></ejs-checkbox>
+                </ng-template>
+              </e-column>
+
+              <e-column field='full_name' headerText='Full Name' width=150>
+                <ng-template #template let-data>
+                  <span>{{data.full_name}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='workemail' headerText='Email'width=120>
+                <ng-template #template let-data>
+                  <span>{{data.workemail}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='employee_type_name' headerText='Type' width=100>
+                <ng-template #template let-data>
+                  <span>{{data.employee_type_name}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='role_name' headerText='Role' width=100>
+                <ng-template #template let-data>
+                  <span>{{data.role_name}}</span>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+          <div style="text-align: end; padding: 7px 12px 1px;">
+            <button class='btn btnColorAll' style="width: 133px;margin-top: 15px;" (click)="continueWithSelectedEmp()">
+              <p style="display: contents;">Save</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

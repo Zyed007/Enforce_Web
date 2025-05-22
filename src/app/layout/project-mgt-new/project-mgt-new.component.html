@@ -1,0 +1,1747 @@
+<!-- <link href="../../../assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet"
+  type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />
+<link rel="stylesheet" type="text/css" href="https://www.jqwidgets.com/public/jqwidgets/styles/jqx.base.css">
+<link rel="stylesheet" type="text/css" href="https://www.jqwidgets.com/public/jqwidgets/styles/jqx.material.css">
+
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container--fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+
+        Project Management </h3>
+
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a class="kt-subheader__breadcrumbs-link">
+          Projects </a>
+        <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+          Add Project </a>
+        <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+          Edit Project </a>
+
+        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+      </div>
+    </div>
+    <div style="display: flex;align-items: center;" *ngIf="!showAddForm">
+      <button type="button" (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;"> <i
+        class="fa fa-angle-left"></i> Back </button>
+    </div>
+
+  </div>
+
+
+</div>
+<div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+  <div style="background-color: #ffffff;margin-bottom: 10px;">
+    <div style="display: flex;justify-content: flex-end;">
+
+
+    </div>
+    <div class="container-fluid mb-3 mt-3" style="padding: 10px;" *ngIf="getprojByOrgId">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('open')">
+          <div class="card admin-card" [class.activeX]="showOpenList">
+            <div class="card-body">
+              <h5 class="card-title">Open</h5>
+              <p class="card-text">{{openProjectList.length}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('closed')">
+          <div class="card admin-card" [class.activeX]="showClosedList">
+            <div class="card-body">
+              <h5 class="card-title">Closed</h5>
+              <p class="card-text">{{closedProjectList.length}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('unverified')">
+          <div class="card admin-card" [class.activeX]="showUnverifiedList">
+            <div class="card-body">
+              <h5 class="card-title">Pending Location Verification</h5>
+              <p class="card-text">{{unverifiedProjectlist.length}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('nolocation')">
+          <div class="card admin-card" [class.activeX]="showNoLocationList">
+            <div class="card-body">
+              <h5 class="card-title">Location Not Assigned</h5>
+              <p class="card-text">{{noLocationProjectList.length}}</p>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <!-- <div *ngIf="showProjectCardList" style="border-style: ridge;">
+      <div style="display: flex;justify-content: flex-end;padding: 15px 25px;background-color: #f1f1f1;"> <button
+          type="button" class="close" aria-label="Close" (click)="handleShowData(null)">
+          <span aria-hidden="true">&times;</span>
+        </button></div>
+      <ejs-grid #projectBreakGrid [toolbar]="projectToolbar" [allowExcelExport]="true" [allowPdfExport]="true"
+        (toolbarClick)="projectBreakGridClick($event)" [dataSource]="projectCardList" allowTextWrap="true"
+        height="400px" allowSorting="true" width="100%">
+        <e-columns>
+          <e-column field="project_name" headerText="Project Name" textAlign="" width="120"></e-column>
+          <e-column field='start_date' headerText='Start Date' textAlign='' width=130>
+            <ng-template #template let-data>
+              <span>{{data.start_date| date : "dd/MM/y"}}</span>
+            </ng-template>
+          </e-column>
+          <e-column field='end_date' headerText='End Date' textAlign='' width=130>
+            <ng-template #template let-data>
+              <span>{{data.start_date| date : "dd/MM/y"}}</span>
+            </ng-template>
+          </e-column>
+          <e-column field="project_status" headerText="Status" textAlign="" width="120"></e-column>
+          <e-column type='' textAlign='' headerText='Actions' width='120'>
+            <ng-template #template let-data>
+              <a title="Edit details" *ngIf="showEditBtn && data.project_status!='Modification'"
+                class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskEdit(data.project_id)"> <i
+                  class="la la-edit"></i> </a>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+      <div *ngIf="isLoading" class="spinner-overlay">
+        <div class="spinner-border text-primary custom-spinner" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+
+    </div> -->
+  </div>
+  <!-- begin:: Subheader -->
+  <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid ">
+          <div class="kt-subheader__main">
+              <h3 class="kt-subheader__title">
+
+                 Tasks                           </h3>
+
+                              <span class="kt-subheader__separator kt-hidden"></span>
+
+                      </div>
+          <div class="kt-subheader__toolbar">
+              <div class="kt-subheader__wrapper">
+
+
+
+              </div>
+          </div>
+      </div>
+  </div> -->
+  <!-- end:: Subheader -->
+  <div class="kt-portlet kt-portlet--mobile">
+    <div class="row">
+      <div class="col col-xl-12 col-lg-12">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <div class="kt-portlet__head-label">
+
+            <h3 class="kt-portlet__head-title">
+              Projects
+            </h3>
+          </div>
+          <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+              <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+      <i class="la la-long-arrow-left"></i>
+      Back
+  </a> -->
+              &nbsp;
+              <div class="dropdown dropdown-inline">
+                <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+                <!-- </button> -->
+                <button type="button" *ngIf="showAddBtn" (click)='AddForm()' class="button button-fill button-rose"> <i
+                    class="flaticon2-plus"></i> Add New </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="kt-portlet__body" style=" border-bottom-color: #f0f3ff;padding-top: -15px;
+      color: #595d6e;" *ngIf="showProjectList">
+          <!--begin: Datatable -->
+          <!-- <div class="kt-datatable" id="local_data"></div> -->
+          <!--end: Datatable -->
+          <!-- <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field> -->
+          <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer" style="position: relative;">
+
+
+
+
+            <ejs-grid #projectGrid [dataSource]='projectData' height="315px" [allowSorting]='true'
+              [allowMultiSorting]='true' [sortSettings]='initialSort' [toolbar]='projectToolbar'
+              [allowExcelExport]='true' [allowTextWrap]='true' [allowPdfExport]='true'
+              (toolbarClick)='toolbarClick($event)' (created)='projectKeyUpSearch($event)'>
+              <e-columns>
+
+
+                <!-- <e-column field='' headerText='No' textAlign='' width=60>
+                      <ng-template #template let-data>
+                        <div >{{(data.index)}}</div>
+
+                  </ng-template>
+                    </e-column> -->
+                <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+                <e-column field='accountsId' headerText='Acc ID' width=100></e-column>
+
+                <e-column field='project_prefix' headerText='Job No' textAlign='' width=160>
+                  <ng-template #template let-data>
+                    <div style="display: grid;">
+                      <span>{{data.project_prefix}}</span>
+                      <span *ngIf="data.relprojectId !== null" (click)="toProjectLayout(data.relprojectId , null)"
+                        style="font-size: 10px;" class="hyplink">Extension of {{data.relprojectName}}</span>
+                      <span *ngIf="data.isComplimentary !== null && data.isMarketing !== null" style="font-size: 10px;">
+                        {{ data.isComplimentary === 'true' ? "Complimentary Project" : "Marketing project" }} </span>
+
+                    </div>
+                  </ng-template>
+                </e-column>
+                <e-column field='project_name' headerText='Project' textAlign='' width=200>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span style="color:blue;cursor: pointer;text-transform: capitalize;" *ngIf="viewDashboard"
+                      (click)="toProjectLayout(data.project_id, data)">{{data.project_name}}</span>
+                    <span style="text-transform: capitalize;" *ngIf="!viewDashboard">{{data.project_name}}</span>
+                    <!-- <div style="font-size: 11px;">Customer</div> -->
+
+                  </ng-template>
+                </e-column>
+
+                <e-column field='project_status_name' headerText='Status' width=120>
+                  <ng-template #template let-data>
+
+                    <span *ngIf="!data.isClosed">{{data.project_status_name }}</span>
+                    <span *ngIf="data.isClosed" style="color:red;font-weight: 500;"> Closed
+                      <!-- <br/>  <span style="font-size: 10px ;"> {{ data.actualClosingDate | date :  "dd/MM/y" }}   </span>  -->
+                    </span>
+
+
+                  </ng-template>
+                </e-column>
+
+
+
+                <e-column field='start_date' headerText='Start Date' textAlign='' width=130>
+                  <ng-template #template let-data>
+
+                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                    <span>{{data.start_date| date : "dd/MM/y"}}</span>
+
+
+                  </ng-template>
+                </e-column>
+                <e-column field='end_date' headerText='End Date' textAlign='' width=130>
+                  <ng-template #template let-data>
+
+
+                    <span *ngIf="data.actualClosingDate == null">{{data.end_date| date : "dd/MM/y"}}</span>
+                    <span *ngIf="data.actualClosingDate != null">{{data.actualClosingDate| date : "dd/MM/y"}}</span>
+
+                    <!-- <span>{{data.end_date| date :  "dd/MM/y"}}</span> -->
+
+                  </ng-template>
+                </e-column>
+                <e-column field='cst_name' headerText='Customer' textAlign='' width=150>
+                  <ng-template #template let-data>
+
+                    <span>{{data.cst_name}}</span>
+
+                  </ng-template>
+                </e-column>
+                <e-column field='email' headerText='Email' textAlign='' width=150>
+                  <ng-template #template let-data>
+
+                    <span>{{data.email}}</span>
+
+                  </ng-template>
+                </e-column>
+                <e-column field='progress' headerText='Progress' textAlign='' width=150>
+                  <ng-template #template let-data>
+                    <div class="kt-widget31__content">
+                      <div class="kt-widget31__progress">
+                        <a class="kt-widget31__stats">
+                          <span>{{data?(data.progress==null?'0':data.progress):''}}%</span>
+
+                        </a>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-brand" role="progressbar"
+                            [style.width]="data.progress? data.progress+'%'  : 0 +'%'" aria-valuenow="75"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </ng-template>
+                </e-column>
+
+                <e-column field='emp_list' headerText='Assignee' textAlign='' width=150>
+                  <ng-template #template let-data>
+
+                    <span>{{data.emp_list}}</span>
+
+                  </ng-template>
+                </e-column>
+
+                <e-column field='phone' headerText='Phone' textAlign='' width=160
+                  *ngIf="showCustomerDetails || contactForAdmin">
+                  <ng-template #template let-data>
+                    <span>{{data.phone}}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field='ondate' headerText='Date' width=120></e-column>
+                <!-- <e-column field='ondate' headerText='Date' textAlign='' width=120>
+                        <ng-template #template let-data>
+
+                            <span style="text-transform: capitalize;" >{{data.ondate| date :  "dd/MM/y"}}</span>
+
+                    </ng-template>
+                      </e-column> -->
+                <!-- <e-column field='completed_date' headerText='Completed Date' textAlign='' width=120>
+                        <ng-template #template let-data>
+
+                            <span>{{data.completed_date| date:'MM/dd/yyyy'}}</span>
+
+                    </ng-template>
+                      </e-column> -->
+                <!-- <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column> -->
+                <e-column type='' textAlign='' headerText='Actions' width='120'>
+                  <ng-template #template let-data>
+                    <!-- <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> -->
+                    <a title="Edit details" *ngIf="showEditBtn && data.project_status_name!='Modification'"
+                      class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskEdit(data.project_id)"> <i
+                        class="la la-edit"></i> </a>
+
+                    <a title="Delete"
+                      *ngIf="showDeleteBtn && showprojDelete && data.project_status_name!='Modification'"
+                      class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskDelete(data.project_id)"><i
+                        class="la la-trash"></i> </a>
+
+
+                  </ng-template>
+                </e-column>
+                <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+              </e-columns>
+            </ejs-grid>
+            <div *ngIf="isLoading" class="spinner-overlay">
+              <div class="spinner-border text-primary custom-spinner" role="status">
+                  <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+            <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+          </div>
+
+
+        </div>
+
+        <div *ngIf="!showProjectList">
+          <app-not-found></app-not-found>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+  <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+
+
+    <div class="kt-portlet kt-portlet--tabs">
+
+      <!--begin::Portlet-->
+
+      <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+
+          <h3 class="kt-portlet__head-title">
+            Projects
+
+          </h3>
+
+          <div style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;"
+            [routerLink]="['/pricing']" class="btn btn-bold btn-sm btn-font-sm btn-label-warning">UPGRADE</div>
+          <div style="color:#2c77f4!important;margin-left: 10px;">Upgrade to enable customer info & location</div>
+
+        </div>
+        <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+            <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+              <i class="la la-long-arrow-left"></i>
+              Back
+          </a> -->
+            &nbsp;
+            <div class="dropdown dropdown-inline">
+              <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+              <!-- </button> -->
+              <button type="button" (click)='TaskView()' class="button button-fill button-rose"> <i
+                  class="fa fa-angle-left"></i> Back </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kt-portlet__head">
+        <div class="kt-portlet__head-toolbar">
+          <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+            role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab">
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24" />
+                    <path
+                      d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
+                      fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                    <path
+                      d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
+                      fill="#000000" fill-rule="nonzero" />
+                  </g>
+                </svg> Project
+              </a>
+            </li>
+
+            <!-- <li class="nav-item" [ngClass]="{'disableTab':planType == 'Basic'}"  data-toggle="kt-tooltip" data-placement="left" title="" data-original-title="Tooltip title"
+            > -->
+            <li class="nav-item" data-toggle="kt-tooltip" data-placement="left" title=""
+              data-original-title="Tooltip title">
+              <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                  height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24" />
+                    <path
+                      d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z"
+                      fill="#000000" fill-rule="nonzero" />
+                    <path
+                      d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z"
+                      fill="#000000" opacity="0.3" />
+                  </g>
+                </svg>
+                Customer Info
+              </a>
+            </li>
+            <li class="nav-item" data-toggle="kt-tooltip" data-placement="left" title=""
+              data-original-title="Tooltip title">
+              <a class="nav-link" (click)="locationSetUp()" href="#kt_user_edit_tab_3" data-toggle="tab" role="tab">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <polygon points="0 0 24 0 24 24 0 24"/>
+                    <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+                    <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+                    </g>
+                    </svg>  -->
+                <i class="fa fa-map-marker" style="font-size: 15px;font-weight: bold;"></i>
+                Location
+              </a>
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+      <!--begin::Form-->
+      <div class="kt-portlet__body">
+
+        <div class="kt-form kt-form--label-right">
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+
+              <!-- <div class="form-group row">
+      <label class="col-xl-3 col-lg-3 col-form-label">Project Prefix:</label>
+      <div class="col-lg-4 col-xl-4">
+        <select2 [data]="prefixData" [options]="taskOptions"  [value]="prefixValue"    (valueChanged)="changedPrefix($event)"></select2>
+
+      </div>
+
+
+  </div> -->
+              <form class="kt-form kt-form--label-right" [formGroup]="projectForm" (ngSubmit)="onAddSubmit()">
+
+                <div class="form-group row" *ngIf="!editable">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Prefix:</label>
+                  <div class="kt-radio-inline col-lg-4 col-xl-4 accessRadio">
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="prefixVal" value="is_auto" (change)="customRadioChange()">
+                      Auto
+                      <span></span>
+                    </label>
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="prefixVal" value="is_custom" (change)="customRadioChange()">
+                      Custom
+                      <span></span>
+                    </label>
+
+                  </div>
+                </div>
+
+                <div *ngIf="showPrefixText && !editable" class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Enter Prefix:</label>
+                  <div class="col-lg-4 col-xl-4 col-sm-4">
+                    <input type="email" class="form-control" placeholder="Enter Prefix" formControlName="prefix_name"
+                      (keyup)="customInputChange($event)">
+                  </div>
+                  <span style="margin-top: 5px;">{{customPrefix}}</span>
+                </div>
+                <div *ngIf="prefixExists" style="color: red;">Prefix already exists. Please enter a new prefix.</div>
+                <div *ngIf="!showPrefixText && editable==false " class="form-group row"
+                  style="margin-bottom: 4px;margin-top:-12px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <span>{{prefixString}}</span>
+
+
+                  </div>
+                </div>
+                <div *ngIf="editable" class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                    <span>{{project_prefix_val}}</span>
+
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Name<span class="required"
+                      style="color: red;">*</span></label>
+                  <div class="col-lg-4 col-xl-4">
+                    <input type="email" class="form-control" placeholder="Enter name" formControlName="project_name">
+                  </div>
+                  <div *ngIf="isFieldValid('project_name')" class="error-msg">Required.</div>
+
+                </div>
+                <!-- <div class="required-msg" *ngIf="addformSubmitted && projectForm.get('project_name').value==''">Please fill the required fields</div> -->
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Type:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="projectTypeData" [options]="taskOptions" [value]="projTypeVal"
+                      (valueChanged)="changedProjType($event)"></select2>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Packages:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [data]="packageTypeData" [options]="taskOptions" [value]="pkgTypeVal"
+                      (valueChanged)="changedPkgType($event)"></select2>
+                  </div>
+
+                </div>
+                <div class="required-msg row" style="margin-top:-10px;">
+                  <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                  <div class="col-lg-4 col-xl-4">
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Description:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                    <!-- <input type="email" class="form-control" placeholder="Enter name" formControlName="team_name"> -->
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Start Date:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <ejs-datepicker formControlName="startDate" (change)="onstartDtChange($event)"
+                      [value]='startdateValue' placeholder='Enter date'></ejs-datepicker>
+                    <div style="color: #6c757d!important;margin-top: 5px;
+                        ">Note: Job Opening Date.</div>
+
+                  </div>
+
+                </div>
+
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">End Date:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <ejs-datepicker [enabled]="!disableEndDate" [min]="minEndDate" formControlName="endDate"
+                      (change)="onendDtChange($event)" [value]='enddateValue' placeholder='Enter date'></ejs-datepicker>
+                    <div style="color: #6c757d!important;margin-top: 5px;
+                      ">Note: Job Closing Date.</div>
+
+                  </div>
+                </div>
+                <!-- <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Completed Date:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <ejs-datepicker formControlName="completeDate" (change)="oncompltDtChange($event)" [value]='completedateValue' placeholder='Enter date'></ejs-datepicker>
+
+                  </div>
+              </div> -->
+
+                <div class="form-group row" *ngIf="editable">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Status:</label>
+                  <div class="col-lg-4 col-xl-4">
+                    <select2 [disabled]='projStatusDisabled' [data]="projectStatusData" [options]="taskOptions"
+                      [value]="projStatus" (valueChanged)="changedProj($event)"></select2>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Project Access:</label>
+                  <div class="kt-radio-inline col-lg-4 col-xl-4 accessRadio">
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="accessControl" value="is_public"> Public
+                      <span></span>
+                    </label>
+
+                    <label class="kt-radio">
+                      <input type="radio" formControlName="accessControl" value="is_private"> Private
+                      <span></span>
+                    </label>
+
+                  </div>
+
+                </div>
+                <!-- <div class="form-text text-muted">
+            <label class="col-xl-3 col-lg-3 col-form-label"></label>
+
+            <div >Private- Can be viewed by the employee to whom the job->milestone->task is assigned .</div>
+          </div> -->
+
+                <div class="form-group row">
+                  <label class="col-xl-3 col-lg-2 col-form-label"></label>
+                  <div style="display: flex;flex-direction: column;">
+                    <div style="color: #6c757d!important;
+              " class="col-lg-6 col-xl-8 ">Private- Can be viewed by the employee to whom the
+                      job-&gt;milestone-&gt;task are assigned.
+                    </div>
+                    <div style="color: #6c757d!important;margin-top: 5px;
+              " class="col-lg-6 col-xl-8 ">Public- Can only be viewed by the employee.
+                    </div>
+                  </div>
+
+                </div>
+                <!-- <div style="    color: #6c757d!important;
+       " class="col-lg-6 col-xl-8 ">Public- Can only be viewed by the employee </div> -->
+                <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                  <div class="kt-form__actions">
+                    <div class="row">
+                      <!-- <div data-toggle="tab" role="tab" data-href="#kt_user_edit_tab_2" (click)="nextTab('#kt_user_edit_tab_2')" class="col-lg-10"><button  class="btn btn-success" type="reset">Next</button>
+                </div> -->
+                      <!-- <button type="button" class="btn btn-success"  aria-haspopup="true" aria-expanded="false">
+                      Next <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i>
+              </button> -->
+
+                      <!-- <button type="reset" class="btn btn-success tab-button"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i>
+              </button> -->
+                      <button type="submit" class="btn btn-success tab-button" style="width: 92px;"> Next <i
+                          class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+
+
+
+
+
+            </div>
+            <div class="tab-pane" id="kt_user_edit_tab_2" role="tabpanel">
+              <div class="kt-form kt-form--label-right">
+                <div class="kt-form__body">
+                  <div class="kt-section kt-section--first">
+                    <div class="kt-section__body">
+                      <form class="kt-form kt-form--label-right" [formGroup]="projectForm">
+
+                        <div class="form-group row">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Customer</label>
+                          <div class="col-lg-7 col-xl-6">
+                            <select2 [ngClass]="editable?'none':'show'" [data]="customerData" [options]="taskOptions"
+                              [value]="customerVal" (valueChanged)="changedCustomer($event)"></select2>
+
+                            <div [ngClass]="editable?'show':'none'">
+                              <input class="form-control" type="text" disabled='disabled' value=""
+                                formControlName="cst_name" placeholder="Name">
+
+                            </div>
+                            <!-- <input class="form-control" type="text" value="" formControlName="customer_Name"  placeholder="Name"> -->
+                          </div>
+                          <div [ngClass]="editable?'none':'show'" aria-haspopup="true" (click)="AddCst()"
+                            aria-expanded="false" style="color:black;margin-top:5px;">
+                            <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                            color: #fff;
+                                            font-size: 8px;
+                                            "></i>
+                              Add Customer
+                            </a>
+
+
+
+                          </div>
+
+                          <!-- <div *ngIf="projectForm.controls['customer_Name'].errors && !projectForm.controls['customer_Name'].pristine" class="error-msg">
+                            <div [hidden]="!projectForm.controls['customer_Name'].errors.required">Required.</div>
+                          </div> -->
+                        </div>
+                        <div class="" aria-haspopup="true" (click)="AddContact()" aria-expanded="false"
+                          style="color:black;margin-bottom: 15px;">
+                          <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                        color: #fff;
+                                        font-size: 8px;
+                                        "></i>
+                            Add contact
+                          </a>
+
+
+
+                        </div>
+
+                        <form [formGroup]="customerContactForm">
+                          <div *ngIf="showAddContact">
+                            <div class="form-group row">
+
+                              <!-- <div class="form-group col-lg-12 row" *ngIf='!showCompanyDet' >
+                      <label class=" kt-checkbox">
+                              <input type="checkbox" id="billable" (change)="onCheckChange($event)">
+                              <span style="margin-left:15px;margin-right: 5px;"></span>
+                      </label>
+                              <div style="margin-top: 2px;margin-left:8px;">Same as lead</div>
+
+
+                  </div>  -->
+                              <div class="col-lg-6">
+                                <label>First Name</label>
+                                <input class="form-control" type="text" value="" formControlName="fname"
+                                  placeholder="Enter Name">
+
+                                <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                                <div class="form-text text-muted">
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <label>Last Name</label>
+                                <input class="form-control" type="text" value="" formControlName="lname"
+                                  placeholder="Enter Name">
+
+                                <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                                <div class="form-text text-muted">
+                                </div>
+                              </div>
+
+
+                            </div>
+
+
+
+                            <div class="form-group row">
+                              <div class="col-lg-6">
+                                <label>Phone Number</label>
+                                <!-- <input class="form-control" type="number" value="" formControlName="mobile"  placeholder="Enter Number"> -->
+                                <!-- <input class="form-control" type="text" value="" formControlName="mobile"  placeholder="Enter Number"> -->
+
+                                <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                                <ngx-intl-tel-input [cssClass]="'form-control '"
+                                  [preferredCountries]="preferredCountries" [enableAutoCountrySelect]="false"
+                                  [enablePlaceholder]="false"
+                                  [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                  [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                                  [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                                  name="mobile" formControlName="mobile">
+
+                                </ngx-intl-tel-input>
+                                <div style="color: red;"
+                                  *ngIf="savedContactPh &&((customerContactForm.get('mobile').value!='' && customerContactForm.get('mobile').value!=null)&&!customerContactForm.controls['mobile'].pristine &&  customerContactForm.controls['mobile'].errors)  ">
+                                  Please enter a valid mobile no
+                                  <!-- {{empProfileForm.controls['mobile '].errors | json }} -->
+                                </div>
+                                <div style="color: red;"
+                                  *ngIf="savedContactPh && (customerContactForm.get('mobile').value=='' || customerContactForm.get('mobile').value==null) ">
+                                  Required
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <label> Email</label>
+                                <input class="form-control" type="text" value="" formControlName="email"
+                                  placeholder="Enter Email">
+                                <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                <div
+                                  *ngIf="customerContactForm.controls['email'].errors && !customerContactForm.controls['email'].pristine"
+                                  class="error-msg">
+                                  <div [hidden]="!customerContactForm.controls['email'].errors.pattern">Enter a valid
+                                    email
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <div class="form-group row">
+
+                              <div class="col-lg-6">
+                                <label>Relationship</label>
+                                <select2 [data]="relationData" [options]="taskOptions" [value]="cstRelationValue"
+                                  (valueChanged)="changedCstRelation($event)"></select2>
+                                <!-- <select2 id="selWidth" [data]="departmentData" [options]='taskOptions'  [value]="deptValue"    (valueChanged)="changedDept($event)"></select2> -->
+
+                                <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                                <div class="form-text text-muted">
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <label>Note</label>
+                                <input class="form-control" type="text" value="" formControlName="note"
+                                  placeholder="Enter Notes">
+
+                                <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+
+                                <div class="form-text text-muted">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                              <div class="col-lg-9 col-xl-9" style="display: flex;justify-content: flex-end;">
+                                <button type="button" class="button button-fill button-rose"
+                                  style="width: 75px !important;" (click)='saveContactAddress($event)'
+                                  [disabled]="disableSaveBranch" aria-haspopup="true" aria-expanded="false">
+                                  <i class="la la-check"></i> Save
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+
+
+
+                        <!--
+
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">Address</label>
+                      <div class="col-lg-9 col-xl-6">
+                          <input class="form-control" type="text" value="" formControlName="street_1" placeholder="Street">
+                      </div>
+
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                      <div class="col-lg-4 col-xl-4">
+                          <input class="form-control" type="text" value="" formControlName="street_2" placeholder="Street">
+                      </div>
+                      <div class="col-lg-2 col-xl-2">
+                          <input class="form-control" type="text" value="" formControlName="city" placeholder="City">
+                      </div>
+
+                  </div> -->
+                        <div [ngClass]="showBranchList  ?'display':'hide'">
+                          <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                            <div class="col-lg-9 col-xl-4">
+                              <div style="margin-top:5px;">
+                                <div class="kt-widget2">
+                                  <div class="kt-widget2__item kt-widget2__item--success"
+                                    *ngFor="let item of branchDataSource ; let i = index">
+                                    <!-- <div class="kt-widget2__checkbox">
+                                        <label class="kt-checkbox kt-checkbox--solid kt-checkbox--single">
+                                          <input type="checkbox">
+                                          <span></span>
+                                        </label>
+                                      </div> -->
+
+
+                                    <div class="kt-widget2__info"
+                                      style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;display: flex;flex-flow: row;">
+                                      <div ngbPopover="Mark as primary account" triggers="mouseenter:mouseleave">
+                                        <span class="accessRadio">
+
+                                          <label class="kt-radio">
+                                            <input type="radio" name="prefixVal" [checked]="item.is_primary" [value]="i"
+                                              (change)="setPrimary(i)">
+
+                                            <span></span>
+                                          </label>
+
+
+                                        </span>
+                                      </div>
+                                      <div>
+
+
+                                        <div class="kt-widget2__title">
+                                          {{item.first_name}} <span style="margin-left: 4px;"> {{item.last_name}}</span>
+                                          <span *ngIf="item.email" style="font-weight: normal;font-size: 10px;">
+                                            ({{item.email}})</span>
+                                          <!-- <span style="font-size: 10px;"
+                                            [ngClass]="item.status == 'Completed' ? 'status-code-success': (item.status == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status}}</span> -->
+                                          <div class="kt-widget2__username">
+                                            {{item.phone}}
+                                          </div>
+                                          <div class="kt-widget2__username">
+                                            {{item.department}}
+                                          </div>
+                                          <div class="kt-widget2__username">
+                                            {{item.designation}}
+                                          </div>
+                                        </div>
+                                        <!-- <a class="kt-widget2__username">
+                                          {{item.type}}
+
+                                        </a> -->
+                                        <!-- <a class="kt-widget2__username">
+                                      {{item.phone_no}}
+
+
+                                        </a> -->
+                                      </div>
+                                      <!-- <a class="kt-widget2__username">
+                                      {{item.email}}
+
+
+                                        </a> -->
+                                    </div>
+                                    <div class="kt-widget2__actions">
+                                      <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                        (click)="brDelete(i)"><i class="la la-trash"></i></a>
+                                    </div>
+
+                                  </div>
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+
+                        </div>
+                        <!-- <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+                  <h3 class="kt-section__title kt-section__title-lg">Primary Contact</h3>
+                  <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div> -->
+
+                        <div class="form-group row" style="display: none;">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Contact Name</label>
+                          <div class="col-lg-9 col-xl-6 ">
+                            <input class="form-control" type="text" value="" formControlName="name" placeholder="Name">
+                          </div>
+                          <label class="col-form-label"></label>
+
+                          <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                                <input class="form-control" type="email" value="" formControlName="email"  placeholder="Email" >
+
+                        </div> -->
+                          <div class="error-msg">
+                            <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                            <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+                            <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                            <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                                  ssfssscs
+                                </div> -->
+                            <div
+                              *ngIf="projectForm.controls['contact_type'].errors && !projectForm.controls['contact_type'].pristine"
+                              class="error-msg">
+                              <div [hidden]="!projectForm.controls['contact_type'].errors.required">Required.</div>
+                              <div [hidden]="!projectForm.controls['contact_type'].errors.patternInvalid">Enter a valid
+                                email or phone</div>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="form-group row" style="display: none;">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Contact Email</label>
+
+
+                          <div class="col-lg-9 col-xl-6">
+                            <input class="form-control" type="email" value="" formControlName="email"
+                              placeholder="Email">
+                            <!-- <input class="form-control" type="email" value="" disabled="{planType == 'Basic'?'disabled':''}" formControlName="email"  placeholder="Email" > -->
+
+                          </div>
+                          <div class="error-msg">
+                            <!-- <div *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].value==''"  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                            <!-- <div [hidden]="!loginForm.controls['email'].errors.patternInvalid">Email is invalid.</div> -->
+                            <!-- <div  *ngIf="isFieldValid('email')">Email is required.</div> -->
+                            <!-- <div [hidden]="loginForm.controls['email'].errors.pattern" >
+                                ssfssscs
+                              </div> -->
+                            <div
+                              *ngIf="projectForm.controls['contact_type'].errors && !projectForm.controls['contact_type'].pristine"
+                              class="error-msg">
+                              <div [hidden]="!projectForm.controls['contact_type'].errors.required">Required.</div>
+                              <div [hidden]="!projectForm.controls['contact_type'].errors.patternInvalid">Enter a valid
+                                email or phone</div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </form>
+                      <div class="form-group row" style="display: none;">
+                        <label class="col-xl-3 col-lg-3 col-form-label"> Contact Number</label>
+                        <div class="col-lg-9 col-xl-6">
+                          <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                            [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                            [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                            [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                            name="phone" [id]='phone' [ngModelOptions]="{updateOn: 'blur'}"
+                            (ngModelChange)="onChange($event)" [(ngModel)]="phone">
+
+                          </ngx-intl-tel-input>
+                          <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Phone" > -->
+                          <div *ngIf="phoneInvalid" class="error-msg">
+                            <div>{{phoneErrorMsg}}</div>
+
+                            <!-- <div [hidden]="!signUpForm.controls['email'].errors.patternInvalid">Enter a valid Phone Number.</div> -->
+                          </div>
+                          <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Phone" > -->
+                        </div>
+                        <label class="col-form-label"></label>
+
+                        <!-- <div class="col-lg-3 col-xl-3 col-sm-6">
+                              <input class="form-control" type="email" value="" formControlName="mobile"  placeholder="Mobile" >
+
+                      </div> -->
+
+                      </div>
+                      <!-- <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Position</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <input class="form-control" type="text" value="" formControlName="position"  placeholder="Name">
+                    </div>
+
+                </div> -->
+
+
+                      <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                        <div class="kt-form__actions">
+                          <div class="row">
+                            <!-- <div data-toggle="tab" role="tab" data-href="#kt_user_edit_tab_2" (click)="nextTab('#kt_user_edit_tab_2')" class="col-lg-10"><button  class="btn btn-success" type="reset">Next</button>
+                      </div> -->
+                            <!-- <button type="button" class="btn btn-success"  aria-haspopup="true" aria-expanded="false">
+                            Next <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i>
+                    </button> -->
+
+                            <!-- <button type="reset" class="btn btn-success tab-button"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i>
+                    </button> -->
+                            <button type="reset" class="btn btn-success tab-button" style="width: 92px;"> Next <i
+                                class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="tab-pane" id="kt_user_edit_tab_3" role="tabpanel">
+              <div class="kt-form kt-form--label-right">
+                <div class="kt-form__body">
+                  <div class="kt-section kt-section--first">
+                    <div class="kt-section__body">
+
+
+                      <div class="form-group row">
+                        <div style="display: flex;" class="col-xl-12 col-form-label">
+                          <div class="col-xl-3 col-lg-2 col-sm-1" style="color: black;text-align: right;">Verify
+                            Location</div>
+                          <div>
+                            <label class="switch">
+                              <input type="checkbox" [checked]="" name='chec' id="isLoc" [disabled]='!allowVerify'
+                                (change)="checkIsLoc($event)">
+                              <span>
+
+                              </span>
+                            </label>
+
+                          </div>
+                          <div ngbPopover="Verify the location while checkin" triggers="mouseenter:mouseleave"
+                            placement="top" style="margin-top: -2px;">
+                            <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+                           color: #fff;
+                           font-size: 11px;
+                           "></i>
+                          </div>
+                          <div *ngIf="verifyLoc" style="padding-left: 5px;">
+                            <span style="color: #6c757d!important;font-size:12px;font-style: italic;"><i
+                                class="fa fa-check-circle" style="color: #0095f6;font-size: 14px;"
+                                aria-hidden="true"></i>
+                              Location verified by <strong>{{verifiedBy}}</strong></span>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-2 col-sm-1" style="color: black;text-align: right;"></div>
+
+                        <div style="color: #6c757d!important;font-size:11px;margin-top: -12px;
+                                ">Note: Project locations can only be verified and assigned by authorized users. In cases where no specific location has been assigned to a project, the initial job check-in will be considered the project location.
+                        </div>
+
+                      </div>
+
+
+                      <div class="form-group">
+                        <div class="row">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Enter address</label>
+                          <div class="col-lg-9 col-xl-6">
+                            <div class="form-group">
+                              <input type="text" (focus)="focusFunction()" (keyup)="keyup($event)"
+                                (click)="clickFunction()" class="form-control" [value]="nearbyAddress"
+                                placeholder="Search Nearest Location" autocorrect="off" (change)="onSearchChange()"
+                                autocapitalize="off" spellcheck="off" #search [disabled]="!addLocation">
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-3 col-lg-3 col-form-label"></div>
+                          <div class="col-lg-9 col-xl-6">
+                            <div class="pac-container form-group" *ngIf="showNearbyPlaces"
+                              style="color:black;width:100%;margin-top: -1rem !important;height:185px;overflow-y: auto; margin-bottom: 8px;">
+                              <div class="pac-item" *ngFor="let place of nearbyPlaces; let i = index"
+                                (click)="selectNearBy(place)">
+                                <span *ngIf='i < 11' class="pac-icon pac-icon-marker"></span>
+                                <span *ngIf='i < 11' class="pac-item-query"></span>
+                                <span *ngIf='i < 11'>{{place.name}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Enter radius</label>
+                          <div class="col-lg-9 col-xl-6">
+                            <div class="form-group">
+                              <div class="input-group" style="display: flex;align-items: center;">
+                                <input type="text" class="form-control custom-input" [value]="georadius"
+                                  placeholder="Project radius" autocorrect="off" autocapitalize="off" spellcheck="off"
+                                  #geoRadius>
+
+                                <div class="input-group-append">
+                                  <button class="button button-fill button-rose ml-2"
+                                    (click)="onGeoRadiusChange(geoRadius.value)">Update
+                                  </button>
+                                </div>
+                              </div>
+                              <div style="color: #6c757d!important;font-size:11px;margin-top: 5px;
+                              ">Note: Please note that the radius is measured in meters
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-xl-3 col-lg-3 col-form-label"></div>
+                          <div style="color: #6c757d!important;font-size:12px;margin: 10px 15px;font-style: italic;" *ngIf="lastUpdatedBy">
+                            *Project Location last
+                            updated by <span style="color: black;font-weight: 600;">{{lastUpdatedBy}}</span>
+                            on <span style="color: black;font-weight: 600;">{{lastUpdatedDate}}</span></div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col-xl-3 col-lg-3 col-form-label"></div>
+                          <div class="col-lg-9 col-xl-6" style="position:relative">
+                            <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="addLocation"
+                                (dragEnd)="markerDragEnd($event)"></agm-marker>
+                              <agm-circle [latitude]="latitude" [longitude]="longitude" [clickable]="false"
+                                [draggable]="false" [editable]="false" [fillColor]="'green'" [fillOpacity]="0.5"
+                                [radius]="georadius">
+                              </agm-circle>
+                            </agm-map>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-xl-3 col-lg-3 col-form-label"></div>
+                          <div class="col-lg-9 col-xl-6">
+                            <label style="color:grey;">Address: {{address}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg"></div>
+            <div class="col-lg-9 col-xl-9" style="margin:0px auto;text-align: center;">
+                <button type="submit" class="btn green uppercase" >Save</button>
+
+            </div> -->
+                  <div class="kt-portlet__foot">
+                    <div class="kt-form__actions">
+                      <div class="required-msg" *ngIf="addformSubmitted && isFieldValid('project_name')">Please fill the
+                        required fields</div>
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <span *ngIf="AddNewSubmit">
+                            <button type="reset" class="btn btn-success" style="margin-right:10px;"
+                              (click)=" onAddNewSubmit()">Submit & New</button>
+                          </span>
+                          <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                          <button type="reset" class="btn btn-success"
+                            (click)="editable ? onEditSubmit() : onAddSubmit()">Submit</button>
+
+                          <button type="reset" class="btn btn-secondary" (click)='TaskView()'
+                            style="margin-left:10px;">Cancel</button>
+                          <!-- <button type="reset" class="btn btn-success">Save</button> -->
+
+                          <!-- <button type="reset" class="btn btn-secondary" style="margin-left:5px;">Cancel</button> -->
+                        </div>
+                        <!-- <div class="col-lg-6 kt-align-right">
+                    <button type="reset" class="btn btn-danger">Delete</button>
+                  </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="kt-section kt-section--first">
+                <div class="kt-section__body">
+                    <div class="row">
+                        <label class="col-xl-3"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <h3 class="kt-section__title kt-section__title-sm">Security:</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Login verification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <button type="button" class="btn btn-label-brand btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Setup login verification</button>
+                            <span class="form-text text-muted">
+                            After you log in, you will be asked for additional information to confirm your identity and protect your account from being compromised.
+                            <a href="#" class="kt-link">Learn more</a>.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Password reset verification</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <div class="kt-checkbox-single">
+                                <label class="kt-checkbox">
+                                    <input type="checkbox"> Require personal information to reset your password.
+                                    <span></span>
+                                </label>
+                            </div>
+                            <span class="form-text text-muted">
+                            For extra security, this requires you to confirm your email or phone number when you reset your password.
+                            <a href="#" class="kt-link">Learn more</a>.
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group row kt-margin-t-10 kt-margin-b-10">
+                        <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                        <div class="col-lg-9 col-xl-6">
+                            <button type="button" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Deactivate your account ?</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+    <!-- end:: Content -->
+  </div>
+</div>
+
+
+
+<div class="rightModal">
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="customer_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Customer</h5>
+          <button type="button" #cstCloseBtn class="close" data-dismiss="modal" (click)="OnCustomerClose()"
+            aria-label="Close">
+          </button>
+        </div>
+
+
+        <div class="modal-body" style="
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item ">
+
+              <div class="form-group row" style="margin-top:-12px;">
+                <div class="col-lg-12 col-sm-12">
+                  <form class="kt-form kt-form--label-right" [formGroup]="customerForm">
+                    <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                      <div class="kt-checkbox-inline" style="display: flex;">
+                        <div style="display: flex;">
+                          <div style="color: grey;margin-right:5px; ">Organization</div>
+                          <div>
+                            <label class="switch">
+
+                              <input type="checkbox" id='toggleDeptCheck' name="chec" [checked]="showOrgDetails"
+                                (change)="checkIsOrg($event)">
+
+                              <span>
+
+                              </span>
+                            </label>
+
+                          </div>
+
+
+
+                        </div>
+
+
+
+                      </div>
+                      <div class="form-group row" *ngIf="!showOrgDetails">
+
+
+                        <div class="col-lg-12 col-xl-12">
+
+                          <label for="exampleTextarea">First Name</label>
+                          <!-- <input  class="form-control" placeholder="Enter Name"
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                          <input class="form-control" type="text" value="" formControlName="customer_Name"
+                            placeholder="Name">
+
+                          <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                          <div *ngIf="(addCstformSubmitted) && customerForm.get('customer_Name').value==''"
+                            class="error-msg">Required.</div>
+                        </div>
+                        <div class="col-lg-12 col-xl-12">
+
+                          <label for="exampleTextarea">Last Name</label>
+
+                          <input class="form-control" type="text" value="" formControlName="last_Name"
+                            placeholder="Name">
+
+                          <div *ngIf="(addCstformSubmitted) && customerForm.get('last_Name').value==''"
+                            class="error-msg">Required.</div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="form-group row" *ngIf="showOrgDetails">
+                        <div class="col-lg-12 col-xl-12">
+                          <label>Company Name</label>
+
+                          <input class="form-control" type="text" value="" formControlName="company_Name"
+                            placeholder="Name">
+                          <div *ngIf="(addCstformSubmitted) && customerForm.get('company_Name').value==''"
+                            class="error-msg">Required.</div>
+
+                          <div class="form-text text-muted">
+
+                          </div>
+
+
+                        </div>
+                        <!-- <div aria-haspopup="true" (click)="AddCompany()" aria-expanded="false"
+                      style="color:black;margin-top:36px;">
+                      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                            color: #fff;
+                                            font-size: 8px;
+                                            "></i>
+                        Add Company Name
+                      </a>
+
+
+
+                    </div> -->
+                      </div>
+
+                      <div class="form-group row" *ngIf="showOrgDetails" style="display: none;">
+                        <div class="col-lg-6">
+                          <label>Annual Revenue</label>
+                          <!-- <input class="form-control" min='0' type="number" value="" formControlName="revenue"  placeholder="Name"> -->
+
+                          <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div>
+                        -->
+                          <div class="input-group ">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">$</span>
+                            </div>
+                            <input class="form-control" min='0' type="number" value="" formControlName="revenue"
+                              placeholder="Enter Revenue">
+
+
+                          </div>
+
+
+                        </div>
+                        <div class="col-lg-6">
+
+                          <label class="">No of Employees:</label>
+
+                          <input class="form-control" type="number" value="" formControlName="emp_no"
+                            placeholder="Enter Number">
+                          <!-- <div *ngIf="isFieldValid('emp_no')" class="error-msg">Required.</div> -->
+
+
+                          <div class="form-text text-muted">
+
+                            <!-- <div  *ngIf="isEmpProfileFieldValid('lastName')">Last Name is required.</div> -->
+                          </div>
+                          <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                      <span class="form-text text-muted">Please enter your last name</span> -->
+                        </div>
+
+                      </div>
+                      <div class="form-group row" *ngIf="showOrgDetails">
+                        <div class="col-lg-12 col-xl-12">
+                          <label>Website</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="email" value="" formControlName="email"  placeholder="Email" > -->
+
+                          <input class="form-control" type="email" value="" formControlName="website"
+                            placeholder="Enter website">
+
+
+                        </div>
+
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-lg-12 col-xl-12 ">
+                          <label>Email</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="email" value="" formControlName="email"  placeholder="Email" > -->
+                          <input class="form-control" type="email" value="" formControlName="customer_email"
+                            placeholder="Enter Email">
+                          <!-- <div class="error-msg" *ngIf="(addCstformSubmitted)&& customerForm.get('customer_email').value==''">
+                        Required
+
+                        </div> -->
+
+                          <div
+                            *ngIf="customerForm.controls['customer_email'].errors && !customerForm.controls['customer_email'].pristine"
+                            class="error-msg">
+
+                            <div [hidden]="!customerForm.controls['customer_email'].errors.pattern">Enter a valid email
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-12 col-xl-12">
+                          <label>Phone Number</label>
+                          <!-- <input class="form-control" type="text" value="" formControlName="customer_phone"  placeholder="Enter Number"> -->
+
+                          <!-- <div *ngIf="isFieldValid('first_Name')" class="error-msg">Required.</div> -->
+
+
+                          <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                            [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                            [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                            [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                            name="customer_phone" formControlName="customer_phone">
+
+                          </ngx-intl-tel-input>
+                          <div style="color: red;"
+                            *ngIf="addCstformSubmitted &&((customerForm.get('customer_phone').value!='' && customerForm.get('customer_phone').value!=null)&&!customerForm.controls['customer_phone'].pristine &&  customerForm.controls['customer_phone'].errors)  ">
+                            Please enter a valid mobile no
+                            <!-- {{empProfileForm.controls['customer_phone '].errors | json }} -->
+                          </div>
+                          <div style="color: red;"
+                            *ngIf="addCstformSubmitted && (customerForm.get('customer_phone').value==''||customerForm.get('customer_phone').value==null) ">
+                            Required
+                          </div>
+
+                        </div>
+
+
+                      </div>
+                      <div class="form-group row">
+
+
+                        <div class="col-lg-12 col-xl-12">
+
+                          <label for="exampleTextarea">Country</label>
+                          <!-- <input  class="form-control" placeholder="Enter Name"
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                          <div class="form-group ">
+
+                            <select2 [data]="countryData" [options]="taskOptions" [value]="countryValue"
+                              (valueChanged)="changedCountry($event)"></select2>
+                          </div>
+                          <label for="exampleTextarea">Address</label>
+
+                          <input class="form-control" type="text" value="" formControlName="street_1"
+                            placeholder="Street">
+
+                          <!-- <div *ngIf="isFieldValid('street_1')" class="error-msg">Required.</div> -->
+
+                        </div>
+
+
+                      </div>
+                      <div class="form-group row">
+
+                        <div class="col-lg-6 col-xl-6">
+
+                          <!-- <input  class="form-control" placeholder="Enter Name"
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                          <input class="form-control" type="text" value="" formControlName="street_2"
+                            placeholder="Street">
+
+
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+
+                          <!-- <input  class="form-control" placeholder="Enter Name"
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                          <input class="form-control" type="text" value="" formControlName="city" placeholder="City">
+
+
+                        </div>
+
+                      </div>
+
+                      <div style="margin:1.5rem 0"
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+
+                      <h3 class="kt-section__title kt-section__title-lg" style="font-size: 15px;">Primary Contact</h3>
+                      <div class="form-group col-lg-12 row" *ngIf="!showOrgDetails" style="margin-left: -30px;">
+                        <label class=" kt-checkbox">
+                          <input type="checkbox" id="billable" (change)="onPrimaryContactCheck($event)">
+                          <!-- <input type="checkbox" id="billable" > -->
+                          <span style="margin-left:15px;margin-right: 5px;"></span>
+                        </label>
+                        <div style="margin-top: 2px;margin-left:8px;">Same as customer</div>
+
+
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">First Name</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                          <input class="form-control" type="text" value="" formControlName="fname" placeholder="Name">
+                          <div *ngIf="(addCstformSubmitted) && customerForm.get('fname').value==''" class="error-msg">
+                            Required.</div>
+
+                        </div>
+
+
+
+                      </div>
+                      <div class="form-group row">
+
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Last Name</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                          <input class="form-control" type="text" value="" formControlName="lname" placeholder="Name">
+                          <div *ngIf="(addCstformSubmitted) && customerForm.get('lname').value==''" class="error-msg">
+                            Required.</div>
+
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Contact Email</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                          <input class="form-control" type="email" value="" formControlName="email" placeholder="Email">
+                          <!-- <div *ngIf="(addCstformSubmitted) && customerForm.get('email').value==''" class="error-msg">Required.</div>   -->
+
+                          <div *ngIf="customerForm.controls['email'].errors && !customerForm.controls['email'].pristine"
+                            class="error-msg">
+
+                            <div [hidden]="!customerForm.controls['email'].errors.pattern">Enter a valid email
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Contact Number</label>
+                          <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Enter Number"> -->
+                          <!-- <div *ngIf="(addCstformSubmitted) && customerForm.get('phone').value==''" class="error-msg">Required.</div>   -->
+                          <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                            [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                            [selectFirstCountry]="false" [selectedCountryISO]="selectedCstISO" [maxLength]="15"
+                            [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                            name="phone" formControlName="phone">
+
+                          </ngx-intl-tel-input>
+                          <div style="color: red;"
+                            *ngIf="addCstformSubmitted &&((customerForm.get('phone').value!='' && customerForm.get('phone').value!=null)&&!customerForm.controls['phone'].pristine &&  customerForm.controls['phone'].errors)  ">
+                            Please enter a valid mobile no
+                            <!-- {{empProfileForm.controls['phone '].errors | json }} -->
+                          </div>
+                          <div style="color: red;"
+                            *ngIf="addCstformSubmitted && (customerForm.get('phone').value=='' ||customerForm.get('phone').value==null) ">
+                            Required
+                          </div>
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        </div>
+
+                        <!-- <div *ngIf="customerForm.controls['phone'].errors && !customerForm.controls['phone'].pristine"
+                  class="error-msg">
+
+
+                  <div [hidden]="customerForm.controls['phone'].errors && !customerForm.controls['phone'].errors.patternInvalid">Enter a valid contact no
+                      </div>
+                      </div> -->
+
+
+                      </div>
+                      <div class="form-group row">
+
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Relationship</label>
+                          <select2 [data]="relationData" [options]="taskOptions" [value]="cstRelationValue"
+                            (valueChanged)="changedCstRelation($event)"></select2>
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                          <!-- <input class="form-control" type="text" value="" formControlName="relationship" placeholder="Relationship"> -->
+                        </div>
+                      </div>
+                      <div class="form-group row">
+
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Designation</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                          <input class="form-control" type="text" value="" formControlName="desgn"
+                            placeholder="Designation">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Note</label>
+
+                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                          <input class="form-control" type="text" value="" formControlName="note" placeholder="Note">
+                        </div>
+                      </div>
+
+
+
+                    </div>
+
+
+                  </form>
+                  <!-- Tel Input -->
+                  <!-- <div class="form-group row">
+                  <div class="col-lg-12 col-xl-12">
+                    <label for="exampleTextarea">Contact Number</label>
+                    <ngx-intl-tel-input [cssClass]="'form-control '" [preferredCountries]="preferredCountries"
+                      [enableAutoCountrySelect]="false" [enablePlaceholder]="false"
+                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                      [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true"
+                      name="cstPhone" [id]='cstPhone' [ngModelOptions]="{updateOn: 'blur'}"
+                      (ngModelChange)="onCstPhChange($event)" [(ngModel)]="cstPhone">
+
+                    </ngx-intl-tel-input>
+                    <div *ngIf="cstPhoneInvalid" class="error-msg">
+                      <div>{{phoneErrorMsg}}</div>
+
+                    </div>
+
+                  </div>
+
+
+                </div> -->
+
+
+
+                </div>
+
+
+
+
+
+              </div>
+            </div>
+
+
+
+
+
+
+
+            <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn">
+
+          <button type="Submit" [disabled]='' class="button button-fill button-rose"
+            (click)="onAddCustomer($event)">Add</button>
+          <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnCustomerClose()">CANCEL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

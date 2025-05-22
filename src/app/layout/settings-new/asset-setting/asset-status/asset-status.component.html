@@ -1,0 +1,71 @@
+<div class="mainProfileDiv">
+    <div class="row pad2515">
+      <div class="col">
+        <h1 class="labelMainHeader">Asset Status</h1>
+      </div>
+      <div class="col addProfilesection">
+        <button ejs-button class="btn btnColorAll" (click)="addNewAssetStatus()" *ngIf="assetStatusListing">Add Asset Status</button>
+        <button ejs-button class="btn btnColorAll marlef15" (click)="back()">Back</button>
+      </div>
+    </div>
+    <div class="profiletabGrid">
+      <div *ngIf="assetStatusListing">
+        <ejs-grid #vendSatGrid [dataSource]='assetStatusData' [toolbar]='employeeGridToolItems' (created)="serviceSearchKeyUp" height='300px'>
+          <e-columns>
+            <e-column field='status' headerText='Status'></e-column>
+            <e-column field='status_desc' headerText='Description'></e-column>
+            <e-column field='created_by' headerText='Created By'></e-column>
+            <e-column field='created_date' headerText='Created Date'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.created_date | date : "dd/MM/y"}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column field='modified_by' headerText='Modified By'></e-column>
+            <e-column field='modified_date' headerText='Modified Date'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.modified_date | date : "dd/MM/y"}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+           
+            <e-column headerText='Action'>
+              <ng-template #template let-data>
+                <div>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor: pointer;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editStatusData(data)"></i>
+                  <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;cursor: pointer;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteStatusData(data)"></i>
+                </div>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+        <div *ngIf="isLoading" class="spinner-overlay">
+          <div class="spinner-border text-primary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+      <div class="pad2515" *ngIf="!assetStatusListing">
+        <div class="row" [formGroup]="statusForm">
+          <div class="col-6">
+            <label class="labelcss">Asset Status</label>
+            <input class="e-input" type="text" placeholder="Enter name" formControlName="status" />
+            <div class="errorTxt" *ngIf="statusForm.controls['status']?.errors?.required ">
+              *Asset Status is required
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="labelcss">Description</label>
+            <textarea class="e-input" rows="1" formControlName="desc" placeholder="Enter Description"></textarea>
+          </div>
+        </div>
+        <div style="margin-top: 20px;">
+          <button class='btn btnColorAlll' (click)="submitStatus()">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+</div>

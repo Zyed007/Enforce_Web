@@ -1,0 +1,531 @@
+.tooltipDiv {
+  display: flex;
+  justify-content: space-between;
+  width: 180px !important;
+  white-space: normal;
+  overflow-x: auto;
+  margin-bottom: -10px !important;
+  padding-bottom: -10px !important;
+}
+.contentHeight {
+  //  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  //  min-height: '-webkit-fill-available' !important;
+  right: 101%;
+  top: 22px;
+  width: 620px;
+  overflow: hidden;
+}
+.btn.default:not(.btn-outline) {
+  color: #666;
+  background-color: #ccc9;
+  border-color: #e1e5ec;
+}
+.btn i {
+  padding: 14px 5px;
+  font-size: 12px;
+}
+.time {
+  display: flex;
+}
+
+.card {
+  width: 20rem;
+  margin: 2rem;
+}
+.cardContain {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  img {
+    height: 100px;
+  }
+}
+.img:hover {
+  top: -50px;
+  left: -35px;
+  width: 500px;
+  height: auto;
+  display: block;
+  z-index: 999;
+  cursor: pointer;
+  -webkit-transition-property: all;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+}
+.image-grid-container {
+  display: grid;
+
+  /* For 2 columns */
+  grid-template-columns: auto auto auto;
+}
+// img {
+//   width: 100%;
+// }
+.button.button-rose {
+  color: #fff;
+  background-color: #e91e63;
+  border: none !important;
+  border-color: #e91e63;
+  width: 95px !important;
+  height: 30px !important;
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
+    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12) !important;
+}
+
+.button.button-rose:hover {
+  box-shadow: 0 14px 26px -12px rgba(233, 30, 99, 0.42),
+    0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(233, 30, 99, 0.2) !important;
+}
+
+.status-code-success {
+  color: #20c997;
+}
+
+.status-code-failed {
+  color: red;
+}
+.bar {
+  fill: steelblue;
+}
+.bar:hover {
+  fill: brown;
+}
+.axis-title {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.5px;
+}
+.mapLogModal {
+  //  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  //  min-height: '-webkit-fill-available' !important;
+  right: 140%;
+  //right:164%;
+  top: 22px;
+  // width:670px !important;
+  width: 700px !important;
+  overflow: hidden;
+}
+.attendance-svg-icon g [fill] {
+  fill: #3f77f4 !important;
+}
+.outsource-icon g [fill] {
+  fill: #93a2dd !important;
+}
+.absent-svg-icon g [fill] {
+  fill: #1dc9b7 !important;
+}
+.leave-svg-icon g [fill] {
+  fill: #dc3545 !important;
+}
+.overtime-svg-icon g [fill] {
+  fill: #fd397a !important;
+}
+.exception-svg-icon g [fill] {
+  fill: #ffb822 !important;
+}
+
+.status-code-empty {
+  color: green;
+}
+.mapModel {
+  agm-map {
+    height: 590px !important;
+  }
+}
+.subTimeLine {
+  .kt-timeline-v2:before {
+    background-color: #ffff !important;
+  }
+}
+
+// .kt-widget31 .kt-widget31__item .kt-widget31__content:hover{
+//   cursor: pointer;
+//   background-color: #2c77f4;
+//   color: white;
+//   border-radius:5px;
+//   .kt-widget31__username,.kt-widget31__text{
+//     color: white !important;
+// }
+// .kt-widget31__progress{
+//   background-color: white;
+
+// }
+
+.rightLogModal {
+  .modal-dialog {
+    margin-right: -19px !important;
+    top: -23px;
+  }
+  .modal.fade {
+    opacity: 1;
+    overflow-y: hidden;
+  }
+  .modal-open .modal {
+    overflow-x: hidden;
+    // overflow-y: auto;
+    overflow: hidden !important;
+  }
+  body.modal-open {
+    // height: 100vh;
+    overflow: hidden !important;
+    position: fixed;
+  }
+  .modal .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 640px;
+    height: 100%;
+    // top:40px;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+  }
+  .fade {
+    opacity: 0;
+    transition: opacity 0.3s linear !important;
+  }
+  .modal-dialog {
+    right: -488px;
+    // -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    //    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    //      -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    //         transition: opacity 0.3s linear, right 0.3s ease-out;
+    // -webkit-transition: left 0.3s ease, right 0.3s ease;
+    // transition: left 0.3s ease, right 0.3s ease;
+  }
+
+  .modal.right.fade.in .modal-dialog {
+    right: 0;
+    // -webkit-transition: left 0.3s ease, right 0.3s ease;
+    // transition: left 0.3s ease, right 0.3s ease;
+  }
+}
+
+.contentHeight {
+  //  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  //  min-height: '-webkit-fill-available' !important;
+  right: 101%;
+  top: 22px;
+  width: 620px;
+  overflow: hidden;
+}
+.activityLogModal {
+  //  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  //  min-height: '-webkit-fill-available' !important;
+  // right:135%;
+  right: 191%;
+  top: 22px;
+  // width:670px !important;
+  width: 951px !important;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  // .kt-portlet .kt-portlet__head{
+  //   min-height: 20px !important;
+  // }
+}
+
+@media (max-width: 480px) {
+  .contentHeight,
+  .activityLogModal {
+    right: 24%;
+    top: -39px;
+    width: 400px;
+  }
+}
+
+@media (max-width: 414px) {
+  .contentHeight,
+  .activityLogModal {
+    right: 43%;
+    top: 22px;
+    max-width: 403px;
+    max-height: 600px;
+  }
+
+  .kt-portlet .kt-portlet__head {
+    // min-height: 20px !important;
+    font-size: 10px !important;
+  }
+}
+@media (max-width: 400px) {
+  .kt-subheader .btn i {
+    font-size: 8px !important;
+  }
+  .nav-tabs.nav-tabs-line.nav-tabs-space-xl .nav-item {
+    margin-right: 8px !important;
+  }
+}
+@media (max-width: 375px) {
+  .contentHeight,
+  .activityLogModal {
+    right: 37%;
+    max-width: 365px;
+  }
+}
+@media (max-width: 360px) {
+  .contentHeight,
+  .activityLogModal {
+    right: 36%;
+    width: 345px;
+    min-height: 100vh;
+  }
+  .mapLogModal {
+    right: 74%;
+  }
+}
+@media (max-width: 350px) {
+  .kt-subheader .btn i {
+    font-size: 7px !important;
+  }
+  .nav-tabs.nav-tabs-line.nav-tabs-space-xl .nav-item {
+    margin-right: 4px !important;
+  }
+  .btn i {
+    padding-right: 0px !important;
+  }
+}
+
+.mapModel {
+  agm-map {
+    height: 590px !important;
+  }
+}
+
+.username {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: 14px;
+  text-transform: uppercase;
+}
+
+.uploadtab {
+  margin: 0px 0px 0px 0px;
+  padding: 5px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.pending {
+  padding: 5px 7px;
+  color: #ff77a9;
+  font-weight: 600;
+}
+.success {
+  padding: 5px 7px;
+  color: green;
+  font-weight: 600;
+}
+.hyperlink {
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  padding: 0px !important;
+  margin: 0px 20px 0px 30px !important;
+}
+.e-upload .e-file-select-wrap {
+  padding: 0 !important;
+}
+
+.e-bigger.e-small .e-upload .e-file-select-wrap {
+  padding: 0 !important;
+}
+//Timepicker
+
+.materialPicker .ng-tns-c6-1 {
+  z-index: 1050 !important;
+}
+
+.timepicker-overlay {
+  z-index: 1050 !important;
+}
+.timepicker-overlay {
+  z-index: 10000000 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 10000000 !important;
+}
+
+.timepicker {
+  z-index: 1050 !important;
+  width: 240px !important;
+  .timepicker__header {
+    background-color: red !important;
+  }
+  .timepicker-overlay {
+    z-index: 1050 !important;
+  }
+  .clock-face {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .clock-face__clock-hand {
+    height: 75px !important;
+
+    top: calc(50% - 65px) !important;
+  }
+  .timepicker__body {
+    padding: 0px !important;
+    padding-top: 8px !important;
+  }
+  .timepicker__actions {
+    padding: 0px !important;
+  }
+  .clock-face__number--outer {
+    height: calc(200px / 2 - 12px) !important;
+  }
+  .clock-face__clock-hand {
+    background-color: red !important;
+
+    &::after {
+      background-color: red !important;
+    }
+
+    &::before {
+      border-color: red !important;
+    }
+  }
+
+  .clock-face__number {
+    > span.active {
+      background-color: red !important;
+    }
+  }
+
+  button:not(.timepicker-dial__item) {
+    color: red !important;
+  }
+}
+.popover.clockpicker-popover {
+  z-index: 1250 !important;
+}
+.popover {
+  z-index: 999999 !important;
+}
+
+
+.modal-body {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+.invoice-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-header {
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.invoice-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.invoice-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.invoice-column {
+  width: 48%;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.detail-item label {
+  font-weight: bold;
+  width: 150px;
+}
+
+.invoice-footer {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.upload-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.upload-section .fa-eye {
+  cursor: pointer;
+  margin-left: 5px;
+  color: blue;
+}
+.invoice-table {
+  padding: 15px;
+}
+
+.invoice-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table th, .invoice-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.invoice-table th {
+  background: #a1a1a1;
+}
+
+
+.travel-data-invoice {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.travel-data-invoice th, .travel-data-invoice td {
+  padding: 10px 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.travel-data-invoice th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+  color: #333;
+}
+
+.travel-data-invoice .pending {
+  color: red;
+  font-weight: bold;
+}
+.travel-data-invoice th:nth-child(2),
+.travel-data-invoice td:nth-child(2),
+.travel-data-invoice th:nth-child(3),
+.travel-data-invoice td:nth-child(3) {
+  width: 30%;
+}
+.end-div{
+margin-top: 10px;
+display: flex;
+justify-content: space-between;
+padding-right: 50px;
+}

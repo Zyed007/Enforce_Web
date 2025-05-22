@@ -1,0 +1,188 @@
+.teamDiv {
+  text-align: end;
+}
+
+.pad2515 {
+  padding: 15px 30px;
+  background: #fff;
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+}
+
+.labelMainHeader {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.btnColorAll {
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.rowPad {
+  padding: 25px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.whitee {
+  margin: auto;
+  padding: 10px;
+  background: white;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.columnClass {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.thirddiv {
+  border-top: 1px solid #898d91;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}
+
+.rowimp {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.buttonSt {
+  background-color: #b54269;
+  border-color: #b54269;
+  color: white;
+}
+
+.buttonStAdd {
+  background-color: #b54269;
+  border-color: #b54269;
+  color: white;
+}
+
+.btnScc {
+  display: inline-flex;
+}
+
+.addBox {
+  background-color: #ffffff;
+  margin: -15px 25px 0px 25px;
+  padding: 25px;
+}
+
+.seconddiv {
+  border-top: 1px solid #898d91;
+  margin-top: 15px;
+  padding-bottom: 10px;
+}
+
+.supplierRatesDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-bottom: 15px;
+  gap: 100px;
+}
+
+.btnColorAll {
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btndiv {
+  padding: 15px 10px;
+  text-align: end;
+  // border-top: 1px solid #b6b8b9;
+  // margin-top: 20px;
+}
+
+.hyperlink {
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  // word-wrap: break-word !important;
+  padding: 0px !important;
+  margin: 0px 20px 0px 30px !important;
+}
+
+.e-upload .e-upload-files {
+  display: none !important;
+}
+
+.e-upload .e-file-select-wrap,
+.e-bigger.e-small .e-upload .e-file-select-wrap {
+  padding: 0px !important;
+}
+
+.e-upload {
+  border: none;
+}
+
+.e-btn,
+.e-css.e-btn {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  font-weight: 400;
+  font-size: 13px;
+  text-transform: inherit;
+}
+
+.enlarged-close-button {
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #3498db;
+  /* Customize the background color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.enlarged-close-button:hover {
+  background-color: #2980b9;
+  /* Customize the background color on hover */
+}
+
+.invTable table td {
+  font-weight: normal;
+  padding: 5px;
+  text-align: left;
+  // border: 1px solid #ddd
+  border: 1px solid rgb(117 117 117);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // white-space: nowrap;
+}
+
+.invTable table th {
+  font-size: 12px;
+  padding: 8px;
+
+  font-weight: bold;
+  // border: 1px solid #ddd
+  border: 1px solid rgb(117 117 117);
+
+}
+
+.invTable {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#bulkDataModal .modal-dialog {
+  max-width: 80%;
+  /* Adjust this value as needed */
+  margin: 1.75rem auto;
+}
+
+#bulkDataModal .modal-content {
+  width: 100%;
+}

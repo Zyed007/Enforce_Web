@@ -1,0 +1,57 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Vendor Status</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openVenStat('Add')" *ngIf="vendorStatusListing">Add Vendor Status</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToVendor()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div *ngIf="vendorStatusListing">
+      <ejs-grid #vendSatGrid [dataSource]='statVendorTableData' (created)='serviceSearchKeyUp()' [toolbar]='actStatGridToolItems' height='300px'>
+        <e-columns>
+          <e-column field='createdDate' headerText='Created Date'>
+            <ng-template #template let-data>
+              <div>
+                <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field='createdBy' headerText='Created By'></e-column>
+          <e-column field='name' headerText='Activity'></e-column>
+          <e-column field='description' headerText='Description'></e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="openVenStat(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteVendStat(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="pad2515" *ngIf="!vendorStatusListing">
+      <div class="row" [formGroup]="statVendorForm">
+        <div class="col-6">
+          <label class="labelcss">Status Name</label>
+          <input class="e-input" type="text" placeholder="Enter name" formControlName="statName" />
+          <div class="errorTxt" *ngIf="statVendorForm.controls['statName']?.errors?.required && formSubmitAttemptForStatus">
+            *Status Name is required
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="labelcss">Description</label>
+          <textarea class="e-input" rows="1" formControlName="statDesc" placeholder="Enter Description"></textarea>
+        </div>
+      </div>
+      <div style="margin-top: 20px;">
+        <button class='btn btnColorAlll' (click)="submitStatus()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Case Type</h1>
+    </div>
+    <div class="col-6 teamDiv">
+      <button id='add' class='btn btnColorAll' (click)="openAddCaseModel('Add')">
+        <i class="fa fa-plus marTopnew" aria-hidden="true"></i>
+        Add Case type
+      </button>
+      <button id='add' class='btn btnColorAll' style="margin-left: 20px;" (click)="backToMainSetting()">
+        <i class="fa fa-chevron-left marTopnew" aria-hidden="true"></i>
+        Back
+      </button>
+    </div>
+  </div>
+
+  <div class="row marTop18">
+    <div class="col">
+      <div class="CardRow">
+        <ejs-grid #caseTypeGrid [dataSource]='caseTypeData' (created)='caseTypeGridSearchKeyUp()' [toolbar]='caseTypeGridToolItems' height='500px'>
+          <e-columns>
+            <e-column field='created_date' headerText='Created Date'>
+              <ng-template #template let-data>
+                <p>{{data.created_date | date}}</p>
+              </ng-template>
+            </e-column>
+            <e-column field='case_type' headerText='Case Name' textAlign='Centre'></e-column>
+            <e-column field='case_type_description' headerText='Case Description'></e-column>
+            <e-column headerText='Action' textAlign='Centre'>
+              <ng-template #template let-data>
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="Update" container="body" (click)="openAddCaseModel(data)">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="Delete" container="body" (click)="deleteCaseModel(data)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add/edit case model -->
+<div class="rightModal700">
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="add-case-type-modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document" style="width: 400px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">{{caseType}} Case Type</h5>
+          <button type="button" class="close" (click)="closeAddCaseModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          <form [formGroup]="addCaseProcessForm">
+            <div class="row">
+              <div class="col-12">
+                <label for="nameArea" style="padding-right: 5px;">Case Name</label>
+                <input type="text" class="form-control" formControlName="caseName">
+                <div *ngIf="addCaseProcessForm.controls['caseName'].invalid && (addCaseProcessForm.controls['caseName'].dirty || addCaseProcessForm.controls['caseName'].touched)"
+                  class="alert errorTxtx">
+                  <div *ngIf="addCaseProcessForm.controls['caseName'].errors.required">
+                    Display Name is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 marTop18">
+                <label for="nameArea" style="padding-right: 5px;">Case Description</label>
+                <textarea rows="1" class="form-control" formControlName="caseDescription"></textarea>
+                <div *ngIf="addCaseProcessForm.controls['caseDescription'].invalid && (addCaseProcessForm.controls['caseDescription'].dirty || addCaseProcessForm.controls['caseDescription'].touched)"
+                  class="alert errorTxtx">
+                  <div *ngIf="addCaseProcessForm.controls['caseDescription'].errors.required">
+                    Display Name is required.
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 marTop18">
+                <input type="checkbox" formControlName="isShowCheckin" />
+                <label for="nameArea" class="checkinOpt">Show this Case type in checkin-in</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn">
+          <button class="btn btnColorAll" [disabled]="addCaseProcessForm.pristine || addCaseProcessForm.invalid"
+           (click)="subAddCaseData()">
+            Submit
+          </button>
+          <button class="btn btnColorAll" (click)="closeAddCaseModel()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,133 @@
+<div style="padding:10px 50px;">
+
+    <div
+        style="background-color: white;display: flex;justify-content: space-between;padding: 10px;margin-bottom: 10px;">
+        <div class="kt-portlet" style="margin-bottom: 0px">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        API Usage Report
+                    </h3>
+                </div>
+                <div style="display: flex;justify-content: center;align-items: center;">
+                    <button class='btn btnColorAll' style="margin-left: 20px;" (click)='handleChartView("Yearly")'>
+                        Yearly Chart View
+                    </button>
+                    <button class='btn btnColorAll' style="margin-left: 20px;" (click)='handleChartView("Monthly")'>
+                        Monthly Chart View
+                    </button>
+                    <button class='btn btnColorAll' style="margin-left: 20px;" (click)='goBack()'>
+                        <i class="fa fa-chevron-left marTopnew padreq" aria-hidden="true"></i>
+                        Back
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div style="background-color: white;padding: 10px;margin-bottom: 10px;position: relative;" *ngIf="chartView">
+        <div style="text-align: center;color: grey;"><h4>{{currentChartType}} Data</h4></div>
+        <ejs-chart  id="chart-container" [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis'
+            [title]='title' *ngIf="!isChartLoading" height='350' [legendSettings]='legendSettings'>
+            <e-series-collection>
+                <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y' name='Location Verification'
+                    [fill]='"#4f81bd"' [width]='"10px"' legendShape='Rectangle' [marker]='marker'></e-series>
+                <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y1' name='Map View'
+                    [fill]='"#c0504d"' [width]='"10px"' legendShape='Rectangle' [marker]='marker'></e-series>
+                <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y2' name='Register Face'
+                    [fill]='"#9bbb59"' [width]='"10px"' legendShape='Rectangle' [marker]='marker'></e-series>
+                <e-series [dataSource]='chartData' type='StackingBar' xName='x' yName='y3' name='Scan Face'
+                    [fill]='"#0d2963"' [width]='"10px"' legendShape='Rectangle' [marker]='marker'></e-series>
+            </e-series-collection>
+        </ejs-chart>
+
+        <div *ngIf="isChartLoading" style="height: 350px;">
+            <div class="spinner-overlay">
+                <div class="spinner-border text-primary custom-spinner" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row rowimp rowcard">
+        <div class="kt-portlet" style="margin-bottom: 0px">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <!-- <h3 class="kt-portlet__head-title">
+                        Attendence Report
+                    </h3> -->
+                </div>
+                <div class="datewidth">
+                    <form [formGroup]="dateRangeForm">
+                        <ejs-daterangepicker format="MM/dd/yyyy" [max]="maxRangeDateTwo" placeholder="Range"
+                            formControlName="dateRange" style="width: 100%">
+                            <e-presets>
+                                <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                                <e-preset label="This Month" [start]="monthStart" [end]="monthEnd"></e-preset>
+                                <e-preset label="Last Month" [start]="lastStart" [end]="lastEnd"></e-preset>
+                                <e-preset label="Last Year" [start]="yearStart" [end]="yearEnd"></e-preset>
+                            </e-presets>
+                        </ejs-daterangepicker>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mb-3 mt-3">
+
+            <div class="row rowimp justify-content-center">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <div class="card admin-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Location Verification</h5>
+                            <p class="card-text">{{GecodingTotal}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <div class="card admin-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Map View</h5>
+                            <p class="card-text">{{MapViewTotal}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <div class="card admin-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Register Face</h5>
+                            <p class="card-text">{{RegisterFaceTotal}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    <div class="card admin-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Scan Face</h5>
+                            <p class="card-text">{{ScanFaceTotal}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ejs-grid #singleOrgGrid [dataSource]='singleData' [allowSorting]='true' [toolbar]='toolbarOptions'
+            height='500'>
+            <e-columns>
+                <e-column field='emp_name' headerText='Employee Name'></e-column>
+                <e-column field='GecodingTotal' headerText='Location Verification'>
+                </e-column>
+                <e-column field='MapViewTotal' headerText='Map View'>
+                </e-column>
+                <e-column field='RegisterFaceTotal' headerText='Register Face'>
+                </e-column>
+                <e-column field='ScanFaceTotal' headerText='Scan Face'>
+                </e-column>
+                <e-column field='total_count' headerText='Total Request'>
+                </e-column>
+            </e-columns>
+        </ejs-grid>
+    </div>
+</div>

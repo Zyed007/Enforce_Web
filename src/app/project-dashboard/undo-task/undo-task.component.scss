@@ -1,0 +1,82 @@
+.CardRow{
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  margin: 5px 20px 25px;
+  height: 650px;
+}
+
+.projectName{
+  padding: 10px;
+  border-bottom: 1px solid #b6b6b9;
+}
+
+.backdiv{
+  text-align: end;
+  padding: 20px 22px 1px;
+}
+
+.buttonSt{
+  color: #999da1;
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.edbtnSt{
+  height: 25px;
+  width: 35px;
+  padding-top: 9px;
+}
+
+.btnScc{
+  display: inline-flex;
+ }
+
+.backBTN{
+  margin-left: 10px;
+  background-color: rgb(46 62 78);
+  color: #ffffff;
+  border: 0px;
+  padding: 5px 19px;
+  border-radius: 3px;
+}
+
+.btnNotallowed{
+  background-color: #949aa1;
+  color: #ffffff;
+  border: 0px;
+  padding: 5px 19px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.btntxtb{
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+
+.undoBtnplcae{
+  text-align: end;
+  padding: 0px 20px 18px;
+}
+
+
+.backBTN{
+  margin-left: 10px;
+  background-color: #e91e63;
+  border-color: #e91e63;
+  box-shadow: 0 2px 2px 0 rgb(233 30 99 / 14%), 0 3px 1px -2px rgb(233 30 99 / 20%), 0 1px 5px 0 rgb(233 30 99 / 12%) !important;
+  border: 0px;
+  padding: 5px 19px;
+  border-radius: 3px;
+}
+
+.btnNotallowed{
+  background-color: #d5829e;;
+  border-color: #d5829e;;
+  box-shadow: 0 2px 2px 0 rgb(233 30 99 / 14%), 0 3px 1px -2px rgb(233 30 99 / 20%), 0 1px 5px 0 rgb(233 30 99 / 12%) !important;
+  border: 0px;
+  padding: 5px 19px;
+  border-radius: 3px;
+  pointer-events: none;
+}

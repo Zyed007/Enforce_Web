@@ -1,0 +1,131 @@
+.rowimp{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.rowcard{
+  background: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+
+.btnColorAll{
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.martop{
+  margin-top: 15px;
+}
+
+.labelcss{
+  font-family: Source Sans Pro,sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #475056;
+}
+
+.swithcss{
+  margin: 0px 10px;
+}
+
+.errorTxt{
+  color: #f35b5b;
+  background: none;
+  border: none;
+  padding: 3px;
+  margin-bottom: 0px;
+}
+
+
+header {
+  display:table;
+  width:100%;
+  max-width:100%;
+}
+header div {
+  display:table-row;
+  line-height:1.5em;
+  font-size:2em;
+  white-space:nowrap;
+}
+header h1 {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+  width: 1px;
+}
+header span.spacer {
+  display:table-cell;
+}
+header h1 {
+  padding: 0 10px 0px 0px;
+}
+header span.spacer:after {
+  display: inline-block;
+  width: 100%;
+  content: ".";
+  font-size: 0;
+  color: transparent;
+  height: 1px;
+  background: #ada8a8;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.smallMarTop{
+  margin-top: 5px;
+}
+
+.reqbtn{
+  display: flex !important;
+  border: 1px solid #a3a5ad !important;
+  padding: 1px 6px !important;
+}
+
+.hyperlink{
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  word-wrap: break-word !important;
+  padding: 4px 13px;
+}
+
+.actionButton{
+  color: #2e3e4e !important;
+  cursor: pointer;
+}
+
+.disableButton{
+  color: #c9c9c9 !important;
+  pointer-events: none;
+}
+
+.brow{
+  border: 1px solid #a3a5ad !important;
+  padding: 4px 10px !important;
+}
+
+.e-upload .e-upload-files{
+  display: none !important;
+}
+
+.e-upload .e-file-select-wrap, .e-bigger.e-small .e-upload .e-file-select-wrap{
+  padding: 0px !important;
+}
+
+.e-upload{
+  border: none;
+}
+
+.e-btn, .e-css.e-btn{
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  font-weight: 400;
+  font-size: 13px;
+  text-transform: inherit;
+}

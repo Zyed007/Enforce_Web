@@ -1,0 +1,81 @@
+
+<div class="mainProfileDiv">
+    <div class="row pad2515">
+      <div class="col">
+        <h1 class="labelMainHeader">Work Expenses Prefix</h1>
+      </div>
+      <div class="col addProfilesection">
+        <button ejs-button class="btn btnColorAll" (click)="openadjustmentPrefix()" *ngIf="mainCtravelPrefListing && alladjustmentPrefixData?.length === 0"> Add travel Voucher Prefix</button>
+        <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainadjustmentPrefix()">Back</button>
+      </div>
+    </div>
+    <div class="profiletabGrid">
+      <div *ngIf="mainCtravelPrefListing">
+        <ejs-grid [dataSource]='alladjustmentPrefixData' height='300px'>
+          <e-columns>
+            <e-column field='prefix_name' headerText='Name'></e-column>
+            <e-column field='prefix_for' headerText='Type'></e-column>
+            <e-column headerText='Action'>
+              <ng-template #template let-data>
+                <div>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editSingletravelPre(data)"></i>
+                  <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deletetravelPref(data)"></i>
+                </div>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <div class="pad2515" *ngIf="!mainCtravelPrefListing">
+        <div class="row">
+          <div class="col-12" [formGroup]="adjustmentPrefixForm">
+            <div>
+              <label class="labfont">Prefix Name</label>
+              <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
+                <div>
+                  <input class="e-input" type="text" placeholder="Enter Prefix" formControlName="prefix" style='text-transform:uppercase'/>
+                  <div class="errorTxt" *ngIf="prefixTxtError">
+                    *Prefix is required
+                  </div>
+                </div>
+                <span style="margin-left: 5px; margin-top: 2px;" *ngIf="showInputOpt">/</span>
+                <div style="margin-left: 5px;" *ngIf="showInputOpt">
+                  <input class="e-input" [type]="inputType" placeholder="Enter a start number" [value]="formattedPrefix" (keyup)="getInputValue($event)" [disabled]="disableSeqNum"/>
+                  <div class="errorTxt" *ngIf="sequenceNumberError">
+                    *Prefix is required
+                  </div>
+                </div>
+              </div>
+              <p style="margin-bottom: 1px;">{{exampletxt}}</p>
+              <p style="margin-bottom: 1px;" *ngIf="showInputOpt">{{example}}</p>
+              <div style="margin-bottom: 15px; margin-top: 15px;">
+                <label class="kt-radio" style="margin-right: 14px;">
+                  <input type="radio" formControlName="prefixFor" value="Default" (change)="changePrefixFor()">
+                    Default
+                  <span></span>
+                </label>
+
+                <label class="kt-radio" style="margin-right: 14px;">
+                  <input type="radio" formControlName="prefixFor" value="Custom" (change)="changePrefixFor()">
+                    Custom
+                  <span></span>
+                </label>
+
+                <label class="kt-radio">
+                  <input type="radio" formControlName="prefixFor" value="Sequence" (change)="changePrefixFor()">
+                    Sequence
+                  <span></span>
+                </label>
+              </div>
+
+            </div>
+            <div>
+              <button class='btn btnColorAlll' (click)="submitadjustmentPrefix()">
+                {{editadjustmentPrefixDiv ? 'Update' : 'Save'}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

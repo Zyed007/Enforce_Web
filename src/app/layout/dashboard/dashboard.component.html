@@ -1,0 +1,2361 @@
+<!-- <link href="../../../assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> -->
+<!-- <link href="../../../assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+<link href="../../../assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> -->
+<!--end::Global Theme Styles -->
+
+<!--begin::Layout Skins(used by all pages) -->
+<!--end::Layout Skins -->
+
+<link rel="shortcut icon" href="../../../assets/media/logos/favicon.ico" />
+<div  class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor dashboardContainer" id="kt_content">
+  <!-- begin:: Subheader -->
+  <div class="kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+                <div class="kt-subheader__main">
+                  <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+                  font-weight: 500;">
+                    Dashboard
+                  </h3>
+
+                  <span class="kt-subheader__separator kt-hidden"></span>
+                  <div class="kt-subheader__breadcrumbs">
+                    <!-- <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-separator"></span>
+                    <a href="#" class="kt-subheader__breadcrumbs-link">
+                      Application
+                    </a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                  </div>
+                </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+            </div>
+            <form [formGroup]="datePickerForm"   style="padding-left:4px; " *ngIf='viewDashboard'>
+
+         <ejs-datepicker  formControlName="date" dayHeaderFormat="Abbreviated" [max]="maxRangeDate" [showClearButton]="false" [allowEdit]='false' [value]='dateValue' ></ejs-datepicker>
+         <span  class="date-container"  disabled="disabled"  style="border: none;pointer-events:none;position: absolute;left:24px"   >{{dateText}}</span>
+</form>
+
+
+                        <!-- <div class="page-bar">
+                            <ul class="page-breadcrumb">
+                              <li></li>
+                              <li>
+                                <span id="ntpDate"></span>
+                                <span id="ntpDatex"></span>
+                              </li>
+                            </ul>
+                            <div class="page-toolbar">
+                              <div class="input-group date date-picker">
+                                <input type="datetime" id="selectDate"  data-date-format="dd/mm/yyyy" class="form-control" style="display: none;" readonly="">
+                                <span class="">
+                                  <button class="btn default" type="button">
+                                    <i class="fa fa-calendar"></i>
+                                  </button>
+                                </span>
+                              </div>
+                            </div>
+                          </div> -->
+
+
+      </div>
+  </div>
+
+  <div *ngIf='viewDashboard' class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+
+      <div class="kt-subheader__main">
+
+        <div class="caption">
+            <div class="actions">
+              <a class="btn btn-icon-only btn-icon-only btn-default" id="previousday" style="background-color:white ;border:none;">
+                <i class="fas fa-chevron-left" title="Previous Day" (click)="prevday()" style=" color: #3f77f4;" ></i>
+              </a>
+              <a></a>
+              <a  class="btn btn-icon-only btn-icon-only btn-default" id="nextday" style="background-color: white;border:none;">
+                <i class="fas fa-chevron-right" title="Next Day" (click)="nextday()" style=" color: #3f77f4;"></i>
+              </a>
+            </div>
+          </div>
+        <span class="kt-subheader__separator kt-hidden"></span>
+        <div class="kt-subheader__breadcrumbs">
+
+        </div>
+      </div>
+      <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+
+
+              <div class="" style="display: flex;justify-content:space-between;">
+
+                  <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;
+                  margin-bottom: 15px;">
+                      <li class="nav-item" (click)="getTodaysData()">
+                          <a class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                                         Today
+                          </a>
+                      </li>
+                      <li class="nav-item" (click)="getWeeksData()">
+                          <a class="nav-link "  [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                                                 Week
+                          </a>
+                      </li>
+                      <li class="nav-item" (click)="getMonthsData()">
+                          <a class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                                           Month
+                          </a>
+                      </li>
+                      <li class="nav-item dasboardRange">
+                          <a class="nav-link"  [ngClass]="{'active': isRangeActive}" data-toggle="tab"  id="defaultrange_modal"  role="tab" aria-selected="false" style="padding-bottom: 5px !important;">
+                              <div style="display: flex;justify-content: start;">
+                                <div >Range</div>
+
+                                <div>
+                                  <form [formGroup]="dateRangeForm" id="formId"  style="padding-left:4px; ">
+                                    <!-- <div class="form-group row" > -->
+                                        <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+                                        <ejs-daterangepicker placeholder='Range' [max]="maxRangeDate" formControlName="daterange" >
+                                            <!-- <e-presets>
+                                                <e-preset label="This Week" [start]='weekStart' [end]='weekEnd'></e-preset>
+                                                <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                                                <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                                                <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                                            </e-presets> -->
+                                        </ejs-daterangepicker>
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                                    </form>
+                                </div>
+                              </div>
+
+
+                          </a>
+                           <!-- <form [formGroup]="dateRangeForm" id="formId">
+                            <div class="form-group row" >
+                                <ejs-daterangepicker placeholder='Range' formControlName="daterange" >
+
+                                </ejs-daterangepicker>
+                        </div>
+                            </form>  -->
+                          <!-- <a href="#" data-toggle="tab" id="defaultrange_modal">Range </a> -->
+                      </li>
+
+
+                  </ul>
+              </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end:: Subheader -->
+  <!-- begin:: Content -->
+  <div *ngIf='viewDashboard' class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!--Begin::Dashboard 1-->
+    <!--Begin::Row-->
+    <div class="row">
+        <div class="col-lg-6 col-xl-6 order-lg-1 order-xl-1">
+            <!--begin:: Widgets/Activity-->
+            <div class="kt-portlet kt-portlet--fit kt-portlet--head-lg kt-portlet--head-overlay kt-portlet--skin-solid kt-portlet--height-fluid  kt-portlet--sortable"   >
+              <div class="kt-portlet__head kt-portlet__head--noborder kt-portlet__space-x "   >
+
+              </div>
+              <div class="kt-portlet__body kt-portlet__body--fit">
+                <div class="kt-widget17">
+               <div class="kt-widget17__visual kt-widget17__visual--chart kt-portlet-fit--top kt-portlet-fit--sides" style="height:60px;">
+                    <!-- <div class="kt-widget17__chart" style="height:320px;">
+                      <canvas id="kt_chart_activities"></canvas>
+                    </div> -->
+                  </div>
+                  <div class="kt-widget17__stats" style="width: 98%;">
+                    <div class="kt-widget17__items">
+
+                  <div class="kt-widget17__item"  (click)='absentDetails("Attendance")'  style="background-color: white"  >
+                        <span class="kt-widget17__icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  class="attendance-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24" />
+                              <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                              <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                            </g>
+                          </svg>
+                        </span>
+                        <span class="kt-widget17__subtitle" style="color: #3f77f4;">
+                          Attendance
+                        </span>
+                        <span *ngIf="showtodaysData && !showExcpCountSpinner" class="kt-widget17__desc" style="color: #3f77f4;">
+                        {{attendedEmp}} Of {{totalEmp}} Members
+
+                        </span>
+                        <span style="color: #3f77f4;" *ngIf="showweeksData && !showExcpCountSpinner">{{(weekattendedEmp>1)?weekattendedEmp+' '+'Members':weekattendedEmp+' '+'Member'}}</span>
+                        <div *ngIf="showExcpCountSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                      </div>
+                      <div class="kt-widget17__item" style="background-color: white">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="outsource-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                                <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #93a2dd">
+                            Outsourced
+                          </span>
+                          <span *ngIf="showtodaysData && !showExcpCountSpinner" class="kt-widget17__desc" style="color:#93a2dd;">
+                           {{timeSheetOutSourceCount}} of {{(outSourceCount>1)?outSourceCount+' '+'Members':outSourceCount+' '+'Member'}}
+
+                          </span>
+                          <span *ngIf="showweeksData && !showExcpCountSpinner" class="kt-widget17__desc" style="color:#93a2dd;">
+                            {{(timeSheetOutSourceCount>1)?timeSheetOutSourceCount+' '+'Members':timeSheetOutSourceCount+' '+'Member'}}
+
+                          </span>
+                          <div *ngIf="showExcpCountSpinner" style="margin: 0px auto;
+                            margin-top: 20px;">
+                              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="kt-widget17__items" >
+                        <div class="kt-widget17__item" (click)='absentDetails("Absent")' style="background-color: white;">
+                            <span class="kt-widget17__icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <polygon points="0 0 24 0 24 24 0 24" />
+                                  <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                  <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                </g>
+                              </svg>
+                            </span>
+                            <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                              Absent
+                            </span>
+                            <span *ngIf="!showExcpCountSpinner" class="kt-widget17__desc" style="color: #1dc9b7;">
+                              <!-- {{absentMem}} Members -->
+                            {{(absentMem>1)?absentMem+' '+'Members':absentMem+' '+'Member'}}
+
+                            </span>
+                            <div *ngIf="showExcpCountSpinner" style="margin: 0px auto;
+                            margin-top: 20px;">
+                              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                            </div>
+
+                            <!-- <span *ngIf="showweeksData" class="kt-widget17__desc" style="color:white;">
+                              {{(weekabsentMem>1)?weekabsentMem+' '+'Members':weekabsentMem+' '+'Member'}}
+
+                            </span> -->
+                          </div>
+                        <div class="kt-widget17__item" (click)='absentDetails("Onleave")'  style="background-color: white ">
+                            <span class="kt-widget17__icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <polygon points="0 0 24 0 24 24 0 24" />
+                                  <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                  <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                </g>
+                              </svg>
+                            </span>
+                            <span class="kt-widget17__subtitle" style="color: #dc3545">
+                              Onleave
+                            </span>
+                            <span class="kt-widget17__desc" style="color: #dc3545">
+                              0 Member
+                            </span>
+                          </div>
+
+
+
+
+                    </div>
+                    <div class="kt-widget17__items" >
+                        <div class="kt-widget17__item" style="background-color: white;" (click)='absentDetails("Overtime")'>
+                            <span class="kt-widget17__icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="overtime-svg-icon">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <rect x="0" y="0" width="24" height="24" />
+                                  <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3" />
+                                  <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000" />
+                                </g>
+                              </svg>
+                            </span>
+                            <span class="kt-widget17__subtitle" style="color: #fd397a;">
+                              Overtime
+                            </span>
+                            <span *ngIf="!showExcpCountSpinner" class="kt-widget17__desc" style="color: #fd397a;">
+                              {{(totalOverTimeCount>1)?totalOverTimeCount+' '+'Members':totalOverTimeCount+' '+'Member'}}
+
+                            </span>
+                            <div *ngIf="showExcpCountSpinner" style="margin: 0px auto;
+                            margin-top: 20px;">
+                              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                            </div>
+                          </div>
+
+
+
+                            <div class="kt-widget17__item" style="background-color:white;" (click)='absentDetails("Exception")'>
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="exception-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <rect x="0" y="0" width="24" height="24" />
+                                      <path d="M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z" fill="#000000" opacity="0.3" />
+                                      <path d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z" fill="#000000" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle"  style="color: #ffb822;">
+                                  Exception
+                                </span>
+                                <span *ngIf="!showExcpCountSpinner" class="kt-widget17__desc"  style="color: #ffb822;">
+                                   {{exceptionCount}} Member
+                                </span>
+                                <div *ngIf="showExcpCountSpinner" style="margin: 0px auto;
+                                margin-top: 20px;">
+                                  <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                                </div>
+                              </div>
+
+                          </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end:: Widgets/Activity-->
+          </div>
+          <div class="col-xl-6 col-lg-6 order-lg-3 order-xl-1">
+            <!--begin:: Widgets/Notifications-->
+           <!--  <div class="kt-portlet kt-portlet--height-fluid">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Notifications
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_widget6_tab1_content" role="tab">
+                                    Pending  <span ngbPopover="Top 50 pending"  triggers="mouseenter:mouseleave" placement="bottom"
+                                    style="cursor:pointer;"> <i class="fa fa-question tabcolorsel"></i></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab"  href="#kt_widget6_tab2_content" role="tab">
+                                    Approved  <span ngbPopover="Top 50 approved"  triggers="mouseenter:mouseleave" placement="bottom"
+                                    style="cursor:pointer;"> <i class="fa fa-question tabcolorsel"></i></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" data-toggle="tab" href="#kt_widget6_tab3_content" role="tab">
+                                  Declined  <span ngbPopover="Top 50 declined"  triggers="mouseenter:mouseleave" placement="bottom"
+                                  style="cursor:pointer;"> <i class="fa fa-question tabcolorsel"></i></span>
+                              </a>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kt-portlet__body" style="height: 350px;
+                overflow-y: auto;">
+                 <div  *ngIf="showLeaveLogSpinner"  style="margin-top: 140px;
+                 position: absolute;
+                 margin-left: 250px;">
+                   <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                 </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="kt_widget6_tab1_content" aria-expanded="true">
+                          <div class="kt-widget kt-widget--user-profile-1" *ngFor="let leave of pendingLeaves">
+                            <div class="kt-widget__head" style="border-bottom: 1px solid #dfdfdf;
+                            padding-bottom: 10px;
+                            padding-top: 5px;display: flex;justify-content: space-between;" >
+                              <div style="display: flex;" (click)="requestType(leave.id, leave.leave_name)">
+                                <div class="kt-widget__media" >
+                                    <img style="    height: 62px;
+                                    width: 62px;
+                                    border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                                </div>
+                                <div class="kt-widget__content">
+                                    <div class="kt-widget__section">
+                                        <div class="pr-requester-name" style="cursor: pointer;">
+                                          <div style="    font-weight: 500;
+                                          margin-bottom: 5px;
+                                      ">{{leave.full_name}}</div>
+                                          <div style="    font-size: 12px;
+                                          color: #607787;">
+                                            {{leave.leave_start_date|date :  "d MMM, y"}} - {{leave.leave_end_date|date :  "d MMM, y"}}
+                                          </div>
+                                          <div  style="display: flex;margin-top: 2px;">
+                                            {{leave.leave_days}} day(s)
+                                            <div  style="display: flex;margin-left: 10px;" *ngIf="leave.leave_name!='' && leave.leave_name!=null">
+                                              <div *ngIf='leave.leave_name === "Checkin"'  style="background-color: #1dc9b7 ;"  class="leave-circle">
+                                              </div>
+                                              <div *ngIf='leave.leave_name === "Annual Leave" || leave.leave_name === "Sick Leave"' style="background-color: #FEDF88;"  class="leave-circle">
+                                              </div>
+                                              <div *ngIf='leave.leave_name === "Checkin/Checkout Overwrite"' style="background-color: #3f77f4;"  class="leave-circle">
+                                              </div>
+                                              <div>{{leave.leave_name}}</div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        </div>
+
+                        <div class="tab-pane" id="kt_widget6_tab2_content" aria-expanded="false">
+                          <div class="kt-widget kt-widget--user-profile-1" *ngFor="let leave of appovedLeaves">
+                            <div class="kt-widget__head" style="border-bottom: 1px solid #dfdfdf;
+                            padding-bottom: 10px;
+                            padding-top: 5px;" (click)="requestTypeApproved(leave.id, leave.leave_name)">
+                                <div class="kt-widget__media" >
+                                    <img style="    height: 62px;
+                                    width: 62px;
+                                    border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                                </div>
+                                <div class="kt-widget__content">
+                                    <div class="kt-widget__section">
+                                        <div class="pr-requester-name" style="cursor: pointer;">
+                                          <div style="    font-weight: 500;
+                                          margin-bottom: 5px;
+                                      ">{{leave.full_name}}</div>
+                                          <div style="    font-size: 12px;
+                                          color: #607787;">
+                                            {{leave.leave_start_date|date :  "d MMM, y"}} - {{leave.leave_end_date|date :  "d MMM, y"}}
+                                          </div>
+                                          <div  style="display: flex;margin-top: 2px;">
+                                            {{leave.leave_days}} day(s)
+                                            <div  style="display: flex;margin-left: 10px;" *ngIf="leave.leave_name!='' && leave.leave_name!=null">
+                                              <div *ngIf='leave.leave_name === "Checkin"'  style="background-color: #1dc9b7 ;"  class="leave-circle">
+                                              </div>
+                                              <div *ngIf='leave.leave_name === "Annual Leave" || leave.leave_name === "Sick Leave"' style="background-color: #FEDF88;"  class="leave-circle">
+                                              </div>
+                                              <div *ngIf='leave.leave_name === "Checkin/Checkout Overwrite"' style="background-color: #3f77f4;"  class="leave-circle">
+                                              </div>
+                                              <div>{{leave.leave_name}}</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        </div>
+
+                        <div class="tab-pane" id="kt_widget6_tab3_content" aria-expanded="false">
+                          <div class="kt-widget kt-widget--user-profile-1" *ngFor="let leave of declinedLeaves">
+                            <div class="kt-widget__head" style="border-bottom: 1px solid #dfdfdf;
+                            padding-bottom: 10px;
+                            padding-top: 5px;" (click)="requestTypeDeclined(leave.id, leave.leave_name)">
+                                <div class="kt-widget__media" >
+                                    <img style="    height: 62px;
+                                    width: 62px;
+                                    border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                                </div>
+                                <div class="kt-widget__content">
+                                    <div class="kt-widget__section">
+
+                                        <div class="pr-requester-name" style="cursor: pointer;">
+                                          <div style="    font-weight: 500;
+                                          margin-bottom: 5px;
+                                      ">{{leave.full_name}}</div>
+                                          <div style="    font-size: 12px;
+                                          color: #607787;">
+                                            {{leave.leave_start_date|date :  "d MMM, y"}} - {{leave.leave_end_date|date :  "d MMM, y"}}
+                                          </div>
+                                          <div  style="display: flex;margin-top: 2px;">
+                                            {{leave.leave_days}} day(s)
+                                            <div  style="display: flex;margin-left: 10px;" *ngIf="leave.leave_name!='' && leave.leave_name!=null">
+                                              <div *ngIf='leave.leave_name === "Checkin"'  style="background-color: #1dc9b7 ;"  class="leave-circle">
+                                              </div>
+                                              <div *ngIf='leave.leave_name === "Annual Leave" || leave.leave_name === "Sick Leave"' style="background-color: #FEDF88;"  class="leave-circle">
+                                              </div>
+                                              <div *ngIf='leave.leave_name === "Checkin/Checkout Overwrite"' style="background-color: #3f77f4;"  class="leave-circle">
+                                              </div>
+                                              <div>{{leave.leave_name}}</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="kt-widget2__actions" *ngIf='leave.leave_name=="Checkin"' >
+                                  <div class=""   style="text-align: left;
+                                  font-size: 9px;
+                                  font-weight: 800;margin-top: 12px;">
+                                    <span (click)="approvalDetails(leave.id,leave.full_name,'noApproveBtn')" style="padding: 8px 15px; border-color: #ffdca7;
+                                    background-color: #fff9f0;
+                                    color: #fa9443;cursor: pointer;" class="">VIEW</span>
+
+                                  </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="kt-portlet kt-portlet--height-fluid">
+              <div>
+                <div class="kt-portlet__head-toolbar" style="display: flex;border-bottom: 1px solid #dfdfdf;height: 55px;">
+                  <div style="margin: auto 0px; width: 50%;">
+                    <h3 class="kt-portlet__head-title" style="font-size: 17px; padding-left: 25px;margin-bottom: 0px;">Notifications</h3>
+                  </div>
+                  <div style="width: 50%;margin: auto 0;">
+                    <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                      <li class="nav-item" style="display: flex;">
+                        <a class="nav-link active notification" data-toggle="tab" href="#NewNotification" (click)="tabevent('newNot')" role="tab">
+                          New notification
+                          <span class="badge"*ngIf="newNotificationData?.length !== 0 && NewNotificationDiv">
+                            {{newNotificationData?.length}}
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#ReadNotification" (click)="tabevent('oldNot')" role="tab">
+                          Old notification
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="kt-portlet__body" style="height: 400px; overflow-y: auto;padding: 0px 7px;">
+                  <div *ngIf="NewNotificationDiv">
+                    <div *ngFor="let newData of newNotificationData" class="list-group m-b" style="padding-bottom: 3px; padding-top: 3px;cursor: pointer;">
+                      <a (click)="viewEditNotification(newData, 'newMessage')" [ngClass]="newData.message === 'Approval Requested for New Profile' ? 'b-l-primary': 'b-l-danger'" class="list-group-item">
+                        <span [ngClass]="newData.message === 'Approval Requested for New Profile' ? 'text-primary': 'text-danger'" class="pull-right">
+                          <i class="fa fa-circle text-xs"></i>
+                        </span>
+                        <div class="notDateDivMAIN">
+                          <div class="notDateDiv">
+                            <p class="notDateFont">{{newData.created_date | date:'MMM d, y, h:mm a'}}</p>
+                          </div>
+                          <div class="textDivnot">
+                            <p class="textMainnot">{{newData.created_by_name}}</p>
+                            <p style="margin-bottom: 0px; margin-top: 0px;">{{newData.message}}</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div *ngIf="newNotificationData.length === 0" class="list-group m-b" style="padding-bottom: 3px; padding-top: 3px;cursor: pointer;">
+                      <a class="list-group-item b-l-primary">
+                        <div class="textDivnot">
+                          <p style="margin-bottom: 0px;">No New Notification</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngIf="ReadNotificationDiv">
+                    <div *ngFor="let readData of readNotificationData" class="list-group m-b" style="padding-bottom: 3px; padding-top: 3px;cursor: pointer;">
+                      <a (click)="viewEditNotification(readData, 'oldMessage')" [ngClass]="readData.message === 'Approval Requested for New Profile' ? 'b-l-primary': 'b-l-danger'" class="list-group-item">
+                        <span [ngClass]="readData.message === 'Approval Requested for New Profile' ? 'text-primary': 'text-danger'" class="pull-right">
+                          <i class="fa fa-circle text-xs"></i>
+                        </span>
+                        <div class="notDateDivMAIN">
+                          <div class="notDateDiv">
+                            <p class="notDateFont">{{readData.created_date | date:'MMM d, y, h:mm a'}}</p>
+                          </div>
+                          <div class="textDivnot">
+                            <p class="textMainnot">{{readData.created_by_name}}</p>
+                            <p style="margin-bottom: 0px;margin-top: 0px;">{{readData.message}}</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div *ngIf="readNotificationData.length === 0" class="list-group m-b" style="padding-bottom: 3px; padding-top: 3px;cursor: pointer;">
+                      <a class="list-group-item b-l-primary">
+                        <div class="textDivnot">
+                          <p style="margin-bottom: 0px;">No notification history</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+    </div>
+    <!--End::Row-->
+    <!--Begin::Row-->
+    <div class="row">
+      <div class="col-xl-12 col-lg-12">
+        <!--begin:: Widgets/Best Sellers-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head" style="display: flex;justify-content: space-between;">
+              <div class="kt-portlet__head-label"  >
+                <h3 class="kt-portlet__head-title">
+                  Project Progress
+                </h3>
+
+
+              </div>
+              <!-- <div style="padding: 10px 0px;
+              color: #48465b;">Since 1, Oct 2019 Till 29, Oct 2019</div> -->
+
+              <!-- <div class="kt-portlet__head-toolbar">
+                <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_widget31_tab1_content" role="tab">
+                      Today
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_widget31_tab2_content" role="tab">
+                      Week
+                    </a>
+                  </li>
+                </ul>
+              </div> -->
+            </div>
+            <div class="kt-portlet__body" >
+              <div class="tab-content">
+                <div class="tab-pane active" id="kt_widget31_tab1_content">
+                  <div class="kt-widget31" style="height: 350px;overflow-y: auto;">
+                    <div class="kt-widget31__item"   *ngFor="let proj of projData| slice:0:10; let i='index';"   >
+                      <div class="kt-widget31__content" >
+                        <div class="kt-widget31__pic">
+                          <!-- <img src="../../../assets/media/users/100_4.jpg" alt="">    -->
+                        </div>
+                        <div class="kt-widget31__info" (click)="toProjectLayout(proj.project_id)">
+                          <a  class="kt-widget31__username">
+                          {{proj?proj.project_name:''}}
+                          </a>
+                          <p class="kt-widget31__text" style="font-size: 10px;margin-top: 2px;">
+                            {{proj?(proj.start_date| date :  "dd/MM/y"):''}} to {{proj?(proj.end_date| date :  "dd/MM/y"):''}}
+                          </p>
+                          <p class="kt-widget31__text">
+                            {{proj?proj.project_status_name:''}}
+                          </p>
+                          <p class="kt-widget31__text">
+                            {{proj?proj.cst_name:''}}
+                          </p>
+
+                        </div>
+                      </div>
+
+                      <div class="kt-widget31__content"  >
+                        <div class="kt-widget31__progress">
+                          <a class="kt-widget31__stats">
+                            <span>{{proj?proj.progress:''}}%</span>
+
+                          </a>
+                          <div class="progress progress-sm">
+                            <div class="progress-bar bg-brand" role="progressbar" [style.width] = "proj? proj.progress+'%'  : 0 +'%'"  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                  <!-- <div class="kt-widget31__item" style="display: flex;justify-content:flex-end;text-align:right;border-top: 1px solid #ebedf2;padding-top:15px">
+
+                    <span class="view_all">VIEW ALL</span>
+
+              </div> -->
+              <div class="ng-tns-c6-2" style="display: flex;justify-content: flex-end;  border-top: 1px solid #ebedf2;
+          padding: 7px;
+          font-weight: 500;cursor: pointer;
+        "><button class="button button-fill button-rose" (click)="toProjList()" aria-expanded="false" aria-haspopup="true" type="button"> VIEW ALL <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i></button></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        <!--end:: Widgets/Best Sellers-->
+
+      </div>
+      <div class="col-xl-4 col-lg-6 order-lg-3 order-xl-1" style="display:none">
+        <!--begin:: Widgets/New Users-->
+        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                New Users
+              </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-brand" role="tablist">
+                <li class="nav-item" (click)="getTodaysData()">
+                  <a class="nav-link active" data-toggle="tab"  role="tab">
+                    Today
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#kt_widget4_tab2_content" role="tab">
+                    Month
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="kt-portlet__body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_widget4_tab1_content">
+                <div class="kt-widget4">
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_4.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Anna Strong
+                      </a>
+                      <p class="kt-widget4__text">
+                        Visual Designer,Google Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-brand btn-bold">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_14.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Milano Esco
+                      </a>
+                      <p class="kt-widget4__text">
+                        Product Designer, Apple Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-warning btn-bold">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_11.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Nick Bold
+                      </a>
+                      <p class="kt-widget4__text">
+                        Web Developer, Facebook Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-danger btn-bold">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_1.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Wiltor Delton
+                      </a>
+                      <p class="kt-widget4__text">
+                        Project Manager, Amazon Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-success btn-bold">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_5.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Nick Stone
+                      </a>
+                      <p class="kt-widget4__text">
+                        Visual Designer, Github Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-primary btn-bold">Follow</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane" id="kt_widget4_tab2_content">
+                <div class="kt-widget4">
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_2.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Kristika Bold
+                      </a>
+                      <p class="kt-widget4__text">
+                        Product Designer,Apple Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-success">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_13.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Ron Silk
+                      </a>
+                      <p class="kt-widget4__text">
+                        Release Manager, Loop Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-brand">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_9.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Nick Bold
+                      </a>
+                      <p class="kt-widget4__text">
+                        Web Developer, Facebook Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-danger">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_2.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Wiltor Delton
+                      </a>
+                      <p class="kt-widget4__text">
+                        Project Manager, Amazon Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-success">Follow</a>
+                  </div>
+
+                  <div class="kt-widget4__item">
+                    <div class="kt-widget4__pic kt-widget4__pic--pic">
+                      <img src="../../../assets/media/users/100_8.jpg" alt="">
+                    </div>
+                    <div class="kt-widget4__info">
+                      <a  class="kt-widget4__username">
+                        Nick Bold
+                      </a>
+                      <p class="kt-widget4__text">
+                        Web Developer, Facebook Inc
+                      </p>
+                    </div>
+                    <a  class="btn btn-sm btn-label-info">Follow</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end:: Widgets/New Users-->
+      </div>
+
+      <div class="col-xl-4 col-lg-4 order-lg-2 order-xl-1" style="display:none">
+        <!--begin:: Widgets/Daily Sales-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+          <div class="kt-widget14">
+            <div class="kt-widget14__header kt-margin-b-30">
+              <h3 class="kt-widget14__title">
+                Daily Sales
+              </h3>
+              <span class="kt-widget14__desc">
+                Check out each collumn for more details
+              </span>
+            </div>
+            <div class="kt-widget14__chart" style="height:120px;">
+              <canvas id="kt_chart_daily_sales"></canvas>
+            </div>
+          </div>
+        </div>
+        <!--end:: Widgets/Daily Sales-->
+      </div>
+      <div class="col-xl-4 col-lg-4 order-lg-2 order-xl-1" style="display:none">
+        <!--begin:: Widgets/Profit Share-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+          <div class="kt-widget14">
+            <div class="kt-widget14__header">
+              <h3 class="kt-widget14__title">
+                Profit Share
+              </h3>
+              <span class="kt-widget14__desc">
+                Profit Share between customers
+              </span>
+            </div>
+            <div class="kt-widget14__content">
+              <div class="kt-widget14__chart">
+                <div class="kt-widget14__stat">45</div>
+                <canvas id="kt_chart_profit_share" style="height: 140px; width: 140px;"></canvas>
+              </div>
+              <div class="kt-widget14__legends">
+                <div class="kt-widget14__legend">
+                  <span class="kt-widget14__bullet kt-bg-success"></span>
+                  <span class="kt-widget14__stats">37% Sport Tickets</span>
+                </div>
+                <div class="kt-widget14__legend">
+                  <span class="kt-widget14__bullet kt-bg-warning"></span>
+                  <span class="kt-widget14__stats">47% Business Events</span>
+                </div>
+                <div class="kt-widget14__legend">
+                  <span class="kt-widget14__bullet kt-bg-brand"></span>
+                  <span class="kt-widget14__stats">19% Others</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end:: Widgets/Profit Share-->
+      </div>
+      <div class="col-xl-4 col-lg-4 order-lg-2 order-xl-1" style="display:none">
+        <!--begin:: Widgets/Revenue Change-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+          <div class="kt-widget14">
+            <div class="kt-widget14__header">
+              <h3 class="kt-widget14__title">
+                Revenue Change
+              </h3>
+              <span class="kt-widget14__desc">
+                Revenue change breakdown by cities
+              </span>
+            </div>
+            <div class="kt-widget14__content">
+              <div class="kt-widget14__chart">
+                <div id="kt_chart_revenue_change" style="height: 150px; width: 150px;"></div>
+              </div>
+              <div class="kt-widget14__legends">
+                <div class="kt-widget14__legend">
+                  <span class="kt-widget14__bullet kt-bg-success"></span>
+                  <span class="kt-widget14__stats">+10% New York</span>
+                </div>
+                <div class="kt-widget14__legend">
+                  <span class="kt-widget14__bullet kt-bg-warning"></span>
+                  <span class="kt-widget14__stats">-7% London</span>
+                </div>
+                <div class="kt-widget14__legend">
+                  <span class="kt-widget14__bullet kt-bg-brand"></span>
+                  <span class="kt-widget14__stats">+20% California</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end:: Widgets/Revenue Change-->
+      </div>
+
+      <div class="col-xl-6 col-lg-6 order-lg-3 order-xl-1">
+        <!--begin:: Widgets/Tasks -->
+        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                Tasks
+              </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-brand" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#kt_widget2_tab1_content" role="tab">
+                    All
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#kt_widget2_tab2_content" role="tab">
+                    My Tasks
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#kt_widget2_tab3_content" role="tab">
+                    Overdue
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#kt_widget2_tab3_content" role="tab">
+                    Month
+                  </a>
+                </li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="kt-portlet__body" style="height: 473px;overflow-y: auto;">
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_widget2_tab1_content">
+                <div class="kt-widget2" *ngFor="let item of employeeTasksList ; let i = index">
+                  <div class="kt-widget2__item"
+                    [ngClass]="item.priority_name == 'Low' ? 'kt-widget2__item--primary': (item.priority_name == 'High' ? 'kt-widget2__item--warning':'kt-widget2__item--success' )">
+                    <!-- <div class="kt-widget2__checkbox">
+                    <label class="kt-checkbox kt-checkbox--solid kt-checkbox--single">
+                      <input type="checkbox">
+                      <span></span>
+                    </label>
+                  </div> -->
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                    (click)="openStatusModal(item)"
+                      >
+                      <a class="kt-widget2__title">
+                        {{item.subtask_name}}
+                        <span style="font-size: 10px;"
+                          [ngClass]="item.status_name == 'Completed' ? 'status-code-success': (item.status_name == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name}}
+                        </span>
+                      </a>
+                      <a class="kt-widget2__username" *ngIf="item.task_name">
+                        Task - {{item.task_name}}
+
+                       </a>
+                      <a class="kt-widget2__username" *ngIf="item.project_name">
+                        Project - {{item.project_name}}
+
+                       </a>
+                      <a class="kt-widget2__username" *ngIf="item.milestone_name">
+                       Milestone - {{item.milestone_name}}
+
+                      </a>
+                      <a class="kt-widget2__username">
+                        {{item.task_desc}}
+
+                      </a>
+                      <a class="kt-widget2__username">
+                        {{item.assigned_to_name}}
+
+                      </a>
+                       <a class="kt-widget2__username">
+                        <span style="font-size: 10px;"
+                          [ngClass]="item.priority  == 'Low' ? 'status-code-success': (item.priority  == 'High' ? 'status-code-failed':'status-code-empty' )">{{item.priority }}
+                        </span>
+                        <!-- {{item.priority}} -->
+
+                      </a>
+                      <a class="kt-widget2__username" style="color:#ffb822">
+                        {{item.due_date|date :  "d MMM, y"}}
+
+
+                      </a>
+                    </div>
+                    <!-- <div class="kt-widget2__actions">
+                      <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                        (click)="taskDelete(item.id)"><i class="la la-trash"></i></a>
+                    </div> -->
+                    <!-- <div class="kt-widget2__actions">
+                    <a href="#" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+                      <i class="flaticon-more-1"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+                      <ul class="kt-nav">
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                            <span class="kt-nav__link-text">Reports</span>
+                          </a>
+                        </li>
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i class="kt-nav__link-icon flaticon2-send"></i>
+                            <span class="kt-nav__link-text">Messages</span>
+                          </a>
+                        </li>
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                            <span class="kt-nav__link-text">Charts</span>
+                          </a>
+                        </li>
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                            <span class="kt-nav__link-text">Members</span>
+                          </a>
+                        </li>
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i class="kt-nav__link-icon flaticon2-settings"></i>
+                            <span class="kt-nav__link-text">Settings</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div> -->
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="tab-pane" id="kt_widget2_tab2_content">
+                <div class="kt-widget2">
+                  <div class="kt-widget2__item kt-widget2__item--success"
+                    *ngFor="let item of assignedToList ; let i = index">
+                    <!-- <div class="kt-widget2__checkbox">
+                      <label class="kt-checkbox kt-checkbox--solid kt-checkbox--single">
+                        <input type="checkbox">
+                        <span></span>
+                      </label>
+                    </div> -->
+
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                    (click)="openStatusModal(item)"
+                      >
+                      <a class="kt-widget2__title">
+                        {{item.subtask_name}}
+                        <span style="font-size: 10px;"
+                          [ngClass]="item.status_name == 'Completed' ? 'status-code-success': (item.status_name == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name}}
+                        </span>
+                      </a>
+                      <a class="kt-widget2__username" *ngIf="item.task_name">
+                        Task - {{item.task_name}}
+
+                       </a>
+                      <a class="kt-widget2__username" *ngIf="item.project_name">
+                        Project - {{item.project_name}}
+
+                       </a>
+                      <a class="kt-widget2__username" *ngIf="item.milestone_name">
+                        Milestone - {{item.milestone_name}}
+
+                       </a>
+                      <a class="kt-widget2__username">
+                        {{item.task_desc}}
+
+                      </a>
+                      <a class="kt-widget2__username">
+                        {{item.assigned_to_name}}
+
+                      </a>
+                       <a class="kt-widget2__username">
+                        <span style="font-size: 10px;"
+                          [ngClass]="item.priority  == 'Low' ? 'status-code-success': (item.priority  == 'High' ? 'status-code-failed':'status-code-empty' )">{{item.priority }}
+                        </span>
+                        <!-- {{item.priority}} -->
+
+                      </a>
+                      <a class="kt-widget2__username" style="color:#ffb822">
+                        {{item.due_date|date :  "d MMM, y"}}
+
+
+                      </a>
+                    </div>
+                    <div class="kt-widget2__actions">
+                      <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                        (click)="taskDelete(item.id)"><i class="la la-trash"></i></a>
+                    </div>
+                    <!-- <div class="kt-widget2__actions">
+                        <a  class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+                          <i class="flaticon-more-1"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+                          <ul class="kt-nav">
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                                <span class="kt-nav__link-text">Reports</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-send"></i>
+                                <span class="kt-nav__link-text">Messages</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                                <span class="kt-nav__link-text">Charts</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                                <span class="kt-nav__link-text">Members</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-settings"></i>
+                                <span class="kt-nav__link-text">Settings</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div> -->
+
+                  </div>
+
+
+                </div>
+              </div>
+
+              <div class="tab-pane" id="kt_widget2_tab3_content">
+                <div class="kt-widget2">
+                  <div class="kt-widget2__item kt-widget2__item--success"
+                    *ngFor="let item of overDueList ; let i = index">
+                    <!-- <div class="kt-widget2__checkbox">
+                      <label class="kt-checkbox kt-checkbox--solid kt-checkbox--single">
+                        <input type="checkbox">
+                        <span></span>
+                      </label>
+                    </div> -->
+
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                    (click)="openStatusModal(item)"
+                      >
+                      <a class="kt-widget2__title">
+                        {{item.subtask_name}}
+                        <span style="font-size: 10px;"
+                          [ngClass]="item.status_name == 'Completed' ? 'status-code-success': (item.status_name == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name}}
+                        </span>
+                      </a>
+                      <a class="kt-widget2__username" *ngIf="item.task_name">
+                        Task - {{item.task_name}}
+
+                       </a>
+                      <a class="kt-widget2__username" *ngIf="item.project_name">
+                        Project - {{item.project_name}}
+
+                       </a>
+                      <a class="kt-widget2__username" *ngIf="item.milestone_name">
+                        Milestone - {{item.milestone_name}}
+
+                       </a>
+                      <a class="kt-widget2__username">
+                        {{item.task_desc}}
+
+                      </a>
+                      <a class="kt-widget2__username">
+                        {{item.assigned_to_name}}
+
+                      </a>
+                       <a class="kt-widget2__username">
+                        <span style="font-size: 10px;"
+                          [ngClass]="item.priority  == 'Low' ? 'status-code-success': (item.priority  == 'High' ? 'status-code-failed':'status-code-empty' )">{{item.priority }}
+                        </span>
+                        <!-- {{item.priority}} -->
+
+                      </a>
+                      <a class="kt-widget2__username" style="color:#ffb822">
+                        {{item.due_date|date :  "d MMM, y"}}
+
+
+                      </a>
+                    </div>
+                    <!-- <div class="kt-widget2__actions">
+                      <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                        (click)="taskDelete(item.id)"><i class="la la-trash"></i></a>
+                    </div> -->
+                    <!-- <div class="kt-widget2__actions">
+                        <a  class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+                          <i class="flaticon-more-1"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+                          <ul class="kt-nav">
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                                <span class="kt-nav__link-text">Reports</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-send"></i>
+                                <span class="kt-nav__link-text">Messages</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                                <span class="kt-nav__link-text">Charts</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                                <span class="kt-nav__link-text">Members</span>
+                              </a>
+                            </li>
+                            <li class="kt-nav__item">
+                              <a href="#" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-settings"></i>
+                                <span class="kt-nav__link-text">Settings</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div> -->
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end:: Widgets/Tasks -->
+      </div>
+      <div class="col-xl-6 col-lg-6 order-lg-3 order-xl-1">
+
+          <!--Begin::Portlet-->
+          <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+              <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                  Recent Activities
+                </h3>
+              </div>
+              <!-- <div class="kt-portlet__head-toolbar">
+                <div class="dropdown dropdown-inline">
+                  <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="flaticon-more-1"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md">
+                    <ul class="kt-nav">
+                      <li class="kt-nav__head">
+                        Export Options
+                        <span data-toggle="kt-tooltip" data-placement="right" title="Click to learn more...">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon kt-svg-icon--brand kt-svg-icon--md1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24" />
+                              <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                              <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1" />
+                              <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1" />
+                            </g>
+                          </svg>
+                        </span>
+                      </li>
+                      <li class="kt-nav__separator"></li>
+                      <li class="kt-nav__item">
+                        <a href="#" class="kt-nav__link">
+                          <i class="kt-nav__link-icon flaticon2-drop"></i>
+                          <span class="kt-nav__link-text">Activity</span>
+                        </a>
+                      </li>
+                      <li class="kt-nav__item">
+                        <a href="#" class="kt-nav__link">
+                          <i class="kt-nav__link-icon flaticon2-calendar-8"></i>
+                          <span class="kt-nav__link-text">FAQ</span>
+                        </a>
+                      </li>
+                      <li class="kt-nav__item">
+                        <a href="#" class="kt-nav__link">
+                          <i class="kt-nav__link-icon flaticon2-telegram-logo"></i>
+                          <span class="kt-nav__link-text">Settings</span>
+                        </a>
+                      </li>
+                      <li class="kt-nav__item">
+                        <a href="#" class="kt-nav__link">
+                          <i class="kt-nav__link-icon flaticon2-new-email"></i>
+                          <span class="kt-nav__link-text">Support</span>
+                          <span class="kt-nav__link-badge">
+                            <span class="kt-badge kt-badge--success kt-badge--rounded">5</span>
+                          </span>
+                        </a>
+                      </li>
+                      <li class="kt-nav__separator"></li>
+                      <li class="kt-nav__foot">
+                        <a class="btn btn-label-danger btn-bold btn-sm" >Upgrade plan</a>
+                        <a class="btn btn-clean btn-bold btn-sm"  data-toggle="kt-tooltip" data-placement="right" title="Click to learn more...">Learn more</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <div class="kt-portlet__body" style="height: 473px;overflow-y: auto;">
+              <!--Begin::Timeline 3 -->
+              <div  *ngIf="showTimeLogSpinner"  style="margin-top: 140px;
+            position: absolute;
+            margin-left: 250px;">
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+            </div>
+            <div class="kt-timeline-v2">
+              <div class="kt-timeline-v2__items  kt-padding-top-25 kt-padding-bottom-30"
+                *ngFor="let element of allTimeLog;let odd=odd">
+                <div style="display: flex;justify-content: space-between;">
+
+                  <div class="kt-timeline-v2__item">
+                    <span class="kt-timeline-v2__item-time"
+                      style="margin-top: 2px;">{{element.timesheetDataModels[0].check_out|date : "h:mm a"}}-</span>
+                    <span class="kt-timeline-v2__item-time"
+                      style="margin-top: 14px;">{{element.timesheetDataModels[0].check_in|date : "h:mm a"}}</span>
+                    <div class="kt-timeline-v2__item-cricle">
+                      <i [ngClass]=" odd? 'fa fa-genderless kt-font-danger':'fa fa-genderless kt-font-warning'" class=""></i>
+                    </div>
+                    <div *ngIf="element.timesheetDataModels[0].viewLogDataModels!=null && element.timesheetDataModels[0].viewLogDataModels.length!=0;" style="padding-top:32px;">
+                      <div  class="kt-timeline-v2__item" style="padding-top:6px;" *ngFor="let item of element.timesheetDataModels[0].viewLogDataModels" >
+                        <span class="kt-timeline-v2__item-time"
+                        style="margin-top: 2px;width: 100px;">{{(item.end_time!=''  && item.end_time!=null   &&  item.end_time!=NA )?(item.end_time|date : "h:mm a"):(item.end_time)}}-</span>
+                      <span class="kt-timeline-v2__item-time"
+                        style="margin-top: 15px;width: 100px;">{{(item.start_time!=''  && item.start_time!=null &&  item.start_time!=NA )?(item.start_time|date : "h:mm a"):(item.start_time)}}</span>
+                        <div class="kt-timeline-v2__item-cricle">
+                          <i [ngClass]=" odd? 'fa fa-genderless kt-font-danger':'fa fa-genderless kt-font-warning'" class=""></i>
+                        </div>
+
+
+
+                      </div>
+                    </div>
+
+
+
+
+                    <div  class="kt-timeline-v2__item-text kt-padding-top-5">
+                      <div >
+
+
+                      {{element.timesheetDataModels[0].createdby}}
+                      <!-- <span *ngIf="element.timesheetTeamDataModels">
+                      <span *ngIf="element.timesheetTeamDataModel.length!=0">with</span>
+
+                        </span> -->
+                      <!-- <span *ngFor="let teams of element.timesheetTeamDataModels;let isLast=last;let isFirst=first;"
+                        style="color: gray;"> {{isFirst ? 'with' : ''}} {{teams.team_name}}{{isLast ? '' : ','}} team of
+                      </span> -->
+                      <span *ngIf="element.timesheetDataModels.length>1">with {{element.timesheetDataModels.length-1}}
+                        <ng-template #popContent><div *ngFor="let team of element.members;" style="z-index: 9999 !important;"> {{team}}</div></ng-template>
+                <!-- <ng-template #popTitle>Title with Fancy <b> bold</b>, <i>italics</i> and <u>underlined</u> text</ng-template> -->
+                          <span [ngbPopover]="popContent"  triggers="mouseenter:mouseleave" placement="bottom"
+                          style="cursor:pointer;"> member(s)</span>
+
+                      </span>
+
+
+                      check-in  <span container="body" ngbPopover="Work From Home" triggers="mouseenter:mouseleave"  *ngIf="element.timesheetSearchLocationViewModel && element.timesheetSearchLocationViewModel.is_wfh==true;" style="text-transform: uppercase;font-size: 11px !important;
+                      font-weight: bold !important;">
+( WFH )
+                      </span> at
+                      <span *ngIf="element.timesheetProjectCategoryDataModel;"
+                        style="text-transform: uppercase;">
+                        <span *ngIf="element.timesheetProjectCategoryDataModel.project_type=='Job' || element.timesheetProjectCategoryDataModel.project_type=='Case';" style="font-weight: 600 !important;">
+                          {{element.timesheetProjectCategoryDataModel.project_type}}
+                          <a class="kt-link kt-link--brand kt-font-bolder" style="cursor: pointer;color: #2c77f4;font-weight: 600!important;">
+                            {{element.timesheetProjectCategoryDataModel.project_or_comp_name}}</a>
+
+                          </span>
+
+                        </span>
+                      <span *ngIf="element.timesheetCurrentLocationViewModels;">
+                        <span *ngIf="element.timesheetSearchLocationViewModel && element.timesheetSearchLocationViewModel.is_office==false;" style="cursor: pointer;color: #2c77f4;font-weight: 600!important;"><a
+                            class="kt-link kt-link--brand kt-font-bolder"
+                            style="cursor: pointer;color: #2c77f4;font-weight: 600!important;">{{element.timesheetSearchLocationViewModel.is_manual==true?element.timesheetSearchLocationViewModel.manual_address :element.timesheetSearchLocationViewModel.geo_address}}</a>
+                          </span>
+                          <span *ngIf="element.timesheetSearchLocationViewModel && element.timesheetSearchLocationViewModel.is_office==true ;" style="cursor: pointer;color: #2c77f4;font-weight: 600!important;"><a
+                            class="kt-link kt-link--brand kt-font-bolder"
+                            style="cursor: pointer;">{{element.timesheetSearchLocationViewModel.is_manual==true?element.timesheetSearchLocationViewModel.manual_address :(element.timesheetSearchLocationViewModel.is_office==true?element.timesheetProjectCategoryDataModel.project_or_comp_name:null)}}</a>
+                          </span>
+
+                        <!-- <span *ngIf="element.timesheetCurrentLocationViewModel[0].is_checkout==true;">and checked out at <span *ngIf="element.timesheetCurrentLocationViewModel;" style="font-weight: 600 !important;" > {{element.timesheetCurrentLocationViewModel[0].formatted_address}}</span>
+                        </span> -->
+                      </span>
+
+                    </div>
+                    <div class=""> <span
+                      style="margin-top: 2px;font-size: 10px;">{{element.timesheetDataModels[0].ondate | date : "dd/MM/y"}}</span></div>
+                    <!-- <div class="kt-timeline-v2__item-text kt-padding-top-5"  style="padding-top:6px;display: block !important;padding-left:5px !important" *ngFor="let item of element.timesheetDataModels[0].viewLogDataModels" >
+
+
+                        <div class="" style="font-weight: 500;" >
+
+                    <div style="display: flex;"><div style="width:50px">{{item.project_name}}</div> - <div style="color:#2c77f4;margin-left: 5px;"> {{item.milestone_name}} </div> </div>
+                     <div style="display: flex;"> <div style="width:50px">Task  </div> - <div style="color:#2c77f4;margin-left: 5px"> {{item.task_name}} </div>  </div>
+
+                     <div style="display: flex;"><div style="width:50px">Hours </div> - <div style="color:#ffb822;margin-left: 5px"> {{item.total_hrs}} </div>  </div>
+
+                      </div>
+
+
+                    </div> -->
+
+
+<table style="width:100%;margin:12px 0px;" class="activityTable" *ngFor="let item of element.timesheetDataModels[0].viewLogDataModels" >
+  <tr>
+    <th>{{item.project_name}}</th>
+    <th>Task</th>
+    <th>Hours</th>
+  </tr>
+  <tr >
+    <td ><div [ngbPopover]="item.milestone_name" triggers="mouseenter:mouseleave" ngxEllipsis [lines]="1" class="milestoneWidth">
+      {{item.milestone_name}}
+    </div></td>
+    <td [ngbPopover]="item.milestone_name" triggers="mouseenter:mouseleave" ngxEllipsis [lines]="1" class="milestoneWidth" >{{item.task_name}}</td>
+    <td>{{item.total_hrs}} </td>
+  </tr>
+
+</table>
+
+
+                     <div>
+
+                        <div  class=" subTimeLine" style="display: none;"   >
+
+                          <div class="kt-timeline-v2 " style="margin-top:2px" >
+                            <div class="kt-timeline-v2__items  kt-padding-top-25 kt-padding-bottom-30"
+                              *ngFor="let item of element.timesheetDataModels[0].viewLogDataModels">
+                              <div style="display: flex;justify-content: space-between;margin:5px 0px"  >
+
+                                <div class="kt-timeline-v2__item " style="padding:5px 10px;margin-bottom: 5px !important;">
+                                  <span class="kt-timeline-v2__item-time"
+                                    style="margin-top: 2px;">
+
+                                    {{item.end_time}}-
+
+                                  </span>
+                                  <span class="kt-timeline-v2__item-time"
+                                    style="margin-top: 14px;">
+                                    {{item.start_time}}
+                                  </span>
+                                  <div class="kt-timeline-v2__item-cricle" >
+                                    <i class="fa fa-genderless kt-font-success" style="font-size: 1.78rem;;"></i>
+                                  </div>
+                                  <div  class="kt-timeline-v2__item-text kt-padding-top-5">
+                                    <div class="" style="font-weight: 500;" >
+
+                                <div style="display: flex;"><div style="width:50px">{{item.project_name}}</div> - <div style="color:#2c77f4;margin-left: 5px;"> {{item.milestone_name}} </div> </div>
+                                 <div style="display: flex;"> <div style="width:50px">Task  </div> - <div style="color:#2c77f4;margin-left: 5px"> {{item.task_name}} </div>  </div><!-- {{element.timesheetDataModels[0].createdby}} -->
+
+                                 <div style="display: flex;"><div style="width:50px">Hours </div> - <div style="color:#ffb822;margin-left: 5px"> {{item.total_hrs}} </div>  </div><!-- {{element.timesheetDataModels[0].createdby}} -->
+                                    <!-- <span *ngIf="element.timesheetTeamDataModels">
+                                    <span *ngIf="element.timesheetTeamDataModel.length!=0">with</span>
+
+                                      </span> -->
+                                    <!-- <span *ngFor="let teams of element.timesheetTeamDataModels;let isLast=last;let isFirst=first;"
+                                      style="color: gray;"> {{isFirst ? 'with' : ''}} {{teams.team_name}}{{isLast ? '' : ','}} team of
+                                    </span> -->
+                                    <!-- <span *ngIf="element.timesheetDataModels.length>1">with {{element.timesheetDataModels.length-1}}
+                                      <ng-template #popContent><div *ngFor="let team of element.members;" style="z-index: 9999 !important;"> {{team}}</div></ng-template>
+                                        <span [ngbPopover]="popContent"  triggers="mouseenter:mouseleave" placement="bottom"
+                                        style="cursor:pointer;"> member(s)</span>
+
+                                    </span>
+
+
+                                    check-in at
+                                    <span *ngIf="element.timesheetProjectCategoryDataModel;"
+                                      style="text-transform: uppercase;">
+                                      <span *ngIf="element.timesheetProjectCategoryDataModel.project_type=='Job' || element.timesheetProjectCategoryDataModel.project_type=='Case';" style="font-weight: 600 !important;">
+                                        {{element.timesheetProjectCategoryDataModel.project_type}}
+                                        <a class="kt-link kt-link--brand kt-font-bolder" style="cursor: pointer;color: #2c77f4;font-weight: 600!important;">
+                                          {{element.timesheetProjectCategoryDataModel.project_or_comp_name}}</a>
+
+                                        </span>
+
+                                      </span>
+                                    <span *ngIf="element.timesheetCurrentLocationViewModels;">
+                                      <span *ngIf="element.timesheetSearchLocationViewModel && element.timesheetSearchLocationViewModel.is_office==false;" style="cursor: pointer;color: #2c77f4;font-weight: 600!important;"><a
+                                          class="kt-link kt-link--brand kt-font-bolder"
+                                          style="cursor: pointer;color: #2c77f4;font-weight: 600!important;">{{element.timesheetSearchLocationViewModel.is_manual==true?element.timesheetSearchLocationViewModel.manual_address :element.timesheetSearchLocationViewModel.geo_address}}</a>
+                                        </span>
+                                        <span *ngIf="element.timesheetSearchLocationViewModel && element.timesheetSearchLocationViewModel.is_office==true ;" style="cursor: pointer;color: #2c77f4;font-weight: 600!important;"><a
+                                          class="kt-link kt-link--brand kt-font-bolder"
+                                          style="cursor: pointer;">{{element.timesheetSearchLocationViewModel.is_manual==true?element.timesheetSearchLocationViewModel.manual_address :(element.timesheetSearchLocationViewModel.is_office==true?element.timesheetProjectCategoryDataModel.project_or_comp_name:null)}}</a>
+                                        </span>
+
+
+                                    </span> -->
+
+                                  </div>
+                                   <!-- <div>
+                                     <div> <span
+                                      style="margin-top: 2px;font-size: 10px;">{{element.timesheetDataModels[0].ondate | date : "dd/MM/y"}}</span></div>
+                                     <button type="button" style="padding: 0px 6px;
+                                    font-size: 10px;" (click)="openViewModal(element)"  class="btn btn-label-warning btn-sm">View Log</button>
+
+                                  </div>  -->
+                                  </div>
+
+
+                                </div>
+                                <div class="" style="display: flex;">
+
+
+                                 </div>
+                              </div>
+
+                                </div>
+
+
+
+
+
+                          </div>
+                        </div>
+
+                       <!-- <button *ngIf="element.timesheetProjectCategoryDataModel.project_type!='Job'" type="button" style="padding: 0px 6px;
+                      font-size: 10px;" (click)="openViewModal(element)"  class="btn btn-label-warning btn-sm">View Log</button>  -->
+
+                    </div>
+                    </div>
+
+
+                  </div>
+                  <div class="" style="display: flex;">
+
+
+                   </div>
+                </div>
+
+                  </div>
+
+
+
+
+
+            </div>
+              <!--End::Timeline 3 -->
+            </div>
+            <div style="display: flex;justify-content: flex-end;  border-top: 1px solid #ebedf2;
+            padding: 7px;
+            font-weight: 500;cursor: pointer;
+          ">
+              <button type="button" class="button button-fill button-rose" (click)='AllActivities()' aria-haspopup="true"
+                aria-expanded="false">
+                VIEW ALL <i class="fa fa-angle-right" style="margin-bottom: 2px;"></i>
+              </button>
+              <div style="margin-left: 10px;">
+                <button type="button" class="button button-fill button-rose" style="width: 110px !important;" (click)='MapModal()' aria-haspopup="true"
+                aria-expanded="false">
+                MAP VIEW <i class="fa fa-angle-right" ></i>
+              </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!--End::Portlet-->
+
+  </div>
+
+
+    </div>
+
+
+        <!--begin:: Portlet-->
+        <!-- Emerging Risk -->
+    <!-- <div class="kt-portlet">
+        <div class="kt-portlet__head"><div class="kt-portlet__head-label"><h3 class="kt-portlet__head-title"> Emerging Risks </h3></div><div class="kt-portlet__head-toolbar"><ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-brand" role="tablist"><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#kt_widget2_tab1_content" role="tab"> Pending </a></li><li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kt_widget2_tab2_content" role="tab"> Solved </a></li></ul></div></div>
+
+        <div class="kt-portlet__body">
+            <div class="kt-widget kt-widget--user-profile-3">
+                <div class="kt-widget__top">
+
+                    <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden">
+                        JM
+                    </div>
+                    <div class="kt-widget__content">
+                        <div class="kt-widget__head">
+                            <a href="#" class="kt-widget__username">
+                                Job No: Project Management
+                            </a>
+
+                            <div class="kt-widget__action">
+                                <button type="button" class="btn btn-label-success btn-sm btn-upper">UPDATE</button>&nbsp;
+                                <button type="button" class="btn btn-brand btn-sm btn-upper">VIEW</button>
+                            </div>
+                        </div>
+
+                        <div class="kt-widget__subhead">
+                            <a href="#">Action: CCTV</a>
+
+                        </div>
+
+                        <div class="kt-widget__info">
+                            <div class="kt-widget__desc">
+                                7th FLR camera removed for repairing
+                                <br> dome camara 01 no
+                            </div>
+
+
+
+                        </div>
+                        <div class="kt-widget__info">
+
+                            <div class="kt-widget__desc">
+                                ASSIGNED: Sathish
+                            </div>
+
+
+                        </div>
+                        <div class="kt-widget__info">
+
+                            <div class="kt-widget__desc">
+                                STATUS: Pending
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+    <!--end:: Portlet-->
+
+    <!--begin:: Portlet-->
+
+    <!--End::Row-->
+    <div class="rightModal700">
+    <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="map_modal"
+          data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content notifyModal">
+              <div class="modal-header" style="padding: 8px 15px;">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Location</h5>
+                <button type="button" class="close" #mapCloseBtn  (click)="OnClose()" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+
+
+                <div class="kt-demo-panel__body ">
+
+
+
+                  <div class="kt-demo-panel__item mapModel">
+
+
+
+
+
+                    <!-- <div class="checkinCateg" >
+                      <mat-button-toggle-group #groupid="matButtonToggleGroup" [value]="selectedCheckInGroupVal"
+                        [(ngModel)]="checkInModel" (change)="onCheckinValChange(groupid.value)">
+                        <mat-button-toggle  value="Checkin"><span style="margin-right: 5px;"><i
+                              class="fa fa-briefcase red"></i></span> Checkin</mat-button-toggle>
+                        <mat-button-toggle  value="Checkout"><span style="margin-right: 5px;"><i
+                              class="fa fa-thumb-tack goldenrod"></i></span> Checkout</mat-button-toggle>
+
+                      </mat-button-toggle-group>
+                    </div> -->
+                    <div class="col-lg-12 col-sm-12"
+                >
+                <div
+                style="display: flex;margin-bottom: 8px;background-color: rgba(44,119,244,.1);margin-top: -12px;">
+                <div style="
+                                    color: #2c77f4;padding: 10px 14px;font-weight: bold;
+                                    font-size: 12px;
+                                     "> {{dateText}}</div>
+              </div>
+
+
+                    <!-- <div *ngIf="selectedCheckInGroupVal=='Checkin'"> -->
+                        <div style="position:relative" >
+                            <div class="avatar_logo" style="position:absolute">
+                              <!-- <span class="avatar_cancel" (click)="closeMap()"> <i style="color:red;font-size: 0.9rem;"
+                                  class="fa fa-times"></i></span> -->
+
+                            </div>
+
+                            <agm-map
+                            [latitude]="lat"
+                            [longitude]="lng"
+                            [zoom]="zoom"
+                            [disableDefaultUI]="false"
+                            [zoomControl]="false"
+                            (mapClick)="mapClicked($event)">
+
+                            <agm-marker
+                                *ngFor="let m of markers; let i = index"
+
+                                [latitude]="m.lat"
+                                [longitude]="m.lng"
+                                [label]="m.label"
+                                [markerDraggable]="m.draggable"
+                                (dragEnd)="markerDragEnd(m, $event)"
+                                (mouseOver)="onMouseOver(infoWindow, $event)"
+                (mouseOut)="onMouseOut(infoWindow, $event)"
+                                >
+
+                              <agm-info-window #infoWindow>
+                                <div style="text-align: center;font-weight: 500;padding-bottom: 4px;">{{m.empname}}</div>
+
+                                <strong>{{m.jobName}}</strong>
+                                <div style="text-align: center;margin-top: 4px;">{{m.checkin|date : "h:mm a"}}-{{m.checkout|date : "h:mm a"}}</div>
+                              </agm-info-window>
+
+                            </agm-marker>
+
+
+
+                          </agm-map>
+                          </div>
+                    <!-- </div> -->
+
+
+                    <!-- <label style="color:grey;">Address: {{address}}</label> -->
+                    <!-- <div>Latitude: {{latitude}}</div>
+                    <div>Longitude: {{longitude}}</div>   -->
+                    <!-- <label style="color: grey;">Comments</label>
+                                <textarea class="form-control" id="exampleTextarea" rows="1"></textarea> -->
+
+                  </div>
+
+
+
+
+
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+              </div>
+
+              <div class="kt-align-right modal-footer bottomBtn">
+
+                <!-- <button type="Submit" class="button button-fill button-rose" (click)="onTaskStatusSubmit()">Submit</button> -->
+
+                <button type="reset" class="btn btn-secondary" style="width: 90px;
+          padding: 7px 14px;font-size: 11px;
+          margin-top: -1px;" (click)="OnClose()">CLOSE
+                </button>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+    <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="activity_view_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <!-- <div class="modal-content contentHeight" style="width:630px !important;right:127% !important"> -->
+      <div class="modal-content activityLogModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Activity Log</h5>
+          <button type="button" class="close" (click)="closeViewModal()" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body" style="overflow-x: hidden;">
+
+
+
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item ">
+
+              <div *ngIf="viewProjName"
+                style="display: flex;background-color: rgba(44,119,244,.1);margin-top: -12px;">
+                <div style="
+                              color: #2c77f4;padding: 10px 14px;font-weight: bold;
+                             font-size: 15px;
+                             "> {{viewProjName}}   <span style="font-size: 12px;">({{viewProjCheckin|date : "h:mm a"}} - {{viewProjCheckout|date : "h:mm a"}}) </span>  </div>
+              </div>
+              <!-- <div *ngIf="viewProjCheckin" style="display: flex;background-color: rgba(44,119,244,.1);">
+                <div style="
+                                color: #2c77f4;padding-bottom: 4px;    padding-left: 15px;
+font-weight: bold;
+
+                                font-size: 12px
+                                 "> {{viewProjCheckin|date : "h:mm a"}} - {{viewProjCheckout|date : "h:mm a"}}
+                </div>
+              </div> -->
+              <ejs-grid #grid [dataSource]='data12' allowTextWrap='true' [pageSettings]='pageSettings' height="450"
+                >
+
+                <e-columns>
+                  <!-- <e-column field='timesheet' headerText=' ' minWidth='8' width='60'></e-column> -->
+
+                  <e-column field='total_time' headerText='Time' textAlign='Left' minWidth='6' width='90'>
+                  </e-column>
+                  <e-column field='project_type' headerText='Type' minWidth='8' width='90' textAlign='Left'>
+                  </e-column>
+                  <e-column field='members' headerText='Team' minWidth='8' width='90' textAlign='Left'>
+                  </e-column>
+                    <e-column field='project_name' headerText='Project Name' minWidth='8' width='120'
+                    textAlign='Left'></e-column>
+                  <e-column field='milestone_name' headerText='Milestone Name' minWidth='8' width='120'
+                    textAlign='Left'></e-column>
+
+
+
+                  <e-column field='task_name' headerText='Task Name' textAlign='Left' minWidth='6' width='100'>
+                  </e-column>
+                  <e-column field='remarks' headerText='Remarks' textAlign='Left' minWidth='6' width='100'>
+                  </e-column>
+                  <e-column field='total_hrs' headerText='Hours' textAlign='Left' minWidth='4' width='100'>
+                  </e-column>
+                  <!-- <e-column type='' headerText='Actions'  width='200'>
+                      <ng-template #template let-data>
+
+                              <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.department_id)"> <i class="la la-edit"></i> </a>
+
+                              <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.department_id)"><i class="la la-trash"></i>						</a>
+
+                      </ng-template>
+                  </e-column> -->
+                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                </e-columns>
+              </ejs-grid>
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+
+        </div>
+        <div class="kt-align-right modal-footer">
+
+          <!-- <button type="Submit" class="button button-fill button-rose" (click)="onTaskStatusSubmit()">Submit</button> -->
+
+          <button type="reset" class="btn btn-secondary" style="width: 90px;
+    padding: 7px 14px;font-size: 11px;
+    margin-top: -1px;" (click)="closeViewModal()">CANCEL
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div class='rightModal'>
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="task_status_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content notifyModal">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Task</h5>
+        <button type="button" class="close" #statusCloseBtn  (click)="OnCloseStatusModal()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+        <div class="kt-widget2" >
+          <div class="kt-widget2__item kt-widget2__item--primary"
+            >
+
+            <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+              >
+              <a class="kt-widget2__username">
+                Task Name
+                <!-- <span style="font-size: 10px;"
+                  [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                </span> -->
+              </a>
+              <!-- <a class="kt-widget2__username">
+                {{item.priority}}
+
+              </a> -->
+              <a class="kt-widget2__title">
+                {{tasktobeUpdated && tasktobeUpdated.task_name}}
+
+              </a>
+
+
+            </div>
+
+            <div class="kt-widget2__actions">
+
+            </div>
+            <!-- <div class="kt-widget2__actions">
+            <a href="#" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+              <i class="flaticon-more-1"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+              <ul class="kt-nav">
+                <li class="kt-nav__item">
+                  <a href="#" class="kt-nav__link">
+                    <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                    <span class="kt-nav__link-text">Reports</span>
+                  </a>
+                </li>
+                <li class="kt-nav__item">
+                  <a href="#" class="kt-nav__link">
+                    <i class="kt-nav__link-icon flaticon2-send"></i>
+                    <span class="kt-nav__link-text">Messages</span>
+                  </a>
+                </li>
+                <li class="kt-nav__item">
+                  <a href="#" class="kt-nav__link">
+                    <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                    <span class="kt-nav__link-text">Charts</span>
+                  </a>
+                </li>
+                <li class="kt-nav__item">
+                  <a href="#" class="kt-nav__link">
+                    <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                    <span class="kt-nav__link-text">Members</span>
+                  </a>
+                </li>
+                <li class="kt-nav__item">
+                  <a href="#" class="kt-nav__link">
+                    <i class="kt-nav__link-icon flaticon2-settings"></i>
+                    <span class="kt-nav__link-text">Settings</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div> -->
+          </div>
+          <div class="kt-widget2__item kt-widget2__item--warning"
+          >
+
+          <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+            >
+            <a class="kt-widget2__username">
+              Priority
+              <!-- <span style="font-size: 10px;"
+                [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+              </span> -->
+            </a>
+            <!-- <a class="kt-widget2__username">
+              {{item.priority}}
+
+            </a> -->
+            <a class=" kt-widget2__title">
+              {{tasktobeUpdated && tasktobeUpdated.priority}}
+
+            </a>
+
+
+          </div>
+
+
+      </div>
+        <div class="kt-widget2__item kt-widget2__item--brand"
+        >
+
+        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+          >
+          <a class="kt-widget2__username">
+           Due Date
+
+          </a>
+          <a class="kt-widget2__title">
+            {{tasktobeUpdated && tasktobeUpdated.due_date|date :  "dd/MM/y"}}
+
+          </a>
+
+
+
+        </div>
+
+        <div class="kt-widget2__actions">
+          <!-- <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+            (click)="taskDelete(item.id)"><i class="la la-trash"></i></a> -->
+        </div>
+        <!-- <div class="kt-widget2__actions">
+        <a href="#" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+          <i class="flaticon-more-1"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right">
+          <ul class="kt-nav">
+            <li class="kt-nav__item">
+              <a href="#" class="kt-nav__link">
+                <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+                <span class="kt-nav__link-text">Reports</span>
+              </a>
+            </li>
+            <li class="kt-nav__item">
+              <a href="#" class="kt-nav__link">
+                <i class="kt-nav__link-icon flaticon2-send"></i>
+                <span class="kt-nav__link-text">Messages</span>
+              </a>
+            </li>
+            <li class="kt-nav__item">
+              <a href="#" class="kt-nav__link">
+                <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+                <span class="kt-nav__link-text">Charts</span>
+              </a>
+            </li>
+            <li class="kt-nav__item">
+              <a href="#" class="kt-nav__link">
+                <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                <span class="kt-nav__link-text">Members</span>
+              </a>
+            </li>
+            <li class="kt-nav__item">
+              <a href="#" class="kt-nav__link">
+                <i class="kt-nav__link-icon flaticon2-settings"></i>
+                <span class="kt-nav__link-text">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+      </div>
+
+
+
+        </div>
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+            <!-- <div class="form-group row " style="margin-top:5px;">
+              <div class="col-lg-12 col-sm-12" style="color: grey;">
+
+                <label>Task Name: </label>
+                <input class="form-control" placeholder="Enter Location"
+                  [value]='tasktobeUpdated && tasktobeUpdated.task_name' readonly>
+
+
+
+              </div>
+            </div>
+            <div class="form-group row " style="margin-top:5px;">
+              <div class="col-lg-12 col-sm-12" style="color: grey;">
+
+                <label>Priority: </label>
+                <input class="form-control" placeholder="Priority"
+                  [value]='tasktobeUpdated && tasktobeUpdated.priority' readonly>
+
+
+
+              </div>
+            </div>
+            <div class="form-group row " style="margin-top:5px;">
+              <div class="col-lg-12 col-sm-12" style="color: grey;">
+
+                <label>Due Date: </label>
+                <input class="form-control" placeholder="Due Date"
+                  [value]='tasktobeUpdated && tasktobeUpdated.due_date|date :  "dd/MM/y"' readonly>
+
+
+
+              </div>
+            </div> -->
+
+
+            <div class="form-group row " style="margin-top:5px;">
+              <div class="col-lg-12 col-sm-12">
+
+                <label style="color: grey;">Status</label>
+                <select2 [data]="taskStatusData" [options]="activityOptions" [value]="taskStatus"
+                  (valueChanged)="changedStatus($event)"></select2>
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+
+      </div>
+      <div class="kt-align-right modal-footer bottomBtn">
+
+        <button type="Submit" class="button button-fill button-rose"
+          (click)="onTaskStatusSubmit()">Submit</button>
+
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+  padding: 7px 14px;font-size: 11px;
+  margin-top: -1px;" (click)="OnCloseStatusModal()">CANCEL
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="notification_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content notifyModal">
+          <div class="modal-header" style="padding: 8px 15px;">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Approve Checkin</h5>
+                <button type="button" class="close" #notifyCloseBtn  (click)="OnNotifyClose()" aria-label="Close">
+                </button>
+          </div>
+          <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;background: #f1f0ee;padding-top: 25px;">
+            <div class="kt-demo-panel__body ">
+              <div class="kt-demo-panel__item mapModel">
+                <div class="col-lg-12 col-sm-12" >
+                  <div style="background: white; padding: 14px;">
+                    <!-- <span class="" style="border-radius: 10px; border-color: #ffdca7; background-color: #dfdcd8; color: #e1731b; padding: 8px 10px;">
+
+                    </span> -->
+                    <div style="margin-bottom: 10px;  padding-bottom: 5px; border-bottom: 1px solid #e1dddd;"><span style="text-transform: capitalize;">{{appliedFor}}</span> has applied to overwrite
+                      <!-- <div style="background-color: #FEDF88;margin-left: 5px; margin-top: 4px;" class="leave-circle">
+                      </div> -->
+                     checkin time at {{checkinType=='WFH'?(checkinType):''}}  <div
+                     style="display: flex;background-color: rgba(44,119,244,.1);margin-top: 6px;">
+                     <div style="
+                                         color: #2c77f4;padding: 6px 12px;font-weight: bold;
+                                         font-size: 12px;
+                                          "> {{checkinPlace}}</div>
+                   </div>
+                   <div class="time" style="
+    display: flex;    padding-left: 12px;
+    padding-bottom: 6px;background-color: rgba(44,119,244,.1);
+"><div style="/* width: 138px; */display: flex;"><div style="/* width:70px */"><span style="margin-right: 4px;"><i aria-hidden="true" class="fa fa-clock-o"></i></span>{{approveStartTime|date:'hh:mm a'}}</div><div style="/* width:70px */"><!----><span class="ng-star-inserted"><span style="margin-left:5px;margin-right:5px;">-</span> {{approveEndTime|date:'hh:mm a'}}</span></div></div><div style="
+                       margin-left:2px;
+                       margin-left: 6px;
+                       text-transform: uppercase;
+                       font-size: 10px;
+                       color: gray;
+                       margin-top: 3px;
+                       ">(Checkin<span class="ng-star-inserted"><span style="margin-left:2px;margin-right:2px;">-</span> Checkout</span>)</div></div>
+                  </div>
+
+                    <a class="kt-widget2__username">
+                      <span class="semi-bold" style="font-weight: bold;" >{{approveStartTime}}</span>&nbsp;-&nbsp;<span class="semi-bold" style="font-weight: bold;">{{approveEndTime}}</span>
+                        <span class="separator-circle text-muted-light"></span>
+                        <div style="padding: 5px 0px;">
+                          <span>Total : {{total_hrs}} hrs </span>
+                        </div>
+                        <p class="text-small" style="margin-top: 4px;">
+                          <span class="text-muted"> Applied on </span>
+                       {{appliedOn}}
+                            <!-- {{ leav.ondate_applied |date :  "d MMM, y"}} -->
+                        </p>
+                        <p class="text-small" style="margin-top: 4px;">
+                          <span class="text-muted"> Applied by </span>
+                       {{appliedBy}}
+                            <!-- {{ leav.ondate_applied |date :  "d MMM, y"}} -->
+                        </p>
+                     </a>
+
+                     <a class="kt-widget2__username" >
+                           <label for="exampleTextarea" >Reason</label>
+
+                      <div class="leave-comment pending-comment mt20" style="background-color: #f8f9fa;border: 1px solid #dfdfdf;padding: 20px;">
+                        {{reason_id=='Other'?reason_desc:reason_id}}
+                      </div>
+                     </a>
+                     <div class="kt-widget2__username" style="margin-top: 5px;" >
+                      <label for="exampleTextarea" >Approvers</label>
+
+                 <div class="leave-comment pending-comment mt20" style="background-color: #f8f9fa;border: 1px solid #dfdfdf;padding: 20px;display: flex;">
+
+                   <div class="" style="text-align: left;
+                   font-size: 10px;
+                   font-weight: 800;">
+                     <span    style="padding: 8px 15px; border-color: #ffdca7;
+                    background-color: #fff0f0;
+    color: #fa4343;cursor: pointer;" class="">{{approver1_empid}}</span>
+
+                   </div>
+                   <div *ngIf='approver2_empid!=null' class="" style="text-align: left;margin-left: 15px;
+                   font-size: 10px;
+                   font-weight: 800;">
+                     <span    style="padding: 8px 15px; border-color: #ffdca7;
+                    background-color: #fff0f0;
+    color: #fa4343;cursor: pointer;" class="">{{approver2_empid}}</span>
+
+                   </div>
+                 </div>
+                </div>
+
+                     <form  [formGroup]="approverForm">
+                      <a class="kt-widget2__username">
+                       <div class="form-group row" style="margin-top: 14px;">
+                         <div class="col-lg-12 col-xl-12">
+                           <label for="exampleTextarea" >Comments</label>
+                             <textarea class="form-control" id="exampleTextarea" rows="3" formControlName="desc" (keyup)="commentsEntry($event)" ></textarea>
+                         </div>
+                         <div *ngIf="(declineformSubmitted && commentsValue )">
+                           <label class="e-error" for="date" id="OrderID-info" >*Comments is required</label>
+                           </div>
+                       </div>
+                      </a>
+
+                     </form>
+  <div style="padding: 30px 0px;" *ngIf='showApproveBtn'>
+                     <button type="button" *ngIf="leaveStatusName!='Approved'"
+                        (click)="approveNotification()"
+                        class="button button-fill button-rose" style="width: 100px !important;margin-right: 10px;" aria-haspopup="true" aria-expanded="false">
+                        <i class="flaticon2-plus"></i> Approve
+                     </button>
+                     <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px; margin-top: -1px;"
+                     *ngIf="leaveStatusName!='Declined'" (click)="declineNotification()">
+                     {{leaveStatusName!='Approved'?'Decline':'Cancel'}}
+                  </button>
+                     </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="kt-align-right modal-footer bottomBtn">
+            <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="OnNotifyClose()">
+                CLOSE
+            </button>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div  class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"  *ngIf="!viewDashboard">
+  <div class="kt-portlet kt-portlet--mobile">
+    <div class="row">
+      <div class="col col-xl-12 col-lg-12">
+  <div >
+          <app-not-found></app-not-found>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+  <!-- end:: Content -->

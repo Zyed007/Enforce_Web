@@ -1,0 +1,138 @@
+.teamDiv{
+  text-align: end;
+}
+
+.btnColorAll{
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.padreq{
+  padding: 5px 6px !important;
+}
+
+.saveDiv{
+  padding: 20px 20px 0px;
+  margin-top: 35px;
+  border-top: 1px solid #dddede;
+}
+
+.btnScc{
+  display: inline-flex;
+ }
+
+ .marTopnew{
+  margin-top: 5px;
+}
+
+.pad2515{
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+  background: #fff;
+  padding: 25px 15px;
+}
+
+.teamMemberTxt{
+  color: #333c43;
+  font-size: 1.625rem;
+  font-family: Source Sans Pro,sans-serif;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.btnColorAll{
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btnScc{
+  display: inline-flex;
+ }
+
+ .marTopnew{
+  margin-top: 5px;
+}
+
+.CardRow{
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  padding: 20px;
+}
+
+.details{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 15px 15px 25px;
+  border-radius: 5px;
+}
+
+.overtime{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 15px 15px 25px;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.linebottom{
+  border-bottom: 1px solid #d7d2d2;
+  padding-bottom: 5px;
+  font-weight: 500;
+}
+
+//rounded checkbox
+.round-checkboxes {
+  display: inline-block;
+  height: 34px;
+  width: 34px;
+  position: relative;
+  margin-right: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.round-checkboxes input[type=checkbox] {
+  visibility: hidden;
+}
+input[type=checkbox][disabled], input[type=radio].disabled, input[type=radio][disabled] {
+  cursor: not-allowed;
+}
+.round-checkboxes label {
+  background-color: #fff;
+  border: 1px solid #cfd2d5;
+  border-radius: 50%;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: 0;
+  color: #9a9a9a;
+}
+.round-checkboxes label, .round-checkboxes label:after {
+  height: 35px;
+  width: 35px;
+  line-height: 32px;
+  text-align: center;
+  font-weight: 600;
+}
+.round-checkboxes input[type=checkbox]:checked+label {
+  background-color: #404952;
+  border-color: #0c0e10;
+  color: #fff;
+  font-weight: 600;
+}
+.round-checkboxes input[type=checkbox]:disabled+label {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.marTop{
+  margin-top: 30px;
+}
+
+.helpsign{
+  font-size: 13px;
+  margin-left: 5px;
+}
+
+

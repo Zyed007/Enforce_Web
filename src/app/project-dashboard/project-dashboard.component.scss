@@ -1,0 +1,162 @@
+* {
+    -webkit-transition: margin-left 0.2s ease-in-out;
+    -moz-transition: margin-left 0.2s ease-in-out;
+    -ms-transition: margin-left 0.2s ease-in-out;
+    -o-transition: margin-left 0.2s ease-in-out;
+    transition: margin-left 0.2s ease-in-out;
+}
+.intl-tel-input {
+    display: block !important;
+    width: 100% !important;
+}
+.intl-tel-input .country-list {
+
+    width: 480px;
+}
+* {
+    -webkit-transition: margin-left 0.2s ease-in-out;
+    -moz-transition: margin-left 0.2s ease-in-out;
+    -ms-transition: margin-left 0.2s ease-in-out;
+    -o-transition: margin-left 0.2s ease-in-out;
+    transition: margin-left 0.2s ease-in-out;
+}
+.project-content {
+        //height: 80vh;
+    // background: url('/assets/images/harli-marten-n7a2OJDSZns-unsplash.jpg');
+    background-color: #f0f0f0;
+
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    //background:url('/assets/images/form-wizard-bg.jpg');
+    background-repeat: no-repeat;
+     background-size: cover;
+//margin-left: 235px;
+   //  position: relative;
+//overflow-x: hidden;
+    //  position: relative !important;
+
+
+}
+
+.requiredField{
+    color: red;
+}
+.e-sidebar.e-left.e-transition.e-close, .e-sidebar.e-right.e-transition.e-close{
+    .project-content{
+        margin-left: 0px !important;
+
+       }
+}
+.e-sidebar.e-left.e-close{
+    .project-content{
+        margin-left: 0px !important;
+
+       }
+}
+.dock-menu .e-control .e-sidebar .e-lib .e-left .e-transition .e-close .e-push{
+    .project-content{
+     margin-left: 0px !important;
+
+    }
+}
+.main-container {
+ margin-top: 56px;
+margin-left: 235px;
+    min-height: 592px;
+    padding: 15px;
+    -ms-overflow-x: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    // overflow: hidden;
+    font-family: Poppins;
+
+    color: #f8f8f8;
+    // background: url('/assets/images/harli-marten-n7a2OJDSZns-unsplash.jpg');
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    background-color: #d3d3d3;
+    //background:url('/assets/images/form-wizard-bg.jpg');
+    background-repeat: no-repeat;
+     background-size: cover;
+
+}
+.collapsed {
+    margin-left: 60px;
+}
+
+.modal-open {
+  #main-text  .content .e-content-animation {
+transform: none !important;
+ margin-left: 236px !important;
+transition: none !important;
+    }
+
+  }
+  .modal-open {
+    .content{
+transform: none !important ;
+ margin-left: 236px !important ;
+transition: none !important;
+    }
+
+  }
+  .toast-top-center {
+    top: 12px;
+    left: 50% !important;
+    margin-left: -150px !important;
+  }
+  @media all and (max-width: 240px) {
+    .toast-top-center {
+        margin-left: -54px !important;
+    }
+  }
+  @media all and (min-width: 241px) and (max-width: 320px) {
+    .toast-top-center {
+        margin-left: -64px !important;
+    }
+  }
+  @media all and (min-width: 321px) and (max-width: 480px) {
+    .toast-top-center {
+        margin-left: -96px !important;
+    }
+  }
+@media screen and (max-width: 992px) {
+    .main-container,.main-content,    .project-content
+        {
+        margin-left: 0px !important;
+    }
+
+}
+@media screen  and (max-width: 414px  ){
+   .main-content {
+    //  height: 82vh;
+
+        position: relative;
+
+    }
+    .modal-open {
+        .content{
+    margin-left: 0px !important;
+        }
+  }
+}
+
+
+@media all and (max-width: 360px){
+
+    .main-container,.main-content,    .project-content        {
+      padding:0px !important;
+     padding-right:14px !important;
+    }
+  //   #reset {
+  //     margin-top: 6.31px;
+  //   }
+  }
+@media print {
+    .main-container,.main-content,.project-content {
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+    }
+}
+

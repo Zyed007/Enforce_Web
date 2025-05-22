@@ -1,0 +1,508 @@
+<!-- begin:: Subheader -->
+ <!-- <link rel="stylesheet" type="text/css" href="../../../assets/modaljs/default.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />  -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+  <!--begin::Fonts -->
+  <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+              Task Hours                         </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                          Hours                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Hours                    </a>
+                                            <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+                              Edit Hours                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+
+       
+    </div>
+</div>
+<!-- end:: Subheader -->
+<!-- <button class="md-trigger" data-modal="modal123">Newspaper</button> -->
+
+<div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <!-- begin:: Subheader -->
+        <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+            <div class="kt-container  kt-container--fluid ">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        
+                       Tasks                           </h3>
+        
+                                    <span class="kt-subheader__separator kt-hidden"></span>
+                       
+                            </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                                          
+                        
+                      
+                    </div>
+                </div>
+            </div>
+        </div> 
+      end:: Subheader -->
+     <div class="kt-portlet kt-portlet--mobile">
+ <div class="row">
+     <div class="col col-xl-12 col-lg-12">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
+               
+                <h3 class="kt-portlet__head-title">
+                  Task Hrs
+                </h3>
+            </div>
+     
+
+
+    <div class="kt-portlet__head-toolbar">
+        <div class="kt-portlet__head-wrapper">
+<div class="kt-portlet__head-actions">
+    <div class="dropdown dropdown-inline">
+        <!-- <button type="button" class="button button-fill button-rose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="la la-download"></i> Export  	
+        </button> -->
+        <div class="dropdown-menu dropdown-menu-right" style="">
+            <ul class="kt-nav">
+              
+                <li class="kt-nav__item">
+                    <a (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Hifza'}})" class="kt-nav__link">
+                        <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                        <span class="kt-nav__link-text">Excel</span>
+                    </a>
+                </li>
+                <li class="kt-nav__item">
+                    <a (click)="exporter.exportTable('json')" class="kt-nav__link">
+                        <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                        <span class="kt-nav__link-text">PDF</span>
+                    </a>
+                </li>
+                <li class="kt-nav__item">
+                    <a (click)="exporter.exportTable('csv')" class="kt-nav__link">
+                        <i class="kt-nav__link-icon la la-file-text-o"></i>
+                        <span class="kt-nav__link-text">CSV</span>
+                    </a>
+                </li>
+                <li class="kt-nav__item">
+                    <a (click)="exporter.exportTable('txt')" class="kt-nav__link">
+                        <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                        <span class="kt-nav__link-text">TXT</span>
+                    </a>
+                </li>
+                <li class="kt-nav__item">
+                    <a (click)="exporter.exportTable('json')" class="kt-nav__link">
+                        <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                        <span class="kt-nav__link-text">JSON</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    &nbsp;
+    <button type="button" class="button button-fill button-rose"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+            <i class="flaticon2-plus" ></i> Add New  	
+        </button>
+        <button type="button" style="margin-left: 15px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+
+</div>	
+</div>		</div>
+        </div>
+         
+
+         <div class="kt-portlet__body "  style=" border-bottom-color: #f0f3ff;
+            color: #595d6e;" >
+                      <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+                          <div class="row">
+                              <div class="col-sm-12 col-md-6">
+                                  <div class="dataTables_length" id="kt_table_1_length">
+                                    
+                                      </div></div>
+                                    
+
+                                      <!-- <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"><label>Search: <mat-form-field>
+                                              <input matInput [(ngModel)]="searchField" class="form-control" (keyup)="applyFilter($event.target.value)"  >
+                                              <i class="fa fa-close closeBtnIcon"  (click)="clearSearchField()" *ngIf="searchField" ></i>
+                                            </mat-form-field > </label></div></div> -->
+                                  </div>
+
+                        
+             <!-- <div class="row">
+              <div class="col-sm-12 col-md-6">
+                  <div class="dataTables_length" id="kt_table_1_length">
+                    
+                      </div></div>
+                      <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"> 
+                        <mat-form-field><label>Search:<input type="search" matInput class="form-control form-control-sm" placeholder="" aria-controls="kt_table_1"></label></mat-form-field>
+                        
+                      </div></div>
+                  </div> -->
+                <!--begin: Datatable -->
+                 <!-- <div class="kt-datatable" id="local_data"></div> -->
+                <!--end: Datatable -->
+                <ejs-grid #grid [dataSource]='dataSource' height="315px" [searchSettings]='searchOptions'  allowPaging='true' allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                [allowExcelExport]='true' [allowPdfExport]='true'  [pageSettings]='pageSettings' >
+                  <e-columns>
+                        
+                         
+                    <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+                          
+                    <e-column field='design_name' headerText='Design' textAlign='' width=120>
+                        <ng-template #template let-data>
+                          
+                            <div>{{data.design_name}}</div>
+                    </ng-template>
+                      </e-column>
+                      <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+
+                      
+
+                     
+
+                    
+                  
+                      
+                      <!-- <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column> -->
+                      <e-column type='' textAlign='' headerText='Action'  width='90'>
+                          <ng-template #template let-data>
+                            <!-- <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> -->
+                            <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskEdit(data.id)"> <i class="la la-edit"></i> </a>
+                         
+                            <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="taskDelete(data.id)"><i class="la la-trash"></i>						</a>
+                    
+                          </ng-template>
+                      </e-column>
+                      <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                  </e-columns>
+                  </ejs-grid>
+               
+              
+
+                      <!-- <mat-paginator [pageSize]="5" [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator> -->
+                     
+                      </div>
+
+            </div>
+         <!-- <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+           
+             
+                  <div class="" style=" box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
+                  padding-left: 26px;margin-top: -1rem;
+                 ">
+                    
+                      <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;
+                      margin-bottom: 0px;"> 
+                          <li class="nav-item status">
+                              <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                                             Total
+                                            <div style="text-align: center">4</div>
+                                            </a>
+                             
+                          </li>
+                          <li class="nav-item status" >
+                              <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                                                     Completed
+                                                     <div style="text-align: center">3</div>
+                                                    </a>
+                            
+
+                          </li>
+                          <li class="nav-item status">
+                              <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                                               Open
+                                               <div style="text-align: center">1</div>
+                                            </a>
+                         
+
+                          </li>
+                      
+                        
+                         
+                      </ul>
+                  </div>
+             
+             
+            </div>
+          </div> -->
+ </div>
+ 
+ </div>
+</div>
+ 
+ 
+</div>
+
+<div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+               
+
+    
+             <div class="row">
+                <div class="col-lg-12">
+                  <!--begin::Portlet-->
+                  <div class="kt-portlet">
+                      <div class="kt-portlet__head kt-portlet__head--lg">
+                          <div class="kt-portlet__head-label">
+                             
+                              <h3 class="kt-portlet__head-title">
+                                Task Hours
+                              </h3>
+                          </div>
+                          <div class="kt-portlet__head-toolbar">
+                              <div class="kt-portlet__head-wrapper">
+                      <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                          <i class="la la-long-arrow-left"></i>
+                          Back
+                      </a> -->
+                      &nbsp;
+                      <div class="dropdown dropdown-inline">
+                          
+                    <!-- <button type="button"  (click)='TaskView()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+        <button type="button" style="margin-left: 15px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+                       
+                      </div>
+                  </div>		</div>
+                      </div>
+                   
+                    <!--begin::Form-->
+                    
+                    <form class="kt-form kt-form--label-right" [formGroup]="taskForm">
+                      <div class="kt-portlet__body">
+                       
+                        <div class="form-group row">
+                          <label class="col-xl-3 col-lg-3 col-form-label">Milestone</label>
+                          <div class="col-lg-4 col-xl-4">
+                            <select2 [data]="milestoneData"   [options]="taskOptions" [value]='milestoneTaskValue' (valueChanged)="changedMilestone($event)"  ></select2>
+                            <!-- <div *ngIf="isFieldValid('taskName')" class="error-msg">Required.</div>  -->
+<div *ngIf='(submitClicked || staticBtnClick) && milestoneValue==""' style="color: red;">Required</div>
+                          </div>
+                      </div>
+                      <div class="form-group row" >
+                        <label class="col-xl-3 col-lg-3 col-form-label">Range</label>
+                        <div class="col-lg-4 col-xl-4">
+                      <form [formGroup]="dateRangeForm"  style=" 
+      background: #fafafa;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 5px 10px;
+      ">
+        <div class="" >
+            <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+            <ejs-daterangepicker format='dd/MM/yyyy' [max]="maxRangeDate" placeholder='Range' formControlName="daterangAvgTime" >
+                <e-presets>
+                    <!-- <e-preset label="This Week" [start]='weekEnd' [end]='weekStart'></e-preset> -->
+                <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+
+                    <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                    <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                    <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                </e-presets>
+            </ejs-daterangepicker>
+        <!-- </div> -->
+    </div>
+        </form>
+        </div>
+        <div class="col-lg-4" style="margin-top:6px;" >
+        
+          <button type="submit" (click)="updateDaterange()" class="btn btn-success">Update Average Time</button>
+
+          
+        </div>
+        </div>
+     
+                      <form class="kt-form kt-form--label-right" [formGroup]="emailForm" *ngIf='milestoneTaskLength!=0' >
+                        <div class="form-group row" formArrayName="emails">
+                          <label class="col-xl-1 col-lg-1 col-form-label">
+                            </label>
+                          <div class="col-lg-10 col-xl-10 taskTable" style="height: 300px;overflow-y: auto;">
+                            <table>
+                              <tr >
+                                <th>Task</th>
+                                <th>Hours</th>
+                                <th>Average Actual Time  <span  ngbPopover="Actual average time took for completed task"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: 4px;
+                                  margin-left: 5px;" container="body">
+                                    <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                                    color: #fff;
+                                    font-size: 10px;
+                                    "></i>
+                                  </span></th>
+                                  <!-- <th><span style="margin-bottom: 4px;">Hours spent </span>
+                                    <select2 [data]="hoursData"    [options]="taskOptions" (valueChanged)="changedHours($event)"  ></select2>
+
+                                  </th> -->
+                                <th>Rule<span ngbPopover="Times multiplied by no of unit/floors"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                                  margin-left: 5px;" container="body">
+                                    <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                                    color: #fff;
+                                    font-size: 10px;
+                                    "></i>
+                                  </span></th>
+        
+                              </tr>
+                              <tr *ngFor="let email of emailForm.get('emails')['controls']; let i = index"
+                              [formGroupName]="i">
+                              
+                                <td >
+                                  <input type="text" placeholder="email" formControlName="id" style="display: none;">
+        <div style="display: flex;">
+          <input [ngClass]="(email.get('Label').value=='Section' || email.get('Label').value=='Legend')?'width60':'width100'"   type="email" style="border:none;background: none;" class="form-control" readonly  placeholder="Label" formControlName="Label">
+          <span *ngIf="email.get('Label').value=='Section' || email.get('Label').value=='Legend'  " ngbPopover="Per Section 2 Hours.
+          i.e. 1 Unit  = 4 Sides * 2 Hours = 8 Hours"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: 4px;
+          margin-left: 5px;" container="body">
+            <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+            color: #fff;
+            font-size: 10px;
+            "></i>
+          </span>
+        </div>
+                                
+                                </td>
+
+                      
+                                <!-- <td>
+                                  <input type="email" class="form-control" [ngClass]="email.get('UnitType').value=='1'?'bgColor':'bgNone'"   placeholder="Enter No" (keyup)="qtyChange($event,id)"
+                                  formControlName="unit_no">
+                                </td> -->
+                                <td class='e-bold' >
+                                  <!-- <input type="text" placeholder="email" formControlName="is_checkbox" style="display: none;"> -->
+                                  <!-- {{(email.get('is_checkbox').value==true)?'adssd':'asd'}} -->
+                                  <!-- <div *ngIf="email.get('is_checkbox').value==true">
+                                    <label class=" kt-checkbox">
+                                      <input type="checkbox" formControlName="checkbox_value">
+                                      <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                                    </label>
+                                    </div> -->
+                                    <div >
+                                      <input type="email" class="form-control" onkeyup="if(this.value<0){this.value= this.value * -1}"    placeholder="Enter No" (keyup)="qtyChange($event,id)"
+                                  formControlName="unit_no">
+     
+                                      </div>
+                                      <div *ngIf="submitClicked && (email.get('unit_no').value=='' ||email.get('unit_no').value==null)">
+                                        <label class="e-error" for="unit_no" id="OrderID-info" style="display: block;">*Qty is required</label>
+          
+                                        </div>
+                                    <!-- ? <label class=" kt-checkbox">
+                                    <input type="checkbox">
+                                    <span style="margin-left:15px;margin-right: 5px;margin-top: -4px;"></span>
+                                  </label>: <input type="email" class="form-control" (keyup)="nameChange($event)" placeholder="Enter No"
+                                  formControlName="unit_no">}}
+                                   -->
+                                   
+                                </td>
+                                <td >
+        <div style="display: flex;">
+          <input    type="email" style="border:none;background: none;" class="form-control" readonly  placeholder="0" formControlName="avg_time">
+       
+        </div>
+                                
+                                </td>
+                                <td class='e-bold' >
+                                  <ejs-dropdownlist  formControlName="UnitType" [dataSource]='typeOfUnit' [fields]="{text: 'text', value: 'id' }"  popupHeight='300px' floatLabelType='Always'></ejs-dropdownlist>
+
+                                </td>
+                                <!-- <td class='e-bold' style="width:200px" >
+                                  <ejs-multiselect   style="margin-top:6px;" id='multiselectelement' [mode]='box'  #assignee formControlName="designType" (change)="changedEjsAssignee($event)"  [dataSource]='ejsDesignTypeData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect>
+        
+                                
+                                </td> -->
+                                
+                                
+                              </tr>
+                            
+        
+                            </table>
+        
+                          </div>
+                          <!-- <label class="col-xl-2 col-lg-2 col-form-label" >Unit Description</label> -->
+                          
+                        </div>
+                        <!-- <div style="display: flex;justify-content: flex-end;margin-right: 100px;margin-bottom: 5px;">
+                          <button type="button" id='width100' style="width: 100px !important;" class="button button-fill button-rose"  (click)='projCostId!=""?onUpdateCost():onAddSubmit()' aria-haspopup="true" aria-expanded="false">
+                            <i class="flaticon2-plus" ></i> Calculate  	
+                        </button>
+                        </div> -->
+                      </form>
+                
+              
+            
+          
+                        	                
+                            </div>
+                
+                            
+                            <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                          <div class="row">
+                            <div class="col-lg-6">
+                                <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                                <!-- <span *ngIf="AddNewSubmit">
+                                    <button type="submit" class="btn btn-success" style="margin-right:10px;" (click)=" onAddNewSubmit()">Submit & New</button>
+                                </span> -->
+                                <!-- <button type="submit" class="btn btn-success"  (click)="editable ? onEditSubmit() : onAddSubmit()">Update</button> -->
+                                <button type="submit" class="btn btn-success"  (click)="onAddSubmit()">Update</button>
+
+                                <button type="reset" class="btn btn-secondary" (click)='TaskView()' style="margin-left:10px;">Cancel</button>
+                                <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                               
+                              <!-- <button type="reset" class="btn btn-secondary" style="margin-left:5px;">Cancel</button> -->
+                            </div>
+                            <!-- <div class="col-lg-6 kt-align-right">
+                              <button type="reset" class="btn btn-danger">Delete</button>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    
+                      <!-- <div class="container">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="form-group" [formGroup]="form">
+                              <app-datepicker-input 
+                                [formControl]="form.controls['datepicker']"
+                              ></app-datepicker-input>
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+                    </form>
+                
+                   
+                    
+                    
+                
+                  </div>
+                
+                
+                </div>
+                </div>	
+ <!-- end:: Content -->				</div>
+
+ <!-- <div class="md-modal md-effect-1" id="modal123">
+  <div class="md-content">
+    <h3>Modal Dialog</h3>
+    <div>
+      <p>This is a modal window. You can do the following things with it:</p>
+      <ul>
+        <li><strong>Read:</strong> Modal windows will probably tell you something important so don't forget to read what it says.</li>
+        <li><strong>Look:</strong> modal windows enjoy a certain kind of attention; just look at it and appreciate its presence.</li>
+        <li><strong>Close:</strong> click on the button below to close the modal.</li>
+      </ul>
+      <button class="md-close">Close me!</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="md-overlay"></div>              -->

@@ -1,0 +1,822 @@
+<!-- begin:: Subheader -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+               Set Up                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                            Team                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Team                    </a>
+                                            <span *ngIf="editable  && !showDeptList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showDeptList" class="kt-subheader__breadcrumbs-link">
+                              Edit Team                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+       
+    </div>
+</div>
+<!-- end:: Subheader -->
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+											
+    <!-- begin:: Subheader -->
+    
+    <!-- end:: Subheader -->
+                        
+                        <!-- begin:: Content -->
+        <div *ngIf="showDeptList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+    <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <!-- <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-line-chart"></i>
+                        </span> -->
+                        <h3 class="kt-portlet__head-title">
+                                Teams 
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                        <div class="dropdown dropdown-inline">
+                            <!-- <button type="button" class="button button-fill button-rose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i> Export  	
+                            </button> -->
+                            <div class="dropdown-menu dropdown-menu-right" style="">
+                                <ul class="kt-nav">
+                                  
+                                    <li class="kt-nav__item">
+                                        <a (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Hifza'}})" class="kt-nav__link">
+                                            <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                                            <span class="kt-nav__link-text">Excel</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-nav__item">
+                                            <a (click)="exporter.exportTable('json')" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                                                <span class="kt-nav__link-text">PDF</span>
+                                            </a>
+                                        </li>
+                                    <!-- <li class="kt-nav__item">
+                                        <a (click)="exporter.exportTable('csv')" class="kt-nav__link">
+                                            <i class="kt-nav__link-icon la la-file-text-o"></i>
+                                            <span class="kt-nav__link-text">CSV</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-nav__item">
+                                        <a (click)="exporter.exportTable('txt')" class="kt-nav__link">
+                                            <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                                            <span class="kt-nav__link-text">TXT</span>
+                                        </a>
+                                    </li> -->
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="dropdown dropdown-inline">
+                                <button  *ngIf="showAddBtn" type="button" class="button button-fill button-rose"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon2-plus" ></i> Add New  	
+                                    </button>
+<button type="button"  (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;" > <i class="fa fa-angle-left"></i> Back	</button>
+                      
+                        </div>
+                    </div>	
+                    </div>		</div>
+               
+                </div>
+           
+    
+        <!-- <div class="kt-portlet__body">
+            <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
+        <div class="row align-items-center">
+            <div class="col-xl-8 order-2 order-xl-1">
+                <div class="row align-items-center">				
+                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                        <div class="kt-input-icon kt-input-icon--left">
+                            <input type="text" class="form-control" placeholder="Search..." id="generalSearch">
+                            <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                <span><i class="la la-search"></i></span>
+                            </span>
+                        </div>
+                    </div>
+                                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                        <div class="kt-form__group kt-form__group--inline">
+                            <div class="kt-form__label">
+                                <label>Status:</label>
+                            </div>
+                            <div class="kt-form__control" style="
+                            border: 1px solid #ced4da;    border-radius: 0.25rem;
+                        ">
+                                <select class="form-control bootstrap-select" id="kt_form_status">
+                                    <option value="">All</option>
+                                    <option value="1">Pending</option>
+                                    <option value="2">Delivered</option>
+                                    <option value="3">Canceled</option>
+                                    <option value="4">Success</option>
+                                    <option value="5">Info</option>
+                                    <option value="6">Danger</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                        <div class="kt-form__group kt-form__group--inline">
+                            <div class="kt-form__label">
+                                <label>Type:</label>
+                            </div>
+                            <div class="kt-form__control" style="
+                            border: 1px solid #ced4da;    border-radius: 0.25rem;
+                        ">
+                                <select class="form-control bootstrap-select" id="kt_form_type">
+                                    <option value="">All</option>
+                                    <option value="1">Online</option>
+                                    <option value="2">Retail</option>
+                                    <option value="3">Direct</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                                </div>
+            </div>
+            <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                <a href="#" class="btn btn-default kt-hidden">
+                    <i class="la la-cart-plus"></i> New Order
+                </a>
+                <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"></div>
+            </div>
+        </div>
+    </div>		
+        </div> -->
+        <div class="kt-portlet__body "  style=" border-bottom-color: #f0f3ff;
+        color: #595d6e;"  *ngIf="showList">
+       
+            <!--begin: Datatable -->
+             <!-- <div class="kt-datatable" id="local_data"></div> -->
+            <!--end: Datatable -->
+            <!-- <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  </mat-form-field> -->
+                  <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="kt_table_1_length">
+                                      
+                                        </div></div>
+                                      
+<!--   
+                                        <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"><label>Search: <mat-form-field>
+                                                <input matInput [(ngModel)]="searchField" class="form-control" (keyup)="applyFilter($event.target.value)"  >
+                                                <i class="fa fa-close closeBtnIcon"  (click)="clearSearchField()" *ngIf="searchField" ></i>
+                                              </mat-form-field > </label></div></div> -->
+                                    </div>
+
+                  <ejs-grid #grid [dataSource]='dataSource' height="315px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                  [allowExcelExport]='true' [allowPdfExport]='true'  >
+                    <e-columns>
+
+                    <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+                           
+                            
+                      <e-column field='team_name' headerText='Name' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <div>{{data.team_name}}</div>
+                      </ng-template>
+                        </e-column>
+                        <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+  
+                        <e-column field='team_desc' headerText='Description' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                              <span>{{data.team_desc}}</span>
+                               
+                                        
+                      </ng-template>
+                        </e-column>
+                        <e-column field='team_by' headerText='Team Lead' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                              <span style="text-transform: capitalize;" >{{data.team_by}}</span>
+                               <!-- <div style="font-size: 11px;">Customer</div> -->
+                                        
+                      </ng-template>
+                        </e-column>
+
+                       
+  
+                      
+                    
+                        
+                        <!-- <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column> -->
+                        <e-column type='' textAlign='' headerText='Action'  width='90'>
+                            <ng-template #template let-data>
+                              <!-- <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> -->
+                              <a title="Edit details" *ngIf="showEditBtn" class="btn btn-sm btn-clean btn-icon " (click)="teamEdit(data.id)"> <i class="la la-edit"></i> </a>
+                         
+                              <a title="Delete" *ngIf="showDeleteBtn" class="btn btn-sm btn-clean btn-icon " (click)="teamDelete(data.id)"><i class="la la-trash"></i>						</a>
+                            
+                            </ng-template>
+                        </e-column>
+                        <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                    </e-columns>
+                    </ejs-grid>
+                  <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+                </div>
+
+        </div>
+        <div *ngIf="!showList" >
+            <app-not-found></app-not-found>
+          </div>
+
+    </div>
+  </div>
+
+    <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+           
+       
+                        <div class="row">
+                    <div class="col-lg-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                                <div class="kt-portlet__head kt-portlet__head--lg">
+                                        <div class="kt-portlet__head-label">
+                                            
+                                            <h3 class="kt-portlet__head-title">
+                                                Teams
+                                            </h3>
+                                        </div>
+                                        <div class="kt-portlet__head-toolbar">
+                                            <div class="kt-portlet__head-wrapper">
+                                    <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                                        <i class="la la-long-arrow-left"></i>
+                                        Back
+                                    </a> -->
+                                    &nbsp;
+                                    <div class="dropdown dropdown-inline">
+                                        <button type="button" class="button button-fill button-rose"  (click)='DeptView()' aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back	
+                                        </button>
+                
+                                  
+                                    </div>
+                                </div>		</div>
+                                    </div>
+                            <!--begin::Form-->
+                            <form class="kt-form kt-form--label-right" [formGroup]="deptForm" >
+                                <div class="kt-portlet__body">
+
+                                        <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Team Name:</label>
+                                                <div class="col-lg-4 col-xl-4">
+                                            <input type="email" class="form-control" placeholder="Enter name" formControlName="team_name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Description:</label>
+                                                    <div class="col-lg-4 col-xl-4">
+                                                        <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                                                <!-- <input type="email" class="form-control" placeholder="Enter name" formControlName="team_name"> -->
+                                                    </div>
+                                                </div>
+                                    <!-- <div class="form-group row">
+                     
+                                            <div class="col-lg-5">
+                                                <label for="exampleTextarea">Description:</label>
+                                                <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                                              </div>
+                                          </div>	  -->
+                                          <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Team Department:</label>
+                                                <div class="col-lg-4 col-xl-4">
+                                            <select2 [data]="deptData" [value]="deptValue"  [options]="deptOptions" (valueChanged)="changedDept($event)"  ></select2>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Team Lead:</label>
+                                                    <div class="col-lg-4 col-xl-4">
+                                                <select2 [data]="teamLeadData" [value]="teamLeadValue"  [options]="deptOptions" (valueChanged)="changedLead($event)"  ></select2>
+    
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                       
+                                                         <label class="col-3 col-form-label">Team Members based on</label>
+                                                         <div class="col-9">
+                                                                <div class="kt-checkbox-inline" style="display: flex;">
+                                                                        <div style="display: flex;">
+                                                                                <div style="color: grey;margin-right:5px; ">Departments</div>
+                                                                                <div >
+                                                                                    <label class="switch" >
+                                                                                        <!-- <input type="checkbox"    (change)="checkIsDept()" > -->
+
+                                                                                        <input type="checkbox"  id='toggleDeptCheck'  name="chec"  (change)="checkIsDept(isChecked?'A':'B')" >
+
+                                                                                        <span>
+                                                                                           
+                                                                                        </span>
+                                                                                    </label>
+                                        
+                                                                                </div>
+                    
+                                    
+                                                                             
+                                                                             </div>
+
+                                                                             <div style="color: grey;margin-left: 15px;margin-right:5px; ">Designation</div>
+                                                                             <div>
+                                                                                 <label class="switch" >
+                                                                                     <input type="checkbox"  id='toggleDesgnCheck'  name="chec"   (change)="checkIsDesgn()" >
+                                                                                     <span>
+                                                                                        
+                                                                                     </span>
+                                                                                 </label>
+                                     
+                                                                             </div>
+                                                                   
+                                                                </div>
+
+
+                                                              
+                                                            </div>
+                                                            <label class="col-3 col-form-label"></label>
+                                                            <div class="col-9">
+                                                                    <div class="kt-checkbox-inline" style="display: flex;">
+                                                                            <div style="display: flex;">
+                                                                                    <div style="color: grey;margin-right:20px; ">Freelancer</div>
+                                                                                    <div >
+                                                                                        <label class="switch" >
+                                                                                            <!-- <input type="checkbox"    (change)="checkIsDept()" > -->
+    
+                                                                                            <input type="checkbox"  id='toggleFreeLanCheck'  name="chec"  (change)="checkIsFreeLan(isChecked?'A':'B')" >
+    
+                                                                                            <span>
+                                                                                               
+                                                                                            </span>
+                                                                                        </label>
+                                                                                        
+                                                                                    </div>
+                        
+                                        
+                                                                                 
+                                                                                 </div>
+    
+                                                                                 <div style="color: grey;margin-left: 15px;margin-right:9px; ">Outsourced</div>
+                                                                                 <div>
+                                                                                     <label class="switch" >
+                                                                                         <input type="checkbox"  id='toggleOutSourceCheck'  name="chec"   (change)="checkIsOutsource()" >
+                                                                                         <span>
+                                                                                            
+                                                                                         </span>
+                                                                                     </label>
+                                         
+                                                                                 </div>
+                                                                       
+                                                                    </div>
+    
+    
+                                                                  
+                                                                </div>
+                                                      
+                                                      
+                                                      </div>
+                                                      <div class="form-group row" *ngIf="filterEmpByDept">
+                                          
+                                                                    <label class="col-xl-3 col-lg-3 col-form-label">Department:</label>
+                                                                    <div class="col-lg-4 col-xl-4">
+                                                                <select2 [data]="deptData" [value]="deptEmpValue"  [options]="deptOptions" (valueChanged)="changedEmpDept($event)"  ></select2>
+                    
+                                                                    </div>
+                              
+                                                          </div>
+
+                                                          <div class="form-group row" *ngIf="filterEmpByDesgn">
+                                          
+                                                                <label class="col-xl-3 col-lg-3 col-form-label">Designation:</label>
+                                                                <div class="col-lg-4 col-xl-4">
+                                                            <select2 [data]="desgnData" [value]="desgnEmpValue"  [options]="deptOptions" (valueChanged)="changedEmpDesgn($event)"  ></select2>
+                
+                                                                </div>
+                          
+                                                      </div>
+                                            <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Team Members:</label>
+                                                    <div class="col-lg-4 col-xl-4">
+                                                <select2 [data]="teamData" [value]="teamValue"  [options]="deptOptions" (valueChanged)="changedTeam($event)"  ></select2>
+    
+                                                    </div>
+                                                    <div class="col-lg-3 col-xl-3">
+                                                            <button type="button" class="button button-fill button-rose" style="margin-top:3px;"  (click)='AddTeamMembers(teamValue)' aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="flaticon2-plus" ></i> Add  	
+                                                            </button>
+                                                          
+                                                    </div>
+                                                  
+                                                </div>
+                                                <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label kt-checkbox">
+                                                                <input type="checkbox" [value]="addCurrentUser" (change)="onCheckChange($event)">
+                                                                <span style="margin-left:95%"></span>
+                                                        </label>
+                                                        <div class="col-lg-4 col-xl-4">
+                                                                <div style="margin-top: 2px;">Add me to the Team</div>
+        
+                                                        </div>
+                                                    </div> 
+
+                                                    
+                                                    <div class="kt-portlet__body " *ngIf="teamMembers.length>0"  style=" border-bottom-color: #f0f3ff;
+                                                    color: #595d6e;" >
+                                                   
+                                                        <!--begin: Datatable -->
+                                                         <!-- <div class="kt-datatable" id="local_data"></div> -->
+                                                        <!--end: Datatable -->
+                                                        <!-- <mat-form-field>
+                                                                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                                                              </mat-form-field> -->
+                                                              <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                                                    <div class="row">
+                                                                            <div class="col-sm-12 col-md-6">
+                                                                                <div class="dataTables_length" id="kt_table_1_length">
+                                                                                  
+                                                                                    </div></div>
+                                                                                  
+                                              
+                                                                                    <!-- <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"><label>Search: <mat-form-field>
+                                                                                            <input matInput [(ngModel)]="searchField" class="form-control" (keyup)="applyFilter($event.target.value)"  >
+                                                                                            <i class="fa fa-close closeBtnIcon"  (click)="clearSearchField()" *ngIf="searchField" ></i>
+                                                                                          </mat-form-field > </label></div></div> -->
+                                                                                                            </div>
+
+                                                                                                            <ejs-grid #empgrid [dataSource]='empDataSource' height="315px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort'   (toolbarClick)='toolbarClick($event)'
+                                                                                                               >
+                                                                                                              <e-columns>
+                                                                                          
+                                                                                                              <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+                                                                                                                     
+                                                                                                                      
+                                                                                                                <e-column field='' headerText='Name' textAlign='' width=120>
+                                                                                                                    <ng-template #template let-element>
+                                                                                                                      
+                                                                                                                        <div>{{element.data?element.data.full_name:element.name}}</div>
+                                                                                                                </ng-template>
+                                                                                                                  </e-column>
+                                                                                                                  <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+                                                                                            
+                                                                                                                  <e-column field='' headerText='Department' textAlign='' width=120>
+                                                                                                                    <ng-template #template let-element>
+                                                                                                                      
+                                                                                                                        <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                                                                                                        <span>  {{element.data?element.data.dep_name:element.dep_name}} </span>
+                                                                                                                         
+                                                                                                                                  
+                                                                                                                </ng-template>
+                                                                                                                  </e-column>
+                                                                                                                  <e-column field='' headerText='Designation' textAlign='' width=120>
+                                                                                                                    <ng-template #template let-element>
+                                                                                                                      
+                                                                                                                        <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                                                                                                        <span style="text-transform: capitalize;" > {{element.data?element.data.designation_name:element.designation_name}} </span>
+                                                                                                                         <!-- <div style="font-size: 11px;">Customer</div> -->
+                                                                                                                                  
+                                                                                                                </ng-template>
+                                                                                                                  </e-column>
+                                                                                          
+                                                                                                                 
+                                                                                            
+                                                                                                                
+                                                                                                              
+                                                                                                                  
+                                                                                                                  <!-- <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column> -->
+                                                                                                                  <e-column type='' textAlign='' headerText='Action'  width='90'>
+                                                                                                                      <ng-template #template let-element>
+                                                                                                                        <!-- <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> -->
+                                                                                                                   
+                                                                                                                        <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="empDelete(element.data?element.data.id:element.emp_id)"><i class="la la-trash"></i>						</a>
+                                                                                                                      
+                                                                                                                      </ng-template>
+                                                                                                                  </e-column>
+                                                                                                                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                                                                                                              </e-columns>
+                                                                                                              </ejs-grid>                                                    
+                                                        <!-- <mat-table #emptable [dataSource]="empDataSource" matSort >
+                                                               
+                                                                <ng-container matColumnDef="index">
+                                                                        <mat-header-cell class="status-code" *matHeaderCellDef> No. </mat-header-cell>
+                                                                        <mat-cell class="status-code"  *matCellDef="let element; let j = index"> {{j+1}} </mat-cell>
+                                                                      </ng-container>
+                                                                <ng-container matColumnDef="Action"  >
+                                                            
+                                                                  <mat-header-cell *matHeaderCellDef > Actions </mat-header-cell>
+                                                            
+                                                                  <mat-cell *matCellDef="let element" >
+                                                            
+                                                                     
+                                                                    <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="empDelete(element.data?element.data.id:element.emp_id)"><i class="la la-trash"></i>						</a>
+                                                                  </mat-cell>
+                                                            
+                                                            
+                                                                </ng-container>
+                                                               
+                                                                <ng-container matColumnDef="team_name" >
+                                                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                                                                  <mat-cell *matCellDef="let element"> {{element.data?element.data.full_name:element.name}} </mat-cell>
+                                                                </ng-container>
+                                                            
+                                                               
+                                                                <ng-container matColumnDef="desc" >
+                                                                  <mat-header-cell *matHeaderCellDef mat-sort-header> Department </mat-header-cell>
+                                                                  <mat-cell *matCellDef="let element"> {{element.data?element.data.dep_name:element.dep_name}} </mat-cell>
+                                                                </ng-container>
+                                                              
+                                                                <ng-container matColumnDef="lead_name" >
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header> Designation</mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element"> {{element.data?element.data.designation_name:element.designation_name}} </mat-cell>
+                                                                      </ng-container>
+                                                                     
+                                                                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"  class="mat-paginator-sticky"></mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                                              </mat-table> -->
+                                                            </div>
+                                            
+                                                    </div>
+
+                                                  
+                                        <!-- <div class="form-group row">
+                                                <div class="col-lg-6">
+                                                        <label class="kt-checkbox">
+                                                                <input type="checkbox" [value]="addCurrentUser" (change)="onCheckChange($event)">
+                                                                <div style="margin-top: 2px;">Add me to the Team</div>
+                                                                <span></span>
+                                                              </label>
+
+
+                                                  
+                                                    
+                                                </div>
+                                                
+                                            </div> -->
+                                      
+
+                                        <!-- <div class="form-group row">
+                                                <div class="col-lg-6">
+                                                    <label>Team Lead:</label>
+                                                    <angular2-multiselect [data]="dropdownList" 
+                                                    [settings]="dropdownSettings" 
+                                                    (onSelect)="onItemSelect($event)" 
+                                                    (onDeSelect)="OnItemDeSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)"
+                                                    (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                                                    
+                                                </div>
+                                                
+                                            </div> -->
+                                   
+
+                                                    
+                                </div>
+                                <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <!-- <div class="col-lg-2"></div> -->
+                                            <div class="col-lg-10">
+                                                    <span *ngIf="AddNewSubmit" style="margin-right: 10px;">
+                                                            <button type="submit" class="btn btn-success" (click)=" onAddNewSubmit()">Submit & New</button>
+                                                        </span>
+                                                    <button type="submit" class="btn btn-success" (click)="editable ? onEditSubmit() : onAddSubmit()">Submit</button>
+                                                    <button type="reset" class="btn btn-secondary" (click)="DeptView()" style="margin-left:10px;">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <!--end::Form-->
+                           
+                        </div>
+                        <!--end::Portlet-->
+                
+                        <!--begin::Portlet-->
+                    
+                        <!--end::Portlet-->
+                
+                        <!--begin::Portlet-->
+                          <!-- <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        3 Columns Form Layout
+                                    </h3>
+                                </div>
+                            </div>
+                          <form class="kt-form kt-form--label-right">
+                                <div class="kt-portlet__body">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Full Name:</label>
+                                            <input type="email" class="form-control" placeholder="Enter full name">
+                                            <span class="form-text text-muted">Please enter your full name</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="">Email:</label>
+                                            <input type="email" class="form-control" placeholder="Enter email">
+                                            <span class="form-text text-muted">Please enter your email</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Username:</label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend"><span class="input-group-text"><i class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your username</span>
+                                        </div>
+                                    </div>	  
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label class="">Contact:</label>
+                                            <input type="email" class="form-control" placeholder="Enter contact number">
+                                            <span class="form-text text-muted">Please enter your contact</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="">Fax:</label>
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control" placeholder="Fax number">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-info-circle"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter fax</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Address:</label>
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control" placeholder="Enter your address">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-map-marker"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your address</span>
+                                        </div>
+                                    </div>	  
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label class="">Postcode:</label>
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control" placeholder="Enter your postcode">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-bookmark-o"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your postcode</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="">User Group:</label>
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" checked value="2"> Sales Person
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" value="2"> Customer
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <span class="form-text text-muted">Please select user group</span>
+                                        </div>
+                                    </div>	                
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-lg-8">
+                                                <button type="reset" class="btn btn-primary">Submit</button>
+                                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form> 
+                        
+                        </div>
+                        end::Portlet-->
+                
+                        <!--begin::Portlet-->
+                        <!-- <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        3 Columns Horizontal Form Layout
+                                    </h3>
+                                </div>
+                            </div>
+                        
+                            <form class="kt-form kt-form--label-right">
+                                <div class="kt-portlet__body">
+                                    <div class="form-group row form-group-marginless kt-margin-t-20">
+                                        <label class="col-lg-1 col-form-label">Full Name:</label>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" placeholder="Full name">
+                                            <span class="form-text text-muted">Please enter your full name</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Email:</label>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" placeholder="Email">
+                                            <span class="form-text text-muted">Please enter your email</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Username:</label>
+                                        <div class="col-lg-3">
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend"><span class="input-group-text"><i class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your username</span>
+                                        </div>
+                                    </div>	  
+                
+                                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg kt-separator--portlet-fit"></div>
+                
+                                    <div class="form-group row form-group-marginless">
+                                        <label class="col-lg-1 col-form-label">Contact:</label>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" placeholder="Enter contact number">
+                                            <span class="form-text text-muted">Please enter your contact</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Fax:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Fax number">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-info-circle"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter fax</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Address:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Enter your address">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-map-marker"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your address</span>
+                                        </div>
+                                    </div>	  
+                
+                                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg kt-separator--portlet-fit"></div>
+                
+                                    <div class="form-group row">
+                                        <label class="col-lg-1 col-form-label">Postcode:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Enter your postcode">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-bookmark-o"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your postcode</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">User Group:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" checked value="2"> Sales Person
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" value="2"> Customer
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <span class="form-text text-muted">Please select user group</span>
+                                        </div>
+                                    </div>	               
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-5"></div>
+                                            <div class="col-lg-7">
+                                                <button type="reset" class="btn btn-brand">Submit</button>
+                                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                           
+                        </div> -->
+                        <!--end::Portlet-->
+                    </div>
+                </div>	
+    <!-- end:: Content -->				</div>

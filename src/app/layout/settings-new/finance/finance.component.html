@@ -1,0 +1,23 @@
+<div style="height: 700px;">
+    <div class="row pad2515">
+        <div class="col">
+            <h1 class="labelMainHeader">Finance</h1>
+        </div>
+        <div class="col-6 teamDiv">
+            <input type="text" class="searchBar" placeholder="Search a Payment setting" [(ngModel)]="term">
+            <button class='btn btnColorAll' style="margin-left: 20px;" (click)='cardClick("back")'>
+                <i class="fa fa-chevron-left marTopnew padreq" aria-hidden="true"></i>
+                Back
+            </button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row rowPad">
+            <div class="col-md-4 col-12" *ngFor="let item of settingNames | filter:term">
+                <a class="card1" (click)="cardClick(item.name)" style="color: black">
+                    <h3>{{item.name}}</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

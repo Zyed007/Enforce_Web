@@ -1,0 +1,2033 @@
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+
+            Attendance Management                         </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a href="" class="kt-subheader__breadcrumbs-link">
+                            Attendance                        </a>
+
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+
+    </div>
+</div>
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container--fluid ">
+
+    <div class="kt-subheader__main">
+
+      <div class="caption">
+          <div class="actions">
+            <a class="btn btn-icon-only btn-icon-only btn-default" id="previousday" style="background-color:white ;border:none;">
+              <i class="fas fa-chevron-left" title="Previous Day" (click)="prevday()" style=" color: #3f77f4;" ></i>
+            </a>
+            <a></a>
+            <a [ngClass]="nextDayDisabled?'disabled':'enabled'" class="btn btn-icon-only btn-icon-only btn-default" id="nextday" style="background-color: white;border:none;">
+              <i class="fas fa-chevron-right" title="Next Day" (click)="nextday()" style=" color: #3f77f4;"></i>
+            </a>
+          </div>
+        </div>
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+
+      </div>
+    </div>
+    <div class="kt-subheader__toolbar">
+      <div class="kt-subheader__wrapper">
+
+
+            <div class="" style="display: flex;justify-content:space-between;">
+
+                <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;
+                margin-bottom: 15px;">
+                    <li class="nav-item" (click)="getTodaysData()">
+                        <a class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                                       Today
+                        </a>
+                    </li>
+                    <li class="nav-item" (click)="getWeeksData()">
+                        <a class="nav-link "  [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                                               Week
+                        </a>
+                    </li>
+                    <li class="nav-item" (click)="getMonthsData()">
+                        <a class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                                         Month
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item dasboardRange">
+                        <a class="nav-link"  [ngClass]="{'active': isRangeActive}" data-toggle="tab"  id="defaultrange_modal"  role="tab" aria-selected="false" style="padding-bottom: 5px !important;">
+                            <div style="display: flex;justify-content: start;">
+                              <div >Range</div>
+
+                              <div>
+                                <form [formGroup]="dateRangeForm" id="formId"  style="padding-left:4px; ">
+
+                                      <ejs-daterangepicker placeholder='Range' [max]="maxRangeDate" formControlName="daterange" >
+
+                                      </ejs-daterangepicker>
+
+                                  </form>
+                              </div>
+                            </div>
+
+
+                        </a>
+
+                    </li> -->
+
+
+                </ul>
+            </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >
+
+
+        <!--begin:: Widgets/Personal Income-->
+<div class="kt-portlet kt-portlet--mobile">
+<!-- <div style="height: 20px;"></div> -->
+
+  <div class="kt-portlet__head kt-portlet__head--lg">
+    <div class="kt-portlet__head-label">
+
+        <h3 class="kt-portlet__head-title">
+          Attendance Details
+        </h3>
+    </div>
+    <div class="kt-portlet__head-toolbar">
+        <div class="kt-portlet__head-wrapper">
+  <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+    <i class="la la-long-arrow-left"></i>
+    Back
+  </a> -->
+  &nbsp;
+  <div class="dropdown dropdown-inline">
+    <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+
+    <!-- </button> -->
+    <button type="button" class="button button-fill button-rose"  (click)='toDashboard()' aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back
+</button>
+  </div>
+  </div>		</div>
+  </div>
+
+
+
+
+<div class="kt-portlet__body">
+  <div class="">
+
+    <div class="">
+        <div class="delegationTabs" style="
+        background: #fafafa;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 10px;" >
+            <mat-button-toggle-group #group="matButtonToggleGroup" [value]="selectedGroupVal"
+              [(ngModel)]="locationModel" (change)="onValChange(group.value)" style="width: 100%;">
+              <mat-button-toggle  style="width:100%;"  value="Attendance"><span style="margin-right: 5px;"><i
+            class="fa fa-briefcase red"></i></span> Attendance<span *ngIf="showOvtCountSpinner" >
+              <span class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></span>
+
+          </span> ({{!showOvtCountSpinner ?attendanceCount:''}})</mat-button-toggle>
+              <mat-button-toggle  style="width:100%;"   value="Absent"><span style="margin-right: 5px;"><i
+                    class="fa fa-thumb-tack goldenrod"></i></span> Absent <span *ngIf="showOvtCountSpinner" >
+                      <span class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></span>
+
+                  </span>   ({{!showOvtCountSpinner ?absentCount:''}})</mat-button-toggle>
+              <mat-button-toggle   style="width:100%;"  value="Exception"><span style="margin-right: 5px;"><i
+                    class="fa fa-briefcase red" style=""></i></span> Exception <span *ngIf="showOvtCountSpinner" >
+                      <span class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></span>
+
+                  </span>  ({{!showOvtCountSpinner ? checkinExceptionCount + checkoutExceptionCount + lessHrExceptionCount :'' }})
+              </mat-button-toggle>
+              <mat-button-toggle  style="width:100%;"   value="Overtime"><span style="margin-right: 5px;"><i
+                class="fa fa-briefcase red" style=""></i></span> Overtime <span *ngIf="showOvtCountSpinner" >
+                  <span class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></span>
+
+              </span> ({{!showOvtCountSpinner ? overTimeCount:''}})
+          </mat-button-toggle>
+          <mat-button-toggle  style="width:100%;"   value="Onleave"><span style="margin-right: 5px;"><i
+            class="fa fa-briefcase red" style=""></i></span> Onleave <span *ngIf="showOvtCountSpinner" >
+              <span class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></span>
+
+          </span> ({{!showOvtCountSpinner ? onLeavCount:''}})
+      </mat-button-toggle>
+              <!-- <mat-button-toggle value="Others">Others</mat-button-toggle> -->
+            </mat-button-toggle-group>
+          </div>
+
+
+
+<div  *ngIf="selectedGroupVal=='Attendance'">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >
+      <!-- begin:: Content Head -->
+      <form [formGroup]="dateRangeForm"  style=" display: flex;
+      justify-content: space-between;
+      background: #fafafa;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 5px 10px;
+      ">
+        <div class="" >
+            <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+            <ejs-daterangepicker format='dd/MM/yyyy' [max]="maxRangeDate"  placeholder='Range' formControlName="daterangeAtt" >
+                <e-presets>
+                    <!-- <e-preset label="This Week" [start]='weekStart' [end]='weekEnd'></e-preset> -->
+                    <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+
+                    <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                    <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                    <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                </e-presets>
+            </ejs-daterangepicker>
+
+
+        <!-- </div> -->
+    </div>
+    <div style="display: flex;justify-content: right;">
+      <div style="display: flex;margin-top:5px;margin-right: 5px;">
+        <label class=" kt-checkbox">
+          <input type="checkbox" [checked]="" [disabled]="lastCheckOut" [value]="firstCheckin"  (change)="onFirstCheckInChange($event)">
+          <span  style=""></span>
+  </label>
+  <div class=""  style="color: black;">First checkin</div>
+      </div>
+      <div style="display: flex;margin-top:5px;margin-right: 5px;">
+        <label class=" kt-checkbox">
+          <input type="checkbox" [checked]="" [disabled]="firstCheckin" [value]="lastCheckOut"  (change)="onLastCheckOutChange($event)">
+          <span  style=""></span>
+  </label>
+  <span class=""  style="color: black;">Last checkout</span>
+      </div>
+    </div>
+        </form>
+
+
+          <div class=" "  style=" border-bottom-color: #f0f3ff;
+          color: #595d6e;" >
+
+              <!--begin: Datatable -->
+               <!-- <div class="kt-datatable" id="local_data"></div> -->
+              <!--end: Datatable -->
+              <!-- <mat-form-field>
+                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                    </mat-form-field> -->
+                    <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+
+                    <ejs-grid #attendanceGrid allowTextWrap='true' [dataSource]='dashboardData'  height="345px" [searchSettings]='searchOptions'   allowSorting='true'  [sortSettings]='initialSort' [toolbar]='toolbar' (toolbarClick)='toolbarClick($event)'
+                    [allowExcelExport]='true' [allowPdfExport]='true' (queryCellInfo)='customiseCell($event)' >
+
+
+                        <e-columns>
+
+
+
+                            <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                          <e-column field='ondate' headerText='Date' width=90>
+                            <ng-template #template let-data>
+
+                              <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                              <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                      </ng-template>
+
+                          </e-column>
+
+                          <e-column field='full_name' headerText='Employee Name' width=120>
+                            <ng-template #template let-data>
+
+                              <span>{{data.full_name}}
+                                <span style='color: #764abc;font-size: 11px'>
+                                  {{data.is_wfh==false? ' ('+data.project_category_type+') ':''}}
+                                </span>
+                              </span>
+                              <span *ngIf="data.is_app_check_In === 'True'">- <i class="fa fa-mobile mobiletag" aria-hidden="true"></i></span>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column field='project_or_comp_name' headerText='Project' textAlign='' width=120>
+                            <ng-template #template let-data>
+
+                                <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                <span style="color:blue;" (click)="openActivityDialog(data.modify,data.ondate,data.project_or_comp_id)">{{data.project_or_comp_name}} </span>
+
+
+                        </ng-template>
+                          </e-column>
+
+                          <e-column field='check_in' headerText='Check In' textAlign='' width=90>
+                            <ng-template #template let-data>
+
+                                <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                <!-- <span *ngIf="data.previous_checkin !== null"  >
+                                  {{data.check_in }}
+                                   <span container="body"  ngbTooltip="Override; Original checkin time is {{data.previous_checkin | date:'h:mm a' }}"  style="font-size: 0.8rem;">  ({{ data.previous_checkin | date:'h:mm a'   }})  </span>
+                                </span> -->
+
+                                <div *ngIf="data.previous_checkin !== null" style="display: grid;">
+                                  <span>{{data.check_in}} </span>
+
+                                  <span  *ngIf="data.check_in  !== (data.previous_checkin | date:'hh:mm a')"  container="body" ngbTooltip=" Original checkin time is {{data.previous_checkin | date:'h:mm a' }}" placement="bottom" style="width: 71px;font-size: 0.8rem;">
+                                    ({{ data.previous_checkin | date:'h:mm a'   }})
+                                  </span>
+                                </div>
+
+                                <span *ngIf="data.previous_checkin === null">{{   data.check_in    }}</span>
+
+
+                        </ng-template>
+                          </e-column>
+                          <e-column field='check_out' headerText='Check Out' textAlign='' width=90>
+                            <ng-template #template let-data>
+
+                                <!-- <span *ngIf="data.previous_checkin !== null"  container="body">{{data.check_out}} <span  ngbTooltip="Old checkout time is: {{data.previous_checkout | date:'h:mm a' }}"  *ngIf="data.previous_checkout !== null" style="font-size: 0.8rem;">     ({{ data.previous_checkout | date:'h:mm a' }})  </span>   </span> -->
+                                <span *ngIf="data.previous_checkin  === null && data.previous_checkout  === null">{{data.check_out}}</span>
+
+
+                                <div *ngIf="data.previous_checkin !== null && data.previous_checkout   === null" style="display: grid;">
+                                  <span>{{data.check_out}}</span>
+                                  <span *ngIf="data.check_out === 'NA'" container="body" ngbTooltip="Override; Checkout was not done" placement="bottom" style="font-size: 0.8rem;">(No Checkout)</span>
+                                </div>
+
+                                <span *ngIf="data.previous_checkin !== null && data.previous_checkout   !== null"  >{{data.check_out}}
+
+                                  <span container="body" *ngIf="data.check_out  !== (data.previous_checkout | date:'hh:mm a')"  ngbTooltip="Override; Original checkout time is: {{ data.previous_checkout | date:'h:mm a'  }} "   style="font-size: 0.8rem;">   ({{ data.previous_checkout | date:'h:mm a'  }})  </span>
+                                </span>
+
+                        </ng-template>
+                          </e-column>
+                          <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column>
+                          <!-- <e-column field='leave_status' headerText='Status' width=120></e-column> -->
+
+                          <e-column type='' headerText=''  width='90'>
+                              <ng-template #template let-data>
+                                <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name,data.groupid);setFmtAdrss(data.formatted_address_map_box)">View Location</span>
+
+
+
+                              </ng-template>
+                          </e-column>
+                          <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                      </e-columns>
+                      </ejs-grid>
+                      <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+                  </div>
+
+          </div>
+<!-- end:: Content Head -->
+<!-- begin:: Content -->
+<!-- end:: Content -->				</div>
+
+
+
+
+
+
+
+</div>
+<div  *ngIf="selectedGroupVal=='Absent'">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >
+      <!-- begin:: Content Head -->
+      <form [formGroup]="dateRangeForm"  style=" display: flex;
+      justify-content: space-between;
+      background: #fafafa;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 5px 10px;
+      ">
+        <div class="" >
+            <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+            <ejs-daterangepicker format='dd/MM/yyyy' [max]="maxRangeDate" placeholder='Range' formControlName="daterangeAbs" >
+                <e-presets>
+                    <!-- <e-preset label="This Week" [start]='weekEnd' [end]='weekStart'></e-preset> -->
+                <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+
+                    <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                    <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                    <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                </e-presets>
+            </ejs-daterangepicker>
+        <!-- </div> -->
+    </div>
+        </form>
+
+
+          <div class=" "  style=" border-bottom-color: #f0f3ff;
+          color: #595d6e;" >
+
+              <!--begin: Datatable -->
+               <!-- <div class="kt-datatable" id="local_data"></div> -->
+              <!--end: Datatable -->
+              <!-- <mat-form-field>
+                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                    </mat-form-field> -->
+                    <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+              <!-- <mat-table #table [dataSource]="dataSource" matSort >
+
+
+                      <ng-container matColumnDef="index">
+                              <mat-header-cell class="status-code" *matHeaderCellDef> No. </mat-header-cell>
+                              <mat-cell class="status-code"  *matCellDef="let element; let j = index"> {{j+1}} </mat-cell>
+                            </ng-container>
+                      <ng-container matColumnDef="Action"  >
+
+                        <mat-header-cell *matHeaderCellDef > Actions </mat-header-cell>
+
+                        <mat-cell *matCellDef="let element" >
+
+                          <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(element.department_id)"> <i class="la la-edit"></i> </a>
+
+                          <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(element.department_id)"><i class="la la-trash"></i>						</a>
+                        </mat-cell>
+
+
+                      </ng-container>
+
+
+
+                      <ng-container matColumnDef="dep_name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.dep_name}} </mat-cell>
+                      </ng-container>
+
+
+
+                      <ng-container matColumnDef="alias">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Alias </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.alias}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="workemail">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Work Email</mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.workemail}} </mat-cell>
+                            </ng-container>
+                      <ng-container matColumnDef="lead_name">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Department Lead</mat-header-cell>
+                              <mat-cell *matCellDef="let element"> {{element.lead_name}} </mat-cell>
+                            </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"  class="mat-paginator-sticky"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table> -->
+
+                    <ejs-grid #absentGrid [dataSource]='dashboardAbsentData' allowTextWrap='true' height="315px" [searchSettings]='searchOptions'  allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar' (toolbarClick)='toolbarAbsentClick($event)'
+                    [allowExcelExport]='true' [allowPdfExport]='true' (queryCellInfo)='customiseCell($event)'  >
+                      <e-columns>
+
+
+
+
+
+                            <e-column field='ondate' headerText='Date' width=110>
+                              <ng-template #template let-data>
+
+                                <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                        </ng-template>
+
+                            </e-column>
+
+                          <e-column field='full_name' headerText='Employee Name' width=120 >
+                            <ng-template #template let-data>
+                              <span (click)="openApproverInfo(data.approver1,data.approver2,data.leave_status)">{{data.full_name}}</span>
+
+                      </ng-template>
+                          </e-column>
+                          <e-column field='employee_status_name' headerText='Status' width=100></e-column>
+                          <e-column field='employee_type_name' headerText='Type' width=120></e-column>
+                          <e-column field='dep_name' headerText='Department' width=140></e-column>
+                          <e-column field='designation_name' headerText='Designation' width=140></e-column>
+                          <e-column field='leave_status' headerText='Status' width=120></e-column>
+                          <e-column field='' headerText='Approver1' width=160>
+                            <ng-template #template let-data>
+                              <span  >{{data.approver1}}<span *ngIf='data.approver1!=null' style="margin-left: 5px;">{{data.is_decline1==null?((data.is_approve1==true)?'(Approved)':'(Pending)'):'(Declined)'}}</span></span>
+
+                      </ng-template>
+                          </e-column>
+                          <e-column field='' headerText='Approver2' width=160>
+                            <ng-template #template let-data>
+                              <span *ngIf='data.approver2!=null' >{{data.approver2}}<span style="margin-left: 5px;">{{data.is_decline2==null?((data.is_approve2==true)?'(Approved)':'(Pending)'):'(Declined)'}}</span></span>
+
+                      </ng-template>
+                          </e-column>
+
+
+                          <e-column type=''  textAlign='' headerText='Action'  width='110'>
+                            <ng-template #template let-data>
+                              <span  *ngIf='(data.leave_status!="Checkin Pending") && (data.leave_status!="Leave Pending") &&(data.leave_status!="Checkin Declined")&&(data.leave_status!="Leave Declined")' style="color:blue;cursor: pointer;" (click)='modification(data.ondate,data.id,data.full_name)'>Manage</span>
+                              <!-- <button class="button button-fill button-rose" (click)='modification(data.ondate,data.id,data.full_name)'  aria-expanded="false" aria-haspopup="true" type="button"> MANAGE</button> -->
+                            </ng-template>
+                        </e-column>
+                      </e-columns>
+                      </ejs-grid>
+                      <!-- <ejs-pager #pager [totalRecordsCount]="absentPgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changedAbsentGrid($event)" (click)="clickAbsentGrid($event)"></ejs-pager> -->
+                  </div>
+
+          </div>
+<!-- end:: Content Head -->
+<!-- begin:: Content -->
+<!-- end:: Content -->				</div>
+
+
+
+
+
+
+
+</div>
+<div  *ngIf="selectedGroupVal=='Exception'">
+
+
+
+
+
+
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >
+      <!-- begin:: Content Head -->
+      <div class=" kt-portlet--tabs">
+
+        <!--begin::Portlet-->
+
+
+
+        <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="    background: #fafafa;
+        border: 1px solid rgba(0, 0, 0, 0.12) !important;display: flex;justify-content: center;
+        margin-left: 0px;">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab">
+
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <polygon points="0 0 24 0 24 24 0 24"/>
+          <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+          <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+          </g>
+          </svg>                          Location ({{checkinExceptionCount + checkoutExceptionCount }})
+          </a>
+        </li>
+
+        <li class="nav-item"
+        >
+          <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <polygon points="0 0 24 0 24 24 0 24"/>
+                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+                </g>
+                </svg>
+                              Working Hours ({{lessHrExceptionCount}})
+          </a>
+        </li>
+
+
+        </ul>
+          <!--begin::Form-->
+
+          <div class="tab-content" style="padding:0px !important">
+            <div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+
+
+              <form [formGroup]="dateRangeForm"  style=" display: flex;
+              justify-content: space-between;
+              background: #fafafa;
+              border: 1px solid rgba(0, 0, 0, 0.12);
+              padding: 0px 15px;
+              ">
+                <div class="" style="padding-top: 6px;" >
+                    <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+                    <ejs-daterangepicker format='dd/MM/yyyy' placeholder='Range' formControlName="daterangeExcpLoc" >
+                        <e-presets>
+                            <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                            <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                            <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                            <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                        </e-presets>
+                    </ejs-daterangepicker>
+                <!-- </div> -->
+            </div>
+            <div class=""  >
+              <ul style="  display:flex;justify-content: flex-end; " class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#location_tab_1" role="tab">
+
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <polygon points="0 0 24 0 24 24 0 24"/>
+                <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+                </g>
+                </svg>                          Checkin ({{checkinExceptionCount}})
+                </a>
+              </li>
+
+              <!-- <li class="nav-item" [ngClass]="{'disableTab':planType == 'Basic'}"  data-toggle="kt-tooltip" data-placement="left" title="" data-original-title="Tooltip title"
+              > -->
+              <li class="nav-item"  data-toggle="kt-tooltip" data-placement="left" title="" data-original-title="Tooltip title"
+              >
+                <a class="nav-link" data-toggle="tab" href="#location_tab_2" role="tab">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <polygon points="0 0 24 0 24 24 0 24"/>
+                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+                      </g>
+                      </svg>
+                                      Checkout ({{checkoutExceptionCount}})
+                </a>
+              </li>
+
+
+
+              </ul>
+              </div>
+                </form>
+
+
+                  <div class="tab-content" style="padding:0px !important" >
+                    <div class="tab-pane active" id="location_tab_1" role="tabpanel">
+                  <div class=" "  style=" border-bottom-color: #f0f3ff;
+                  color: #595d6e;" >
+
+                      <!--begin: Datatable -->
+                       <!-- <div class="kt-datatable" id="local_data"></div> -->
+                      <!--end: Datatable -->
+                      <!-- <mat-form-field>
+                              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                            </mat-form-field> -->
+                            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+                            <ejs-grid #checkingrid [dataSource]='dashboardCheckInExceptionData' height="345px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'   (toolbarClick)='toolbarCheckinExpClick($event)'
+                            [allowExcelExport]='true' [allowPdfExport]='true'  >
+                              <e-columns>
+
+
+
+                                <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                                <e-column field='ondate' headerText='Date' width=90>
+                                  <ng-template #template let-data>
+
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                            </ng-template>
+
+                                </e-column>
+
+                              <e-column field='full_name' headerText='Employee Name' width=100></e-column>
+
+                              <e-column field='project_or_comp_name' headerText='Project' textAlign='' width=120>
+                                <ng-template #template let-data>
+
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <span style="color:blue;cursor: pointer;" (click)="openActivityDialog(data.groupid,data.ondate,data.project_or_comp_id)">{{data.project_or_comp_name}}</span>
+
+
+                            </ng-template>
+                              </e-column>
+
+                              <e-column field='check_in' headerText='Check In' textAlign='' width=90>
+                                <ng-template #template let-data>
+
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <span>{{data.check_in}}</span>
+
+
+                            </ng-template>
+                              </e-column>
+                              <e-column field='check_out' headerText='Check Out' textAlign='' width=90>
+                                <ng-template #template let-data>
+
+                                    <span>{{data.check_out}}</span>
+
+                            </ng-template>
+                              </e-column>
+                              <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column>
+                              <e-column type='' headerText=''  width='90'>
+                                  <ng-template #template let-data>
+                                    <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name,data.groupid)">View Location</span>
+
+
+
+                                  </ng-template>
+                              </e-column>
+                              <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                          </e-columns>
+                              </ejs-grid>
+                  <!-- <ejs-pager #pager [totalRecordsCount]="checkinExcpPgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changedCheckinExcp($event)" (click)="clickCheckinExcp($event)"></ejs-pager> -->
+
+                          </div>
+
+                  </div>
+</div>
+<div class="tab-pane" id="location_tab_2" role="tabpanel">
+
+      <div class=" "  style=" border-bottom-color: #f0f3ff;
+      color: #595d6e;" >
+
+          <!--begin: Datatable -->
+           <!-- <div class="kt-datatable" id="local_data"></div> -->
+          <!--end: Datatable -->
+          <!-- <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field> -->
+                <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+                <ejs-grid #checkoutgrid [dataSource]='dashboardCheckOutExceptionData' height="345px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarCheckoutExpClick($event)'
+                [allowExcelExport]='true' [allowPdfExport]='true'  >
+                  <e-columns>
+
+
+
+                    <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                    <e-column field='ondate' headerText='Date' width=90>
+                      <ng-template #template let-data>
+
+                        <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                        <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                </ng-template>
+
+                    </e-column>
+
+                  <e-column field='full_name' headerText='Employee Name' width=100></e-column>
+
+                  <e-column field='project_or_comp_name' headerText='Project' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                        <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                        <span style="color:blue;cursor: pointer;" (click)="openActivityDialog(data.groupid,data.ondate,data.project_or_comp_id)">{{data.project_or_comp_name}}</span>
+
+
+                </ng-template>
+                  </e-column>
+
+                  <e-column field='check_in' headerText='Check In' textAlign='' width=90>
+                    <ng-template #template let-data>
+
+                        <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                        <span>{{data.check_in}}</span>
+
+
+                </ng-template>
+                  </e-column>
+                  <e-column field='check_out' headerText='Check Out' textAlign='' width=90>
+                    <ng-template #template let-data>
+
+                        <span>{{data.check_out}}</span>
+
+                </ng-template>
+                  </e-column>
+                  <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column>
+                  <e-column type='' headerText=''  width='90'>
+                      <ng-template #template let-data>
+                        <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name,data.groupid)">View Location</span>
+
+
+
+                      </ng-template>
+                  </e-column>
+                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+              </e-columns>
+                  </ejs-grid>
+                  <!-- <ejs-pager #pager [totalRecordsCount]="checkoutExcpPgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changedCheckoutExcp($event)" (click)="clickCheckoutExcp($event)"></ejs-pager> -->
+
+              </div>
+
+      </div>
+</div>
+                </div>
+
+            </div>
+            <div class="tab-pane" id="kt_user_edit_tab_2" role="tabpanel">
+              <form [formGroup]="dateRangeForm"  style=" display: flex;
+              justify-content: space-between;
+              background: #fafafa;
+              border: 1px solid rgba(0, 0, 0, 0.12);
+              padding: 5px 10px;
+              ">
+                <div class="" >
+                    <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+                    <ejs-daterangepicker format='dd/MM/yyyy' placeholder='Range' formControlName="daterangeExcHrs" >
+                        <e-presets>
+                          <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                          <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                            <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                            <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                        </e-presets>
+                    </ejs-daterangepicker>
+                <!-- </div> -->
+            </div>
+                </form>
+
+
+                  <div class=" "  style=" border-bottom-color: #f0f3ff;
+                  color: #595d6e;" >
+
+                      <!--begin: Datatable -->
+                       <!-- <div class="kt-datatable" id="local_data"></div> -->
+                      <!--end: Datatable -->
+                      <!-- <mat-form-field>
+                              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                            </mat-form-field> -->
+                            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+                            <ejs-grid #lessHrsgrid [dataSource]='dashboardLessHoursData' height="345px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  >
+                              <e-columns>
+
+
+
+                                <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                                <e-column field='ondate' headerText='Date' width=90>
+                                  <ng-template #template let-data>
+
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                            </ng-template>
+
+                                </e-column>
+
+                              <e-column field='full_name' headerText='Employee Name' width=100></e-column>
+
+                              <e-column field='project_or_comp_name' headerText='Project' textAlign='' width=120>
+                                <ng-template #template let-data>
+
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <span style="color:blue;cursor: pointer;" (click)="openActivityDialog(data.groupid,data.ondate,data.project_or_comp_id)">{{data.project_or_comp_name}}</span>
+
+
+                            </ng-template>
+                              </e-column>
+
+                              <e-column field='check_in' headerText='Check In' textAlign='' width=90>
+                                <ng-template #template let-data>
+
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <span>{{data.check_in}}</span>
+
+
+                            </ng-template>
+                              </e-column>
+                              <e-column field='check_out' headerText='Check Out' textAlign='' width=90>
+                                <ng-template #template let-data>
+
+                                    <span>{{data.check_out}}</span>
+
+                            </ng-template>
+                              </e-column>
+                              <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column>
+                              <e-column type='' headerText=''  width='90'>
+                                  <ng-template #template let-data>
+                                    <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name,data.groupid)">View Location</span>
+
+
+
+                                  </ng-template>
+                              </e-column>
+                              <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                          </e-columns>
+                              </ejs-grid>
+                  <!-- <ejs-pager #pager [totalRecordsCount]="lessHrsPgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changedLessHrs($event)" (click)="clickLessHrs($event)"></ejs-pager> -->
+
+                          </div>
+
+                  </div>
+            </div>
+
+            </div>
+
+
+
+
+
+
+
+      </div>
+
+<!-- end:: Content Head -->
+<!-- begin:: Content -->
+<!-- end:: Content -->				</div>
+
+
+
+
+
+
+
+</div>
+<div  *ngIf="selectedGroupVal=='Overtime'">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >
+      <!-- begin:: Content Head -->
+      <form [formGroup]="dateRangeForm"  style=" display: flex;
+      justify-content: space-between;
+      background: #fafafa;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 5px 10px;
+      ">
+        <div class="" >
+            <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+            <ejs-daterangepicker format='dd/MM/yyyy' placeholder='Range' formControlName="daterangeOvt" >
+                <e-presets>
+                    <!-- <e-preset label="This Week" [start]='weekStart' [end]='weekEnd'></e-preset> -->
+                <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+
+                    <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                    <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                    <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                </e-presets>
+            </ejs-daterangepicker>
+        <!-- </div> -->
+    </div>
+        </form>
+
+
+          <div class=" "  style=" border-bottom-color: #f0f3ff;
+          color: #595d6e;" >
+
+              <!--begin: Datatable -->
+               <!-- <div class="kt-datatable" id="local_data"></div> -->
+              <!--end: Datatable -->
+              <!-- <mat-form-field>
+                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                    </mat-form-field> -->
+                    <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+                    <ejs-grid  [dataSource]='dashboardOvertimeData' (toolbarClick)='toolbarAbsentClick($event)'
+                    [allowExcelExport]='true' [allowPdfExport]='true' height="345px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  >
+                    <e-columns>
+
+
+
+                      <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                      <e-column field='ondate' headerText='Date' width=90>
+                        <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                  </ng-template>
+
+                      </e-column>
+
+                    <e-column field='full_name' headerText='Employee Name' width=100></e-column>
+
+                    <e-column field='project_or_comp_name' headerText='Project' textAlign='' width=120>
+                      <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <span style="color:blue;cursor: pointer;" (click)="openActivityDialog(data.groupid,data.ondate,data.project_or_comp_id)">{{data.project_or_comp_name}}</span>
+
+
+                  </ng-template>
+                    </e-column>
+
+                    <e-column field='check_in' headerText='Check In' textAlign='' width=90>
+                      <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <span>{{data.check_in}}</span>
+
+
+                  </ng-template>
+                    </e-column>
+                    <e-column field='check_out' headerText='Check Out' textAlign='' width=90>
+                      <ng-template #template let-data>
+
+                          <span>{{data.check_out}}</span>
+
+                  </ng-template>
+                    </e-column>
+                    <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column>
+                    <e-column type='' headerText=''  width='90'>
+                        <ng-template #template let-data>
+                          <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name,data.groupid)">View Location</span>
+
+
+
+                        </ng-template>
+                    </e-column>
+                    <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                </e-columns>
+                      </ejs-grid>
+                  <!-- <ejs-pager #pager [totalRecordsCount]="overtimePgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changedOvertime($event)" (click)="clickOvertime($event)"></ejs-pager> -->
+
+                  </div>
+
+          </div>
+<!-- end:: Content Head -->
+<!-- begin:: Content -->
+<!-- end:: Content -->				</div>
+
+
+
+
+
+
+
+</div>
+<div  *ngIf="selectedGroupVal=='Onleave'">
+  <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" >
+    <!-- begin:: Content Head -->
+    <form [formGroup]="dateRangeForm"  style=" display: flex;
+    justify-content: space-between;
+    background: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 5px 10px;
+    ">
+      <div class="" >
+          <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+          <ejs-daterangepicker format='dd/MM/yyyy' placeholder='Range' formControlName="daterangeOnleav" >
+              <e-presets>
+                  <!-- <e-preset label="This Week" [start]='weekStart' [end]='weekEnd'></e-preset> -->
+              <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+
+                  <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                  <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                  <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+              </e-presets>
+          </ejs-daterangepicker>
+      <!-- </div> -->
+  </div>
+      </form>
+
+
+        <div class=" "  style="border-bottom-color: #f0f3ff;
+        color: #595d6e;" >
+
+            <!--begin: Datatable -->
+             <!-- <div class="kt-datatable" id="local_data"></div> -->
+            <!--end: Datatable -->
+            <!-- <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  </mat-form-field> -->
+                  <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+
+                  <ejs-grid  [dataSource]='onLeavData' (queryCellInfo)='customiseLeaveGrid($event)'  (toolbarClick)='toolbarAbsentClick($event)'
+                  [allowExcelExport]='true' [allowPdfExport]='true' height="345px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  >
+                  <e-columns>
+
+
+
+                    <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                    <e-column field='ondate' headerText='Date' width=90>
+                      <ng-template #template let-data>
+
+                        <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                        <span  >{{data.ondate|date :  "dd/MM/y"}}</span>
+
+
+                </ng-template>
+
+                    </e-column>
+                    <e-column field='full_name' headerText='Employee' width=100></e-column>
+
+                  <e-column field='dep_name' headerText='Department' width=100></e-column>
+
+                  <e-column field='designation_name' headerText='Designation' textAlign='' width=120>
+
+                    <!-- <ng-template #template let-data>
+                        <span style="color:blue;cursor: pointer;" (click)="openActivityDialog(data.groupid,data.ondate,data.project_or_comp_id)">{{data.project_or_comp_name}}</span>
+
+                </ng-template> -->
+                  </e-column>
+                  <!-- <e-column field='approver' headerText='Approved By' textAlign='' width=120></e-column> -->
+                  <e-column field='' headerText='Approved By' width=140>
+                    <ng-template #template let-data>
+                      <span  >{{data.approver1}}<span *ngIf='data.approver2!=null'>,{{data.approver2}}</span></span>
+
+              </ng-template>
+                  </e-column>
+                  <e-column field='employee_type_name' headerText='Type' width=100></e-column>
+                  <e-column field='employee_status_name' headerText='Status' width=100></e-column>
+
+
+
+              </e-columns>
+                    </ejs-grid>
+
+                </div>
+
+        </div>
+<!-- end:: Content Head -->
+<!-- begin:: Content -->
+<!-- end:: Content -->				</div>
+
+
+
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="modification_modal"
+  data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content notifyModal">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Manage Presence/Leave Overwrite</h5>
+        <button type="button"  class="close"  #modifyCloseBtn (click)="OnModifyClose()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+        <div
+        style="display: flex;background-color: rgba(44,119,244,.1);margin-top: -12px;">
+        <div style="
+                          color: #2c77f4;padding: 10px 14px;font-weight: bold;
+                         font-size: 12px;
+                         ">
+                          <span style="margin-right: 5px;text-transform: uppercase;"
+            class="kt-badge kt-badge--primary  kt-badge--inline kt-badge--pill"><div class="ng-star-inserted" style="font-size: 13px; font-weight: bold; text-transform: uppercase;"><i aria-hidden="true" class="fa fa-user" style="    font-size: 13px;
+
+              margin-right: 6px;"></i> {{manageEmpName}}</div></span>
+
+            {{manageDate}}
+        </div>
+      </div>
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item locationModel">
+            <div class="checkinCateg" >
+              <mat-button-toggle-group style="width: 100%;" #manageid="matButtonToggleGroup" [value]="selectedModifiedGroupVal"
+                 (change)="onModifyValChange(manageid.value)">
+                <mat-button-toggle style="width: 100%;" value="Checkin"><span style="margin-right: 5px;"><i
+                      class="fa fa-briefcase red"></i></span> Checkin Overwrite<span placement="right"  container="body" ngbPopover="Claim checkin due to technical problems/any other reasons" triggers="mouseenter:mouseleave"
+                      >
+                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+                      color: #fff;
+                      font-size: 11px;
+                      "></i>
+                    </span></mat-button-toggle>
+                <mat-button-toggle style="width: 100%;"  value="Leave"><span style="margin-right: 5px;"><i
+                      class="fa fa-thumb-tack goldenrod"></i></span> Leave Overwrite<span placement="right"  ngbPopover="Apply for leave"  container="body" triggers="mouseenter:mouseleave"
+                      >
+                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+                      color: #fff;
+                      font-size: 11px;margin-left: 4px;
+                      "></i>
+                    </span></mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+          <div style="visibility: hidden;height: 0px !important;">
+            <agm-map
+            [latitude]="currlatitude" [longitude]="currlongitude" [zoom]="zoom"  >
+
+            <agm-marker [latitude]="currlatitude" [longitude]="currlongitude" [markerDraggable]="true"
+              (dragEnd)="markerDragEnd($event)"></agm-marker>
+
+          </agm-map>
+          </div>
+
+          <form class="kt-form kt-form--label-right" *ngIf='selectedModifiedGroupVal=="Checkin"' [formGroup]="checkinForm">
+
+            <div class="form-group row col-lg-12 col-sm-12 " style="margin: 0px;padding-left: 0px;"
+            >
+            <div class="" style="padding-left: 0px;width: 100%;display: flex;">
+              <div class="kt-checkbox-inline" style="">
+                <div style="display: flex;">
+                  <div style="color: grey;margin-right:5px;width: 48px;">Office</div>
+                  <div>
+                    <label class="switch">
+                      <!-- <input type="checkbox"    (change)="checkIsDept()" > -->
+
+                      <input type="checkbox" id='OfficeCheck' name="chec" (change)="checkIsOffice($event)">
+
+                      <span>
+
+                      </span>
+                    </label>
+
+                  </div>
+
+
+
+                </div>
+
+
+
+              </div>
+              <div style="display: flex;margin-top: 0.75rem;padding-left: 0px;">
+                <div style="color: grey;margin-right:5px; " >WFH  </div>
+                <div>
+                  <label class="switch">
+                    <input type="checkbox" id='homeCheck' name="checkbox"
+                      (change)="checkIsHome($event)">
+                    <span>
+
+                    </span>
+                  </label>
+
+                </div>
+                <div ngbPopover="Work From Home" triggers="mouseenter:mouseleave" style="margin-top: -2px;"
+                  >
+                  <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+                  color: #fff;
+                  font-size: 11px;
+                  "></i>
+                </div>
+
+
+              </div>
+              <!-- <div style="display: flex; margin-top: 0.75rem;margin-left: 15px;">
+                <div style="color: grey;margin-right:5px;width: 25px;">Job</div>
+                <div>
+                  <label class="switch">
+
+                    <input type="checkbox" id='jobInput' name="jobInput" (change)="checkIsJob($event)">
+
+                    <span>
+
+                    </span>
+                  </label>
+
+                </div>
+
+
+
+              </div> -->
+
+            </div>
+
+          </div>
+          <div class="form-group" *ngIf='homeInput'>
+            <input type="text"
+              class="form-control" id='homeCheck' [disabled]='homeInput'
+              type="text" #wfhinput>
+          </div>
+          <!-- <div class="col-lg-12 col-sm-12"
+                >
+
+
+
+                <div style="position:relative" >
+                  <div class="avatar_logo" style="position:absolute">
+                    <span class="avatar_cancel" (click)="closeMap()"> <i style="color:red;font-size: 0.9rem;"
+                        class="fa fa-times"></i></span>
+
+                  </div>
+
+
+                </div>
+
+              </div> -->
+          <div style="margin-top: -15px;margin-bottom: -15px;">
+            <mat-accordion class="col-lg-12 col-sm-12" *ngIf="officeInput">
+
+              <mat-expansion-panel style="color: #74788d;" [(expanded)]="xpandStatus">
+                <mat-expansion-panel-header style="background-color: #f7f8fa;" [collapsedHeight]="'40px'"
+                  [expandedHeight]="'40px'">
+                  <mat-panel-title>
+                    <div> {{selectedValue?selectedValue:'Select'}}</div>
+                  </mat-panel-title>
+                  <mat-panel-description>
+
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row " style="margin: 5px -8px -12px -8px;">
+                  <div class="col-lg-12 accordionRadio" *ngFor="let option of officeData">
+                    <label class="kt-option ">
+                      <span class="kt-option__control" style="margin-top:-6px;">
+                        <span class="kt-radio">
+                          <input type="radio" name="m_option_1" [value]="selecteOptionValue"
+                            [checked]="option.org_id===OrgId" (change)="selectedOption(option)">
+                          <span></span>
+                        </span>
+                      </span>
+                      <span class="kt-option__label">
+                        <span class="kt-option__head">
+                          <span class="kt-option__title">
+                            {{option.org_name}}
+                          </span>
+                          <span class="kt-option__focus">
+
+                          </span>
+                        </span>
+
+                      </span>
+                    </label>
+                  </div>
+
+                </div>
+              </mat-expansion-panel>
+
+            </mat-accordion>
+          </div>
+
+          <div class="form-group row" *ngIf="!officeInput && !homeInput && !jobInput">
+            <div class="col-lg-12">
+              <label></label>
+              <div class="kt-input-icon materialPicker">
+                <input class="form-control" placeholder="Enter Manual Location"
+                   formControlName="placeName">
+                   <div *ngIf="modifySubmit && checkinForm.controls.placeName.value==''" >
+                    <label class="e-error" for="date" id="OrderID-info" >*Place is required</label>
+
+                    </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group row" *ngIf="jobInput && !officeInput && !homeInput" style='display:none;'>
+            <div class="col-lg-12">
+              <label></label>
+              <div class="kt-input-icon materialPicker">
+                <select2  [data]="projectFilterList" [options]="deptOptions" [value]="reasonValue"
+                (valueChanged)="changedReason($event)"></select2>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group row" >
+
+
+            <div class="col-lg-12 col-xl-12">
+
+              <label for="exampleTextarea" >Reason</label>
+
+                <!-- <textarea class="form-control" id="exampleTextarea" rows="5" formControlName="desc"></textarea> -->
+                <select2  [data]="reasonData" [options]="deptOptions" [value]="reasonValue"
+                (valueChanged)="changedReason($event)"></select2>
+                <div *ngIf="modifySubmit && reasonValue==''" >
+                  <label class="e-error" for="date" id="OrderID-info" >*Reason is required</label>
+
+                  </div>
+
+            </div>
+
+
+
+          </div>
+          <div class="form-group row" *ngIf="reasonValueTxt=='Other'" >
+            <div class="col-lg-12">
+              <label>Reason Description</label>
+              <div class="kt-input-icon materialPicker">
+
+                <textarea class="form-control" id="exampleTextarea" rows="5" formControlName="reasondesc"></textarea>
+
+                   <div *ngIf="modifySubmit && checkinForm.controls.reasondesc.value==''" >
+                    <label class="e-error" for="date" id="OrderID-info" >*Description is required</label>
+
+                    </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label>Start Time</label>
+              <div class="kt-input-icon materialPicker">
+                <input class="form-control" placeholder="Enter Start time"
+                  (click)="startTimeChanged()" [ngxTimepicker]="startpicker" [min]="minStartTime" [max]='maxCurrentTime'
+                   formControlName="startTime">
+                <ngx-material-timepicker  #startpicker>
+                </ngx-material-timepicker>
+                <div *ngIf="isActivityLogFieldValid('startTime')" style="color: red;">Required.</div>
+
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <label class="">End Time</label>
+              <div class="kt-input-icon">
+                <input class="form-control" placeholder="Enter End time" [min]="minStartTime" [max]='maxCurrentTime'
+                   [ngxTimepicker]="picker"  (click)="endTimeChanged()" formControlName="endTime" >
+                <ngx-material-timepicker #picker></ngx-material-timepicker>
+               <div *ngIf="isActivityLogFieldValid('endTime')" style="color: red;">Required.</div>
+              <div *ngIf="startEqualEnd" style="color: red;">Start time shouldn't be equal to end time.</div>
+
+              </div>
+            </div>
+          </div>
+          <div style="display: flex;">
+            <div style="color: grey;margin-right:5px;">Dual Approval</div>
+            <div>
+              <label class="switch">
+                <input type="checkbox"  (change)="checkIsDual($event)">
+                <span>
+                </span>
+              </label>
+
+            </div>
+            <div ngbPopover="Enable for dual approval" triggers="mouseenter:mouseleave"
+              style="margin-top: -2px;">
+              <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+              color: #fff;
+              font-size: 11px;
+              "></i>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-12" *ngIf='!isDual'>
+              <!-- <label>Start Time</label> -->
+              <select2  [data]="approverData" [options]="deptOptions" [value]="approvalValue"
+              (valueChanged)="changedApprover($event)"></select2>
+              <div *ngIf="modifySubmit && approvalValue==''" style="color: red;">Required</div>
+
+            </div>
+          </div>
+          <div class="form-group row" *ngIf='isDual'>
+            <div class="col-lg-12">
+              <label>Approver 1</label>
+              <select2  [data]="approverData" [options]="deptOptions" [value]="approvalValue1"
+              (valueChanged)="changedApprover1($event)"></select2>
+              <div *ngIf="modifySubmit && approvalValue1==''" style="color: red;">Required</div>
+
+            </div>
+          </div>
+          <div class="form-group row" *ngIf='isDual'>
+
+          <div class="col-lg-12">
+            <label>Approver 2</label>
+            <select2  [data]="approverData" [options]="deptOptions" [value]="approvalValue2"
+            (valueChanged)="changedApprover2($event)"></select2>
+            <div *ngIf="modifySubmit && approvalValue2==''" style="color: red;">Required</div>
+
+          <div style="color: red;" *ngIf='approvalValue2!="" && sameApprover'>Approver 1 and Approver 2 has to be different</div>
+
+
+          </div>
+
+          </div>
+
+
+          </form>
+
+          <form class="kt-form kt-form--label-right" *ngIf='selectedModifiedGroupVal=="Leave"' [formGroup]="leaveForm">
+            <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+              <div class="">Leave Type</div>
+
+              <div class="form-group row" >
+                <div class="kt-radio-inline col-lg-12 col-xl-12 leaveRadio">
+
+                    <label class="kt-radio" *ngFor="let leave of leaveSetupData ; let i = index">
+                      <input type="radio" formControlName="leaveType"  [value]="leave.id" (change)="customRadioChange(leave.id,leave.leave_name)">
+                      <div style="display: flex;">
+                        <div>
+                          {{leave.leave_name}} <span style="font-size: 10px;">({{leave.leave_type_name}})</span>
+                        </div>
+                        <div style="margin-left: 10px;
+padding: 3px 5px;
+font-size: 11px;">{{leave.max_leave_days}}</div>
+                      </div>
+                      <span></span>
+                    </label>
+
+
+
+                  </div>
+                  <div *ngIf="modifySubmit && leaveForm.controls.leaveType.valid==false" style="margin-left: 15px;">
+                    <label class="e-error" for="date" id="OrderID-info" >*Leave type is required</label>
+
+                    </div>
+            </div>
+
+              <div class="form-group row" >
+
+
+                <div class="col-lg-12 col-xl-12">
+
+                  <label for="exampleTextarea" >Reason</label>
+
+                    <textarea class="form-control" id="exampleTextarea" rows="5" formControlName="desc"></textarea>
+
+                    <div *ngIf="modifySubmit && leaveForm.controls.desc.valid==false" >
+                      <label class="e-error" for="date" id="OrderID-info" >*Reason is required</label>
+
+                      </div>
+
+                </div>
+
+
+
+              </div>
+
+
+              <div style="display: flex;">
+                <div style="color: grey;margin-right:5px;">Dual Approver</div>
+                <div>
+                  <label class="switch">
+                    <input type="checkbox" id='isLeavDual'  (change)="checkLeavIsDual($event)">
+                    <span>
+                    </span>
+                  </label>
+
+                </div>
+                <div ngbPopover="Checkin including team members!" triggers="mouseenter:mouseleave"
+                  style="margin-top: -2px;">
+                  <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;    padding: 5px 8px;
+                  color: #fff;
+                  font-size: 11px;
+                  "></i>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12" *ngIf='!isLeavDual'>
+                  <!-- <label>Start Time</label> -->
+                  <select2  [data]="approverData" [options]="deptOptions" [value]="leavApprovalValue"
+                  (valueChanged)="changedLeavApprover($event)"></select2>
+                  <div *ngIf="modifySubmit && leavApprovalValue==''" style="color: red;">Required</div>
+
+                </div>
+              </div>
+              <div class="form-group row" *ngIf='isLeavDual'>
+                <div class="col-lg-12">
+                  <label>Approver 1</label>
+                  <select2  [data]="approverData" [options]="deptOptions" [value]="leaveApprovalValue1"
+                  (valueChanged)="changedLeavApprover1($event)"></select2>
+                  <div *ngIf="modifySubmit && leaveApprovalValue1==''" style="color: red;">Required</div>
+
+                </div>
+              </div>
+              <div class="form-group row" *ngIf='isLeavDual'>
+
+              <div class="col-lg-12">
+                <label>Approver 2</label>
+                <select2  [data]="approverData" [options]="deptOptions" [value]="leaveApprovalValue2"
+                (valueChanged)="changedLeavApprover2($event)"></select2>
+                <div *ngIf="modifySubmit && leaveApprovalValue2==''" style="color: red;">Required</div>
+
+              <div style="color: red;" *ngIf='leaveApprovalValue2!="" &&  sameLeavApprover
+              '>Approver 1 and Approver 2 has to be different</div>
+
+
+              </div>
+
+              </div>
+
+
+
+<div style="margin:1.5rem 0" class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+
+
+<div style="color: #6c757d!important;
+margin-bottom: 5px;
+font-size: 10px;
+"  >Note: Leave information is available only if joining date is updated.</div>
+
+<div *ngIf="showLeavesSpin" style="
+position: absolute;margin-left:80px;margin-top: 15px;
+">
+<div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+</div>
+<div class="kt-widget2" *ngIf="showLeaveInfo && !showLeavesSpin" style="width:100%;margin-left:-10px;display:flex;justify-content: space-between;" >
+<div class="kt-widget2__item kt-widget2__item--primary"
+>
+
+<div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+>
+<a class="kt-widget2__username">
+Total Leaves Entitled
+
+</a>
+
+<a class="kt-widget2__title">
+{{leavesEntitled}}
+</a>
+
+
+</div>
+
+<div class="kt-widget2__actions">
+
+</div>
+
+</div>
+
+<div class="kt-widget2__item kt-widget2__item--warning"
+>
+
+<div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+>
+<a class="kt-widget2__username">
+Total Leaves Taken
+
+</a>
+
+<a class="kt-widget2__title">
+{{used_leaves}}
+</a>
+
+
+</div>
+
+<div class="kt-widget2__actions">
+
+</div>
+
+</div>
+<div class="kt-widget2__item kt-widget2__item--success"
+>
+
+<div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+>
+<a class="kt-widget2__username">
+Total Leaves Available
+
+</a>
+
+<a class="kt-widget2__title">
+{{availableLeaves}}
+</a>
+
+
+</div>
+
+<div class="kt-widget2__actions">
+
+</div>
+
+</div>
+</div>
+<div style="margin-bottom: 4px;">
+Leave History
+</div>
+
+<ejs-grid #grid [dataSource]='leaveHistory' allowTextWrap='true' height="200px"   allowSorting='true' [toolbar]='toolbar'
+
+>
+<e-columns>
+
+
+
+<e-column field='leave_name' headerText='Name' textAlign='' width=120>
+<ng-template #template let-data>
+
+<span>{{data.leave_name}}</span>
+
+
+</ng-template>
+</e-column>
+<e-column field='leave_start_date' headerText='Start Date' textAlign='' width=120>
+<ng-template #template let-data>
+
+<span>{{data.leave_start_date| date :  "dd/MM/y"}}</span>
+
+
+</ng-template>
+</e-column>
+<e-column field='leave_end_date' headerText='End Date' textAlign='' width=120>
+<ng-template #template let-data>
+
+<span>{{data.leave_end_date| date :  "dd/MM/y"}}</span>
+
+
+</ng-template>
+</e-column>
+
+
+<e-column field='leave_status_name' headerText='Status' width=100></e-column>
+<e-column field='leave_type_name' headerText='Leave Type' width=90></e-column>
+
+
+
+<e-column field='days' headerText='No of days' textAlign='' width=90>
+<ng-template #template let-data>
+
+<span>{{data.days}}</span>
+
+
+</ng-template>
+</e-column>
+
+
+</e-columns>
+</ejs-grid>
+
+
+
+                  </div>
+
+
+          </form>
+        </div>
+
+      </div>
+
+      <div class="kt-align-right modal-footer bottomBtn">
+        <button type="Submit" class="button button-fill button-rose" (click)="onModifySubmit()">Submit</button>
+
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+  padding: 7px 14px;font-size: 11px;
+  margin-top: -1px;" (click)="OnModifyClose()">CLOSE
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="approve_modal"
+data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content notifyModal">
+    <div class="modal-header" style="padding: 8px 15px;">
+      <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Approval Details</h5>
+      <button type="button"  class="close"  #approveCloseBtn (click)="OnApproveClose()" aria-label="Close">
+      </button>
+    </div>
+    <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+      <div style="display: flex;background-color: rgba(44,119,244,.1);margin-top: -12px;"><div style="color: #2c77f4;padding: 10px 14px;font-weight: bold;font-size: 12px;"><span class="kt-badge kt-badge--primary  kt-badge--inline kt-badge--pill" style="margin-right: 5px;text-transform: uppercase;"><div class="ng-star-inserted" style="font-size: 13px; font-weight: bold; text-transform: uppercase;"><i aria-hidden="true" class="fa fa-user" style="font-size: 13px;margin-right: 6px;"></i> Hifza Kausar </div></span> 05/07/2020 </div></div>
+      <div class="kt-widget2" style="margin-top: 12px;" >
+        <div class="kt-widget2__item kt-widget2__item--primary"
+          >
+
+          <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+
+            >
+
+            <a class="kt-widget2__username" >
+              Approver 1
+
+             </a>
+            <a class="kt-widget2__username" >
+              Hifza
+
+             </a>
+
+
+          </div>
+
+      </div>
+
+      <div class="kt-widget2__item kt-widget2__item--primary"
+          >
+
+          <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+
+            >
+
+            <a class="kt-widget2__username" >
+              Approver 2
+
+             </a>
+            <a class="kt-widget2__username" >
+              Sazid
+
+             </a>
+
+
+          </div>
+
+      </div>
+      <div class="kt-widget2__item kt-widget2__item--primary"
+          >
+
+          <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+
+            >
+
+            <a class="kt-widget2__username" >
+          Status
+
+             </a>
+            <a class="kt-widget2__username" >
+              Pending
+
+             </a>
+
+
+          </div>
+
+      </div>
+
+      </div>
+
+
+
+    </div>
+
+    <div class="kt-align-right modal-footer bottomBtn">
+      <!-- <button type="Submit" class="button button-fill button-rose" (click)="onModifySubmit()">Submit</button> -->
+
+      <button type="reset" class="btn btn-secondary" style="width: 90px;
+padding: 7px 14px;font-size: 11px;
+margin-top: -1px;" (click)="OnApproveClose()">CLOSE
+      </button>
+
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="map_modal"
+           role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content notifyModal">
+              <div class="modal-header" style="padding: 8px 15px;">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Location</h5>
+                <button type="button"  class="close"  #mapCloseBtn (click)="OnClose()" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+
+
+                <div class="kt-demo-panel__body ">
+
+                  <div
+                  style="display: flex;margin-bottom: 8px;background-color: rgba(44,119,244,.1);margin-top: -12px;">
+                  <div style="
+                                      color: #2c77f4;padding: 10px 14px;font-weight: bold;
+                                      font-size: 12px;
+                                       "> {{projectName}}</div>
+                </div>
+
+                  <div class="kt-demo-panel__item locationModel">
+
+
+
+
+
+                    <div class="checkinCateg" >
+                      <mat-button-toggle-group style="width: 100%;" #modify="matButtonToggleGroup" [value]="selectedCheckInGroupVal"
+                        [(ngModel)]="checkInModel" (change)="onCheckinValChange(modify.value)">
+                        <mat-button-toggle style="width: 100%;"  value="Checkin"><span style="margin-right: 5px;"><i
+                              class="fa fa-briefcase red"></i></span> Checkin</mat-button-toggle>
+                        <mat-button-toggle style="width: 100%;" value="Checkout"><span style="margin-right: 5px;"><i
+                              class="fa fa-thumb-tack goldenrod"></i></span> Checkout</mat-button-toggle>
+
+                      </mat-button-toggle-group>
+                    </div>
+                    <div class="col-lg-12 col-sm-12"
+                >
+
+                    <div class="" style="visibility: hidden;">
+                      <input type="text" (focus)="focusFunction()" (keyup)="keyup($event)" (click)="clickFunction()"
+                        class="form-control" [value]="nearbyAddress" placeholder="Search Nearest Location"
+                        autocorrect="off"  autocapitalize="off" spellcheck="off"
+                        type="text" #search>
+                    </div>
+
+                    <div class="pac-container form-group col-lg-12 col-sm-12 " *ngIf="showNearbyPlaces" style="color:black;width:94%;margin-top: -1rem !important;height:185px;overflow-y: auto;
+margin-bottom: 8px;">
+                      <div class="pac-item " *ngFor="let place of nearbyPlaces; let i='index'"
+                        (click)="selectNearBy(place)">
+                        <span class="pac-icon pac-icon-marker"></span>
+                        <span class="pac-item-query"></span>
+                        <span>{{place.name}}</span>
+                      </div>
+
+                    </div>
+                    <!-- <div *ngIf="selectedCheckInGroupVal=='Checkin'"> -->
+                        <div style="position:relative" *ngIf="selectedCheckInGroupVal=='Checkin'  " >
+                            <div class="avatar_logo" style="position:absolute">
+                              <!-- <span class="avatar_cancel" (click)="closeMap()"> <i style="color:red;font-size: 0.9rem;"
+                                  class="fa fa-times"></i></span> -->
+
+                            </div>
+
+                            <agm-map
+                              [latitude]="selectedCheckInGroupVal=='Checkin'?latitude:checkOutLat" [longitude]="selectedCheckInGroupVal=='Checkin'?longitude:checkOutLang" [zoom]="zoom" [mapTypeControl]='true'>
+                              <agm-marker [latitude]="selectedCheckInGroupVal=='Checkin'?latitude:checkOutLat" [longitude]="selectedCheckInGroupVal=='Checkin'?longitude:checkOutLang" [markerDraggable]="false"
+                                (dragEnd)="markerDragEnd($event)"></agm-marker>
+
+
+                            </agm-map>
+                    <label style="color:grey;" >Address: {{address}}</label>
+                    <label *ngIf="newFormatedAddress != ''" style="color:grey;" > MapBox Address: {{newFormatedAddress}}</label>
+                          </div>
+                          <div style="position:relative" *ngIf="selectedCheckInGroupVal=='Checkout' &&  checkOutLat!='' " >
+                            <div class="avatar_logo" style="position:absolute">
+                              <!-- <span class="avatar_cancel" (click)="closeMap()"> <i style="color:red;font-size: 0.9rem;"
+                                  class="fa fa-times"></i></span> -->
+
+                            </div>
+
+                            <agm-map
+                              [latitude]="selectedCheckInGroupVal=='Checkin'?latitude:checkOutLat" [longitude]="selectedCheckInGroupVal=='Checkin'?longitude:checkOutLang" [zoom]="zoom" [mapTypeControl]='true'>
+                              <agm-marker [latitude]="selectedCheckInGroupVal=='Checkin'?latitude:checkOutLat" [longitude]="selectedCheckInGroupVal=='Checkin'?longitude:checkOutLang" [markerDraggable]="false"
+                                (dragEnd)="markerDragEnd($event)"></agm-marker>
+
+
+                            </agm-map>
+                    <label style="color:grey;" >Address: {{address}}</label>
+                    <label *ngIf="newFormatedAddress != ''" style="color:grey;" > MapBox Address: {{newFormatedAddress}}</label>
+                          </div>
+                    <!-- </div> -->
+
+
+                    <!-- <div>Latitude: {{latitude}}</div>
+                    <div>Longitude: {{longitude}}</div>   -->
+                    <!-- <label style="color: grey;">Comments</label>
+                                <textarea class="form-control" id="exampleTextarea" rows="1"></textarea> -->
+
+                  </div>
+
+
+
+
+
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+              </div>
+
+              <div class="kt-align-right modal-footer bottomBtn">
+
+                <!-- <button type="Submit" class="button button-fill button-rose" (click)="onTaskStatusSubmit()">Submit</button> -->
+
+                <button type="reset" class="btn btn-secondary" style="width: 90px;
+          padding: 7px 14px;font-size: 11px;
+          margin-top: -1px;" (click)="OnClose()">CLOSE
+                </button>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+</div>
+
+<div class="rightModal950">
+        <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="activity_modal" data-backdrop="static"
+        role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <!-- <div class="modal-content contentHeight" style="width:630px !important;right:127% !important"> -->
+            <div class="modal-content notifyModal" >
+            <div class="modal-header" style="padding: 8px 15px;">
+              <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Activity Log</h5>
+              <button type="button" class="close" #actCloseBtn (click)="closeViewModal()" aria-label="Close">
+              </button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+
+
+              <div class="kt-demo-panel__body ">
+                <div class="kt-demo-panel__item ">
+
+                  <ejs-grid #grid [dataSource]='data12' allowTextWrap='true' [pageSettings]='pageSettings' height="450"
+                  >
+
+                  <e-columns>
+                    <!-- <e-column field='timesheet' headerText=' ' minWidth='8' width='60'></e-column> -->
+
+                    <e-column field='total_time' headerText='Time' textAlign='Left' minWidth='6' width='90'>
+                    </e-column>
+                    <e-column field='project_type' headerText='Type' minWidth='8' width='90' textAlign='Left'>
+                    </e-column>
+
+                      <e-column field='project_name' headerText='Project Name' minWidth='8' width='120'
+                      textAlign='Left'></e-column>
+                    <e-column field='milestone_name' headerText='Milestone Name' minWidth='8' width='120'
+                      textAlign='Left'></e-column>
+
+
+
+                    <e-column field='task_name' headerText='Task Name' textAlign='Left' minWidth='6' width='100'>
+                    </e-column>
+                    <e-column field='remarks' headerText='Remarks' textAlign='Left' minWidth='6' width='100'>
+                    </e-column>
+                    <e-column field='total_hrs' headerText='Hours' textAlign='Left' minWidth='4' width='100'>
+                    </e-column>
+                    <!-- <e-column type='' headerText='Actions'  width='200'>
+                        <ng-template #template let-data>
+
+                                <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.department_id)"> <i class="la la-edit"></i> </a>
+
+                                <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.department_id)"><i class="la la-trash"></i>						</a>
+
+                        </ng-template>
+                    </e-column> -->
+                    <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                  </e-columns>
+                </ejs-grid>
+
+                   <!-- <ejs-grid #grid [dataSource]='activityData'  [allowGrouping]="true" [groupSettings]="groupOptions" [pageSettings]='pageSettings'
+                  height="320"  >
+
+                    <e-columns>
+                      <e-column field='timesheet' headerText=' ' minWidth='8' width='60'></e-column>
+
+                        <e-column field='activity_name' headerText='Milestone Name' minWidth='8' width='120'   textAlign='Left'></e-column>
+                        <e-column field='task_name' headerText='Task Name' textAlign='Left' minWidth='6' width='100'></e-column>
+                        <e-column field='start_time' headerText='Start Time' textAlign='Left' minWidth='6' width='100'></e-column>
+                        <e-column field='end_time' headerText='End Time' textAlign='Left' minWidth='6' width='100'></e-column>
+                        <e-column field='remarks' headerText='Remarks' textAlign='Left' minWidth='6' width='100'></e-column>
+                        <e-column field='total_hrs' headerText='Hours' textAlign='Left' minWidth='4' width='100'></e-column>
+
+                    </e-columns>
+                    </ejs-grid> -->
+
+
+
+
+
+
+
+
+                </div>
+              </div>
+
+            </div>
+             <div class="kt-align-right modal-footer bottomBtn">
+
+              <!-- <button type="Submit" class="button button-fill button-rose" (click)="onTaskStatusSubmit()">Submit</button> -->
+
+              <button type="reset" class="btn btn-secondary" style="width: 90px;
+          padding: 7px 14px;font-size: 11px;
+          margin-top: -1px;" (click)="closeViewModal()">CLOSE
+              </button>
+
+            </div>
+          </div>
+        </div>
+  </div>
+  </div>
+</div>
+</div>
+</div>

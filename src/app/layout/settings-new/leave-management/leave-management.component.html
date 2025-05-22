@@ -1,0 +1,1399 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Leave Overtime Gratuity Profile</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="addNewProfile()">Add New Profile</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainSetting()">Back</button>
+    </div>
+  </div>
+
+
+  <div class="profiletabGrid">
+    <div class="defaultTag" *ngIf="DefaultleaveProfileData?.length !== 0">
+      <h1 class="defaulttext">Default Profile <i class="fa fa-info-circle" data-placement="top" container="body"
+          tooltipClass="my-custom-class"
+          ngbTooltip="if any new employee is created by default they will be applied this profile"></i></h1>
+    </div>
+    <div class="row marTop18">
+      <div class="col-md-3 col-12" *ngFor='let profData of DefaultleaveProfileData'>
+        <div class="cardBox">
+          <div class="row mar0 width100 cardHeader">
+            <div class="col-8">
+              <p class="proName">{{profData.profileName}}</p>
+            </div>
+            <div class="col-4 end">
+              <i class="fa fa-eye editbtn marri9" (click)="viewCurProfile(content, profData)" data-toggle="tooltip"
+                data-placement="top" ngbTooltip="View this profile" tooltipClass="my-custom-class"></i>
+              <i class="fa fa-pencil-square-o editbtn" (click)="editCurProfile(profData)" data-toggle="tooltip"
+                data-placement="top" ngbTooltip="Edit this profile" tooltipClass="my-custom-class"></i>
+            </div>
+          </div>
+          <div class="row mar0">
+            <div class="col-12 mar10">
+              <p class="marTop2 datetxt">Created on {{profData.created_date | date:'MMM d, y, h:mm a'}}</p>
+            </div>
+          </div>
+          <div class="approvalApproved" *ngIf="profData.is_super_admin === false">
+            <p class="approvalWarningTxt">Created By: {{profData.createdBy_Name}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-12" *ngFor='let profData of noDefaultleaveProfileData'>
+        <div class="cardBox">
+          <div class="row mar0 width100 cardHeader">
+            <div class="col-8">
+              <p class="proName">{{profData.profileName}}</p>
+            </div>
+            <div class="col-4 end">
+              <i class="fa fa-eye editbtn marri9" (click)="viewCurProfile(content, profData)" data-toggle="tooltip"
+                data-placement="top" ngbTooltip="View this profile" tooltipClass="my-custom-class"></i>
+              <i class="fa fa-pencil-square-o editbtn" (click)="editCurProfile(profData)" data-toggle="tooltip"
+                data-placement="top" ngbTooltip="Edit this profile" tooltipClass="my-custom-class"></i>
+            </div>
+          </div>
+          <div class="row mar0">
+            <div class="col-10 mar10">
+              <p class="marTop2 datetxt">Created on {{profData.created_date | date:'MMM d, y, h:mm a'}}</p>
+            </div>
+            <div class="col-2 mar10">
+              <i class="fa fa-trash-o editbtn" (click)="deleteCurProfile(profData)" data-toggle="tooltip"
+                data-placement="top" ngbTooltip="Delete this profile" tooltipClass="my-custom-class"></i>
+            </div>
+          </div>
+          <div class="approvalApproved" *ngIf="profData.is_super_admin === false">
+            <p class="approvalWarningTxt">Created By: {{profData.createdBy_Name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<div class="rightModal700">
+
+  <!-- leave profile create module -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="leave_Profile_Form_Create_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title">Create - New Profile</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeLeaveProfileModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          <form [formGroup]="addLeaveProfileForm">
+            <div class="mainCardDiv defaultLeaveCard">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div>
+                    <label>Profile Name*</label>
+                    <input class="form-control" formControlName="profileName" type="text" value=""
+                      (keyup)="checkSameNameProfile($event)" placeholder="Enter a Profile Name">
+                  </div>
+                  <div
+                    *ngIf="addLeaveProfileForm.controls['profileName'].invalid && (addLeaveProfileForm.controls['profileName'].dirty || addLeaveProfileForm.controls['profileName'].touched)"
+                    class="customAlert alert alert-danger">
+                    <div class="error" *ngIf="addLeaveProfileForm.controls['profileName'].errors.required">
+                      Name is required.
+                    </div>
+                  </div>
+                  <p *ngIf="sameProfileName" class="sameProfilename">Profile name exist. please consider renaming it</p>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div>
+                    <label for="nameArea" style="padding-right: 5px;">Copy from existing profiles</label>
+                  </div>
+                  <select2 [data]="existingProfileData" [options]="deptOptions2"
+                    (valueChanged)="getSelectedProfile($event)"></select2>
+                </div>
+              </div>
+            </div>
+
+            <!-- Probation Period -->
+            <div class="mainCardDiv defaultLeaveCard">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div>
+                    <label>Select Effective Date*</label>
+                    <ejs-datepicker dayHeaderFormat="Abbreviated" [showClearButton]="false" [allowEdit]='false'
+                      [value]='dateValue' formControlName="effectiveDate"></ejs-datepicker>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div>
+                    <label>Select Probation Period*</label>
+                    <select2 [data]="probationPeriodData" [options]="deptOptions3"
+                      (valueChanged)="createchangeProbationPeriod($event)"></select2>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!--Leave -->
+            <div class="formDiv">
+              <div class="defaultLeaveCard">
+                <!-- Annual Leave -->
+                <table class="table" style="margin-bottom: 0rem;">
+                  <thead>
+                    <tr>
+                      <th scope="col">Leave Name</th>
+                      <th scope="col">Leave type</th>
+                      <th scope="col">Number of Days</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Enter a leave Name"
+                          formControlName="annualLeave">
+                      </td>
+                      <td>
+                        <select class="form-control" formControlName="annualleaveType">
+                          <option value="paid">Paid</option>
+                          <option value="paid">Half Paid</option>
+                          <option value="unpaid">Unpaid</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter leave Days"
+                          formControlName="annualleaveNum">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="qnadiv">
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave eligible methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Accrued" name="eligibilityMethod" formControlName="eligibilityMethod"
+                        class="marleft">
+                      <p class="probdivtxt">Accrued methodology</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Employees earn leave on a monthly basis, accumulating leave each month based on their entitiled leave days for the year."></i>
+                      <input type="radio" value="Full" name="eligibilityMethod" formControlName="eligibilityMethod"
+                        class="marleft">
+                      <p class="probdivtxt">Full availability</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Employees receive their entire leave entitlement based on their joining date for every year."></i>
+                    </div>
+                  </div>
+
+                  <!-- <div class="carforDiv" *ngIf="addLeaveProfileForm.controls['eligibilityMethod'].value == 'Full'">
+                    <p class="marbot0">Select full availability option<i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="contract" name="annualFullAvail" formControlName="annualFullAvail"
+                        class="marleft">
+                      <p class="probdivtxt">As per contract year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip=""></i>
+                      <input type="radio" value="calender" name="annualFullAvail" formControlName="annualFullAvail"
+                        class="marleft">
+                      <p class="probdivtxt">As per calender end of year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip=""></i>
+                    </div>
+                  </div> -->
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave calculation methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option calculates the number of days deducted from an employee's leave balance when leave is taken"></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Calendar" name="calculateAnuFrom" formControlName="calculateAnuFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Calendar Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based on all days of the week, including weekends and public holidays"></i>
+                      </p>
+                      <input type="radio" value="Working" name="calculateAnuFrom" formControlName="calculateAnuFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Working Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based only on the employee's official working days."></i></p>
+                    </div>
+                  </div>
+
+                  <!-- <div class="carforDiv">
+                    <p class="marAuto">Carry forward</p>
+                    <i class="fa fa-info-circle mar95"
+                      ngbTooltip="Maximum number of leave days allowed to carry forward"></i>
+                    <input type="number" class="form-control widthNum" formControlName="annualleaveCarryFow">
+                    <div
+                      *ngIf="addLeaveProfileForm.controls['annualleaveCarryFow'].invalid && (addLeaveProfileForm.controls['annualleaveCarryFow'].dirty || addLeaveProfileForm.controls['annualleaveCarryFow'].touched)"
+                      class="customAlert alert alert-danger" style="margin-left: 10px;">
+                      <div class="error" *ngIf="addLeaveProfileForm.controls['annualleaveCarryFow'].errors.pattern">
+                        Entered number should be less than 20.
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <div>
+                    <div class="probdiv">
+                      <p class="marbot0">Leave allowed during Probation Period ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option specifies whether employees are permitted to take leave while they are still in their probation period."></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isProbationLeave" formControlName="isProbationLeave"
+                          class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isProbationLeave" formControlName="isProbationLeave"
+                          class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv" style="margin: 12px 0px;">
+                      <p class="marbot0">Unused leave eligible for gratuity ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isUnUsedEligible" formControlName="isUnUsedEligible"
+                          class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isUnUsedEligible" formControlName="isUnUsedEligible"
+                          class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv" style="margin: 12px 0px;">
+                      <p class="marbot0">Set the minimum working hours for half-day leave</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                      <div class="martopin">
+                        <input type="number" class="form-control" placeholder="Enter minimum working hours"
+                        formControlName="halfDayMinHours">
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-12"></div>
+                <!-- Sick Leave -->
+                <table class="table" style="margin-bottom: 0rem;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Enter a leave Name"
+                          formControlName="sickLeave">
+                      </td>
+                      <td>
+                        <select class="form-control" formControlName="sickleaveType">
+                          <option value="paid">Paid</option>
+                          <option value="paid">Half Paid</option>
+                          <option value="unpaid">Unpaid</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter leave Days"
+                          formControlName="sickleaveNum">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="qnadiv">
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave eligible methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Accrued" name="sickeligibilityMethod"
+                        formControlName="sickeligibilityMethod" class="marleft">
+                      <p class="probdivtxt">Accrued methodology</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Employees earn leave on a monthly basis, accumulating leave each month based on their entitiled leave days for the year."></i>
+                      <input type="radio" value="Full" name="sickeligibilityMethod"
+                        formControlName="sickeligibilityMethod" class="marleft">
+                      <p class="probdivtxt">Full availability</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Employees receive their entire leave entitlement based on their joining date for every year."></i>
+                    </div>
+                  </div>
+
+                  <div class="carforDiv" *ngIf="addLeaveProfileForm.controls['sickeligibilityMethod'].value == 'Full'">
+                    <p class="marbot0">Select full availability option
+                      <!-- <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i> -->
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="contract" name="is_full_eoy" formControlName="is_full_eoy"
+                        class="marleft">
+                      <p class="probdivtxt">As per contract year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave is available from the joining date to the day before the anniversary of the joining date, and it resets annually based on this cycle."></i>
+                      <input type="radio" value="calender" name="is_full_eoy" formControlName="is_full_eoy"
+                        class="marleft">
+                      <p class="probdivtxt">As per calender end of year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave is calculated up to December 31st, resets on January 1st, and the next year’s entitlement starts accordingly."></i>
+                    </div>
+                  </div>
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave calculation methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option calculates the number of days deducted from an employee's leave balance when leave is taken"></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Calendar" name="calculateSickFrom" formControlName="calculateSickFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Calendar Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based on all days of the week, including weekends and public holidays"></i>
+                      </p>
+                      <input type="radio" value="Working" name="calculateSickFrom" formControlName="calculateSickFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Working Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based only on the employee's official working days."></i></p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv">
+                      <p class="marbot0">Leave allowed during Probation Period ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option specifies whether employees are permitted to take leave while they are still in their probation period."></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isProbationLeaveSick"
+                          formControlName="isProbationLeaveSick" class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isProbationLeaveSick"
+                          formControlName="isProbationLeaveSick" class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv" style="margin: 12px 0px;">
+                      <p class="marbot0">Unused leave eligible for gratuity ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isUnUsedEligibleSick"
+                          formControlName="isUnUsedEligibleSick" class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isUnUsedEligibleSick"
+                          formControlName="isUnUsedEligibleSick" class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <!-- Cycling New Leave -->
+                <div>
+                  <div *ngIf="addCyclingLeaveForm?.get('leaveDetails')?.length > 0">
+                    <div *ngFor="let cyclingLeave of addCyclingLeaveForm?.get('leaveDetails')?.controls; let i = index"
+                      [formGroup]="cyclingLeave">
+                      <table class="table" style="margin-bottom: 0rem;">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input type="text" class="form-control" placeholder="Enter a leave Name"
+                                formControlName="leaveName">
+                            </td>
+                            <td>
+                              <select class="form-control" formControlName="leaveType">
+                                <option value="paid">Paid</option>
+                                <option value="half paid">Half Paid</option>
+                                <option value="unpaid">Unpaid</option>
+                              </select>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter leave Days"
+                                formControlName="leaveNum">
+                            </td>
+                            <td class="textCent">
+                              <i class="fa fa-trash actionButton" aria-hidden="true" (click)="deleteLeaveDetail(i)"></i>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="qnadiv">
+                        <div class="carforDiv">
+                          <p class="marbot0">Incident based leave ?</p>
+                          <i class="fa fa-info-circle questionMark"
+                            ngbTooltip="Incident-based leave refers to leave granted to employees in response to specific incidents or events, eg: Bereavement Leave, Peternity Leave"></i>
+                          <div class="martopin">
+                            <input type="radio" (change)="handleIncidentChange(i, true)" value="true"
+                              formControlName="incident" [checked]="cyclingLeave.get('incident').value === true"
+                              class="marleft">
+                            <p class="probdivtxt">Yes</p>
+                            <input type="radio" (change)="handleIncidentChange(i, false)" value="false"
+                              formControlName="incident" [checked]="cyclingLeave.get('incident').value === false"
+                              class="marleft">
+                            <p class="probdivtxt">No</p>
+                          </div>
+                        </div>
+
+                        <div class="carforDiv">
+                          <p class="marbot0">Leave eligible methodology ? <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                          </p>
+                          <div class="martopin">
+                            <input type="radio" value="Accrued" formControlName="eligibilityMethod" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Accrued methodology</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="Employees earn leave on a monthly basis, accumulating leave each month based on their entitiled leave days for the year."></i>
+                            <input type="radio" value="Full" formControlName="eligibilityMethod" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Full availability</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="Employees receive their entire leave entitlement based on their joining date for every year."></i>
+                          </div>
+                        </div>
+
+                        <div class="carforDiv">
+                          <p class="marbot0">Leave calculation methodology ? <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="This option calculates the number of days deducted from an employee's leave balance when leave is taken"></i>
+                          </p>
+                          <div class="martopin">
+                            <input type="radio" value="Calendar" formControlName="calculateFrom" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Calendar Days <i class="fa fa-info-circle questionMark"
+                                ngbTooltip="Leave is calculated based on all days of the week, including weekends and public holidays"></i>
+                            </p>
+                            <input type="radio" value="Working" formControlName="calculateFrom" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Working Days <i class="fa fa-info-circle questionMark"
+                                ngbTooltip="Leave is calculated based only on the employee's official working days."></i>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div class="probdiv">
+                            <p class="marbot0">Leave allowed during Probation Period ?</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="This option specifies whether employees are permitted to take leave while they are still in their probation period."></i>
+                            <div class="martopin">
+                              <input type="radio" value="yes" formControlName="probation" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">Yes</p>
+                              <input type="radio" value="no" formControlName="probation" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">No</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div class="probdiv" style="margin: 12px 0px;">
+                            <p class="marbot0">Unused leave eligible for gratuity ?</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                            <div class="martopin">
+                              <input type="radio" value="yes" formControlName="gratuity" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">Yes</p>
+                              <input type="radio" value="no" formControlName="gratuity" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">No</p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div style="padding: 3px 10px 10px;">
+                    <i class="fa fa-plus-square actionButton" aria-hidden="true" (click)="addLeaveDetail()"></i>
+                    <span class="addleavetxt" (click)="addLeaveDetail()">Add Leave</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Overtime -->
+            <div class="formDiv">
+              <div class="defaultLeaveCard">
+                <div>
+                  <h6 style="margin-top: 5px; margin-left: 5px; padding-top: 10px; padding-left: 10px;">Overtime Options
+                  </h6>
+                  <hr>
+                  <form [formGroup]="addGratuityForm">
+                    <div class="col-12" style="margin-left: 5px; margin-top: 10px;">
+                      <strong><label>Calculate Weekday Over Time calculation based on :</label></strong>
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 5px;">
+                      <label> Basic Salary<input style="margin-left: 15px;" (click)="clickWeekOT('Basic Salary')"
+                          [checked]="radioButtonWeekBasic" type="radio" name="weekdayOverCalc" /></label>
+                      <label style="margin-left: 20px;"> Gross Salary<input style="margin-left: 15px;"
+                          (click)="clickWeekOT('Gross Salary')" [checked]="radioButtonWeekNetSal" type="radio"
+                          name="weekdayOverCalc" /></label>
+                    </div>
+                    <div class="col-12" style="margin-left: 10px;">
+                      Per Day Salary = {{selectedweekdayOverCalc}} {{perDayMessage}}
+                    </div>
+                    <div class="col-12" style="margin-left: 10px; margin-top: 5px;">
+                      Per Hour Salary = Per Day Salary / 8
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 10px; margin-top: 5px;">
+                      Weekday Overtime amount = Overtime Hours x Per hour salary x
+                      <ejs-dropdownlist style="margin-left: 5px; width: 70px; text-align: center"
+                        formControlName="setOTweek" [dataSource]="multiplyBy"></ejs-dropdownlist>
+                    </div>
+
+                    <div class="col-12" style="margin-left: 5px; margin-top: 10px;">
+                      <strong><label>Calculate Holiday Over Time calculation based on :</label></strong>
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 5px;">
+                      <label> Basic Salary<input style="margin-left: 15px;" (click)="clickHoliOT('Basic Salary')"
+                          [checked]="radioButtonHoliBasic" type="radio" name="holiOverCalc" /></label>
+                      <label style="margin-left: 20px;"> Gross Salary<input style="margin-left: 15px;"
+                          (click)="clickHoliOT('Gross Salary')" [checked]="radioButtonHoliNetSal" type="radio"
+                          name="holiOverCalc" /></label>
+                    </div>
+
+                    <div class="col-12" style="margin-left: 10px;">
+                      Per Day Salary = {{selectedholidayOverCalc}} {{perDayMessage}}
+                    </div>
+                    <div class="col-12" style="margin-left: 10px; margin-top: 5px;">
+                      Per Hour Salary = Per Day Salary / 8
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 10px; margin-top: 5px;">
+                      Holiday Overtime amount = Overtime Hours x Per hour salary x
+                      <ejs-dropdownlist style="margin-left: 5px; width: 70px; text-align: center"
+                        formControlName="setOTholi" [dataSource]="multiplyBy"></ejs-dropdownlist>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gratuity -->
+            <div class="formDiv">
+              <div class="defaultLeaveCard">
+                <div>
+                  <h6 style="margin-top: 5px; margin-left: 5px; padding-top: 10px; padding-left: 10px;">Graduity Options
+                  </h6>
+                  <hr>
+                  <form [formGroup]="addGratuityForm">
+                    <div style="padding: 10px;">
+                      <Span><strong>Gratuity calculation day starts on </strong></Span>
+                      <div style="display: flex; padding-top: 5px; gap: 5px;" margin-top="5px">
+                        <div title="Gratuity calculation starts from Joining Date" style="display: flex;">
+                          <input type="radio" value="Joining" formControlName="gratuityStartDate">
+                          <p class="probdivtxt"> Joining Date<i class="fa fa-info-circle questionMark" placement="top"></i></p>
+                        </div>
+                        <div title="Gratuity calculation starts from Contract Date" style="display: flex;">
+                          <input type="radio" value="Contract" formControlName="gratuityStartDate">
+                          <p class="probdivtxt"> Contract Date <i class="fa fa-info-circle questionMark" placement="top"></i></p>
+                        </div>
+                        <div
+                          title="Calculation starts from the latest date, either the Joining Date or the Contract Date, whichever is more recent."
+                          style="display: flex;">
+                          <input type="radio" value="Latest" formControlName="gratuityStartDate">
+                          <p class="probdivtxt"> Whatever Latest <i class="fa fa-info-circle questionMark" placement="top"></i></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="padding: 10px;">
+
+                      <div class="grtrow">
+                        <div class="gtcol">
+                          <span class="spannofloat">Employee resigns before completing</span>
+                          <ejs-dropdownlist formControlName="firstYear" (change)="changeFirstYear($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectYear'></ejs-dropdownlist>
+                          <span class="spannofloat" style="margin-left: 5px;">Year of service, are not entitled to any
+                            gratuity pay.</span>
+                        </div>
+                      </div>
+
+                      <div class="grtrow">
+                        <div class="col-12 gtcol">
+                          <span class="spannofloat">Employee served between <strong>{{firstYear}}</strong> Year
+                            and</span>
+                          <ejs-dropdownlist formControlName="secondYear" (change)="changeSecondYear($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectYear2'></ejs-dropdownlist>
+                          <span style="margin-left: 5px;" class="spannofloat">Year , entitled to gratuity pay based
+                            on</span>
+                        </div>
+                        <div class="col-12 gtcol">
+                          <ejs-dropdownlist formControlName="calcDaysOne" (change)="changefirstDay($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectDays'></ejs-dropdownlist>
+                          <span style="margin-left: 5px;" class="spannofloat">Days of Basic Salary for each year of
+                            work.</span>
+                        </div>
+                      </div>
+
+                      <div class="grtrow">
+                        <div class="col gtcol">
+                          <span class="spannofloat">Employee served more than <strong>{{secondYear}}</strong> Years
+                            entitled to gratuity pay based on </span>
+                          <ejs-dropdownlist formControlName="calcDaysTwo" (change)="changeSecondDay($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectDays'></ejs-dropdownlist>
+                          <span style="margin-left: 5px;" class="spannofloat"> Days</span>
+                        </div>
+                        <div class="col gtcol">
+                          <span class="spannofloat"> of basic salary for each following years of work.</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Save changes -->
+            <div class="footerdiv">
+              <!-- <button [disabled]="addLeaveProfileForm.invalid || addGratuityForm.invalid " [ngClass]="addLeaveProfileForm.valid ? 'buttonColorPro' : 'buttonColorDis' " -->
+              <button [ngClass]="addLeaveProfileForm.valid ? 'buttonColorPro' : 'buttonColorDis' "
+                class="btn buttonSt btnScc martop" (click)="submitNewProfile()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                <p style="margin-bottom: 4px;">Save Changes</p>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- leave profile edit module -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="leave_Profile_Form_Edit_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title">Edit - Profile</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeEditLeaveProfileModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          <form [formGroup]="addLeaveProfileForm">
+            <div class="mainCardDiv defaultLeaveCard">
+              <div class="formDiv">
+                <div>
+                  <label>Profile Name*</label>
+                  <input class="form-control" formControlName="profileName" type="text" value=""
+                    placeholder="Enter a Profile Name">
+                </div>
+                <div
+                  *ngIf="addLeaveProfileForm.controls['profileName'].invalid && (addLeaveProfileForm.controls['profileName'].dirty || addLeaveProfileForm.controls['profileName'].touched)"
+                  class="customAlert alert alert-danger">
+                  <div class="error" *ngIf="addLeaveProfileForm.controls['profileName'].errors.required">
+                    Name is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Probation Period -->
+            <div class="mainCardDiv defaultLeaveCard">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div>
+                    <label>Select Effective Date*</label>
+                    <ejs-datepicker format="MMM d, y" dayHeaderFormat="Abbreviated" [showClearButton]="false" [allowEdit]='false'
+                    formControlName="effectiveDate"  [value]='dateValue'></ejs-datepicker>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                  <div style="display: flex; flex-direction: column;">
+                    <label>Select Probation Period*</label>
+                    <select class="form-control" id="probation-select" formControlName="probation"
+                      (change)="editchangeProbationPeriod($event)">
+                      <option *ngFor="let period of probationPeriodData" [value]="period.id">
+                        {{ period.text }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Leave -->
+            <div class="formDiv">
+              <div class="defaultLeaveCard">
+                <!-- Annual Leave -->
+                <table class="table" style="margin-bottom: 0rem;">
+                  <thead>
+                    <tr>
+                      <th scope="col">Leave Name</th>
+                      <th scope="col">Leave type</th>
+                      <th scope="col">Number of Days</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Enter a leave Name"
+                          formControlName="annualLeave">
+                      </td>
+                      <td>
+                        <select class="form-control" formControlName="annualleaveType">
+                          <option value="paid">Paid</option>
+                          <option value="paid">Half Paid</option>
+                          <option value="unpaid">Unpaid</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter leave Days"
+                          formControlName="annualleaveNum">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="qnadiv">
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave eligible methodology <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Accrued" name="eligibilityMethod" formControlName="eligibilityMethod"
+                        class="marleft">
+                      <p class="probdivtxt">Accrued methodology</p>
+                      <input type="radio" value="Full" name="eligibilityMethod" formControlName="eligibilityMethod"
+                        class="marleft">
+                      <p class="probdivtxt">Full availability</p>
+                    </div>
+                  </div>
+
+                  <!-- <div class="carforDiv" *ngIf="addLeaveProfileForm.controls['eligibilityMethod'].value == 'Full'">
+                    <p class="marbot0">Select full availability option<i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="contract" name="annualFullAvail" formControlName="annualFullAvail"
+                        class="marleft">
+                      <p class="probdivtxt">As per contract year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip=""></i>
+                      <input type="radio" value="calender" name="annualFullAvail" formControlName="annualFullAvail"
+                        class="marleft">
+                      <p class="probdivtxt">As per calender end of year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip=""></i>
+                    </div>
+                  </div> -->
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave calculation methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option calculates the number of days deducted from an employee's leave balance when leave is taken"></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Calendar" name="calculateAnuFrom" formControlName="calculateAnuFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Calendar Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based on all days of the week, including weekends and public holidays"></i>
+                      </p>
+                      <input type="radio" value="Working" name="calculateAnuFrom" formControlName="calculateAnuFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Working Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based only on the employee's official working days."></i></p>
+                    </div>
+                  </div>
+
+                  <!-- <div class="carforDiv">
+                    <p class="marAuto">Carry forward</p>
+                    <i class="fa fa-info-circle mar95"
+                      ngbTooltip="Maximum number of leave days allowed to carry forward"></i>
+                    <input type="number" class="form-control widthNum" formControlName="annualleaveCarryFow">
+                    <div
+                      *ngIf="addLeaveProfileForm.controls['annualleaveCarryFow'].invalid && (addLeaveProfileForm.controls['annualleaveCarryFow'].dirty || addLeaveProfileForm.controls['annualleaveCarryFow'].touched)"
+                      class="customAlert alert alert-danger" style="margin-left: 10px;">
+                      <div class="error" *ngIf="addLeaveProfileForm.controls['annualleaveCarryFow'].errors.pattern">
+                        Entered number should be less than 20.
+                      </div>
+                    </div>
+                  </div> -->
+
+
+                  <div>
+                    <div class="probdiv">
+                      <p class="marbot0">Leave allowed during Probation Period ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="By default leaves cannot be applied during probation period"></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isProbationLeave" formControlName="isProbationLeave"
+                          class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isProbationLeave" formControlName="isProbationLeave"
+                          class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv" style="margin: 12px 0px;">
+                      <p class="marbot0">Unused leave eligible for gratuity ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isUnUsedEligible" formControlName="isUnUsedEligible"
+                          class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isUnUsedEligible" formControlName="isUnUsedEligible"
+                          class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv" style="margin: 12px 0px;">
+                      <p class="marbot0" style="display: flex;align-items: center;">Set the minimum working hours for half-day leave</p>
+                      <i class="fa fa-info-circle questionMark" style="display: flex;align-items: center;"
+                      ngbTooltip="This option defines the minimum working hours for a day to qualify for half-day leave."></i>
+
+                      <div class="martopin">
+                        <input type="number" class="form-control" style="width:60px;"
+                        formControlName="halfDayMinHours">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-12"></div>
+
+                <!-- Sick Leave -->
+                <table class="table" style="margin-bottom: 0rem;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Enter a leave Name"
+                          formControlName="sickLeave">
+                      </td>
+                      <td>
+                        <select class="form-control" formControlName="sickleaveType">
+                          <option value="paid">Paid</option>
+                          <option value="paid">Half Paid</option>
+                          <option value="unpaid">Unpaid</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter leave Days"
+                          formControlName="sickleaveNum">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="qnadiv">
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave eligible methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Accrued" name="sickeligibilityMethod"
+                        formControlName="sickeligibilityMethod" class="marleft">
+                      <p class="probdivtxt">Accrued methodology</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Employees earn leave on a monthly basis, accumulating leave each month based on their entitiled leave days for the year."></i>
+                      <input type="radio" value="Full" name="sickeligibilityMethod"
+                        formControlName="sickeligibilityMethod" class="marleft">
+                      <p class="probdivtxt">Full availability</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Employees receive their entire leave entitlement based on their joining date for every year."></i>
+                    </div>
+                  </div>
+
+                  <div class="carforDiv" *ngIf="addLeaveProfileForm.controls['sickeligibilityMethod'].value == 'Full'">
+                    <p class="marbot0">Select full availability option
+                      <!-- <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i> -->
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="contract" name="is_full_eoy" formControlName="is_full_eoy"
+                        class="marleft">
+                      <p class="probdivtxt">As per contract year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave is available from the joining date to the day before the anniversary of the joining date, and it resets annually based on this cycle."></i>
+                      <input type="radio" value="calender" name="is_full_eoy" formControlName="is_full_eoy"
+                        class="marleft">
+                      <p class="probdivtxt">As per calender end of year</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="Leave is calculated up to December 31st, resets on January 1st, and the next year’s entitlement starts accordingly."></i>
+                    </div>
+                  </div>
+
+                  <div class="carforDiv">
+                    <p class="marbot0">Leave calculation methodology ? <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option calculates the number of days deducted from an employee's leave balance when leave is taken"></i>
+                    </p>
+                    <div class="martopin">
+                      <input type="radio" value="Calendar" name="calculateSickFrom" formControlName="calculateSickFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Calendar Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based on all days of the week, including weekends and public holidays"></i>
+                      </p>
+                      <input type="radio" value="Working" name="calculateSickFrom" formControlName="calculateSickFrom"
+                        class="marleft">
+                      <p class="probdivtxt">Working Days <i class="fa fa-info-circle questionMark"
+                          ngbTooltip="Leave is calculated based only on the employee's official working days."></i></p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv">
+                      <p class="marbot0">Leave allowed during Probation Period ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option specifies whether employees are permitted to take leave while they are still in their probation period."></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isProbationLeaveSick"
+                          formControlName="isProbationLeaveSick" class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isProbationLeaveSick"
+                          formControlName="isProbationLeaveSick" class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="probdiv" style="margin: 12px 0px;">
+                      <p class="marbot0">Unused leave eligible for gratuity ?</p>
+                      <i class="fa fa-info-circle questionMark"
+                        ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                      <div class="martopin">
+                        <input type="radio" value="yes" name="isUnUsedEligibleSick"
+                          formControlName="isUnUsedEligibleSick" class="marleft">
+                        <p class="probdivtxt">Yes</p>
+                        <input type="radio" value="no" name="isUnUsedEligibleSick"
+                          formControlName="isUnUsedEligibleSick" class="marleft">
+                        <p class="probdivtxt">No</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Cycling New Leave -->
+                <div>
+                  <div *ngIf="addCyclingLeaveForm?.get('leaveDetails')?.length > 0">
+                    <div *ngFor="let cyclingLeave of addCyclingLeaveForm?.get('leaveDetails')?.controls; let i = index"
+                      [formGroup]="cyclingLeave">
+                      <table class="table" style="margin-bottom: 0rem;">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input type="text" class="form-control" placeholder="Enter a leave Name"
+                                formControlName="leaveName">
+                            </td>
+                            <td>
+                              <select class="form-control" formControlName="leaveType">
+                                <option value="paid">Paid</option>
+                                <option value="half paid">Half Paid</option>
+                                <option value="unpaid">Unpaid</option>
+                              </select>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter leave Days"
+                                formControlName="leaveNum">
+                            </td>
+                            <td class="textCent">
+                              <i class="fa fa-trash actionButton" aria-hidden="true" (click)="deleteLeaveDetail(i)"></i>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="qnadiv">
+                        <div class="carforDiv">
+                          <p class="marbot0">Incident based leave ?</p>
+                          <i class="fa fa-info-circle questionMark"
+                            ngbTooltip="Incident-based leave refers to leave granted to employees in response to specific incidents or events, eg: Bereavement Leave, Peternity Leave"></i>
+                          <div class="martopin">
+                            <input type="radio" (change)="handleIncidentChange(i, true)" value="true"
+                              formControlName="incident" [checked]="cyclingLeave.get('incident').value === true"
+                              class="marleft">
+                            <p class="probdivtxt">Yes</p>
+                            <input type="radio" (change)="handleIncidentChange(i, false)" value="false"
+                              formControlName="incident" [checked]="cyclingLeave.get('incident').value === false"
+                              class="marleft">
+                            <p class="probdivtxt">No</p>
+                          </div>
+                        </div>
+
+                        <div class="carforDiv">
+                          <p class="marbot0">Leave eligible methodology ? <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="Leave Eligibility Methodology defines the method by which leave is allocated and managed."></i>
+                          </p>
+                          <div class="martopin">
+                            <input type="radio" value="Accrued" formControlName="eligibilityMethod" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Accrued methodology</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="Employees earn leave on a monthly basis, accumulating leave each month based on their entitiled leave days for the year."></i>
+                            <input type="radio" value="Full" formControlName="eligibilityMethod" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Full availability</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="Employees receive their entire leave entitlement based on their joining date for every year."></i>
+                          </div>
+                        </div>
+
+                        <div class="carforDiv">
+                          <p class="marbot0">Leave calculation methodology ? <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="This option calculates the number of days deducted from an employee's leave balance when leave is taken"></i>
+                          </p>
+                          <div class="martopin">
+                            <input type="radio" value="Calendar" formControlName="calculateFrom" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Calendar Days <i class="fa fa-info-circle questionMark"
+                                ngbTooltip="Leave is calculated based on all days of the week, including weekends and public holidays"></i>
+                            </p>
+                            <input type="radio" value="Working" formControlName="calculateFrom" class="marleft"
+                              [disabled]="cyclingLeave.get('incident').value">
+                            <p class="probdivtxt">Working Days <i class="fa fa-info-circle questionMark"
+                                ngbTooltip="Leave is calculated based only on the employee's official working days."></i>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div class="probdiv">
+                            <p class="marbot0">Leave allowed during Probation Period ?</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="This option specifies whether employees are permitted to take leave while they are still in their probation period."></i>
+                            <div class="martopin">
+                              <input type="radio" value="yes" formControlName="probation" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">Yes</p>
+                              <input type="radio" value="no" formControlName="probation" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">No</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div class="probdiv" style="margin: 12px 0px;">
+                            <p class="marbot0">Unused leave eligible for gratuity ?</p>
+                            <i class="fa fa-info-circle questionMark"
+                              ngbTooltip="This option determines whether unused leave can be counted towards the calculation of gratuity"></i>
+                            <div class="martopin">
+                              <input type="radio" value="yes" formControlName="gratuity" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">Yes</p>
+                              <input type="radio" value="no" formControlName="gratuity" class="marleft"
+                                [disabled]="cyclingLeave.get('incident').value">
+                              <p class="probdivtxt">No</p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div style="padding: 3px 10px 10px;">
+                    <i class="fa fa-plus-square actionButton" aria-hidden="true" (click)="addLeaveDetail()"></i>
+                    <span class="addleavetxt" (click)="addLeaveDetail()">Add Leave</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+            <!-- Overtime -->
+            <div class="formDiv">
+              <div class="defaultLeaveCard">
+                <div>
+                  <h6 style="margin-top: 5px; margin-left: 5px; padding-top: 10px; padding-left: 10px;">Overtime Options
+                  </h6>
+                  <hr>
+                  <form [formGroup]="addGratuityForm">
+                    <div class="col-12" style="margin-left: 5px; margin-top: 10px;">
+                      <strong><label>Calculate Weekday Over Time calculation based on :</label></strong>
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 5px;">
+                      <label> Basic Salary<input style="margin-left: 15px;" (click)="clickWeekOT('Basic Salary')"
+                          [checked]="radioButtonWeekBasic" type="radio" name="weekdayOverCalc" /></label>
+                      <label style="margin-left: 20px;"> Gross Salary<input style="margin-left: 15px;"
+                          (click)="clickWeekOT('Gross Salary')" [checked]="radioButtonWeekNetSal" type="radio"
+                          name="weekdayOverCalc" /></label>
+                    </div>
+                    <div class="col-12" style="margin-left: 10px;">
+                      Per Day Salary = {{selectedweekdayOverCalc}} {{perDayMessage}}
+                    </div>
+                    <div class="col-12" style="margin-left: 10px; margin-top: 5px;">
+                      Per Hour Salary = Per Day Salary / 8
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 10px; margin-top: 5px;">
+                      Weekday Overtime amount = Overtime Hours x Per hour salary x
+                      <ejs-dropdownlist style="margin-left: 5px; width: 70px; text-align: center"
+                        formControlName="setOTweek" [dataSource]="multiplyBy"></ejs-dropdownlist>
+                    </div>
+
+                    <div class="col-12" style="margin-left: 5px; margin-top: 10px;">
+                      <strong><label>Calculate Holiday Over Time calculation based on :</label></strong>
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 5px;">
+                      <label> Basic Salary<input style="margin-left: 15px;" (click)="clickHoliOT('Basic Salary')"
+                          [checked]="radioButtonHoliBasic" type="radio" name="holiOverCalc" /></label>
+                      <label style="margin-left: 20px;"> Gross Salary<input style="margin-left: 15px;"
+                          (click)="clickHoliOT('Gross Salary')" [checked]="radioButtonHoliNetSal" type="radio"
+                          name="holiOverCalc" /></label>
+                    </div>
+
+                    <div class="col-12" style="margin-left: 10px;">
+                      Per Day Salary = {{selectedholidayOverCalc}} {{perDayMessage}}
+                    </div>
+                    <div class="col-12" style="margin-left: 10px; margin-top: 5px;">
+                      Per Hour Salary = Per Day Salary / 8
+                    </div>
+                    <div class="col-12" style="display: flex; margin-left: 10px; margin-top: 5px;">
+                      Holiday Overtime amount = Overtime Hours x Per hour salary x
+                      <ejs-dropdownlist style="margin-left: 5px; width: 70px; text-align: center"
+                        formControlName="setOTholi" [dataSource]="multiplyBy"></ejs-dropdownlist>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- Gratuity -->
+            <div class="formDiv">
+              <div class="defaultLeaveCard">
+                <div>
+                  <h6 style="margin-top: 5px; margin-left: 5px; padding-top: 10px; padding-left: 10px;">Graduity Options
+                  </h6>
+                  <hr>
+                  <form [formGroup]="addGratuityForm">
+                    <div style="padding: 10px;">
+                      <Span><strong>Gratuity calculation day starts on </strong></Span>
+                      <div style="display: flex; padding-top: 5px; gap: 5px;" margin-top="5px">
+                        <div title="Gratuity calculation starts from Joining Date" style="display: flex;">
+                          <input type="radio" value="Joining" formControlName="gratuityStartDate">
+                          <p class="probdivtxt"> Joining Date <i class="fa fa-info-circle questionMark" placement="top"></i></p>
+                        </div>
+                        <div title="Gratuity calculation starts from Contract Date" style="display: flex;">
+                          <input type="radio" value="Contract" formControlName="gratuityStartDate">
+                          <p class="probdivtxt"> Contract Date <i class="fa fa-info-circle questionMark" placement="top"></i></p>
+                        </div>
+                        <div
+                          title="Calculation starts from the latest date, either the Joining Date or the Contract Date, whichever is more recent."
+                          style="display: flex;">
+                          <input type="radio" value="Latest" formControlName="gratuityStartDate">
+                          <p class="probdivtxt"> Whatever Latest <i class="fa fa-info-circle questionMark" placement="top"></i></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="padding: 10px;">
+
+                      <div class="grtrow">
+                        <div class="gtcol">
+                          <span class="spannofloat">Employee resigns before completing</span>
+                          <ejs-dropdownlist formControlName="firstYear" (change)="changeFirstYear($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectYear'></ejs-dropdownlist>
+                          <span class="spannofloat" style="margin-left: 5px;">Year of service, are not entitled to any
+                            gratuity pay.</span>
+                        </div>
+                      </div>
+
+                      <div class="grtrow">
+                        <div class="col-12 gtcol">
+                          <span class="spannofloat">Employee served between <strong>{{firstYear}}</strong> Year
+                            and</span>
+                          <ejs-dropdownlist formControlName="secondYear" (change)="changeSecondYear($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectYear'></ejs-dropdownlist>
+                          <span style="margin-left: 5px;" class="spannofloat">Year , entitled to gratuity pay based
+                            on</span>
+                        </div>
+                        <div class="col-12 gtcol">
+                          <ejs-dropdownlist formControlName="calcDaysOne" (change)="changefirstDay($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectDays'></ejs-dropdownlist>
+                          <span style="margin-left: 5px;" class="spannofloat">Days of Basic Salary for each year of
+                            work.</span>
+                        </div>
+                      </div>
+
+                      <div class="grtrow">
+                        <div class="col gtcol">
+                          <span class="spannofloat">Employee served more than <strong>{{secondYear}}</strong> Years
+                            entitled to gratuity pay based on </span>
+                          <ejs-dropdownlist formControlName="calcDaysTwo" (change)="changeSecondDay($event)"
+                            style="min-width: 60px; max-width: 60px;" [dataSource]='selectDays'></ejs-dropdownlist>
+                          <span style="margin-left: 5px;" class="spannofloat"> Days</span>
+                        </div>
+                        <div class="col gtcol">
+                          <span class="spannofloat"> of basic salary for each following years of work.</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="formDiv" style="display: flex;">
+              <input type="checkbox" id="isDefaultBoxEdit" class="marTopLef"
+                (change)="editCheckForDefaultProfile($event)" [checked]="editIsDefaultProfile">
+              <p class="marleft7">Set this Leave profile as default</p>
+              <i class="fa fa-info-circle" style="margin: 3px 5px;"
+                ngbTooltip="New employee created will have this leave profile by default."></i>
+            </div>
+
+
+            <!-- save Edited -->
+            <div class="footerdiv">
+              <!-- <button [disabled]="addLeaveProfileForm.invalid" [ngClass]="addLeaveProfileForm.valid ? 'buttonColorPro' : 'buttonColorDis'" -->
+              <button class="buttonColorPro" class="btn buttonSt btnScc" (click)="submitEditedProfile()">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                <p style="margin-bottom: 4px;">Save Changes</p>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- view leave profile model -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title model-titleExt" id="modal-basic-title">Leave Profile</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeProfileViewModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="row">
+        <div class="col innerBox">
+          <p class="marbot5 marTop5">Profile named <strong>{{viewProfileModelData?.profileName}}</strong> was created by
+            <strong>{{viewProfileModelData?.createdBy_Name}}</strong> on
+            <strong>{{viewProfileModelData?.created_date | date:'MMM d, y, h:mm a'}}</strong>.
+          </p>
+          <p class="marbot5 marTop5">Currently {{viewProfileModelData?.userNumber}} employee are assigned this profile.
+          </p>
+        </div>
+      </div>
+      <table class="table innerBoxTab">
+        <thead>
+          <tr>
+            <th style="font-weight: 600;">Leave Name</th>
+            <th style="font-weight: 600;">Leave Type</th>
+            <th style="font-weight: 600;">Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor='let leaveData of viewProfileModelData?.leaveDetails'>
+            <td>
+              <p style="margin-bottom: 1px;">{{leaveData.leave_name}}</p>
+              <p class="carryforwardDays"
+                *ngIf="leaveData.leave_name === 'Annual leave' && (leaveData.carry_forward_days !== null && leaveData.carry_forward_days !== '')">
+                Carry forward Days: {{leaveData.carry_forward_days }}
+              </p>
+            </td>
+            <td>
+              <p>{{leaveData.leave_type}}</p>
+            </td>
+            <td>
+              <p>{{leaveData.entitled_leave_days}} <span
+                  *ngIf="leaveData.leave_name === 'Annual leave'">{{leaveData.is_calendar_days === true ? ' (Calendar
+                  days)' : ' (Working days)'}}</span></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div>
+        <p class="marbot5 marTop5" *ngIf="viewProfileModelData?.leaveDetails[0].is_leave_on_probation === false">
+          <strong>Note: </strong> Employees applying through this leave profile can not take leave during Probation
+          period
+        </p>
+        <p class="marbot5 marTop5" *ngIf="viewProfileModelData?.leaveDetails[0].is_leave_on_probation === true">
+          <strong>Note: </strong> Employees applying through this leave profile can take leave during Probation period
+        </p>
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+        <div class="col innerBox">
+          <div class=" marTop5"><strong>Overtime Options</strong></div>
+          <hr>
+
+          <p class="marbot5 marTop5"><u>Calculate Weekday Over Time calculation based on :</u></p>
+          <p class="marbot5 marTop5">Per Day Salary = <strong>{{viewProfileModelData.week_ot_by}}
+            </strong>{{perDayMessage}}</p>
+          <p class="marbot5 marTop5">Per Hour Salary = Per Day Salary / 8</p>
+          <p class="marbot5 marTop5">Weekday Overtime amount = Overtime Hours x Per hour salary x
+            <strong>{{viewProfileModelData.ot_week}}</strong>
+          </p>
+
+          <p class="marbot5 marTop5"><u>Calculate Holiday Over Time calculation based on :</u></p>
+          <p class="marbot5 marTop5">Per Day Salary = <strong>{{viewProfileModelData.holi_ot_by}}</strong>
+            {{perDayMessage}}</p>
+          <p class="marbot5 marTop5">Per Hour Salary = Per Day Salary / 8</p>
+          <p class="marbot5 marTop5">Holiday Overtime amount = Overtime Hours x Per hour salary x
+            <strong>{{viewProfileModelData.ot_holi}}</strong>
+          </p>
+
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+        <div class="col innerBox">
+          <div class=" marTop5"><strong>Gratuity Options</strong></div>
+          <hr>
+          <div class="higlightpoint">
+            <p class="marbot5 marTop5">Employee resigns before completing
+              <strong>{{viewProfileModelData.gtStartYear}}</strong> Year of service, are not entitled to any gratuity
+              pay.
+            </p>
+          </div>
+          <div class="higlightpoint">
+            <p class="marbot5 marTop5">Employee served between <strong>{{viewProfileModelData.gtStartYear}}</strong> and
+              <strong>{{viewProfileModelData.gtSecondYear}}</strong> Years, entitled to gratuity pay based on
+              <strong>{{viewProfileModelData.gtCalcDayOne}}</strong> Days of Basic Salary for each year of work.
+            </p>
+          </div>
+          <div class="higlightpoint">
+            <p class="marbot5 marTop5">Employee served more than <strong>{{viewProfileModelData.gtSecondYear}}</strong>
+              Years entitled to gratuity pay based on <strong>{{viewProfileModelData.gtCalcDayTwo}}</strong> Days of
+              Basic Salary for each year of work.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</ng-template>
+
+<!-- Delete leave profile model -->
+<ng-template #deleteProfile let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title model-titleExt" id="modal-basic-title">Delete Leave Profile ?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeDeleteLeaveProfileViewModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Deleting the leave profile will effect <strong>{{usersAssignedToProfile.length}}</strong> employee.</p>
+    <ol>
+      <li *ngFor="let userData of usersAssignedToProfile">
+        {{userData.full_name}}
+      </li>
+    </ol>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="deleteLeaveProfile()">Delete</button>
+  </div>
+</ng-template>

@@ -1,0 +1,1679 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css" />
+<div style="padding: 40px 20px;" *ngIf="noAccessPage">
+
+  <div *ngIf="mainCommissionList">
+    <div class="row marbot" style="margin-bottom: 10px;">
+      <div class="col-7 datedisplay">
+        <p class="marbottp">{{dateTextToDisplay}}</p>
+      </div>
+      <div class="col-5" style="text-align: end;">
+        <div class="kt-subheader__toolbar">
+          <div class="kt-subheader__wrapper">
+            <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;display: inline-flex; margin: 0 0 0px 0;">
+              <li class="nav-item" (click)="getCommonDateType('all')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': fromStartTillNow}" data-toggle="tab" aria-selected="false">
+                  All
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('today')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isTodayActive}" data-toggle="tab" aria-selected="false">
+                  Today
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('weeks')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isWeekActive}" data-toggle="tab" aria-selected="true">
+                  Week
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('month')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isMonthActive}" data-toggle="tab" aria-selected="false">
+                  Month
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('six-month')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isSixMonthActive}" data-toggle="tab" aria-selected="false">
+                  Six Months
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('year')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isYearActive}" data-toggle="tab" aria-selected="false">
+                  Year
+                </a>
+              </li>
+              <li class="nav-item dasboardRange" style="margin-right: 20px;">
+                <a class="nav-link" data-toggle="tab"  id="defaultrange_modal" aria-selected="false" style="padding-bottom: 5px !important; padding-top: 5px;">
+                    <div style="display: flex;justify-content: start;">
+                      <div >Range</div>
+                      <div>
+                        <form [formGroup]="dateRangeForm" id="formId"  style="padding-left:4px; ">
+                          <ejs-daterangepicker [max]="maxRangeDate" placeholder='Select Date range' formControlName='daterange'></ejs-daterangepicker>
+                        </form>
+                      </div>
+                    </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row marbot rowCard" *ngIf="dataToDisplay.length !== 0">
+      <div class="col-3" *ngFor="let cardData of dataToDisplay">
+        <div class="topcardbx">
+          <h1 class="headerTxtxx">{{cardData.type}}</h1>
+          <div>
+            <p class="dispGrid" style="font-size: 15px; margin-bottom: 5px;">{{cardData.type === 'Under Negotiation' ? 'Estimated Value' : 'Total Value'}}
+              <span>{{orgCurrency}} {{cardData.totalAmt}}</span>
+            </p>
+            <p class="dispGrid" style="font-size: 15px; margin-bottom: 5px;">Count
+              <span>{{cardData.totalList}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row rowimp rowcard" style="padding: 0px; margin-bottom: 20px;padding-bottom: 20px;">
+      <div class="col-12">
+        <div class="row" style="padding: 10px 0px; border-bottom: 1px solid #ada8a8;">
+          <div class="col-6" style="margin: auto;">
+            <h3 style="font-size: 17px; font-weight: 300; margin-bottom: 0px;">{{pageName}}</h3>
+          </div>
+          <div class="col-6" style="text-align: end;">
+            <button class='btn btnColorAll' (click)="askForIncomeType()">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              {{pageName}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" style="margin-top: 15px;">
+        <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)" class="tabseStyle2">
+          <e-tabitems>
+            <e-tabitem *ngFor='let header of headerText' [header]='header'>
+              <ng-template #content *ngIf='header.text=="Under Negotiation" || header.text=="Confirmed" || header.text=="Declined"'>
+                <ejs-grid #CommissionServicedataTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true' (created)='serviceSearchKeyUp()'
+                  [dataSource]='allCommissionServicedata' allowTextWrap='true' height="350px" allowSorting='true'>
+                  <e-columns>
+
+                    <e-column field='createdDate' headerText='Created Date' width=90>
+                      <ng-template #template let-data>
+                        <span>{{data.createdDate | date: 'dd/MM/yyyy'}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='commisionId' headerText='Income ID' width=80>
+                      <ng-template #template let-data>
+                        <span>{{data.commisionId}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='incomeName' headerText='Income Type' width=80>
+                      <ng-template #template let-data>
+                        <span>{{data.incomeName}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Paid By' width=100>
+                      <ng-template #template let-data>
+                        <div *ngIf="data.customerName !== null" style="display: grid;">
+                          <span>{{data.customerName}}</span>
+                          <span style="font-size: 10px;">(Customer)</span>
+                        </div>
+                        <div *ngIf="data.customerName === null" style="display: grid;">
+                          <span>{{data.vendorName}}</span>
+                          <span style="font-size: 10px;">(Vendor)</span>
+                        </div>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Project Name' width=90>
+                      <ng-template #template let-data>
+                        <div *ngIf="data.projectName !== null" style="display: grid;">
+                          <span>{{data.projectName}}</span>
+                          <span (click)="toProjectLayout(data.projectId)" class="hyplink">
+                            {{data.project_prefix}}
+                          </span>
+                        </div>
+                        <div *ngIf="data.projectName === null" style="display: grid;">
+                          <span>{{data.ldName}}</span>
+                          <span style="font-size: 10px;">(Not Related to a Project)</span>
+                        </div>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column width=90>
+                      <ng-template #headerTemplate let-data>
+                        <span *ngIf="header.text=== 'Under Negotiation' || header.text=== 'Declined'">
+                          Estimated Amt
+                        </span>
+                        <span *ngIf="header.text=== 'Confirmed'">
+                          Confirmed Amt
+                        </span>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span *ngIf="header.text=== 'Under Negotiation' || header.text=== 'Declined'">
+                          {{orgCurrency}} {{data.estcomValue}}
+                        </span>
+                        <span *ngIf="header.text=== 'Confirmed'">
+                          {{orgCurrency}} {{data.comValue}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='status' headerText='status' width=90>
+                      <ng-template #template let-data>
+                        <span>{{data.status}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Action' width=90>
+                      <ng-template #template let-data>
+                        <i *ngIf="data.status !== 'Under Negotiation'" class="fa fa-eye" style="font-size: 15px; margin-right: 10px; cursor: pointer;" aria-hidden="true" placement="top" ngbTooltip="View {{data.incomeName}}" (click)="viewVendorsDiv(data)" container="body"></i>
+                        <i *ngIf="data.status === 'Under Negotiation'" class="fa fa-pencil-square-o" style="font-size: 15px; margin-right: 10px; cursor: pointer;" aria-hidden="true" placement="top" ngbTooltip="Update {{data.incomeName}}" (click)="updateVendorsDiv(data)" container="body"></i>
+                        <i *ngIf="data.status === 'Under Negotiation'" class="fa fa-trash" style="font-size: 15px; cursor: pointer;" aria-hidden="true" placement="top" ngbTooltip="Delete {{data.incomeName}}" container="body" (click)="deleteCommissionService(data)"></i>
+                      </ng-template>
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+            </e-tabitem>
+          </e-tabitems>
+        </ejs-tab>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!mainCommissionList" class="row rowimp rowcard" style="padding: 0px; margin-bottom: 20px;padding-bottom: 20px;">
+    <div class="col-12">
+      <div class="row" style="padding: 10px 0px; border-bottom: 1px solid #ada8a8;">
+        <div class="col-6" style="margin: auto;">
+          <h3 style="font-size: 17px; font-weight: 300; margin-bottom: 0px;">{{userFormType}} {{incomeTypeDataSelected.value}} {{'- '+commissionID}}</h3>
+        </div>
+        <div class="col-6" style="text-align: end;">
+          <button class='btn btnColorAll' (click)="closeAddCommissionDiv()">
+            <i class="fa fa-chevron-circle-left" aria-hidden="true" style="margin-top: -1px;"></i>
+            back
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" style="margin-top: 15px;" [formGroup]="addCommissionForm">
+      <div class="row">
+
+        <div class="col-12" style="display: flex; margin-bottom: 15px;">
+          <label style="padding-right: 15px; font-size: 15px;">Related to a Project ?</label>
+          <div style="margin-top: 1px;">
+            <label class="labelcss" style="font-size: 15px;">Yes</label>
+            <ejs-switch (change)='checkProject($event)' cssClass="swithcss"></ejs-switch>
+            <label class="labelcss" style="font-size: 15px;">No</label>
+          </div>
+        </div>
+
+        <div class="col-12 rowstyle">
+          <div class="row" *ngIf="showProjectOption">
+            <div class="col-4" style="margin: auto 0;display: flex;">
+              <button class='btn btnColorAll' (click)="openProjectModel()" style="display: flex;">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <p style="margin-bottom: 2px;margin-top: 0px;">Search a project</p>
+              </button>
+              <input class="e-input impe" style="margin-left: 10px;margin-bottom: 0px;" type="text" formControlName="commissionProjectName" placeholder="Selected Project"/>
+            </div>
+
+            <div class="col-8" *ngIf="selectedProjectData !== ''">
+              <div class="carddes">
+                <div class="row rowImp">
+                  <div class="col-6 colImp">
+                    <label class="cardHeader">Project Details</label>
+                    <div class="cardBody">
+                      <p class="marbot0 fontFam">Job No. : <span>{{selectedProjectData.project_prefix}}</span></p>
+                      <p class="marbot0 fontFam">Name: <span>{{selectedProjectData.project_name}}</span></p>
+                      <p class="marbot0 fontFam">Created On: <span>{{selectedProjectData.ondate}}</span></p>
+                    </div>
+                  </div>
+                  <div class="col-6 colImp colleft">
+                    <label class="cardHeader">Customer Details</label>
+                    <div class="cardBody">
+                      <p class="marbot0 fontFam">Customer Name: <span>{{selectedProjectData.cst_name}}</span></p>
+                      <p class="marbot0 fontFam">Phone: <span>{{selectedProjectData.phone}}</span></p>
+                      <p class="marbot0 fontFam">Email: <span>{{selectedProjectData.email}}</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectAProjectError" class="errorTxt">
+              *Please select a project
+            </div>
+          </div>
+
+          <div *ngIf="!showProjectOption" [formGroup]="addCommissionContactForm">
+            <div class="row">
+              <div class="col-4">
+                <label class="labelcss">Customer Name</label>
+                <input class="e-input" type="text" placeholder="Enter Name" formControlName="ldName" />
+                <div class="errorTxt" *ngIf="addCommissionContactForm.controls['ldName']?.errors?.required && !formSubmitAttemptForComContact">
+                  *Name is required
+                </div>
+              </div>
+              <div class="col-4">
+                <label class="labelcss">Email</label>
+                <input class="e-input" type="text" placeholder="Enter Email" formControlName="ldEmail" />
+                <div class="errorTxt" *ngIf="addCommissionContactForm.controls['ldEmail']?.errors?.required && !formSubmitAttemptForComContact">
+                  *Email is required
+                </div>
+              </div>
+              <div class="col-4">
+                <label style="padding-right: 5px;">Phone Number</label>
+                <ngx-intl-tel-input
+			            [enableAutoCountrySelect]="true"
+			            [enablePlaceholder]="false"
+			            [searchCountryFlag]="true"
+			            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+			            [selectFirstCountry]="false"
+			            [selectedCountryISO]="selectedISO"
+			            [maxLength]="15"
+			            [tooltipField]="TooltipLabel.Name"
+			            [phoneValidation]="false"
+			            [separateDialCode]="true"
+			            name="ldPhone"
+			            formControlName="ldPhone">
+			          </ngx-intl-tel-input>
+                <div class="errorTxt" *ngIf="addCommissionContactForm.controls['ldPhone']?.errors?.required && !formSubmitAttemptForComContact">
+                  *Phone is required
+                </div>
+              </div>
+              <div class="col-3 marTop">
+                <label class="labelcss">Address 1</label>
+                <input class="e-input" type="text" placeholder="Enter Building No., Street" formControlName="ldAddress" />
+                <div class="errorTxt" *ngIf="addCommissionContactForm.controls['ldAddress']?.errors?.required && !formSubmitAttemptForComContact">
+                  *Address is required
+                </div>
+              </div>
+              <div class="col-3 marTop">
+                <label class="labelcss">Address 2</label>
+                <input class="e-input" type="text" placeholder="Enter Building name, road name," formControlName="ldAddressSecond" />
+              </div>
+              <div class="col-3 marTop">
+                <label class="labelcss">City</label>
+                <ejs-dropdownlist [dataSource]='cityDataDropDown' formControlName="ldCity" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a City'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addCommissionContactForm.controls['ldCity']?.errors?.required && !formSubmitAttemptForComContact">
+                  *City is required
+                </div>
+              </div>
+              <div class="col-3 marTop">
+                <label style="padding-right: 5px;">Country</label>
+                <ejs-dropdownlist [dataSource]='countryDataDropDown' formControlName="ldCountry" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Country'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addCommissionContactForm.controls['ldCountry']?.errors?.required && !formSubmitAttemptForComContact">
+                  *Country is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 rowstyle">
+          <div class="row">
+            <div class="col-4">
+              <div style="display: flex; margin-bottom: 6px;">
+                <label style="padding-right: 10px; font-size: 15px;">Paid by :</label>
+                <div style="margin-top: 2px;">
+                  <label class="labelcss" style="font-size: 15px;">Vendor</label>
+                  <ejs-switch (change)="onVendOrCust($event)" cssClass="swithcss" [checked]="customerSelected"></ejs-switch>
+                  <label class="labelcss" style="font-size: 15px;">Customer</label>
+                </div>
+              </div>
+              <div *ngIf="!customerSelected">
+                <label style="padding-right: 5px;">Vendor</label>
+                <ejs-dropdownlist [dataSource]='allVendordropDownData' formControlName="vendor" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a vendor' (change)="choseSingleVendor($event)"></ejs-dropdownlist>
+                <p (click)="addNewVendorModel()" style="margin-bottom: 0px; margin-top: 6px; cursor: pointer; ">
+                  <i class="flaticon2-plus" style="background-color: #e91e63; border-radius: 50%; padding: 5px 6px;color: #fff; font-size: 8px;"></i>
+                  New Vendor
+                </p>
+              </div>
+              <div *ngIf="customerSelected">
+                <label style="padding-right: 5px;">Customer</label>
+                <ejs-dropdownlist [dataSource]='customerDataDropDown' formControlName="customer" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Customer' (change)="choseSingleCustomer($event)"></ejs-dropdownlist>
+                <p (click)="addNewCustomerModel()" style="margin-bottom: 0px; margin-top: 6px; cursor: pointer; ">
+                  <i class="flaticon2-plus" style="background-color: #e91e63; border-radius: 50%; padding: 5px 6px;color: #fff; font-size: 8px;"></i>
+                  New Customer
+                </p>
+              </div>
+
+            </div>
+
+            <div class="col-8">
+              <div class="carddes" *ngIf="custDataSelected !== ''">
+                <div class="row rowImp">
+                  <div class="col-6 colImp">
+                    <label class="cardHeader">Customer Details</label>
+                    <div class="cardBody">
+                      <p class="marbot0 fontFam">Name: {{custDataSelected?.cst_name}}</p>
+                      <p class="marbot0 fontFam">Email: {{custDataSelected?.email !== '' ? custDataSelected?.email : 'No Email'}}</p>
+                      <p class="marbot0 fontFam">Phone: {{custDataSelected?.phone !== '' ? custDataSelected?.phone : 'No Phone no.'}}</p>
+                    </div>
+                  </div>
+                  <div class="col-6 colImp colleft">
+                    <label class="cardHeader">Primary Contact</label>
+                    <div class="cardBody">
+                      <p class="marbot0 fontFam">Name: {{custDataSelected?.entityContact.name}}</p>
+                      <p class="marbot0 fontFam">Email: {{custDataSelected?.entityContact.email !== '' ? custDataSelected?.entityContact.emaill : 'No Email'}}</p>
+                      <p class="marbot0 fontFam">Phone: {{custDataSelected?.entityContact.phone !== '' ? custDataSelected?.entityContact.phone : 'No Phone no.'}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carddes" *ngIf="vendDataSelected !== ''">
+                <div class="row rowImp">
+                  <div class="col-6 colImp">
+                    <label class="cardHeader">Vendor Details</label>
+                    <div class="cardBody">
+                      <p class="marbot0 fontFam">Name: {{vendDataSelected?.name}}</p>
+                      <p class="marbot0 fontFam">Email: {{vendDataSelected?.vendorEmail}}</p>
+                      <p class="marbot0 fontFam">Phone: {{vendDataSelected?.vendorPhone}}</p>
+                      <p class="marbot0 fontFam">Activity: {{vendDataSelected?.categoryName}}</p>
+                      <p class="marbot0 fontFam">Type: {{vendDataSelected?.type}}</p>
+                    </div>
+                  </div>
+                  <div class="col-6 colImp colleft">
+                    <label class="cardHeader">Primary Contact</label>
+                    <div class="cardBody">
+                      <p class="marbot0 fontFam">Name: {{vendDataSelected?.entityContact[0].first_name+' '+vendDataSelected.entityContact[0].last_name}}</p>
+                      <p class="marbot0 fontFam">Email: {{vendDataSelected?.entityContact[0].email}}</p>
+                      <p class="marbot0 fontFam">Phone: {{vendDataSelected?.entityContact[0].phone}}</p>
+                      <p class="marbot0 fontFam">Designation: {{vendDataSelected?.entityContact[0].designation}}</p>
+                      <p class="marbot0 fontFam">Status: {{vendDataSelected?.statusName}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="vendorCustError !== ''" class="errorTxt" style="margin-left: 12px; margin-top: 10px;">
+              {{vendorCustError}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4 martop">
+          <label style="padding-right: 5px;">{{incomeTypeDataSelected.value}} Owner</label>
+          <ejs-dropdownlist #resetDropDown [dataSource]='leadOwnerDataDropDown' formControlName="commissionOwner" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Commission Owner'></ejs-dropdownlist>
+          <div class="errorTxt" *ngIf="addCommissionForm.controls['commissionOwner']?.errors?.required && !formSubmitAttemptForService">
+            *Commission Owner is required
+          </div>
+        </div>
+
+        <div class="col-4 martop">
+          <label style="padding-right: 5px;">{{incomeTypeDataSelected.value}} Type</label>
+          <ejs-dropdownlist #resetDropDown [dataSource]='typeSourceDataDropDown' formControlName="commissionType" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Commission Source'></ejs-dropdownlist>
+          <div class="errorTxt" *ngIf="addCommissionForm.controls['commissionType']?.errors?.required && !formSubmitAttemptForService">
+            *Commission Type is required
+          </div>
+        </div>
+
+        <div class="col-4 martop">
+          <label class="labelcss">Estimated Closing Date</label>
+          <ejs-datepicker format='MMM d, y' formControlName="closingDate" [min]='closingDateMinDate'></ejs-datepicker>
+          <div>
+            <ejs-radiobutton style="margin-right: 10px;margin-top: 6px;" *ngFor="let raDa of dateradio" label="{{raDa.value}}" name="default" (change)="selectClosingDate(raDa.id)"></ejs-radiobutton>
+          </div>
+          <div class="errorTxt" *ngIf="addCommissionForm.controls['closingDate']?.errors?.required && !formSubmitAttemptForService">
+            *Closing Date is required
+          </div>
+        </div>
+
+        <div class="col-3 martop">
+          <label style="padding-right: 5px;">Project Type</label>
+          <ejs-dropdownlist #resetDropDown [dataSource]='projectTypeData' formControlName="projectType" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Commission Owner'></ejs-dropdownlist>
+          <div class="errorTxt" *ngIf="addCommissionForm.controls['projectType']?.errors?.required && !formSubmitAttemptForService">
+            *Project type is required
+          </div>
+        </div>
+
+        <div class="col-3 martop">
+          <label class="labelcss">Estimated Contract Value</label>
+          <div style="display: flex;">
+            <span style="margin-top: 3px; margin-right: 5px;">{{orgCurrency}} </span>
+            <input class="e-input" type="number" placeholder="Enter Value" formControlName="estContValue" />
+          </div>
+          <div class="errorTxt" *ngIf="addCommissionForm.controls['estContValue']?.errors?.required && !formSubmitAttemptForService">
+            *Estimated Contract Value is required
+          </div>
+        </div>
+
+        <div class="col-3 martop">
+          <label class="labelcss">Estimated {{incomeTypeDataSelected.value}} Value</label>
+          <div style="display: flex;">
+            <span style="margin-top: 3px; margin-right: 5px;">{{orgCurrency}} </span>
+            <input class="e-input" type="number" placeholder="Enter Value" formControlName="estimatedValue" />
+          </div>
+          <div class="errorTxt" *ngIf="addCommissionForm.controls['estimatedValue']?.errors?.required && !formSubmitAttemptForService">
+            *Estimated {{incomeTypeDataSelected.value}} Value is required
+          </div>
+        </div>
+
+        <div class="col-3 martop">
+          <label class="labelcss">Description</label>
+          <textarea class="e-input" rows="1" formControlName="Description"></textarea>
+        </div>
+
+        <div class="col-12" style="margin: 25px 0px;">
+          <button class='btn btnColorAll' (click)="submitAddCommission()" style="width: 95px;">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="add_New_Cust_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add New Customer</h5>
+          <button type="button" class="close" (click)="closeNewCustomerModel()" aria-label="Close"></button>
+        </div>
+        <div style="overflow-y: auto; overflow-x: hidden;">
+          <div style="margin: 10px 15px;">
+            <label class="labelcss">Individual</label>
+            <ejs-switch (change)='changeContactType($event)' cssClass="swithcss"></ejs-switch>
+            <label class="labelcss">Organization</label>
+          </div>
+          <div class="row" [formGroup]="addContactForm" style="margin-right: 0px; margin-left: 0px;">
+
+            <div [formGroup]="addCompanyContactForm" *ngIf="showOrganizationForm" style="width: 100%;">
+              <div class="col-12">
+                <label class="labelcss">Company Name</label>
+                <input class="e-input" type="text" placeholder="Enter Company Name" formControlName="companyName" />
+                <div class="errorTxt" *ngIf="addCompanyContactForm.controls['companyName']?.errors?.required && !formSubmitAttemptForContact">
+                  *Company Name is required
+                </div>
+              </div>
+              <div class="col-12" style="margin-top: 10px;">
+                <label style="padding-right: 5px;">Industry</label>
+                <ejs-dropdownlist #resetDropDown [dataSource]='industryTypeDataDropDown' formControlName="industry" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Industry'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="addCompanyContactForm.controls['industry']?.errors?.required && !formSubmitAttemptForContact">
+                  *Industry is required
+                </div>
+              </div>
+              <div class="col-12" style="margin-top: 10px;">
+                <label class="labelcss">Website</label>
+                <input class="e-input" type="text" placeholder="Enter Website Address" formControlName="website" />
+              </div>
+            </div>
+
+            <div class="col-12" *ngIf="!showOrganizationForm">
+              <label class="labelcss">First Name</label>
+              <input class="e-input" type="text" placeholder="Enter First Name" formControlName="Fname" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['Fname']?.errors?.required && !formSubmitAttemptForContact">
+                *First Name is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;" *ngIf="!showOrganizationForm">
+              <label class="labelcss">Last Name</label>
+              <input class="e-input" type="text" placeholder="Enter Last Name" formControlName="Lname" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['Lname']?.errors?.required && !formSubmitAttemptForContact">
+                *Last Name is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label class="labelcss">Email</label>
+              <input class="e-input" type="text" placeholder="Enter Email" formControlName="email" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['email']?.errors?.required && !formSubmitAttemptForContact">
+                *Email is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label style="padding-right: 5px;">Phone Number</label>
+              <ngx-intl-tel-input
+			          [enableAutoCountrySelect]="true"
+			          [enablePlaceholder]="false"
+			          [searchCountryFlag]="true"
+			          [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+			          [selectFirstCountry]="false"
+			          [selectedCountryISO]="selectedISO"
+			          [maxLength]="15"
+			          [tooltipField]="TooltipLabel.Name"
+			          [phoneValidation]="true"
+			          [separateDialCode]="true"
+			          name="phone"
+			          formControlName="phone">
+			        </ngx-intl-tel-input>
+              <div class="errorTxt" *ngIf="addContactForm.controls['phone']?.errors?.required && !formSubmitAttemptForContact">
+                *Phone is required
+              </div>
+              <div class="errorTxt" *ngIf="addContactForm.controls['phone']?.invalid && !formSubmitAttemptForContact">
+                *Phone number is invalid
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label style="padding-right: 5px;">Country</label>
+              <ejs-dropdownlist #resetDropDown [dataSource]='countryDataDropDown' formControlName="Country" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Country'></ejs-dropdownlist>
+              <div class="errorTxt" *ngIf="addContactForm.controls['Country']?.errors?.required && !formSubmitAttemptForContact">
+                *Country is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label class="labelcss">Address</label>
+              <input class="e-input" type="text" placeholder="Enter Street 1" formControlName="street1" />
+            </div>
+            <div class="col-6">
+              <input class="e-input" type="text" placeholder="Enter Street 2" formControlName="street2" />
+            </div>
+            <div class="col-6">
+              <input class="e-input" type="text" placeholder="Enter city" formControlName="city" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['city']?.errors?.required && !formSubmitAttemptForContact">
+                *City is required
+              </div>
+            </div>
+
+            <div class="col-12" style="margin-top: 10px; margin-bottom: 10px;">
+              <label class="labelcss">Primary Contact</label>
+              <div *ngIf="!showOrganizationForm">
+                <ejs-checkbox (change)="isContactSame($event)" label="Same as above"></ejs-checkbox>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="labelcss">First Name</label>
+              <input class="e-input" type="text" placeholder="Enter First Name" formControlName="PFname" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['PFname']?.errors?.required && !formSubmitAttemptForContact">
+                *First Name is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label class="labelcss">Last Name</label>
+              <input class="e-input" type="text" placeholder="Enter Last Name" formControlName="PLname" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['PLname']?.errors?.required && !formSubmitAttemptForContact">
+                *Last Name is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label class="labelcss">Email</label>
+              <input class="e-input" type="text" placeholder="Enter Email" formControlName="Pemail" />
+              <div class="errorTxt" *ngIf="addContactForm.controls['Pemail']?.errors?.required && !formSubmitAttemptForContact">
+                *Email is required
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label style="padding-right: 5px;">Phone Number</label>
+              <ngx-intl-tel-input
+			          [enableAutoCountrySelect]="true"
+			          [enablePlaceholder]="false"
+			          [searchCountryFlag]="true"
+			          [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+			          [selectFirstCountry]="false"
+			          [selectedCountryISO]="selectedISO"
+			          [maxLength]="15"
+			          [tooltipField]="TooltipLabel.Name"
+			          [phoneValidation]="true"
+			          [separateDialCode]="true"
+			          name="phone"
+			          formControlName="Pphone">
+			        </ngx-intl-tel-input>
+              <div class="errorTxt" *ngIf="addContactForm.controls['Pphone']?.errors?.required && !formSubmitAttemptForContact">
+                *Phone is required
+              </div>
+              <div class="errorTxt" *ngIf="addContactForm.controls['Pphone']?.invalid && !formSubmitAttemptForContact">
+                *Phone number is invalid
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+              <label style="padding-right: 5px;">Relationship</label>
+              <ejs-dropdownlist #resetDropDown [dataSource]='relationDataDropDown' formControlName="Relationship" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Relationship'></ejs-dropdownlist>
+            </div>
+
+            <div class="col-12" style="margin-top: 10px;">
+              <button class='btn btnColorAll' (click)="submitAddContact()" style="margin-right: 10px;">
+                Add
+              </button>
+              <button class='btn btnColorAll' (click)="closeNewCustomerModel()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="update_Commission_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 800px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Update Status</h5>
+          <button type="button" class="close" (click)="closeUpdateStatus()" aria-label="Close"></button>
+        </div>
+        <div style="margin: 13px; overflow: auto;">
+
+          <div *ngIf="updateCommissionData?.vendorId !== ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Paid By Vendor</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Vendor Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Vendor :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">Status :</p>
+                      <p class="marbot0">Activity :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{vendDataSelected?.name}}</span>
+                      <span>{{vendDataSelected?.vendorEmail}}</span>
+                      <span>{{vendDataSelected?.vendorPhone}}</span>
+                      <span>{{vendDataSelected?.statusName}}</span>
+                      <span>{{vendDataSelected?.categoryName}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Primary Contact</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">Designation :</p>
+                      <p class="marbot0">Status :</p>
+                    </div>
+                    <div *ngFor="let pri of vendDataSelected?.entityContact" style="display: grid; margin-left: 10px;">
+                      <span>{{pri.name}}</span>
+                      <span>{{pri.email}}</span>
+                      <span>{{pri.phone}}</span>
+                      <span>{{pri.designation}}</span>
+                      <span>{{vendDataSelected?.type}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="updateCommissionData?.customerId !== ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Paid By Customer</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Customer Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">City :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{custDataSelected?.cst_name}}</span>
+                      <span>{{custDataSelected?.email !== '' ? custDataSelected?.email : 'No Email'}}</span>
+                      <span>{{custDataSelected?.phone !== '' ? custDataSelected?.phone : 'No Phone no.'}}</span>
+                      <span>{{custDataSelected?.city !== '' ? custDataSelected?.city : 'Not Added'}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Primary Contact</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">Relationship :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{custDataSelected?.entityContact?.name}}</span>
+                      <span>{{custDataSelected?.entityContact?.email !== '' ? custDataSelected?.entityContact?.email : 'No Email'}}</span>
+                      <span>{{custDataSelected?.entityContact?.phone !== '' ? custDataSelected?.entityContact?.phone : 'No Phone'}}</span>
+                      <span>{{custDataSelected?.entityContact?.relationship !== null ? custDataSelected?.entityContact?.relationship : 'Not Added'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="updateCommissionData?.projectId !== ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Related to Project</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Project Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Job No. :</p>
+                      <p class="marbot0">Start Date :</p>
+                      <p class="marbot0">Amount :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{projectData?.project_name}}</span>
+                      <span>{{projectData?.project_prefix}}</span>
+                      <span>{{projectData?.start_date | date:'MMM d, y'}}</span>
+                      <span>{{orgCurrency}} {{projectData?.projectAttribute.net_total_amount}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Primary Contact</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name : <span style="font-weight: 100; font-family: sans-serif;">{{projectData?.cst_name}}</span></p>
+                      <p class="marbot0">Email : <span style="font-weight: 100; font-family: sans-serif;">{{projectData?.email}}</span></p>
+                      <p class="marbot0">Phone : <span style="font-weight: 100; font-family: sans-serif;">{{projectData?.phone}}</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="updateCommissionData?.projectId === ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Not related to Project</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Customer Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{updateCommissionData?.ldName}}</span>
+                      <span>{{updateCommissionData?.ldEmail}}</span>
+                      <span>{{updateCommissionData?.ldPhone}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Other Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Address :</p>
+                      <p class="marbot0">Street :</p>
+                      <p class="marbot0">City :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{updateCommissionData?.ldAddress}}</span>
+                      <span>{{updateCommissionData?.ldAddressSecond !== null || updateCommissionData?.ldAddressSecond !== '' ? updateCommissionData?.ldAddressSecond : 'Not Added'}}</span>
+                      <span>{{updateCommissionData?.ldCity}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>{{updateCommissionData?.incomeName}} Details</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">{{updateCommissionData?.incomeName}} ID :</p>
+                      <p class="marbot0">Estimated Contract Value :</p>
+                      <p class="marbot0">Estimated Commission Value :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{updateCommissionData?.commisionId}}</span>
+                      <span>{{orgCurrency}} {{updateCommissionData?.estAmount | number: '.2'}}</span>
+                      <span>{{orgCurrency}} {{updateCommissionData?.estcomValue | number: '.2'}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Type :</p>
+                      <p class="marbot0">Status :</p>
+                      <p class="marbot0">Closing Date :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{updateCommissionData?.typeName}}</span>
+                      <span>{{updateCommissionData?.status}}</span>
+                      <span>{{updateCommissionData?.closingDate | date:'MMM d, y'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin: 0px 20px 10px 4px;">
+            <header class="martop">
+              <div>
+                <h1>Action</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="row" [formGroup]="updateIncomeForm" style="margin-right: 0px; margin-left: 0px;">
+              <div class="col-6">
+                <label style="padding-right: 5px;">Status</label>
+                <ejs-dropdownlist #resetDropDown [dataSource]='updateStatusDataDropDown' (change)="changeUpdateStatus($event)" formControlName="status" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Status'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="updateIncomeForm.controls['status']?.errors?.required && !formSubmitAttemptForUpdate">
+                  *Status is required
+                </div>
+              </div>
+              <div class="col-6"></div>
+              <div class="col-12" *ngIf="showFollowUpdate" style="margin-top: 15px;padding-right: 0px; padding-left: 0px;">
+                <div class="row" style="margin-right: 0px; margin-left: 0px;">
+                  <div class="col-4">
+                    <label class="labelcss" style="margin-bottom: -1px;">Contract Value</label>
+                    <label style="font-size: 10px; margin-bottom: 0px;">*Note: Please enter confirmed contract value</label>
+                    <div style="display: flex;">
+                      <span style="margin-top: 3px; margin-right: 5px;">{{orgCurrency}} </span>
+                      <input class="e-input" type="number" placeholder="confirmed contract value" formControlName="contValue" />
+                    </div>
+                    <div class="errorTxt" *ngIf="updateIncomeForm.controls['contValue']?.errors?.required && !formSubmitAttemptForUpdate">
+                      *Contract value is required
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <label class="labelcss" style="margin-bottom: -1px;">{{updateCommissionData?.incomeName}} Value</label>
+                    <label style="font-size: 10px; margin-bottom: 0px;">*Note: Excluding the VAT amount</label>
+                    <div style="display: flex;">
+                      <span style="margin-top: 3px; margin-right: 5px;">{{orgCurrency}} </span>
+                      <input class="e-input" type="number" placeholder="confirmed {{updateCommissionData?.incomeName}} value" formControlName="comValue" />
+                    </div>
+                    <div class="errorTxt" *ngIf="updateIncomeForm.controls['comValue']?.errors?.required && !formSubmitAttemptForUpdate">
+                      *{{updateCommissionData?.incomeName}} value is required
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <label class="labelcss" style="margin-bottom: -1px;">Total {{updateCommissionData?.incomeName}} Value</label>
+                    <label style="font-size: 10px; margin-bottom: 0px;">*Note: Including the VAT {{vatPercentage}}% amount</label>
+                    <p class="botmm">{{orgCurrency}} <span style="margin-top: 3px; margin-right: 5px;">{{getTotalValue() | number: '.2'}}</span></p>
+                  </div>
+                  <div class="col-6" style="margin-top: 10px;">
+                    <label class="labelcss">Upload Contract</label>
+                    <div style="display: flex;">
+                      <ejs-uploader (selected)="onFileSelectUpdateCom($event)" allowedExtensions = '.jpg,.png,.pdf' [autoUpload]='true' [buttons]="{ browse: 'Browse' }" multiple=false></ejs-uploader>
+                      <a style="margin-left: 10px;" *ngIf="updateIncomeForm.get('contractUrl')?.value !== ''" (click)="goToLinkNew(updateIncomeForm.get('contractUrl')?.value)" class="hyperlink">
+                        View Document
+                      </a>
+                    </div>
+                    <div class="errorTxt" *ngIf="updateIncomeForm.controls['contractUrl']?.errors?.required && !formSubmitAttemptForUpdate">
+                      *Contract Document is required
+                    </div>
+                  </div>
+                  <div class="col-6"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div style="margin: 0px 20px 10px 4px;" *ngIf="showFollowUpdate">
+            <header class="martop">
+              <div>
+                <h1>Add Payment Term</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="row" style="margin-right: 0px; margin-left: 0px;">
+              <div class="col-6">
+                <label>Default Payment Term selected</label>
+                <ejs-dropdownlist #resetPayDropDown [dataSource]='allPaymentTermDropData' [value]="defaultDropValue" [fields]='commonFields' (change)="selectToCopyFrom($event)"></ejs-dropdownlist>
+              </div>
+              <div class="col-6"></div>
+
+              <div class="col-12" [formGroup]="paymentMethodologyForm">
+                <table class="table" style="margin-bottom: 0px;">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 30%;">Payment terms</th>
+                      <th scope="col" style="width: 30%;">% of project value</th>
+                      <th scope="col" style="width: 20%;">Payment value</th>
+                      <th scope="col" style="width: 20%;">Trigger Date</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="paymentPolicy">
+                    <tr  *ngFor="let item of paymentPolicy.controls; let i = index" [formGroupName]="i">
+                      <td style="display: none">
+                        <p class="val">{{returnItem(i, item)}}</p>
+                      </td>
+                      <td>
+                        <input type="text" class="form-control" formControlName="paymentTerms">
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter Percentage" formControlName="perProjValue">
+                        <label *ngIf="paymentPolicy.controls[i].get('perProjValue')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                          Percentage required *
+                        </label>
+                        <label *ngIf="paymentPolicy.controls[i].get('perProjValue')?.errors?.max" class="errorreq">
+                          Percentage should not be more than 100%.
+                        </label>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" formControlName="projValue">
+                      </td>
+                      <td>
+                        <ejs-datepicker format='MMM d, y' formControlName="triggerDate" [min]='newClosingDateMinDate'></ejs-datepicker>
+                        <label *ngIf="paymentPolicy.controls[i].get('triggerDate')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                          Date is required
+                        </label>
+                      </td>
+                      <td>
+                        <i class="fa fa-trash" aria-hidden="true" (click)="deletePayment(i)" style="font-size: 16px; margin-top: 6px;"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div style="display: flex; margin: 10px 0px;">
+                  <button class="btn reqbtn"(click)="addItemRow()">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <p style="margin-bottom: 4px; margin-top: 0px;">Add New Payemnt Term</p>
+                  </button>
+                  <p *ngIf="showPercentageError" class="errorreq" style="margin-left: 10px;">Cannot Add more row as the Percentage of Project reached 100 %</p>
+                </div>
+                <div style="margin: 10px 0px; display: flex;">
+                  <p style="font-weight: 500; margin: auto 0px;">Credit Terms</p>
+                  <ejs-dropdownlist style="width: 20%; margin-left: 15px;" formControlName="creditTermsDays" [dataSource]='creditTermsDaysData' [fields]='commonFields'></ejs-dropdownlist>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12" style="margin: 25px 0px;">
+            <button class='btn btnColorAll' (click)="submitUpdateComm()" style="margin-right: 10px;">
+              Submit
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="view_Commission_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 800px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">View {{updateCommissionData?.incomeName}}</h5>
+          <button type="button" class="close" (click)="closeVendorsDiv()" aria-label="Close"></button>
+        </div>
+        <div style="margin: 13px; overflow: auto;">
+
+          <div *ngIf="updateCommissionData?.vendorId !== ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Paid By Vendor</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Vendor Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Vendor :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">Status :</p>
+                      <p class="marbot0">Activity :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{vendDataSelected?.name}}</span>
+                      <span>{{vendDataSelected?.vendorEmail}}</span>
+                      <span>{{vendDataSelected?.vendorPhone}}</span>
+                      <span>{{vendDataSelected?.statusName}}</span>
+                      <span>{{vendDataSelected?.categoryName}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Primary Contact</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">Designation :</p>
+                      <p class="marbot0">Status :</p>
+                    </div>
+                    <div *ngFor="let pri of vendDataSelected?.entityContact" style="display: grid; margin-left: 10px;">
+                      <span>{{pri.name}}</span>
+                      <span>{{pri.email}}</span>
+                      <span>{{pri.phone}}</span>
+                      <span>{{pri.designation}}</span>
+                      <span>{{vendDataSelected?.type}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="updateCommissionData?.customerId !== ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Paid By Customer</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Customer Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">City :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{custDataSelected?.cst_name}}</span>
+                      <span>{{custDataSelected?.email !== '' ? custDataSelected?.email : 'No Email'}}</span>
+                      <span>{{custDataSelected?.phone !== '' ? custDataSelected?.phone : 'No Phone no.'}}</span>
+                      <span>{{custDataSelected?.city !== '' ? custDataSelected?.city : 'Not Added'}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Primary Contact</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                      <p class="marbot0">Relationship :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{custDataSelected?.entityContact?.name}}</span>
+                      <span>{{custDataSelected?.entityContact?.email !== '' ? custDataSelected?.entityContact?.email : 'No Email'}}</span>
+                      <span>{{custDataSelected?.entityContact?.phone !== '' ? custDataSelected?.entityContact?.phone : 'No Phone'}}</span>
+                      <span>{{custDataSelected?.entityContact?.relationship !== null ? custDataSelected?.entityContact?.relationship : 'Not Added'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="updateCommissionData?.projectId !== ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Related to Project</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Project Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Job No. :</p>
+                      <p class="marbot0">Start Date :</p>
+                      <p class="marbot0">Amount :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{projectData?.project_name}}</span>
+                      <span>{{projectData?.project_prefix}}</span>
+                      <span>{{projectData?.start_date | date:'MMM d, y'}}</span>
+                      <span>{{orgCurrency}} {{projectData?.projectAttribute.net_total_amount}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Primary Contact</label>
+                  <div class="cardBody">
+                    <div>
+                      <p class="marbot0">Name : <span style="font-weight: 100; font-family: sans-serif;">{{projectData?.cst_name}}</span></p>
+                      <p class="marbot0">Email : <span style="font-weight: 100; font-family: sans-serif;">{{projectData?.email === '' ? 'No email added' : projectData?.email}}</span></p>
+                      <p class="marbot0">Phone : <span style="font-weight: 100; font-family: sans-serif;">{{projectData?.phone}}</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="updateCommissionData?.projectId === ''" style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>Not related to Project</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <label class="cardHeader">Customer Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Name :</p>
+                      <p class="marbot0">Email :</p>
+                      <p class="marbot0">Phone :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{updateCommissionData?.ldName}}</span>
+                      <span>{{updateCommissionData?.ldEmail}}</span>
+                      <span>{{updateCommissionData?.ldPhone}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <label class="cardHeader">Other Details</label>
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Address :</p>
+                      <p class="marbot0">Street :</p>
+                      <p class="marbot0">City :</p>
+                    </div>
+                    <div style="display: grid; margin-left: 10px;">
+                      <span>{{updateCommissionData?.ldAddress}}</span>
+                      <span>{{updateCommissionData?.ldAddressSecond !== null || updateCommissionData?.ldAddressSecond !== '' ? updateCommissionData?.ldAddressSecond : 'Not Added'}}</span>
+                      <span>{{updateCommissionData?.ldCity}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin: 0px 20px 10px 4px;">
+            <header>
+              <div>
+                <h1>{{updateCommissionData?.incomeName}} Details</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="carddes">
+              <div class="row rowImp">
+                <div class="col-6 colImp" style="border-right: 1px solid;">
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">{{updateCommissionData?.incomeName}} ID :
+                        <span style="font-weight: 400;">{{updateCommissionData?.commisionId}}</span>
+                      </p>
+                      <p class="marbot0">{{updateCommissionData?.incomeName}} Type :
+                        <span style="font-weight: 400;">{{updateCommissionData?.typeName}}</span>
+                      </p>
+                      <p class="marbot0">{{updateCommissionData?.incomeName}} Status :
+                        <span style="font-weight: 400;">{{updateCommissionData?.status}}</span>
+                      </p>
+                      <p class="marbot0">Closing Date :
+                        <span style="font-weight: 400;">{{updateCommissionData?.closingDate | date:'MMM d, y'}}</span>
+                      </p>
+                      <p class="marbot0">Project Type :
+                        <span style="font-weight: 400;">{{projectType}}</span>
+                      </p>
+                      <p class="marbot0">Uploaded Contract :
+                        <a (click)="goToLinkNew(updateCommissionData?.contractUrl)" class="hyperlink">
+                          View Contract
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 colImp">
+                  <div class="cardBody" style="display: flex;">
+                    <div>
+                      <p class="marbot0">Estimated Contract Value :
+                        <span style="font-weight: 400;">{{orgCurrency}} {{updateCommissionData?.estAmount | number: '.2'}}</span>
+                      </p>
+                      <p class="marbot0">Estimated Commission Value :
+                        <span style="font-weight: 400;">{{orgCurrency}} {{updateCommissionData?.estcomValue | number: '.2'}}</span>
+                      </p>
+                      <p class="marbot0">Confirmed Contract Value :
+                        <span style="font-weight: 400;">{{orgCurrency}} {{updateCommissionData?.amount | number: '.2'}}</span>
+                      </p>
+                      <p class="marbot0">Confirmed Commission Value :
+                        <span style="font-weight: 400;">{{orgCurrency}} {{updateCommissionData?.comValue | number: '.2'}}</span>
+                      </p>
+                      <p class="marbot0">{{vatPercentage}}% VAT on Confirmed Commission Value :
+                        <span style="font-weight: 400;">{{orgCurrency}} {{updateCommissionData?.incomeVat | number: '.2'}}</span>
+                      </p>
+                      <p class="marbot0">Total Confirmed Commission Value :
+                        <span style="font-weight: 400;">{{orgCurrency}} {{(updateCommissionData?.comValue + updateCommissionData?.incomeVat) | number: '.2'}}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin: 0px 20px 10px 4px;" *ngIf="CommissionPolicyData?.length !==0">
+            <header>
+              <div>
+                <h1>Applied Payment terms</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div>
+              <table class="table" style="border: 1px solid #dee2e6; font-size: 12px; text-align: center;">
+                <thead>
+                  <tr>
+                    <th scope="col">Payment terms</th>
+                    <th scope="col">% of project value</th>
+                    <th scope="col">Value (AED)</th>
+                    <th scope="col" colspan="2">Payment tigger date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let paydata of CommissionPolicyData?.commissionPolicyData">
+                    <th scope="row">
+                      {{paydata.term_name}}
+                    </th>
+                    <td>
+                      {{paydata.term_percent}}%
+                    </td>
+                    <td>
+                      {{orgCurrency}} {{paydata.term_value}}
+                    </td>
+                    <td>
+                      {{paydata.triggerDate | date:'MMM d, y'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td style="font-weight: 400;">
+                      {{CommissionPolicyData?.getPerTotal}}
+                    </td>
+                    <td style="font-weight: 400;">
+                      {{orgCurrency}} {{CommissionPolicyData?.getValueTotal | number: '.2'}}
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="Search_project_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Search a Project</h5>
+          <button type="button" class="close" (click)="closeCustomerSearchModel()" aria-label="Close"></button>
+        </div>
+        <div>
+          <ejs-grid #searchCostomerdataTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true' (created)='customerSearchKeyUp()'
+          [dataSource]='projectListingData' allowTextWrap='true' height="450px" allowSorting='true' style="margin: 10px;">
+            <e-columns>
+
+              <e-column field='start_date' headerText='Created Date' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.start_date | date: 'dd/MM/yyyy'}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='project_name' headerText='Project' width=80>
+                <ng-template #template let-data>
+                  <span>{{data.project_name}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='name' headerText='Customer' width=100>
+                <ng-template #template let-data>
+                  <span>{{data.name}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='phone' headerText='Phone' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.phone}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field='email' headerText='Email' width=90>
+                <ng-template #template let-data>
+                  <span>{{data.email}}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column headerText='Action' width=90>
+                <ng-template #template let-data>
+                  <i class="fa fa-check" aria-hidden="true" style="cursor: pointer;" (click)="selectProject(data)"></i>
+                </ng-template>
+              </e-column>
+
+            </e-columns>
+          </ejs-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="add_New_Ven_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add New Vendor</h5>
+          <button type="button" class="close" (click)="closeNewVendorModel()" aria-label="Close"></button>
+        </div>
+        <div style="overflow-y: auto; overflow-x: hidden;">
+          <div class="col-12" style="margin-top: 15px;" [formGroup]="vendorForm">
+
+            <header>
+              <div>
+                <h1>Basic Information</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="row">
+              <div class="col-4">
+                <label style="padding-right: 5px;">Vendor Name</label>
+                <input type="text" class="e-input" formControlName="name" placeholder="Enter name">
+                <div class="errorTxt" *ngIf="vendorForm.controls['name']?.errors?.required && !formSubmitAttemptForVendor">
+                  *Vendor name is required
+                </div>
+              </div>
+              <div class="col-4">
+                <label style="padding-right: 5px;">Vendor Type</label>
+                <ejs-dropdownlist #resetDropDownVen [dataSource]='vendorType' formControlName="type" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Vendor type'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="vendorForm.controls['type']?.errors?.required && !formSubmitAttemptForVendor">
+                  *Vendor Type is required
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="horns">Select a Vendor Activity</label>
+                <ejs-multiselect [dataSource]='vendorCategoryDropDown' formControlName="category" [fields]='commonFields' placeholder='Select a Vendor Activity'></ejs-multiselect>
+                <div class="errorTxt" *ngIf="vendorForm.controls['category']?.errors?.required && !formSubmitAttemptForVendor">
+                  *Vendor activity is required
+                </div>
+              </div>
+
+              <div class="col-12 smallMarTop">
+                <div class="row" [formGroup]="venPriConForm">
+                  <div class="col-3">
+                    <label style="padding-right: 5px;">Address 1</label>
+                    <textarea class="e-input" rows="1" placeholder="Enter Building, street" formControlName="address1"></textarea>
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['address1']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *Address is required
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <label style="padding-right: 5px;">Address 2</label>
+                    <textarea class="e-input" rows="1" placeholder="Enter Landmark" formControlName="address2"></textarea>
+                  </div>
+                  <div class="col-3">
+                    <label style="padding-right: 5px;">City</label>
+                    <input type="text" class="e-input" formControlName="city" placeholder="Enter city">
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['city']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *City is required
+                    </div>
+
+                    <ejs-dropdownlist [dataSource]='cityDataDropDown' formControlName="city" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a City'></ejs-dropdownlist>
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['city']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *City is required
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <label style="padding-right: 5px;">Country</label>
+                    <ejs-dropdownlist #resetDropDownVen [dataSource]='countryDataDropDown' formControlName="country" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Country'></ejs-dropdownlist>
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['country']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *Country is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-4 smallMarTop">
+                <label style="padding-right: 5px;">Vendor Phone Number</label>
+                <ngx-intl-tel-input
+                    [enableAutoCountrySelect]="true"
+                    [enablePlaceholder]="false"
+                    [searchCountryFlag]="true"
+                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                    [selectFirstCountry]="false"
+                    [selectedCountryISO]="selectedISO"
+                    [maxLength]="15"
+                    [tooltipField]="TooltipLabel.Name"
+                    [phoneValidation]="false"
+                    [separateDialCode]="true"
+                    formControlName="phone">
+                </ngx-intl-tel-input>
+                <div class="errorTxt" *ngIf="vendorForm.controls['phone']?.errors?.required && !formSubmitAttemptForVendor">
+                  *Vendor Phone is required
+                </div>
+              </div>
+              <div class="col-4 smallMarTop">
+                <label style="padding-right: 5px;">Vendor Email</label>
+                <input type="email" class="e-input" formControlName="email" placeholder="Enter Email">
+                <div class="errorTxt" *ngIf="vendorForm.controls['email']?.errors?.required && !formSubmitAttemptForVendor">
+                  *Email is required
+                </div>
+              </div>
+              <div class="col-4 smallMarTop">
+                <label style="padding-right: 5px;">Vendor Status</label>
+                <ejs-dropdownlist #resetDropDownVen [dataSource]='vendorStatusDropDown' formControlName="status" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Vendor status'></ejs-dropdownlist>
+                <div class="errorTxt" *ngIf="vendorForm.controls['status']?.errors?.required && !formSubmitAttemptForVendor">
+                  *Vendor status is required
+                </div>
+              </div>
+            </div>
+
+            <header class="martop">
+              <div>
+                <h1>Vendor Primary Contact</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="row" [formGroup]="venPriConForm">
+                  <div class="col-4">
+                    <label style="padding-right: 5px;">First Name</label>
+                    <input type="text" class="e-input" formControlName="PFname" placeholder="Enter First name">
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['PFname']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *First name is required
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <label style="padding-right: 5px;">Last Name</label>
+                    <input type="text" class="e-input" formControlName="PLname" placeholder="Enter Last name">
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['PLname']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *Last name is required
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <label style="padding-right: 5px;">Designation</label>
+                    <input type="text" class="e-input" formControlName="designation" placeholder="Enter First name">
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['designation']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *Designation is required
+                    </div>
+                  </div>
+                  <div class="col-12" style="margin: 10px 0px;">
+                    <ejs-checkbox (change)="isContactSameVen($event)" label="Same as above phone number and email"></ejs-checkbox>
+                  </div>
+                  <div class="col-6">
+                    <label style="padding-right: 5px;">Phone Number</label>
+                    <ngx-intl-tel-input
+                        [enableAutoCountrySelect]="true"
+                        [enablePlaceholder]="false"
+                        [searchCountryFlag]="true"
+                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                        [selectFirstCountry]="false"
+                        [selectedCountryISO]="selectedISO"
+                        [maxLength]="15"
+                        [tooltipField]="TooltipLabel.Name"
+                        [phoneValidation]="false"
+                        [separateDialCode]="true"
+                        formControlName="Pphone">
+                    </ngx-intl-tel-input>
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['Pphone']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *Phone number is required
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label style="padding-right: 5px;">Email</label>
+                    <input type="email" class="e-input" formControlName="Pemail" placeholder="Enter Email">
+                    <div class="errorTxt" *ngIf="venPriConForm.controls['Pemail']?.errors?.required && !formSubmitAttemptForVendorContact">
+                      *Email is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <header class="martop">
+              <div>
+                <h1>Vendor Documents</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+
+            <div class="row">
+              <div class="col-12">
+                <table class="table" style="margin-bottom: 2rem;table-layout:fixed">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:25%">Upload Type</th>
+                      <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:30%">Upload Document</th>
+                      <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:15%">Document Url</th>
+                      <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:20%">Document Expire Date</th>
+                      <th scope="col" style="border-bottom: 1px solid #dee2e6 !important; width:10%">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="venDocument">
+                    <tr *ngFor="let task of venDocument.controls; let i=index" [formGroupName]="i">
+
+                      <td>
+                        <ejs-dropdownlist (change)="getDocTypeChange($event, i)" [dataSource]='vendorDocDropDown' formControlName="documentType" [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Vendor Document'></ejs-dropdownlist>
+                        <div class="errorTxt" *ngIf="venDocument.controls[i].get('documentType')?.errors?.required && !formSubmitAttemptForVendor">
+                          *Document type is required
+                        </div>
+                      </td>
+
+                      <td>
+                        <div style="display: flex;">
+                          <ejs-uploader *ngIf="venDocument.controls[i].get('documentUrl')?.value === ''"
+                          (selected)="onFileSelected($event, i)" allowedExtensions = '.jpg,.png,.pdf' [autoUpload]='true' [buttons]="{ browse: 'Browse' }" multiple=false></ejs-uploader>
+                          <a *ngIf="venDocument.controls[i].get('documentUrl')?.value !== ''" (click)="goToLink(venDocument.controls[i].get('documentUrl')?.value)" class="hyperlink">
+                            View Document
+                          </a>
+                        </div>
+                        <div class="errorTxt" *ngIf="venDocument.controls[i].get('documentUrl')?.errors?.required && !formSubmitAttemptForVendor">
+                          *Vendor Document is required
+                        </div>
+                      </td>
+
+                      <td>
+                        <a *ngIf="venDocument.controls[i].get('documentUrl')?.value !== ''" (click)="goToLink(venDocument.controls[i].get('documentUrl')?.value)" class="hyperlink">
+                          View Document
+                        </a>
+                      </td>
+
+                      <td>
+                        <ejs-datepicker *ngIf="showExpireDate(task)"
+                         format='MMM d, y' formControlName="documentExpireDate" [min]='expDateMinDate' class="e-input"></ejs-datepicker>
+                        <p *ngIf="!showExpireDate(task)">No Expire Date required for this document.</p>
+                      </td>
+
+                      <td style="display: flex;">
+                        <i class="fa fa-trash commonBtn" style="padding: 6px; font-size: 15px; margin-right: 10px;" [ngClass]="checkToShowDelete(task) ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteDocumnetRow(i)"></i>
+                        <ejs-uploader *ngIf="venDocument.controls[i].get('documentUrl')?.value !== ''"
+                        (selected)="onFileSelected($event, i)" allowedExtensions = '.jpg,.png,.pdf' [autoUpload]='true' [buttons]="{ browse: 'Update' }" multiple=false></ejs-uploader>
+                      </td>
+                    </tr>
+                    <div>
+                      <button class="btn reqbtn"(click)="addNewDocumnetName()">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <p style="margin-bottom: 4px; margin-top: 0px;">Add New Document</p>
+                      </button>
+                    </div>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+
+            <div class="row">
+              <div class="col-12 martop">
+                <button class='btn btnColorAll' (click)="submitAddVendor()">
+                  Submit
+                </button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="incomeType" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Income Type</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 25px;">
+          <label style="font-weight: 500;">Please select an Income Type to proceed</label>
+          <ejs-dropdownlist #resetDropDown2 [dataSource]='incomeTypeDataDropDown' [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Income' (change)="selectAnIncome($event)"></ejs-dropdownlist>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="!noAccessPage">
+  <app-not-found></app-not-found>
+</div>

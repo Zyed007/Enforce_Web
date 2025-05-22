@@ -1,0 +1,160 @@
+.defaultCard{
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.notHeader{
+  padding: 10px 25px;
+}
+
+.notText{
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+
+.notbody{
+  padding: 10px 25px;
+}
+
+//listing
+.list-group {
+  border-radius: 3px;
+  background: #fff;
+}
+
+.m-b, .m-y {
+  margin-bottom: 1rem!important;
+}
+
+.list-group-item:first-child {
+  border-top-color: rgba(120,130,140,.13);
+}
+
+.list-group-item:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.list-group-item:first-child {
+  border-top-right-radius: .25rem;
+  border-top-left-radius: .25rem;
+}
+
+.b-l-primary {
+  border-left-color: #0cc2aa !important;
+}
+
+.b-l-danger {
+  border-left-color: #f44455;
+}
+
+.smallDot{
+  background: #38ed78;
+  padding: 6px;
+  margin-left: -10px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 700;
+}
+
+.list-group-item {
+  border-color: rgba(120,130,140,.065);
+  background: 0 0;
+  padding: 12px 16px;
+  background-clip: padding-box;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: .75rem 1.25rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.pull-right {
+  float: right;
+}
+
+.text-xs {
+  font-size: .75rem;
+}
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+.text-primary, .text-primary-hover a:hover {
+  color: #0cc2aa!important;
+}
+
+.mainNotDiv{
+  margin-top: 15px;
+}
+
+.notDateDivMAIN{
+  display: flex;
+}
+
+.notDateDiv{
+  width: 7%;
+  text-align: center;
+  border-right: 1px solid #b4b6b9;
+  padding: 9px;
+}
+
+.notDateFont{
+  font-size: 11px;
+  margin-bottom: 0px;
+}
+
+.textDivnot{
+  padding-left: 10px;
+}
+
+.textMainnot{
+  margin-bottom: 1px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.innerBox{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  margin: 0px 15px;
+  padding: 0px 8px;
+}
+
+.marbot5{
+  margin-bottom: 5px;
+}
+
+.marTop5{
+  margin-top: 5px !important;
+}
+
+.innerBoxTab{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  margin-top: 10px;
+}
+
+.carryforwardDays{
+  margin-bottom: 0px;
+  font-size: 10px;
+}
+
+.approvebtn{
+  background: #219d21;
+  color: white;
+}
+
+.declinebtn{
+  background: #9d2121;
+  color: white;
+}

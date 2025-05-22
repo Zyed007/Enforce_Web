@@ -1,0 +1,143 @@
+<div>
+  <div class="row" style="margin: 30px 0px;">
+    <div class="col">
+      <div class="defaultCard">
+        <div class="notHeader" >
+          <h1 class="notText">Notifications</h1>
+          <i class="fa fa-refresh" style="cursor: pointer; font-size: 20px;" (click)="refreshNotifications()"></i>
+
+        </div>
+        <div class="notbody">
+          <div>
+            <div>
+              <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                <li class="nav-item" style="display: flex;">
+                  <a class="nav-link active notification" data-toggle="tab" href="#NewNotification" (click)="tabevent('newNot')" role="tab">
+                    New notification
+                    <span class="badge"*ngIf="newNotificationData?.length !== 0 && NewNotificationDiv">
+                      {{newNotificationData?.length}}
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#ReadNotification" (click)="tabevent('oldNot')" role="tab">
+                    Old notification
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="mainNotDiv">
+              <div *ngIf="NewNotificationDiv && !isLoading">
+                <div *ngFor="let newData of newNotificationData" class="list-group m-b">
+                  <a (click)="viewEditNotification(newData, 'newMessage')" [ngClass]="newData.message === 'Approval Requested for New Profile' ? 'b-l-primary': 'b-l-danger'" class="list-group-item">
+                    <span [ngClass]="newData.message === 'Approval Requested for New Profile' ? 'text-primary': 'text-danger'" class="pull-right">
+                      <i class="fa fa-circle text-xs"></i>
+                    </span>
+                    <div class="notDateDivMAIN">
+                      <div class="notDateDiv">
+                        <p class="notDateFont">{{newData.created_date | date:'MMM d, y, h:mm a'}}</p>
+                      </div>
+                      <div class="textDivnot">
+                        <p class="textMainnot">{{newData.created_by_name}}</p>
+                        <p style="margin-bottom: 0px; margin-top: 0px;">{{newData.message}}</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div *ngIf="newNotificationData.length === 0" class="list-group m-b">
+                  <a class="list-group-item b-l-primary">
+                    <div class="textDivnot">
+                      <p style="margin-bottom: 0px;">No New Notification</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="ReadNotificationDiv && !isLoading">
+                <div *ngFor="let readData of readNotificationData" class="list-group m-b">
+                  <a (click)="viewEditNotification(readData, 'oldMessage')" [ngClass]="readData.message === 'Approval Requested for New Profile' ? 'b-l-primary': 'b-l-danger'" class="list-group-item">
+                    <span [ngClass]="readData.message === 'Approval Requested for New Profile' ? 'text-primary': 'text-danger'" class="pull-right">
+                      <i class="fa fa-circle text-xs"></i>
+                    </span>
+                    <div class="notDateDivMAIN">
+                      <div class="notDateDiv">
+                        <p class="notDateFont">{{readData.created_date | date:'MMM d, y, h:mm a'}}</p>
+                      </div>
+                      <div class="textDivnot">
+                        <p class="textMainnot">{{readData.created_by_name}}</p>
+                        <p style="margin-bottom: 0px;margin-top: 0px;">{{readData.message}}</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div *ngIf="readNotificationData.length === 0" class="list-group m-b">
+                  <a class="list-group-item b-l-primary">
+                    <div class="textDivnot">
+                      <p style="margin-bottom: 0px;">No notification history</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+                <div class="spinner-border text-secondary custom-spinner" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="adjustment_modul" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog importWid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Approval for Amount Adjustment</h5>
+        <button type="button" class="close" (click)="closeApproverAdjustmentModul()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 0px;"><strong>{{adjustmentData?.createdBy}}</strong> has applied for Amount Adjustment on {{adjustmentData?.createdDate | date:'MMMM dd, yyyy'}}.
+        <p>Reason mentioned was : {{adjustmentData?.description}}</p>
+        <p>Further are the details</p>
+        <div class="row cardless">
+          <div class="col-6 rowim">
+            <label class="marbot0 fontweight">Customer Name</label>
+            <p class="marbot0">{{adjustmentData?.customerName}}</p>
+          </div>
+          <div class="col-6 rowim">
+            <label class="marbot0 fontweight">Customer Phone</label>
+            <p class="marbot0">{{adjustmentData?.custPhone}}</p>
+          </div>
+          <div class="col-6 rowim">
+            <label class="marbot0 fontweight">Project</label>
+            <p class="marbot0">{{adjustmentData?.projectName}}</p>
+          </div>
+          <div class="col-6 rowim" style="margin: auto;">
+            <label class="marbot0 fontweight">{{adjustmentData?.isCommission ? '' : 'Not'}} Related to other income</label>
+          </div>
+          <div class="col-6 rowim">
+            <label class="marbot0 fontweight">Payment Status</label>
+            <p class="marbot0">{{adjustmentData?.paymentStatus}}</p>
+          </div>
+          <div class="col-6 rowim">
+            <label class="marbot0 fontweight">Amount</label>
+            <p class="marbot0">AED. {{adjustmentData?.amount | number: '.2'}}</p>
+          </div>
+        </div>
+        <div class="btndiv">
+          <button class='btn btnColorAll' (click)="submitAdjustment('Approve')" style="margin-right: 10px;">
+            Approve
+          </button>
+          <button class='btn btnColorAll' (click)="submitAdjustment('Decline')" style="margin-right: 10px;">
+            Decline
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

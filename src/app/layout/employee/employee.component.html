@@ -1,0 +1,251 @@
+<!-- <link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" /> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css" />
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <div *ngIf="showEmployeeList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+      <div class="col defaultDivleft">
+        <h1 class="empHeader">Employee</h1>
+      </div>
+      <div class="col defaultDiv">
+        <button type="button" class="button button-fill button-rose" *ngIf='showAddBtn'  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+          <i class="flaticon2-plus" ></i>
+          Add New
+        </button>
+        <button type="button"  (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;" > <i class="fa fa-angle-left"></i>
+          Back
+        </button>
+      </div>
+    </div>
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__body"  style=" border-bottom-color: #f0f3ff;color: #595d6e;" *ngIf='showList'>
+        <ejs-grid #grid [dataSource]='dataSource' height="430px" allowSorting='true' [toolbar]='toolbar' (toolbarClick)='toolbarClick($event)' [allowExcelExport]='true' [allowPdfExport]='true'>
+          <e-columns>
+            <e-column field='full_name' headerText='Employee Name' textAlign='' width=150>
+              <ng-template #template let-data>
+                <div>{{data.full_name}}, {{data.designation_name}}</div>
+                <div>{{data.workemail}}</div>
+              </ng-template>
+            </e-column>
+            <e-column field='employee_type_name' headerText='Type' textAlign='' width=120>
+              <ng-template #template let-data>
+                <span>{{data.employee_type_name}}</span>
+              </ng-template>
+            </e-column>
+            <e-column field='employee_status_name' headerText='Status' textAlign='' width=120>
+              <ng-template #template let-data>
+                <span >{{data.employee_status_name}}</span>
+              </ng-template>
+            </e-column>
+            <e-column field='phone' headerText='Number' width=90></e-column>
+            <e-column type='' textAlign='' headerText='Action'  width='90'>
+              <ng-template #template let-data>
+                <a   title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="empEdit(data.id,data.deptid)">
+                  <i class="la la-edit"></i>
+                </a>
+                <a *ngIf='showDeleteBtn'  title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="empDelete(data.id)">
+                  <i class="la la-trash"></i>
+                </a>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <div *ngIf="!showList" >
+        <app-not-found></app-not-found>
+      </div>
+    </div>
+  </div>
+
+  <!--  add employee form -->
+  <div *ngIf="showAddForm" class="formeditcreate">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="kt-portlet">
+          <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
+              <h3 *ngIf="showAddForm && !editable" class="kt-portlet__head-title">
+                Add New Employee
+              </h3>
+              <h3 *ngIf="editable && !showEmployeeList" class="kt-portlet__head-title">
+                Edit Employee
+              </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <div class="kt-portlet__head-wrapper">&nbsp;
+                <div class="kt-portlet__head-toolbar">
+                  <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                      <div class="dropdown dropdown-inline">
+                        <button type="button" class="button button-fill button-rose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="la la-download"></i> Import
+                        </button>
+                      </div>&nbsp;
+                      <div class="dropdown dropdown-inline">
+                        <button type="button" class="button button-fill button-rose"  (click)='EmployeeView()' aria-haspopup="true" aria-expanded="false">
+                          <i class="fa fa-angle-left" style="margin-bottom: 2px;"></i> Back
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                Basic Info
+              </h3>
+            </div>
+          </div>
+
+          <form class="kt-form kt-form--label-right" [formGroup]="empProfileForm">
+            <div class="kt-portlet__body" style="padding: 11px 25px 0px;">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <label>First Name:</label>
+                  <input class="form-control" type="text" placeholder="First Name" formControlName="firstName" autocomplete="off">
+                  <div class="form-text text-muted">
+                    <div style="color: red;"  *ngIf="isEmpProfileFieldValid('firstName')"> Required</div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label class="">Last Name:</label>
+                  <input class="form-control"  type="text" placeholder="Last Name" formControlName="lastName" autocomplete="off">
+                  <div class="form-text text-muted">
+                    <div style="color: red;"  *ngIf="isEmpProfileFieldValid('lastName')">Required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="kt-portlet">
+            <div class="kt-portlet__head">
+              <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                  Work Info
+                </h3>
+              </div>
+            </div>
+            <div class="kt-portlet__body" style="padding: 8px 25px;">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <label class="">Work Phone:</label>
+                  <div class="kt-input-icon">
+                    <ngx-intl-tel-input [cssClass]="'form-control'"
+                      [preferredCountries]="preferredCountries" [enableAutoCountrySelect]="false"
+                      [enablePlaceholder]="false" [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                      [selectFirstCountry]="false" [selectedCountryISO]="selectedISO" [maxLength]="15"
+                      [tooltipField]="TooltipLabel.Name" [separateDialCode]="true" [phoneValidation]="true" name="phone"
+                      [ngModelOptions]="{updateOn: 'blur'}" (ngModelChange)="onChange($event)" [(ngModel)]="phone">
+                    </ngx-intl-tel-input>
+                  </div>
+                  <div *ngIf="phoneInvalid" class="error-msg">
+                    <div>{{phoneErrorMsg}}</div>
+                  </div>
+                </div>
+                <div class="col-lg-6" *ngIf="leaveProfileType.length > 1">
+                  <label class="">Leave Profile:</label>
+                  <div class="kt-input-icon">
+                    <select2 [data]="leaveProfileType" [value]="leaveProfileValue"   [options]='lpSetupOptions' (valueChanged)="changedLeaveProfileType($event)"></select2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form class="kt-form kt-form--label-right" [formGroup]="empProfileForm" >
+              <div class="kt-portlet__body" style="padding-top: 0px;">
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label class="">Work Email:</label>
+                    <div class="kt-input-icon">
+                      <input type="text" class="form-control" placeholder="Work Email" formControlName="email">
+                    </div>
+                    <div *ngIf="empProfileForm.controls['email'].errors && !empProfileForm.controls['email'].pristine" class="error-msg">
+                      <div [hidden]="!empProfileForm.controls['email'].errors.pattern">Enter a valid email</div>
+                    </div>
+                    <div *ngIf="(addformSubmitted || editformSubmitted) && empProfileForm.get('email').value==''" class="error-msg">Required.</div>
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="">Joining Date:</label>
+                    <div class="kt-input-icon">
+                      <ejs-datepicker  formControlName="joinedDate" [max]="maxRangeDate" (change)="onstartDtChange($event)" [value]='startdateValue' placeholder='Enter date'></ejs-datepicker>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label title="Number of days of Sick Leave will be added to the Avialabilty" class=""> Sick Leave Opening Balance Days</label>
+                    <div class="kt-input-icon">
+                      <input type="text" formControlName="opnBlncSic" class="form-control" placeholder="Sick Leave Opening Balance"> 
+                    </div>
+                  </div>
+  
+                  <div class="col-lg-6">
+                    <label title="Number of days of Annual Leave will be added to the Avialabilty"   > Annual Leave Opening Balance Days</label>
+                    <div class="kt-input-icon">
+                      <input type="text" formControlName="openingBal" class="form-control" placeholder="Annual Leave Opening Balance">
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label class="">Leave Profile Effective From</label>
+                    <div class="kt-input-icon">
+                      <ejs-datepicker  formControlName="profileEffecti"  (change)="profileEffectiFrom($event)" [value]='effectDateValue' placeholder='Enter date'></ejs-datepicker>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label>Employee Type:</label>
+                    <div class="kt-input-icon">
+                      <select2 [data]="employeeType" [value]="empTypeValue" [options]='deptOptions'   (valueChanged)="changedEmpType($event)"></select2>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label>Department:</label>
+                    <select2 id="selWidth" [data]="departmentData" [options]='deptOptions'  [value]="deptValue" (valueChanged)="changedDept($event)"></select2>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label>Designation:</label>
+                    <select2  [data]="desgnData" [options]='deptOptions' [value]="desgnValue" (valueChanged)="changedDesgn($event)"></select2>
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="">Employee Grades:</label>
+                    <select2 [data]="employeeGrades" [value]="empGradValue" [options]='deptOptions'   (valueChanged)="changedEmpGrades($event)"></select2>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-6">
+                    <label class="">Contract Status:</label>
+                    <select2 [data]="employeeStatus" [value]="empStatusValue" [options]='deptOptions' (valueChanged)="changedContractStatus($event)"></select2>
+                  </div>
+                  <div class="col-lg-6">
+                    <label for="nameArea" style="padding-right: 5px;">Choose role</label>
+                    <select2 [data]="employeeRoleData" [value]="employeeRoleValue" [options]='deptOptions' (valueChanged)="changedemployeeRole($event)"></select2>
+                  </div>
+                </div>
+              </div>
+              <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                <div class="kt-form__actions">
+                  <div class="row">
+                    <div class="col-lg-10">
+                      <span *ngIf="AddNewSubmit">
+                        <button type="submit" class="btn btn-success" style="margin-right:10px;" (click)=" onAddNewSubmit($event)">Submit & New</button>
+                      </span>
+                      <button type="submit" class="btn btn-success" (click)="editable ? onEditSubmit($event) : onAddSubmit($event)">Submit</button>
+                      <button type="reset" class="btn btn-secondary" (click)='EmployeeView()' style="margin-left:10px;">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

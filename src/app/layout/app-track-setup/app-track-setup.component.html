@@ -1,0 +1,454 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <!-- begin:: Subheader -->
+  <div class="kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+                <div class="kt-subheader__main">
+                  <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+                  font-weight: 500;">
+                    Apps
+                  </h3>
+          
+                  <span class="kt-subheader__separator kt-hidden"></span>
+                  <div class="kt-subheader__breadcrumbs">
+                    <!-- <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-separator"></span>
+                    <a href="#" class="kt-subheader__breadcrumbs-link">
+                      Application
+                    </a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                  </div>
+                </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+               
+            </div>
+            <form [formGroup]="datePickerForm"   style="padding-left:4px; ">
+
+         <ejs-datepicker  formControlName="date" dayHeaderFormat="Abbreviated" [max]="maxRangeDate" [showClearButton]="false" [allowEdit]='false' [value]='dateValue' ></ejs-datepicker>
+         <span  class="date-container"  disabled="disabled"  style="border: none;pointer-events:none;position: absolute;left:24px"   >{{dateText}}</span> 
+</form>
+                        
+
+                    
+     
+      </div>
+  </div>
+  
+  <div class="kt-subheader   kt-grid__item" id="kt_subheader" >
+    <div class="kt-container  kt-container--fluid ">
+      
+      <div class="kt-subheader__main">
+       
+        <div class="caption">
+            <div class="actions">
+              <a class="btn btn-icon-only btn-icon-only btn-default" id="previousday" style="background-color:white ;border:none;">
+                <i class="fas fa-chevron-left" title="Previous Day" (click)="prevday()" style=" color: #3f77f4;" ></i>
+              </a>
+              <a></a>
+              <a class="btn btn-icon-only btn-icon-only btn-default" id="nextday" style="background-color: white;border:none;">
+                <i class="fas fa-chevron-right" title="Next Day" (click)="nextday()" style=" color: #3f77f4;"></i>
+              </a>
+            </div>
+          </div>
+        <span class="kt-subheader__separator kt-hidden"></span>
+        <div class="kt-subheader__breadcrumbs">
+        
+        </div>
+      </div>
+      <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+       
+         
+              <div class="" style="display: flex;justify-content:space-between;">
+                
+                  <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;
+                  margin-bottom: 15px;"> 
+                      <li class="nav-item" (click)="getTodaysData()">
+                          <a class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                                         Today
+                          </a>
+                      </li>
+                      <li class="nav-item" (click)="getWeeksData()">
+                          <a class="nav-link "  [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                                                 Week
+                          </a>
+                      </li>
+                      <li class="nav-item" (click)="getMonthsData()">
+                          <a class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                                           Month
+                          </a>
+                      </li>
+                      <!-- <li class="nav-item dasboardRange">
+                          <a class="nav-link"  [ngClass]="{'active': isRangeActive}" data-toggle="tab"  id="defaultrange_modal"  role="tab" aria-selected="false" style="padding-bottom: 5px !important;">
+                              <div style="display: flex;justify-content: start;"> 
+                                <div >Range</div>
+                                
+                                <div>
+                                  <form [formGroup]="dateRangeForm" id="formId"  style="padding-left:4px; ">
+                                   
+                                        <ejs-daterangepicker placeholder='Range' [max]="maxRangeDate" formControlName="daterange" >
+                                        
+                                        </ejs-daterangepicker>
+                                   
+                                    </form>
+                                </div>
+                              </div>          
+                              
+                                         
+                          </a>
+                        
+                      </li> -->
+                    
+                     
+                  </ul>
+              </div>
+         
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!--Begin::Dashboard 1-->
+    <!--Begin::Row-->
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader" *ngIf='headerText.length!=0' style="
+    background-color: #ffff; padding:15px;margin-bottom: 0px;padding-bottom: 22px;"  >
+      <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)"  >
+        <e-tabitems>
+                    <e-tabitem  *ngFor='let header of headerText' [header]='header'>
+                      <ng-template #content *ngIf='header.text=="Projects"' >
+                       <div  style="
+                           background-color: white;
+    /* padding: 0px 10px; */
+    margin-top: 15px;display: flex;">
+    <div class="col-xl-3 col-lg-4" >
+      <select2 [data]="projectData" [options]="activityOptions" [value]="projValue" (valueChanged)="changedProj($event)" ></select2> 
+
+    </div>
+ 
+      <div class="kt-widget__stats d-flex align-items-center flex-fill" *ngIf="project_start_date!==''" style="margin-top: -16px;width: 80%;" >
+        <div class="kt-widget__item"  >
+            <span class="kt-widget__date" style="margin-left: 14px;">
+                Start Date
+            </span>
+            <div class="kt-widget__label">
+                <span class="btn btn-label-brand btn-sm btn-bold btn-upper">{{project_start_date| date:'mediumDate'}}</span>
+            </div>
+        </div>
+
+        <div class="kt-widget__item" *ngIf="project_start_date!=''">
+            <span class="kt-widget__date" style="margin-left: 14px;">
+                Due Date
+            </span>
+            <div class="kt-widget__label">
+                <span class="btn btn-label-danger btn-sm btn-bold btn-upper">{{project_end_date| date:'mediumDate'}}</span>
+            </div>
+        </div>
+
+        <div class="kt-widget__item flex-fill" style="    margin-left: 20px;" *ngIf="project_start_date!=''">
+            <span class="kt-widget__subtitel">Progress</span>
+            <div class="kt-widget__progress d-flex  align-items-center">
+                <div class="progress" style="height: 5px;width: 40%;">
+                    <div class="progress-bar kt-bg-success" role="progressbar" [style.width] = "projectProgress? projectProgress+'%'  : 0 +'%'"  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="kt-widget__stat">
+                    {{projectProgress}}%
+                </span>
+            </div>
+        </div>
+    </div>
+     
+    
+
+                       </div>
+                    </ng-template>
+                                    
+                    <ng-template #content *ngIf='header.text=="Team"' >
+                      <div  style="
+                          background-color: white;
+   /* padding: 0px 10px; */
+   margin-top: 15px;">
+   <div class="col-xl-3 col-lg-4" >
+    <select2 [options]="options" [data]="teamData" [value]="teamValue"
+    (valueChanged)="changedTeam($event)"></select2>
+   </div>
+
+                      </div>
+                   </ng-template>
+                    <ng-template #content *ngIf='header.text=="Employees"' >
+                      <div  style="
+                          background-color: white;
+   /* padding: 0px 10px; */
+   margin-top: 15px;">
+   <div class="col-xl-4 col-lg-4" >
+     <select2 [data]="empData"  [options]="empOptions" [value]="empValue" (valueChanged)="changedEmp($event)" ></select2> 
+
+   </div>
+
+                      </div>
+                   </ng-template>
+                    </e-tabitem>
+                  
+                </e-tabitems>
+            </ejs-tab>
+          
+   
+    </div>
+    <div class="row">
+      <div  class="col-xl-12 col-lg-12">
+        <div class="control-section kt-portlet"  >
+ 
+          <div class="kt-portlet__head" style="">
+            <div class="kt-portlet__head-label"  >
+              <h3 class="kt-portlet__head-title" style="color: #5fb92a;">
+                 APPS
+              </h3>
+                       
+                
+            </div>
+            </div>
+            <div class="row" style="    margin: 0px 0px;
+            padding: 15px 20px;
+            overflow-y: auto;
+            height: 180px;">
+            
+              <div class="col-md-4 col-sm-6" *ngFor="let app of allApps">
+                <div  class="row">
+
+
+                  <div  class="col-md-9 col-sm-12" style="padding-bottom: 10px;">
+                    <div style="display: flex;background-repeat:no-repeat;">
+                    <div><img [src]='app.icon' style="height: 20px;" /></div>
+                    <input type="checkbox" (change)='onAllAppsCheckChange($event,app)' style="margin-top: 5px;
+                    margin-left: 8px;"> 
+                      <div style="width:150px;margin-left: 24px;">
+                      {{app.name}}
+                    </div>
+                    <div  style="width:100px;color: #777;">
+                      {{app.time}}
+                    </div>
+                                </div>
+                           
+                </div>
+                </div>
+              </div>
+
+           
+             
+            </div>
+            <div style="width: 50%;display: flex;    margin: 15px;">
+              <div class="col-xl-6 col-lg-6">
+                <select2 [options]="deptoptions" [data]="typeOfAppData" [value]="typeOfAppValue"
+                (valueChanged)="changedTypeofApp($event)"></select2>
+              </div>
+              <div style="margin-top: 2px;">
+                <button type="button" [disabled]="typeOfAppValue==''  || selectedDept.length==0"  class="button button-fill button-rose" (click)="AddEntityApps()" >Assign <i class="fa fa-angle-right"></i> 	</button>
+
+              </div>
+
+            </div>
+           
+            
+           
+             
+           
+           
+       
+       
+    </div>
+        </div>
+    </div>
+     <div class="row">
+      <div  class="col-xl-12 col-lg-12">
+        <div class="control-section kt-portlet"  >
+ 
+          <div class="kt-portlet__head" style="">
+            <div class="kt-portlet__head-label"  >
+              <h3 class="kt-portlet__head-title" style="color: #5fb92a;">
+                PRODUCTIVE APPS
+              </h3>
+                       
+                
+            </div>
+            </div>
+            <div class="row" style="    margin: 0px 0px;
+            padding: 15px 20px;
+            overflow-y: auto;
+            height: 180px;">
+            
+              <div class="col-md-4 col-sm-6" *ngFor="let app of productiveApps">
+                <div  class="row">
+
+
+                  <div  class="col-md-9 col-sm-12" style="padding-bottom: 10px;">
+                    <div style="display: flex;background-repeat:no-repeat;">
+                    <div><img [src]='app.icon' style="height: 20px;" /></div>
+                    <input type="checkbox" (change)='onProdAppsCheckChange($event,app)' style="margin-top: 5px;
+                    margin-left: 8px;"> 
+                      <div style="width:150px;margin-left: 24px;">
+                      {{app.name}}
+                    </div>
+                    <div  style="width:100px;color: #777;">
+                      {{app.time}}
+                    </div>
+                                </div>
+                           
+                </div>
+                </div>
+              </div>
+
+           
+             
+            </div>
+            <div style="width: 50%;display: flex;    margin: 15px;">
+              <div class="col-xl-6 col-lg-6">
+                <select2 [options]="deptoptions" [data]="typeOfAppData" [value]="prodAppValue"
+                (valueChanged)="changedProdApp($event)"></select2>
+              </div>
+              <div style="margin-top: 2px;">
+                <button type="button" [disabled]="prodAppValue=='' || selectedProdApps.length==0" (click)="UpdateProdEntityApps()"  class="button button-fill button-rose"  >Assign <i class="fa fa-angle-right"></i> 	</button>
+
+              </div>
+
+            </div>
+           
+            
+           
+             
+           
+           
+       
+       
+    </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+      <div  class="col-xl-12 col-lg-12">
+        <div class="control-section kt-portlet"  >
+ 
+          <div class="kt-portlet__head" style="">
+            <div class="kt-portlet__head-label"  >
+              <h3 class="kt-portlet__head-title" style="color: #5fb92a;">
+                UNPRODUCTIVE APPS
+              </h3>
+                       
+                
+            </div>
+            </div>
+            <div class="row" style="    margin: 0px 0px;
+            padding: 15px 20px;
+            overflow-y: auto;
+            height: 180px;">
+            
+              <div class="col-md-4 col-sm-6" *ngFor="let app of unProductiveApps">
+                <div  class="row">
+
+
+                  <div  class="col-md-9 col-sm-12" style="padding-bottom: 10px;">
+                    <div style="display: flex;background-repeat:no-repeat;">
+                    <div><img [src]='app.icon' style="height: 20px;" /></div>
+                    <input type="checkbox" (change)='onUnProdAppsCheckChange($event,app)' style="margin-top: 5px;
+                    margin-left: 8px;"> 
+                      <div style="width:150px;margin-left: 24px;">
+                      {{app.name}}
+                    </div>
+                    <div  style="width:100px;color: #777;">
+                      {{app.time}}
+                    </div>
+                                </div>
+                           
+                </div>
+                </div>
+              </div>
+
+           
+             
+            </div>
+            <div style="width: 50%;display: flex;    margin: 15px;">
+              <div class="col-xl-6 col-lg-6">
+                <select2 [options]="deptoptions" [data]="typeOfAppData" [value]="unprodAppValue"
+                (valueChanged)="changedUnprodApp($event)"></select2>
+              </div>
+              <div style="margin-top: 2px;">
+                <button type="button" [disabled]="unprodAppValue=='' || selectedUnProdApps.length==0"  class="button button-fill button-rose" (click)="UpdateUnProdEntityApps()" >Assign <i class="fa fa-angle-right"></i> 	</button>
+
+              </div>
+
+            </div>
+           
+            
+           
+             
+           
+           
+       
+       
+    </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+      <div  class="col-xl-12 col-lg-12">
+        <div class="control-section kt-portlet"  >
+ 
+          <div class="kt-portlet__head" style="">
+            <div class="kt-portlet__head-label"  >
+              <h3 class="kt-portlet__head-title" style="color: #5fb92a;">
+                NEUTRAL APPS
+              </h3>
+                       
+                
+            </div>
+            </div>
+            <div class="row" style="    margin: 0px 0px;
+            padding: 15px 20px;
+            overflow-y: auto;
+            height: 180px;">
+            
+              <div class="col-md-4 col-sm-6" *ngFor="let app of neutralApps">
+                <div  class="row">
+
+
+                  <div  class="col-md-9 col-sm-12" style="padding-bottom: 10px;">
+                    <div style="display: flex;background-repeat:no-repeat;">
+                    <div><img [src]='app.icon' style="height: 20px;" /></div>
+                    <input type="checkbox" (change)='onNeutralAppsCheckChange($event,app)' style="margin-top: 5px;
+                    margin-left: 8px;"> 
+                      <div style="width:150px;margin-left: 24px;">
+                      {{app.name}}
+                    </div>
+                    <div  style="width:100px;color: #777;">
+                      {{app.time}}
+                    </div>
+                                </div>
+                           
+                </div>
+                </div>
+              </div>
+
+           
+             
+            </div>
+            <div style="width: 50%;display: flex;    margin: 15px;">
+              <div class="col-xl-6 col-lg-6">
+                <select2 [options]="deptoptions" [data]="typeOfAppData" [value]="neutralAppValue"
+                (valueChanged)="changedNeutralApp($event)"></select2>
+              </div>
+              <div style="margin-top: 2px;">
+                <button type="button" [disabled]="neutralAppValue=='' || selectedNeutralApps.length==0" class="button button-fill button-rose" (click)="UpdateNeutralEntityApps()"  >Assign <i class="fa fa-angle-right"></i> 	</button>
+
+              </div>
+
+            </div>
+           
+            
+           
+             
+           
+           
+       
+       
+    </div>
+        </div>
+    </div>
+  </div>

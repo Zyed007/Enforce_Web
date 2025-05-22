@@ -1,0 +1,190 @@
+.defaultCard{
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.notHeader{
+  padding: 10px 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notText{
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+
+.notbody{
+  padding: 10px 25px;
+}
+
+//listing
+.list-group {
+  border-radius: 3px;
+  background: #fff;
+}
+
+.m-b, .m-y {
+  margin-bottom: 1rem!important;
+}
+
+.list-group-item:first-child {
+  border-top-color: rgba(120,130,140,.13);
+}
+
+.list-group-item:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.list-group-item:first-child {
+  border-top-right-radius: .25rem;
+  border-top-left-radius: .25rem;
+}
+
+.b-l-primary {
+  border-left-color: #0cc2aa !important;
+}
+
+.b-l-danger {
+  border-left-color: #f44455;
+}
+
+.notification {
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  padding: 5px 7px;
+  border-radius: 50%;
+  background-color: #2e3e4e;
+  color: white;
+  border: 1px solid white;
+}
+
+.list-group-item {
+  border-color: rgba(120,130,140,.065);
+  background: 0 0;
+  padding: 12px 16px;
+  background-clip: padding-box;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: .75rem 1.25rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.pull-right {
+  float: right;
+}
+
+.text-xs {
+  font-size: .75rem;
+}
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+.text-primary, .text-primary-hover a:hover {
+  color: #0cc2aa!important;
+}
+
+.mainNotDiv{
+  margin-top: 15px;
+}
+
+.notDateDivMAIN{
+  display: flex;
+}
+
+.notDateDiv{
+  width: 7%;
+  text-align: center;
+  border-right: 1px solid #b4b6b9;
+  padding: 9px;
+}
+
+.notDateFont{
+  font-size: 11px;
+  margin-bottom: 0px;
+}
+
+.textDivnot{
+  padding-left: 10px;
+}
+
+.textMainnot{
+  margin-bottom: 1px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.innerBox{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  margin: 0px 15px;
+  padding: 0px 8px;
+}
+
+.marbot5{
+  margin-bottom: 5px;
+}
+
+.marTop5{
+  margin-top: 5px !important;
+}
+
+.cardless{
+  margin: 0px;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+}
+
+.rowim{
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.marbot0{
+  margin-bottom: 0px;
+}
+
+.fontweight{
+  font-weight: 600;
+}
+
+.btnColorAll{
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btndiv{
+  padding: 15px 10px;
+  text-align: end;
+  border-top: 1px solid #b6b8b9;
+  margin-top: 20px;
+}
+.custom-spinner {
+  width: 70px; 
+  height: 70px; 
+  border-width: 6px; 
+  // border-color: #e91e63 !important;
+}

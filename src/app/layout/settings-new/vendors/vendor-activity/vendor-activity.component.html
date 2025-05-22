@@ -1,0 +1,57 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Vendor Activity</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openVenAct('Add')" *ngIf="vendorListing">Add Vendor Activity</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToVendor()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div *ngIf="vendorListing">
+      <ejs-grid #vendActGrid [dataSource]='actVendorTableData' (created)='serviceSearchKeyUp()' [toolbar]='actVenGridToolItems' height='300px'>
+        <e-columns>
+          <e-column field='createdDate' headerText='Created Date'>
+            <ng-template #template let-data>
+              <div>
+                <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field='createdBy' headerText='Created By'></e-column>
+          <e-column field='name' headerText='Activity'></e-column>
+          <e-column field='description' headerText='Description'></e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="openVenAct(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteVendAct(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="pad2515" *ngIf="!vendorListing">
+      <div class="row" [formGroup]="actVendorForm">
+        <div class="col-6">
+          <label class="labelcss">Activity Name</label>
+          <input class="e-input" type="text" placeholder="Enter name" formControlName="actName" />
+          <div class="errorTxt" *ngIf="actVendorForm.controls['actName']?.errors?.required && formSubmitAttemptForActivity">
+            *Activity Name is required
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="labelcss">Description</label>
+          <textarea class="e-input" rows="1" formControlName="actDesc" placeholder="Enter Description"></textarea>
+        </div>
+      </div>
+      <div style="margin-top: 20px;">
+        <button class='btn btnColorAlll' (click)="submitActivity()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

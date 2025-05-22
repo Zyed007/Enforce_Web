@@ -1,0 +1,193 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Payment Terms</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openPaymentTermModel()">Add Payment Terms</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainEstimation()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div class="row marTop18">
+      <div class="col-12 whitee">
+        <ejs-grid #paymentGrid [dataSource]='paymentPolicyData' (created)='paymentSearchKeyUp()' [toolbar]='paymentGridToolItems' height='300px'>
+          <e-columns>
+            <e-column field='createdDate' headerText='Created Date'>
+              <ng-template #template let-data>
+                <div>
+                  <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column field='emp_name' headerText='Created By'></e-column>
+            <e-column field='paymentName' headerText='Policy Name'>
+              <ng-template #template let-data>
+                <div style="display: flex;">
+                  <p style="margin-bottom: 0px;">{{data.paymentName}}</p>
+                  <span *ngIf="data.is_default" class="defaulthjj">
+                    Default
+                    <i class="fa fa-info-circle" style="cursor: pointer; margin-left: 3px;" container="body" ngbTooltip="this Payment policy will be set automatically while creating a new project." placement="top"></i>
+                  </span>
+                </div>
+              </ng-template>
+            </e-column>
+            <e-column field='serviceName' headerText='Contract Type'></e-column>
+            <e-column headerText='Action'>
+              <ng-template #template let-data>
+                <div>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Template" container="body" (click)="editPayTemp(data)"></i>
+                  <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Template" container="body" (click)="deletePayTemp(data)"></i>
+                </div>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="rightModal700">
+  <!-- leave profile create module -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="Payment_terms_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1100px;">
+      <div class="modal-content notifyModal" >
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" *ngIf="!editPaymentPolicy">Create - Payment terms</h5>
+          <h5 class="modal-title" *ngIf="editPaymentPolicy">Edit - Payment terms</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closePaymentTermModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          <p *ngIf="contractTypeData?.length === 0">It seems there is no Contract type. Please create a contract type to start with payment terms.</p>
+          <form [formGroup]="paymentMethodologyForm" *ngIf="contractTypeData?.length !== 0">
+            <div class="mainCardDiv defaultLeaveCard">
+              <div class="row">
+                <div class="col-3">
+                  <div>
+                    <label>Payment Term Name*</label>
+                    <input class="form-control" formControlName="paymentName" type="text" placeholder="Enter a Payment Name">
+                  </div>
+                  <div class="errorreq" *ngIf="paymentName?.invalid && isValidFormSubmitted != null && !isValidFormSubmitted">
+                      Payment Term Name is required*.
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label>Contract Type</label>
+                  <ejs-dropdownlist formControlName="contractType" [dataSource]='contractTypeData' [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a contract type' (change)="changeContractType($event)"></ejs-dropdownlist>
+                  <div class="errorreq" *ngIf="contractType?.invalid && isValidFormSubmitted != null && !isValidFormSubmitted">
+                    Contract Type is required on basis of which Stage/Milestone are fetched*.
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label>Credit Terms</label>
+                  <ejs-dropdownlist formControlName="creditTermsDays" [dataSource]='creditTermsDaysData' [fields]='commonFields'></ejs-dropdownlist>
+                </div>
+                <div class="col-3">
+                  <label>Add Retention</label>
+                  <div>
+                    <ejs-radiobutton label="Yes" name="Retension" (change)="checkRetension('Yes')" [checked]="checkRetType"></ejs-radiobutton>
+                    <ejs-radiobutton style="margin-left: 10px;" label="No" name="Retension" [checked]="!checkRetType" (change)="checkRetension('No')"></ejs-radiobutton>
+                  </div>
+                  <div *ngIf="checkRetType" style="margin-top: 12px !important;">
+                    <label>Add retention percentage</label>
+                    <input class="e-input" type="number" formControlName="retensionPercentage" placeholder="Enter percentage"/>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class="table" style="margin-bottom: 0px;">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 15%;">Payment terms</th>
+                        <th scope="col" style="width: 19%;">% of project value</th>
+                        <th scope="col" style="width: 19%;">Stage/Milestone</th>
+                        <th scope="col" colspan="2" style="text-align: center;">Tigger</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="paymentPolicy">
+                      <tr  *ngFor="let item of paymentPolicy.controls; let i = index" [formGroupName]="i">
+                        <td style="display: none">
+                          <p class="val">{{returnItem(i, item)}}</p>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" formControlName="paymentTerms">
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" placeholder="Enter Percentage" formControlName="perProjValue">
+                          <label *ngIf="paymentPolicy.controls[i].get('perProjValue')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                            Percentage required *
+                          </label>
+                          <label *ngIf="paymentPolicy.controls[i].get('perProjValue')?.errors?.max" class="errorreq">
+                            Percentage should not be more than 100%.
+                          </label>
+                        </td>
+                        <td>
+                          <ejs-dropdownlist formControlName="mileStone" [dataSource]='mileStoneData' [fields]='commonFields' placeholder = 'Select a MileStone'></ejs-dropdownlist>
+                          <label *ngIf="paymentPolicy.controls[i].get('mileStone')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                            MileStone required *
+                          </label>
+                        </td>
+                        <td>
+                          <ejs-dropdownlist formControlName="triggerEvent" [dataSource]='triggerData' [fields]='commonFields' placeholder = 'Select a Trigger'></ejs-dropdownlist>
+                          <label *ngIf="paymentPolicy.controls[i].get('triggerEvent')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                            Tigger required *
+                          </label>
+                        </td>
+                        <td style="width: 22%;">
+                          <input type="number" formControlName="triggerPerValue" placeholder="Enter %" class="form-control">
+                          <label *ngIf="paymentPolicy.controls[i].get('triggerPerValue')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                            Tigger Percentage required *
+                          </label>
+                          <label *ngIf="paymentPolicy.controls[i].get('triggerPerValue')?.errors?.max" class="errorreq">
+                            Percentage should not be more than 100%.
+                          </label>
+                        </td>
+                        <td>
+                          <i class="fa fa-trash" aria-hidden="true" (click)="deletePayment(i)" style="font-size: 16px; margin-top: 6px;"></i>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td colspan="2">
+                          <p style="margin-bottom: 0px !important;">Total {{returnTotalPercentage()}} %</p>
+                          <p *ngIf="showPercentageError" class="errorreq">Percentage should always be 100.</p>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="margin: 0px 0px 14px; display: flex;">
+                    <button class="btn btnccc"(click)="addItemRow()">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      <p style="margin-bottom: 1px; margin-top: 0px;">Add New Payemnt Term</p>
+                    </button>
+                    <p *ngIf="showPercentageError" class="errorreq" style="margin-left: 10px;">
+                      Percentage of Project has reached 100 %
+                    </p>
+                  </div>
+                </div>
+                <div class="col-6" style="display: flex;">
+                  <input type="checkbox" id="isDefaultBoxEdit" class="marTopLef" (change)="addPayProfDefault($event)" [checked]="isDefaultProfile">
+                  <p class="marleft7" style="margin-bottom: 0px !important; margin-top: 6px !important;">Set this Payment profile as default</p>
+                  <i class="fa fa-info-circle" style="margin: 11px 5px;" ngbTooltip="by default this payment profile will be added to the Quotation"></i>
+                </div>
+                <div class="col-6" style="text-align: end;">
+                  <button class="btn buttonSt btnScc" style="width: 100px; justify-content: center;" (click)="savePaymentTerms()">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    <p style="margin-top: 0px; margin-bottom: 0px;">Save</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

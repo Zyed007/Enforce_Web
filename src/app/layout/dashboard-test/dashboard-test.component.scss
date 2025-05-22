@@ -1,0 +1,105 @@
+.pad2515{
+    padding: 25px 15px;
+    background: #fff;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+  }
+
+  .teamMemberTxt{
+    color: #333c43;
+    font-size: 1.625rem;
+    font-family: Source Sans Pro,sans-serif;
+    font-weight: 400;
+    margin-bottom: 0px;
+  }
+
+  .marbot{
+    margin-bottom: 10px;
+  }
+
+  .borderCard{
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      height: 80px;
+  }
+
+  .headerA{
+    font-size: 15px;
+    margin-bottom: 1px;
+    font-weight: 400;
+  }
+
+  .rowcard{
+    background: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+
+  }
+
+  .nothead{
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 0px 0px 0px;
+
+  }
+
+
+.alertBox{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    background-color: #f1f3f6;
+    min-height: 100px;
+    margin: 15px 13px 5px 0px;
+    padding: 0px 0px 15px 0px;
+    border-radius: 7px;
+  }
+
+  .btnScc{
+    display: inline-flex;
+   }
+
+   .btnColorAll{
+    background-color: #2e3e4e !important;
+    color: #f5f5f6 !important;
+    font-weight: 500 !important;
+  }
+
+  .list-group-item:first-child {
+    border-top-color: rgba(120,130,140,.13);
+  }
+
+  .modal .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 640px;
+    height: 100%;
+    // top:40px;
+    -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+         -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+  }
+  .fade {
+    opacity: 0;
+    transition: opacity 0.3s linear !important;
+  }
+
+  .importWid{
+    position: initial !important;
+    margin: 1.75rem auto !important;
+  }
+
+  .contactBox{
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+
+  .contheader{
+    padding: 3px 15px 1px 15px;
+    border-bottom: 1px solid #dddddd;
+    text-align: center;
+  }
+
+

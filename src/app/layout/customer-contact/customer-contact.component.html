@@ -1,0 +1,2542 @@
+<!-- begin:: Subheader -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.1.0/css/intlTelInput.css" rel="stylesheet" type="text/css" />
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+               Set Up                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                            Customer                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Customer                    </a>
+                                            <span *ngIf="editable  && !showDeptList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showDeptList" class="kt-subheader__breadcrumbs-link">
+                              Edit Customer                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+
+                    </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+       
+    </div>
+</div>
+<!-- end:: Subheader -->
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+											
+    <!-- begin:: Subheader -->
+    
+    <!-- end:: Subheader -->
+                        
+                        <!-- begin:: Content -->
+        <div *ngIf="showDeptList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+    <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <!-- <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-line-chart"></i>
+                        </span> -->
+                        <h3 class="kt-portlet__head-title">
+                            Customer 
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                        <!-- <div class="dropdown dropdown-inline">
+                            <button type="button" class="button button-fill button-rose" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i> Export  	
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" style="">
+                                <ul class="kt-nav">
+                                  
+                                    <li class="kt-nav__item">
+                                        <a (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Hifza'}})" class="kt-nav__link">
+                                            <i class="kt-nav__link-icon la la-file-excel-o"></i>
+                                            <span class="kt-nav__link-text">Excel</span>
+                                        </a>
+                                    </li>
+                                    <li class="kt-nav__item">
+                                            <a (click)="exporter.exportTable('json')" class="kt-nav__link">
+                                                <i class="kt-nav__link-icon la la-file-pdf-o"></i>
+                                                <span class="kt-nav__link-text">PDF</span>
+                                            </a>
+                                        </li>
+                              
+                                    
+                                </ul>
+                            </div>
+                        </div> -->
+                        &nbsp;
+
+
+                        <div class="dropdown dropdown-inline">
+                         
+                                <button type="button" *ngIf="showAddBtn" class="button button-fill button-rose"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon2-plus" ></i> Add New  	
+                                    </button>
+        <button type="button" style="margin-left: 10px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+                      
+                        </div>
+                    </div>	
+                    </div>		</div>
+               
+                </div>
+           
+    
+       
+       <div class="kt-portlet__body "  style=" border-bottom-color: #f0f3ff;
+        color: #595d6e;" *ngIf="showList" >
+       
+       
+                  
+                  <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                      
+          
+                  <ejs-grid [dataSource]='data12' #grid height="315px" allowTextWrap='true' [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                  [allowExcelExport]='true' [allowPdfExport]='true'   >
+                    <e-columns >
+                        
+                           
+
+                              
+                        <e-column field='cst_name' headerText='Name'  width=120></e-column>
+                        <e-column field='email' headerText='Email'  width=120></e-column>
+                        <e-column field='phone' headerText='Phone'  width=150></e-column>
+                        
+                              
+                               <!-- <e-column type=''  headerText='Name' width=140 
+                               > 
+                                <ng-template #template let-data let-i=index > 
+                                  <div><span style="text-transform: capitalize;" >{{data.lead_name}}
+                                    </span><span *ngIf="data.is_company!=null?data.is_company==true:false"  ngbPopover="Organization Name"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                                    margin-left: 5px;" container="body">
+                                      <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                                      color: #fff;
+                                      font-size: 10px;
+                                      "></i>
+                                    </span></div>
+                                    <div>{{data.email}}</div>   
+                              </ng-template>
+                           
+                             
+
+                     </e-column> -->
+                        <!-- <e-column field='cst_name' headerText='Customer Name' width=120></e-column> -->
+                        <!-- <e-column field='company_name' headerText='Company'  width=120></e-column> -->
+                        <!-- <e-column field='lead_source' headerText='Source'  width=100></e-column>
+                        <e-column field='lead_status' headerText='Status'  width=120></e-column> -->
+                        <!-- <e-column field='rating_name' headerText='Rating'  width=100></e-column> -->
+                        <!-- <e-column field='no_of_employee' headerText='Employee Count'  width=120></e-column> -->
+                        <e-column field='industry_type_name' headerText='Industry'  width=120></e-column>
+                        <!-- <e-column field='ondate' headerText='Date'  width=120></e-column> -->
+
+                        <!-- <e-column field='annual_revenue' headerText='Revenue'  width=120></e-column> -->
+                        <!-- <e-column field='email' headerText='Email'  width=120></e-column> -->
+                        <!-- <e-column field='cst_name' headerText='Customer Name' width=120></e-column> -->
+
+                        <!-- <e-column field='phone' headerText='Phone' textAlign='Left' width=120></e-column> -->
+                        <e-column field='primary_name' headerText='Primary Name'  width=150></e-column>
+                        <e-column field='primary_email' headerText='Primary Email'  width=150></e-column>
+                        <e-column field='primary_phone' headerText='Primary Phone'  width=150></e-column>
+                        <e-column field='created_date' headerText='Date' textAlign='' width=120>
+                          <ng-template #template let-data>
+                            
+                              <!-- <button mat-menu-item (click)="openDialog(data)">Edit</button> -->
+                              <span style="text-transform: capitalize;" >{{data.created_date| date :  "dd/MM/y"}}</span>
+                               <!-- <div style="font-size: 11px;">Customer</div> -->
+                                        
+                      </ng-template>
+                        </e-column>
+                        <e-column type='' headerText='Actions'  width='110'>
+                          <ng-template #template let-data>
+                          
+                                  <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                  <a title="Edit details" *ngIf="showEditBtn" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.id)"> <i class="la la-edit"></i> </a>
+                                   
+                                  <a title="Delete" *ngIf="showDeleteBtn" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.id)"><i class="la la-trash"></i>						</a>
+                                            
+                          </ng-template>
+                      </e-column>
+                      
+                        <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                    </e-columns>
+                    </ejs-grid>
+                    <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+                </div>
+
+        </div>
+        <div *ngIf="!showList" >
+          <app-not-found></app-not-found>
+        </div>
+    </div>
+  </div>
+
+    <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+    <div class="kt-portlet kt-portlet--tabs">
+           
+       
+                        <div class="row">
+                    <div class="col-lg-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet" style="margin-bottom: 0px;">
+                                <div class="kt-portlet__head kt-portlet__head--lg">
+                                        <div class="kt-portlet__head-label">
+                                            
+                                            <h3 class="kt-portlet__head-title">
+                                              Customer
+                                            </h3>
+                                        </div>
+                                        <div class="kt-portlet__head-toolbar">
+                                            <div class="kt-portlet__head-wrapper">
+                                    <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                                        <i class="la la-long-arrow-left"></i>
+                                        Back
+                                    </a> -->
+                                    &nbsp;
+                                    <div class="dropdown dropdown-inline">
+                                        <button type="button" class="button button-fill button-rose"  (click)='DeptView()' aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back	
+                                        </button>
+                
+                                  
+                                    </div>
+                                </div>		</div>
+
+                               
+                                    </div>
+                                    
+                            <!--begin::Form-->
+                            <div class="tab-content">
+
+                                <div class="tab-pane" id="kt_user_edit_tab_1"  [ngClass]="{ 'active':activeTab==='kt_user_edit_tab_1'}" role="tabpanel">
+                            <!-- <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                      Lead Information
+                                    </h3>
+                                </div>
+                            </div> -->
+                            <div class="kt-form kt-form--label-right leadForm"  >
+                                <div class="kt-portlet__body">
+                                  
+                                    <div class="kt-form kt-form--label-right">
+                                        <div class="kt-form__body">
+                                            <div class="kt-section kt-section--first" style="margin-bottom: 0px;">
+                                                <div class="kt-section__body">
+                            <form class="kt-form kt-form--label-right " [formGroup]="leadCustomerForm"  >
+                                  
+                                            
+                                                    <div >
+                                                 	
+                                                      <div class="kt-checkbox-inline" style="display: flex;">
+                                                        <div style="display: flex;">
+                                                                <div style="color: grey;margin-right:5px; ">Organization</div>
+                                                                <div >
+                                                                    <label class="switch" >
+                                                                        <!-- <input type="checkbox"    (change)="checkIsDept()" > -->
+                                  
+                                                                        <input type="checkbox"    name="chec" [checked]="showOrgDetails" (change)="checkIsOrg($event)" >
+                                  
+                                                                        <span>
+                                                                           
+                                                                        </span>
+                                                                    </label>
+                                  
+                                                                </div>
+                                  
+                                  
+                                                             
+                                                             </div>
+                                  
+                                                             
+                                                   
+                                                </div>
+                                                       <div class="form-group row leadForm"  *ngIf="!showOrgDetails">
+                                                        <div class="col-lg-6" >
+                                                          <label for="exampleTextarea">First Name</label>
+                                                          <!-- <input  class="form-control" placeholder="Enter Name"  
+                                                                            formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                                                          <input class="form-control" type="text" value="" (keyup)="allowVAlid()" formControlName="customer_Name"
+                                                            placeholder="Name">
+                                  
+                                                          <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                                                        
+    
+    
+                                                          <div *ngIf="(addCstformSubmitted || editformSubmitted) && (leadCustomerForm.get('customer_Name').value=='' ||leadCustomerForm.get('customer_Name').value==null)" class="error-msg">Required.</div>  
+    
+                      </div>
+
+                      <div class="col-lg-6">
+                        <label for="exampleTextarea">Last Name</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <input class="form-control" type="text" value="" formControlName="last_Name"
+                          placeholder="Name">
+
+                        <!-- <div *ngIf="isFieldValid('last_Name')" class="error-msg">Required.</div> -->
+                        <div *ngIf="(addCstformSubmitted || editformSubmitted) && (leadCustomerForm.get('last_Name').value==''||leadCustomerForm.get('last_Name').value==null)" class="error-msg">Required.</div>  
+
+                        
+                    </div>
+                      
+                                                        </div>
+                                                        
+                                                      
+
+                                                       </div>
+                                                    <div class="form-group row"  *ngIf="showOrgDetails">
+                                                      
+                                                        <div class="col-lg-6">
+                                                            
+                                                          <label>Company Name</label>
+
+                                                          <!-- <select2   [data]="companyData" [options]="taskOptions" [value]="companyValue"  (valueChanged)="changedCompany($event)" ></select2> -->
+                                                          <input class="form-control" type="text" value="" formControlName="company_Name"
+                                                          placeholder="Name">
+                                                           <div *ngIf="(addCstformSubmitted || editformSubmitted) && (leadCustomerForm.get('company_Name').value==''||leadCustomerForm.get('company_Name').value==null)" class="error-msg">Required.</div> 
+                                                          <!-- <div *ngIf="isFieldValid('company_Name')" class="error-msg">Required.</div> -->
+                                                            
+                                                        
+                                                      </div>
+                                                       
+                                                        
+                                                   
+                                                    </div>
+                                                   
+                                                    <div class="form-group row" *ngIf="showOrgDetails">
+                                                        <div class="col-lg-6">
+                                                          <label>Industry</label>
+                                                          <!-- <input class="form-control" type="text" value="" formControlName="customer_Name"  placeholder="Name"> -->
+                                                          <select2   [data]="industryData" [options]="taskOptions" [value]="industryValue"  (valueChanged)="changedIndustry($event)" ></select2>
+                                  
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            
+                                                          <label>Website</label>
+
+                                                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="email" value="" formControlName="email"  placeholder="Email" > -->
+                                
+                                                          <input class="form-control" type="email" value="" formControlName="website"  placeholder="Enter website" >
+                                
+                                
+                                                              
+                                                                
+                                                            <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                                                            <span class="form-text text-muted">Please enter your last name</span> -->
+                                                        </div>
+                                                    </div>
+
+                                                  
+                                                  
+                                                  
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6 col-xl-6 ">
+                                                          <label>Email</label>
+
+                                                          <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="email" value="" formControlName="email"  placeholder="Email" > -->
+                                                          <input class="form-control" type="email" value="" formControlName="customer_email"  placeholder="Enter Email" >
+                                                          <!-- <div class="error-msg" *ngIf="(addCstformSubmitted)&& (   !f.form.value.customer_phone &&  f.form.controls['customer_email'].errors)">
+                                                            {{f.form.controls['customer_email'].errors|json}}
+                                    
+                                                            </div> -->
+                                                        
+                                                          <div *ngIf="leadCustomerForm.controls['customer_email'].errors && !leadCustomerForm.controls['customer_email'].pristine"
+                                                          class="error-msg">
+                                    
+                                                          <div [hidden]="!leadCustomerForm.controls['customer_email'].errors.pattern">Enter a valid email 
+                                                              </div>
+                                                              </div>
+                                                        </div>
+
+                                                         <!-- <div class="col-lg-6">
+                                                          <label>Phone Number</label>
+                                                          <input class="form-control" type="text" value="" formControlName="customer_phone"  placeholder="Enter Number">
+                                                     
+                                                              <div class="form-text text-muted">
+                                                                Eg: Phone number format (+XX-XXXXXXXX)  
+                                                                </div>
+                                                            <div *ngIf="(addCstformSubmitted)&& (leadCustomerForm.get('customer_phone').value=='' ||leadCustomerForm.get('customer_phone').value==null) " class="error-msg">Required.</div> 
+                                      
+                                                                <div *ngIf="leadCustomerForm.controls['customer_phone'].errors && !leadCustomerForm.controls['customer_phone'].pristine"
+                                                            class="error-msg">
+                                                            
+                                      
+                                                            <div [hidden]="leadCustomerForm.controls['customer_phone'].errors && !leadCustomerForm.controls['customer_phone'].errors.patternInvalid">Enter a valid contact no 
+                                                                </div>
+                                                                </div>
+                                                          
+                                                      </div>  -->
+                                                      <div class="col-lg-6">
+                                                        <label>Phone Number</label>
+                                                        <ngx-intl-tel-input #ngxIntlp
+                                                        [cssClass]="'form-control '" 
+                                                        [preferredCountries]="preferredCountries"
+                                                        [enableAutoCountrySelect]="false" 
+                                                        [enablePlaceholder]="false" 
+                                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                                        [selectFirstCountry]="false" 
+                                                        [selectedCountryISO]="selectedISO"
+                                                        [maxLength]="15" 
+                                                        [tooltipField]="TooltipLabel.Name" 
+                                                        [(ngModel)] = "phoneNumber"
+                                                        [separateDialCode]="true"
+                                                        [phoneValidation]="true" 
+                                                        name="customer_phone"
+                                                        formControlName="customer_phone"
+                                    >
+                                    
+                                                      </ngx-intl-tel-input>
+                                                      <div style="color: red;" *ngIf="(addCstformSubmitted  || editformSubmitted) &&((leadCustomerForm.get('customer_phone').value!='' && leadCustomerForm.get('customer_phone').value!=null)&&!leadCustomerForm.controls['customer_phone'].pristine &&  leadCustomerForm.controls['customer_phone'].errors)  ">
+                                                        Please enter a valid phone no
+                                                        <!-- {{empProfileForm.controls['customer_phone '].errors | json }} -->
+                                                         </div>
+                                                         <div style="color: red;" *ngIf="(addCstformSubmitted  || editformSubmitted) && (leadCustomerForm.get('customer_phone').value=='' || leadCustomerForm.get('customer_phone').value==null) ">
+                                                           Required
+                                                            </div>
+                                                    
+                                                        </div>
+                                                       
+                                                   
+                                                 
+                                                </div>
+                                                    <!-- <div class="form-group row">
+                                                      <label class="col-xl-3 col-lg-3 col-form-label">Customer Phone</label>
+                                                      <div class="col-lg-9 col-xl-6">
+                                                          <input class="form-control" type="text" value="" formControlName="customer_phone" placeholder="Phone">
+                                                      </div>
+                                                      
+                                                  </div> -->
+                                               
+                                               
+                                               
+                                                  <div class="kt-portlet__head">
+                                                    <div class="kt-portlet__head-label">
+                                                        <h3 class="kt-portlet__head-title">
+                                                          Address Information
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-top: 10px;">
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label>Address 1</label>
+                                                        <input class="form-control" type="text" value="" formControlName="street_1"  placeholder="Enter Address">
+                            
+                                                             
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        
+                                                        <label class="">Address 2</label>
+        
+                                                        <input class="form-control" type="text" value="" formControlName="street_2"  placeholder="Enter Address">
+                            
+                                                          
+                                                            <div class="form-text text-muted">
+                                                                
+                                                                <!-- <div  *ngIf="isEmpProfileFieldValid('lastName')">Last Name is required.</div> -->
+                                                              </div>
+                                                        <!-- <input type="email" class="form-control" placeholder="Enter last name">
+                                                        <span class="form-text text-muted">Please enter your last name</span> -->
+                                                    </div>
+                                                </div>
+                                                 
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label>Country</label>
+                                                        <!-- <input class="form-control" type="text" value="" formControlName="customer_Name"  placeholder="Name"> -->
+                                                        <!-- <select2   [data]="countryData" [options]="taskOptions" [value]="countryValue"  (valueChanged)="changedCountry($event)" ></select2> -->
+                                                        <select2 [data]="countryData" [options]="taskOptions" [value]="cstCountryValue"
+                                                        (valueChanged)="changedCstCountry($event)"></select2>
+                                                        <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                                                       
+                                                            <div class="form-text text-muted">
+                                                                
+                                                              </div>
+                                                             
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label>City</label>
+                                                        <input class="form-control" type="text" value="" formControlName="city"  placeholder="Enter City">
+                            
+                                                        <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                                                       
+                                                            <div class="form-text text-muted">
+                                                                
+                                                              </div>
+                                                             
+                                                        
+                                                    </div>
+                                              
+                                                </div>   
+                                                </div> 
+                                                    <!-- <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label">Address</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <div class="form-group " >
+
+                                                                <select2   [data]="countryData" [options]="taskOptions" [value]="countryValue"  (valueChanged)="changedCountry($event)" ></select2>
+                                                            </div>
+                                                            <input class="form-control" type="text" value="" formControlName="street_1" placeholder="Street">
+                                                        </div>
+                                                        
+                                                    </div>
+                                                   
+                                                    <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                                        <div class="col-lg-4 col-xl-4">
+                                                            <input class="form-control" type="text" value="" formControlName="street_2" placeholder="Street">
+                                                        </div>
+                                                        <div class="col-lg-2 col-xl-2">
+                                                            <input class="form-control" type="text" value="" formControlName="city" placeholder="City">
+                                                        </div>
+                                                       
+                                                    </div> -->
+
+                                                    <!-- <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+                                                    <h3 class="kt-section__title kt-section__title-lg">Primary Contact</h3> -->
+                                                   
+
+                                                    <h3 class="kt-section__title kt-section__title-lg" style="font-size: 15px;">Primary Contact</h3>
+                                                    <div class="form-group col-lg-12 row" *ngIf="!showOrgDetails" style="margin-left: -30px;" >
+                                                      <label class=" kt-checkbox">
+                                                              <input type="checkbox" id="billable" [checked]="primaryCheck"  (change)="onPrimaryContactCheck($event)">
+                                                              <!-- <input type="checkbox" id="billable" > -->
+                                                              <span style="margin-left:15px;margin-right: 5px;"></span>
+                                                      </label>
+                                                              <div style="margin-top: 2px;margin-left:8px;">Same as customer</div>
+                                
+                                                 
+                                                  </div> 
+                                                    <div style="margin-top: 15px;">
+
+                                                       
+                                                            <div class="form-group row"  >
+                                                            
+                                                          
+                                                            <div class="col-lg-6">
+                                                                <label for="exampleTextarea">First Name</label>
+
+                        <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                        <input class="form-control" type="text" value="" formControlName="fname" placeholder="Name">
+                        <div *ngIf="(addCstformSubmitted  || editformSubmitted) && (leadCustomerForm.get('fname').value==''||leadCustomerForm.get('fname').value==null)" class="error-msg">Required.</div>  
+                                                            </div>
+                                                            <div class="col-lg-6" >
+                                                               
+                                                                      <label for="exampleTextarea">Last Name</label>
+
+                                                                      <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                                                                      <input class="form-control" type="text" value="" formControlName="lname" placeholder="Name">
+                                                                      <div *ngIf="(addCstformSubmitted  || editformSubmitted) && (leadCustomerForm.get('lname').value==''||leadCustomerForm.get('lname').value==null)" class="error-msg">Required.</div>  
+                                                                
+                                                            </div>
+                                                        </div>
+                                                      
+                                                     
+                                                      
+                                                        <div class="form-group row" >
+                                                            <div class="col-lg-6">
+                                                              <label for="exampleTextarea">Contact Number</label>
+
+                                                              <ngx-intl-tel-input 
+                                                              [cssClass]="'form-control '" 
+                                                              [preferredCountries]="preferredCountries"
+                                                              [enableAutoCountrySelect]="false" 
+                                                              [enablePlaceholder]="false" 
+                                                              [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                                              [selectFirstCountry]="false" 
+                                                              [selectedCountryISO]="selectedContactISO"
+                                                              [maxLength]="15" 
+                                                              [tooltipField]="TooltipLabel.Name" 
+                                                              [(ngModel)] = "mobileNumber"
+                                                              [separateDialCode]="true"
+                                                              [phoneValidation]="true" 
+                                                              name="mobile"
+                                                              formControlName="mobile"
+                              >
+                              
+                                                            </ngx-intl-tel-input>
+                                                              <!-- <input class="form-control" type="text" value="" formControlName="phone"  placeholder="Enter Number"> -->
+                                                              <!-- <div class="form-text text-muted">
+                                                                Eg: Phone number format (+XX-XXXXXXXX)  
+                                                                </div> -->
+                                                                <!-- <div style="color: red;" *ngIf=" (addCstformSubmitted && f.form.value.phone &&  f.form.controls['phone'].errors)  ">
+                                                                  Please enter a valid phone no
+                                                                 
+                                                                   </div>
+                                                                   <div style="color: red;" *ngIf="addCstformSubmitted && !f.form.value.phone">
+                                                                     Required
+                                                                      </div> -->
+                                                              <!-- <div *ngIf="(addCstformSubmitted) && (leadCustomerForm.get('phone').value==''||leadCustomerForm.get('phone').value==null)" class="error-msg">Required.</div>   -->
+                                      
+                                                              <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                                                              <!-- <div *ngIf="leadCustomerForm.controls['phone'].errors && !leadCustomerForm.controls['phone'].pristine"
+                                                              class="error-msg">
+                                                              
+                                            
+                                                              <div [hidden]="leadCustomerForm.controls['phone'].errors && !leadCustomerForm.controls['phone'].errors.patternInvalid">Enter a valid contact no 
+                                                                  </div>
+                                                                  </div> -->
+                                                                  <div style="color: red;" *ngIf="(addCstformSubmitted  || editformSubmitted) &&((leadCustomerForm.get('mobile').value!='' && leadCustomerForm.get('mobile').value!=null)&&!leadCustomerForm.controls['mobile'].pristine &&  leadCustomerForm.controls['mobile'].errors)  ">
+                                                                    Please enter a valid mobile no
+                                                                    <!-- {{empProfileForm.controls['customer_mobile '].errors | json }} -->
+                                                                     </div>
+                                                                     <div style="color: red;" *ngIf="(addCstformSubmitted  || editformSubmitted) && (leadCustomerForm.get('mobile').value=='' || leadCustomerForm.get('mobile').value==null) ">
+                                                                       Required
+                                                                        </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                              <label for="exampleTextarea">Contact Email</label>
+
+                                                              <!-- <input class="form-control" disabled="{planType == 'Basic'?'disabled':''}" type="text" value="" formControlName="name"  placeholder="Name" > -->
+                                                              <input class="form-control" type="email" value="" formControlName="email" placeholder="Email">
+                                                              <!-- <div *ngIf="(addCstformSubmitted) && (leadCustomerForm.get('email').value==''||leadCustomerForm.get('email').value==null)" class="error-msg">Required.</div>   -->
+                                      
+                                                              <div *ngIf="leadCustomerForm.controls['email'].errors && !leadCustomerForm.controls['email'].pristine"
+                                                              class="error-msg">
+                                        
+                                                              <div [hidden]="!leadCustomerForm.controls['email'].errors.pattern">Enter a valid email 
+                                                                  </div>
+                                                                  </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" >
+
+                                                          <div class="col-lg-6">
+                                                            <label>Relationship</label>
+                                                            <select2 [data]="relationData" [options]="taskOptions" [value]="cstRelationValue"
+                          (valueChanged)="changedCstRelation($event)"></select2>
+                                                            <!-- <input class="form-control" type="text" value="" formControlName="relationship"  placeholder="Enter Relationship"> -->
+                                                            <!-- <select2 id="selWidth" [data]="departmentData" [options]='taskOptions'  [value]="deptValue"    (valueChanged)="changedDept($event)"></select2> -->
+                                
+                                                            <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                                           
+                                                                <div class="form-text text-muted">
+                                                                  </div>
+                                                        </div>
+                                                        <div class="col-lg-6" *ngIf="showOrgDetails">
+                                                          <label>Designation</label>
+                                                          <input class="form-control" type="text" value="" formControlName="designation"  placeholder="Enter Designation">
+                                                          <!-- <select2  [data]="desgnData" [options]='taskOptions'  [value]="desgnValue"    (valueChanged)="changedDesgn($event)"></select2> -->
+                              
+                                                          <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                                         
+                                                              <div class="form-text text-muted">
+                                                                </div>
+                                                      </div>
+                                                          </div>
+                                                        <div class="form-group row" >
+
+                                                        
+                                                          <div class="col-lg-6">
+                                                            <label>Note</label>
+                                                            <input class="form-control" type="text" value="" formControlName="note"  placeholder="Enter Notes">
+                                
+                                                            <!-- <div *ngIf="isFieldValid('name')" class="error-msg">Required.</div> -->
+                                                           
+                                                                <div class="form-text text-muted">
+                                                                  </div>
+                                                        </div>
+                                                            </div>
+                                                    
+                                                   
+                                                </div>
+                                                    
+                                                    </form>
+                                                    <div style="padding: 0px 150px;">
+                                                    <!-- <div class="form-group row">
+                                                      <label class="col-xl-3 col-lg-3 col-form-label"> Contact Number</label>
+                                                      <div class="col-lg-6 col-xl-6">
+                                                        
+                                                        <ngx-intl-tel-input 
+                                                        [cssClass]="'form-control '" 
+                                                        [preferredCountries]="preferredCountries"
+                                                        [enableAutoCountrySelect]="false" 
+                                                        [enablePlaceholder]="false" 
+                                                       
+                                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                                        [selectFirstCountry]="false" 
+                                                        [selectedCountryISO]="selectedISO"
+                                                        [maxLength]="15" 
+                                                        [tooltipField]="TooltipLabel.Name" 
+                                                       
+                                                        [separateDialCode]="true"
+                                                        [phoneValidation]="true" 
+                                                        name="phone"
+   
+                                                        [ngModelOptions]="{updateOn: 'blur'}"
+                                                        (ngModelChange)="onChange($event)"
+                                                        [(ngModel)]="phone">
+    
+                                                      </ngx-intl-tel-input>
+                                                          <div *ngIf="phoneInvalid" class="error-msg">
+                                                            <div >{{phoneErrorMsg}}</div>
+                                                                
+                                                              </div>
+                                                      
+                                                        </div>
+
+                                                      
+                                                  </div> -->
+                                                  <!-- <div class="form-group row" style="margin-bottom: 0px;">
+                                                  <label class="col-xl-3 col-lg-3 col-form-label">Contact Emails</label>
+                                                 </div> -->
+                                                  <!-- <form class="basic-container" [formGroup]="emailForm">
+                                                    <div formArrayName="emails" >
+                                                      <div  *ngFor="let email of emailForm.get('emails')['controls']; let i = index"
+                                                          [formGroupName]="i">
+
+                                                           <div class="form-group row">
+                                                        <label class="col-xl-3 col-lg-3 col-form-label"> <span style="margin-left: 4px;">{{i==0?'(Primary Email)':''}}</span></label>
+                                                        <div class="col-lg-6 col-xl-6">
+                                                            <div style="display: flex;">
+                                                              
+                                                                    <input formControlName="OrderID" class="form-control" data-msg-containerid='OrderIDError' id="OrderID" name="OrderID" placeholder="Email" type="text" >
+                                                            </div>
+                                                           
+                                                            <span class="e-float-line"></span>
+                                                            <div id="OrderIDError"  *ngIf="submitClicked && email.get('OrderID').value==''">
+                                                                <label class="e-error" for="OrderID" id="OrderID-info" style="display: block;">*Email is required</label>
+                                                            </div>
+                          
+                                                        </div>
+                                                        <div aria-haspopup="true" *ngIf="i>0" (click)="removeOrClearEmail(i)" aria-expanded="false" style="color:black;margin-right: 5px;margin-top: 5px;">
+                                                            <a><i class="flaticon2-cross" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                                                color: #fff;
+                                                                                font-size: 8px;
+                                                                                "></i>
+                                                                                </a>
+                                                          </div>
+                                                    
+                                                    </div>
+                                                     
+                                                      </div>
+                                                    </div>
+                                                  </form>  -->
+<!--                                                 
+                                                  <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                                  <div class="col-6" style="margin-bottom: 15px;display: flex;">
+                                                   
+                                                    
+                                                    <div aria-haspopup="true"  (click)="addEmailFormGroup()" aria-expanded="false" style="color:black;">
+                                                      <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                                          color: #fff;
+                                                                          font-size: 8px;
+                                                                          "></i>
+                                                                          Add Email
+                                                                          </a>
+                                  
+                                  
+                                  
+                                                    </div>
+                                                    
+                                                  </div>
+                                                </div>
+                                               -->
+                                                </div>
+                                               
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                    
+                                </div>
+                                <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                  <div class="kt-form__actions">
+                <!-- <div class="required-msg" *ngIf="addformSubmitted && (ownerValue=='' || leadSourceValue=='' ||  statusValue=='')">Please fill the required fields</div> -->
+
+                                      <div class="row">
+                                          <!-- <div class="col-lg-2"></div> -->
+                                          <div class="col-lg-10">
+                                                  <span *ngIf="AddNewSubmit" style="margin-right: 10px;">
+                                                          <button type="reset" class="btn btn-success" (click)=" onAddNewSubmit($event)">Submit & New</button>
+                                                      </span>
+                                                  <button type="reset" class="btn btn-success" (click)="editable ? onEditSubmit($event) : onAddSubmit($event)">Submit</button>
+                                                  <button type="reset" class="btn btn-secondary"  (click)='DeptView()' style="margin-left:10px;">Cancel</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                                <!-- <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <button type="submit" (click)="search('kt_user_edit_tab_2')"   class="btn btn-success" style="width: 92px;"> Next <i class="fa fa-angle-right" style="margin-bottom: 2px;margin-left: 2px;"></i> 	
+                                                </button>  
+                                            
+                                                  </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                              </div>
+                            <!--end::Form-->
+                           </div>
+                     
+
+                           </div>
+                        </div>
+                     
+                    </div>
+                </div>	
+    <!-- end:: Content -->				</div>
+    
+    </div>
+
+</div>
+    <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="company_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content contentHeighs">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Company Name</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="OnCompanyClose()" aria-label="Close">
+          </button>
+        </div>
+  
+  
+        <div class="modal-body" style="max-height: 590px !important;
+            overflow-y: auto;
+            overflow-x: hidden;">
+  
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item ">
+  
+              <div class="form-group row" style="margin-top:-12px;">
+                <div class="col-lg-12 col-sm-12">
+                  <form class="kt-form kt-form--label-right" [formGroup]="companyForm">
+                    <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+  
+                      <div class="form-group row">
+  
+  
+                        <div class="col-lg-12 col-xl-12">
+  
+                          <label for="exampleTextarea">Company Name</label>
+                          <!-- <input  class="form-control" placeholder="Enter Name"  
+                                            formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                          <input class="form-control" type="text" value="" formControlName="comp_Name"
+                            placeholder="Name">
+  
+                          <!-- <div *ngIf="isFieldValid('comp_Name')" class="error-msg">Required.</div> -->
+                          <div *ngIf="leadAddSubmit && companyForm.controls.comp_Name.valid==false" class="error-msg">Required.</div>
+  
+                        </div>
+  
+  
+                      </div>
+
+                      <div class="form-group row">
+                   
+                        <div class="col-lg-12 col-xl-12">
+                            <label for="exampleTextarea">Description:</label>
+                            <textarea class="form-control"  rows="4" formControlName="desc"></textarea>
+                          </div>
+                      </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+                    </div>
+  
+  
+                  </form>
+  
+  
+  
+                </div>
+  
+  
+  
+  
+  
+              </div>
+            </div>
+  
+  
+  
+  
+  
+  
+  
+            <!--end::Form-->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+  
+          <button type="Submit" [disabled]='' class="button button-fill button-rose"
+           (click)="onAddLeadCompany()" >Add</button>
+          <button type="reset" class="btn btn-secondary" style="width: 90px;
+              padding: 7px 14px;font-size: 11px;
+              margin-top: -1px;" (click)="OnCompanyClose()">CANCEL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="design_type_modal" data-backdrop="static"
+role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content contentHeighs">
+    <div class="modal-header" style="padding: 8px 15px;">
+      <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Deal Type</h5>
+      <button type="button" class="close" data-dismiss="modal" (click)="OnDesignClose()" aria-label="Close">
+      </button>
+    </div>
+
+
+    <div class="modal-body" style="max-height: 590px !important;
+        overflow-y: auto;
+        overflow-x: hidden;">
+
+      <div class="kt-demo-panel__body ">
+        <div class="kt-demo-panel__item ">
+
+          <div class="form-group row" style="margin-top:-12px;">
+            <div class="col-lg-12 col-sm-12">
+              <form class="kt-form kt-form--label-right" [formGroup]="designTypeForm">
+                <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+
+                  <div class="form-group row">
+
+
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Type Name</label>
+                      <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                      <input class="form-control" type="text" value="" formControlName="design_Name"
+                        placeholder="Name">
+
+                      <!-- <div *ngIf="isFieldValid('design_Name')" class="error-msg">Required.</div> -->
+                      <div *ngIf="designTypeSubmit && designTypeForm.controls.design_Name.valid==false" class="error-msg">Required.</div>
+
+                    </div>
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Description</label>
+                      <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                  
+                                        <textarea class="form-control"  rows="4" formControlName="desc"></textarea>
+
+                      <!-- <div *ngIf="isFieldValid('design_Name')" class="error-msg">Required.</div> -->
+
+                    </div>
+
+                   
+
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+
+              </form>
+
+
+
+            </div>
+
+
+
+
+
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+    <div class="kt-align-right modal-footer">
+
+      <button type="Submit" [disabled]='' class="button button-fill button-rose"
+        (click)="onAddDealType()">Add</button>
+      <button type="reset" class="btn btn-secondary" style="width: 90px;
+          padding: 7px 14px;font-size: 11px;
+          margin-top: -1px;" (click)="OnDesignClose()">CANCEL
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="proj_type_modal" data-backdrop="static"
+role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content contentHeighs">
+    <div class="modal-header" style="padding: 8px 15px;">
+      <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Add Project Type</h5>
+      <button type="button" class="close" data-dismiss="modal" (click)="OnProjTypeClose()" aria-label="Close">
+      </button>
+    </div>
+
+
+    <div class="modal-body" style="max-height: 590px !important;
+        overflow-y: auto;
+        overflow-x: hidden;">
+
+      <div class="kt-demo-panel__body ">
+        <div class="kt-demo-panel__item ">
+
+          <div class="form-group row" style="margin-top:-12px;">
+            <div class="col-lg-12 col-sm-12">
+              <form class="kt-form kt-form--label-right" [formGroup]="projTypeForm">
+                <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+
+                  <div class="form-group row">
+
+
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Project Type</label>
+                      <!-- <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                      <input class="form-control" type="text" value="" formControlName="type_Name"
+                        placeholder="Name">
+
+                      <div *ngIf="projTypeSubmit && projTypeForm.controls.type_Name.valid==false" class="error-msg">Required.</div>
+
+                    </div>
+                  
+
+
+                  </div>
+
+                  <div class="form-group row">
+                   
+                    <div class="col-lg-12 col-xl-12">
+                        <label for="exampleTextarea">Description:</label>
+                        <textarea class="form-control"  rows="4" formControlName="desc"></textarea>
+                      </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+                </div>
+
+
+              </form>
+
+
+
+            </div>
+
+
+
+
+
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+    <div class="kt-align-right modal-footer">
+
+      <button type="Submit" [disabled]='' class="button button-fill button-rose"
+        (click)="onAddProjType()">Add</button>
+      <button type="reset" class="btn btn-secondary" style="width: 90px;
+          padding: 7px 14px;font-size: 11px;
+          margin-top: -1px;" (click)="OnProjTypeClose()">CANCEL
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="conversion_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content contentHeighs ">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Conversion</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="OnConversionClose()" aria-label="Close">
+          </button>
+        </div>
+  
+  
+        <div class="modal-body" style="max-height: 590px !important;
+            overflow-y: auto;
+            overflow-x: hidden;">
+  
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item ">
+  
+              <div class="form-group row" style="margin-top:-12px;">
+                <div class="col-lg-12 col-sm-12">
+                  <form class="kt-form kt-form--label-right" [formGroup]="conversionForm">
+                    <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                      <!-- <div class="form-group row convert" >
+                        <div class="kt-radio-inline col-lg-12 col-xl-12 leaveRadio">
+                           
+                            <label class="kt-radio" *ngFor="let opt of conversionOpt">
+                              <input type="radio" formControlName="Type" [checked]="opt.value == 'new'" [value]="opt.value" (change)="typeChange(opt.value)">
+                              <div style="display: flex;">
+                                <div>
+                                 {{opt.label}} 
+                                </div>
+                              
+                              </div>  
+                              <span></span>
+                            </label>
+                          
+                        
+                          </div>
+                         
+                    </div> -->
+                    <!-- <div class="form-group row" *ngIf="showConvertPrefixSelect">
+                      <label class="col-xl-12 col-lg-3 col-form-label" style="text-align:left;">Project Prefix:</label>
+                      <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio">
+                       
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="prefixVal" value="is_auto" (change)="customRadioChange()">
+                          Auto
+                          <span></span>
+                        </label>
+    
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="prefixVal" value="is_custom" (change)="customRadioChange()">
+                          Custom
+                          <span></span>
+                        </label>
+    
+                      </div>
+                    </div> -->
+<!--     
+                    <div *ngIf="showPrefixText && showConvertPrefixSelect " class="form-group row">
+                      <label class="col-xl-2 col-lg-3 col-form-label" style="padding-right: 0px;">Enter Prefix:</label>
+                      <div class="col-lg-4 col-xl-4 col-sm-4" style="">
+                        <input type="email" class="form-control" placeholder="Enter Prefix" formControlName="prefix_name"
+                          (keyup)="customInputChange($event)">
+                      </div>
+                      <span style="margin-top: 5px;">{{customPrefix}}</span>
+                    </div>
+                    <div *ngIf="prefixExists && editable==false" style="color: red;">Prefix already exists. Please enter a new prefix.</div>
+                    <div *ngIf="!showPrefixText && showConvertPrefixSelect" class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+                      <div class="col-lg-4 col-xl-4">
+    
+                        <span>{{prefixString}}</span>
+    
+    
+                      </div>
+                    </div> -->
+                      <!-- <div class="form-group row">
+  
+  
+                        <div class="col-lg-12 col-xl-12">
+  
+                          <label for="exampleTextarea">Company Name</label>
+                         
+                          <input class="form-control" type="text" value="" formControlName="comp_Name"
+                            placeholder="Name">
+  
+                          <div *ngIf="leadAddSubmit && companyForm.controls.comp_Name.valid==false" class="error-msg">Required.</div>
+  
+                        </div>
+  
+  
+                      </div>
+
+
+
+                      <div class="form-group row">
+                   
+                        <div class="col-lg-12 col-xl-12">
+                            <label for="exampleTextarea">Description:</label>
+                            <textarea class="form-control"  rows="4" formControlName="desc"></textarea>
+                          </div>
+                      </div> -->
+                      <div class="kt-widget2" style="width:100%;margin-left:-8px" *ngIf="dealDetails">
+
+                        <div class="kt-widget2__item kt-widget2__item--primary"
+                        >
+                       
+                        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  *ngIf="cstName!='' || null"
+                          >
+                          <a class="kt-widget2__username">
+                             Deal Name
+                            <!-- <span style="font-size: 10px;"
+                              [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                            </span> -->
+                          </a>
+                          <!-- <a class="kt-widget2__username">
+                            {{item.priority}}
+            
+                          </a> -->
+                          <a class="kt-widget2__title">
+                          <span style="margin-right: 4px;"> {{dealDetails.deal_prefix}}</span> <span style="font-size: 13px;"> {{dealDetails.deal_name}}</span>
+                          </a>
+            
+                          
+                        </div>
+            
+                    </div>
+
+                    <div class="kt-widget2__item kt-widget2__item--primary"
+                        >
+                       
+                        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                          >
+                          <a class="kt-widget2__username">
+                             Deal Type
+                            <!-- <span style="font-size: 10px;"
+                              [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                            </span> -->
+                          </a>
+                          <!-- <a class="kt-widget2__username">
+                            {{item.priority}}
+            
+                          </a> -->
+                          <a class="kt-widget2__title">
+                          <span style="margin-right: 4px;"> {{cstDetails.deal_type_name}}</span>
+                          </a>
+            
+                          
+                        </div>
+            
+                    </div>
+                    <div class="kt-widget2__item kt-widget2__item--primary"
+                    >
+                   
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                      >
+                      <a class="kt-widget2__username">
+                         Lead Owner
+                        <!-- <span style="font-size: 10px;"
+                          [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                        </span> -->
+                      </a>
+                      <!-- <a class="kt-widget2__username">
+                        {{item.priority}}
+        
+                      </a> -->
+                      <a class="kt-widget2__title">
+                      <span style="margin-right: 4px;"> {{cstDetails.lead_owner}}</span>
+                      </a>
+        
+                      
+                    </div>
+        
+                </div>
+                <div class="kt-widget2__item kt-widget2__item--primary"
+                    >
+                   
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                      >
+                      <a class="kt-widget2__username">
+                         Lead Source
+                        <!-- <span style="font-size: 10px;"
+                          [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                        </span> -->
+                      </a>
+                      <!-- <a class="kt-widget2__username">
+                        {{item.priority}}
+        
+                      </a> -->
+                      <a class="kt-widget2__title">
+                      <span style="margin-right: 4px;"> {{cstDetails.lead_source}}</span>
+                      </a>
+        
+                      
+                    </div>
+        
+                </div>
+                <div class="kt-widget2__item kt-widget2__item--primary"
+                >
+               
+                <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                  >
+                  <a class="kt-widget2__username">
+                     Lead Status
+                    <!-- <span style="font-size: 10px;"
+                      [ngClass]="item.status_name  == 'Completed' ? 'status-code-success': (item.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{item.status_name }}
+                    </span> -->
+                  </a>
+                  <!-- <a class="kt-widget2__username">
+                    {{item.priority}}
+    
+                  </a> -->
+                  <a class="kt-widget2__title">
+                  <span style="margin-right: 4px;"> {{cstDetails.lead_status}}</span>
+                  </a>
+    
+                  
+                </div>
+    
+            </div>
+                        <!-- <div class="kt-widget2__item kt-widget2__item--primary"
+                          >
+                         
+                          <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  *ngIf="cstName!='' || null"
+                            >
+                            <a class="kt-widget2__username">
+                               Deal Name
+                           
+                            </a>
+                           
+                            <a class="kt-widget2__title" style="text-transform: uppercase;">
+                            {{dealDetails.deal_name}}
+                            </a>
+              
+                            
+                          </div>
+              
+                      </div> -->
+                        <!-- <div class="kt-widget2__item kt-widget2__item--warning"
+                        >
+                       
+                        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;" *ngIf="dealDetails.est_amount!='' || dealDetails.est_amount!=null"
+                          >
+                          <a class="kt-widget2__username">
+                            Estimated Amount
+                            
+                          </a>
+                         
+                          <a class=" kt-widget2__title">
+                            {{dealDetails.est_amount}}
+              
+                          </a>
+              
+                          
+                        </div>
+                        
+                   
+                    </div> -->
+                    <div class="kt-widget2" style="width:100%;" *ngIf="customerDetails">
+
+                       
+                   
+                      <div class="kt-widget2__item kt-widget2__item--brand"
+                        >
+                       
+                        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;" *ngIf="(customerDetails!='')"
+                          >
+                          <a class="kt-widget2__username">
+                       Customer
+                
+                          </a>
+                          <!-- <a class="kt-widget2__title">
+                            {{cstDetails.first_name}}<span style="margin-left:4px">{{contactDetails.last_name}}</span>
+                            
+                          </a> -->
+                          <div style="font-weight:bold;font-size: 10px;">{{customerDetails.email}}</div>
+                          <div style="font-weight:bold;font-size: 10px;">{{customerDetails.phone!=null?customerDetails.phone:''}}</div>
+                          <!-- <div style="font-weight:bold;font-size: 10px;">City - {{city}}</div> 
+                          <div style="font-weight:bold;font-size: 10px;">Email - {{email}}</div> 
+                          <div style="font-weight:bold;font-size: 10px;">Phone - {{phoneNo}}</div>  -->
+                         
+                        </div>
+                        
+                        
+                       
+                    </div>
+  
+                    
+                
+                
+                
+                        </div>
+                      <div class="kt-widget2__item kt-widget2__item--brand"
+                      >
+                     
+                      <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;" *ngIf="(cstDetails!='')"
+                        >
+                        <a class="kt-widget2__username">
+                     Contact details
+              
+                        </a>
+                        <a class="kt-widget2__title">
+                          {{contactDetails.first_name}}<span style="margin-left:4px">{{contactDetails.last_name}}</span>
+                          
+                        </a>
+                        <div style="font-weight:bold;font-size: 10px;">{{contactDetails.email}}</div>
+                        <div style="font-weight:bold;font-size: 10px;">{{contactDetails.phone!=null?contactDetails.phone:''}}</div>
+                        <!-- <div style="font-weight:bold;font-size: 10px;">City - {{city}}</div> 
+                        <div style="font-weight:bold;font-size: 10px;">Email - {{email}}</div> 
+                        <div style="font-weight:bold;font-size: 10px;">Phone - {{phoneNo}}</div>  -->
+                       
+                      </div>
+                      
+                      
+                     
+                  </div>
+
+                  
+              
+              
+              
+                      </div>
+
+                     
+                      <!-- <div  class="form-group row" style="margin-bottom: 4px;margin-top:-12px;">
+                        <div class="col-lg-4 col-xl-4">
+                           
+                      <span>{{project_prefix_val}}</span>
+                           
+                            
+                          </div>
+                      </div>  -->
+                      <div class="kt-checkbox-inline" style="display: flex;">
+                        <div style="display: flex;">
+                                <div style="color: grey;margin-right:5px; ">Basic Cost</div>
+                                <div >
+                                    <label class="switch" >
+                                        <input type="checkbox"    name="chec"  (change)="checkIsManual($event)" >
+                                        <span>
+                                        </span>
+                                    </label>
+                                </div>
+                             </div>
+  
+                             
+                   
+                </div>
+                      <div class="form-group row" >
+
+
+                        <div class="col-lg-12 col-xl-12">
+  
+                          <label for="exampleTextarea">Deal Value (AED)</label>
+                          <!-- <input  class="form-control" placeholder="Enter Name"  
+                                            formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                          <!-- <input class="form-control" type="text" value="" formControlName="amount"
+                            placeholder="Cost"> -->
+                        <ejs-numerictextbox   placeholder="Enter Cost" formControlName="amount"  ></ejs-numerictextbox>
+
+  
+                          <!-- <div *ngIf="isFieldValid('customer_Name')" class="error-msg">Required.</div> -->
+                        </div>
+                       
+  
+                      </div>
+                      <!-- <div class="form-group row">
+                        <label class=" kt-checkbox">
+                                <input type="checkbox" id="billable"   (change)="onConvertCheckChange($event)">
+                                <span style="margin-left:15px;margin-right: 5px;"></span>
+                        </label>
+                                <div style="margin-top: 2px;margin-left:8px;">Convert to cost project</div>
+
+                   
+                    </div> -->
+                    
+              
+                     <div class="form-group row" *ngIf="showManualDet">
+
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea"> Cost Value (AED)</label>
+<!--                        
+                        <input class="form-control" type="text" value="" formControlName="basicCost"
+                          placeholder="Enter Cost"> -->
+                        <ejs-numerictextbox   placeholder="Enter Cost" formControlName="basicCost"  ></ejs-numerictextbox>
+
+
+                      </div>
+                     
+
+                    </div> 
+
+                    
+                     <div class="form-group row">
+                       
+                            <div class="col-lg-12 col-xl-12">
+  
+                              <label for="exampleTextarea">Remarks</label>
+                          <!-- <input type="email" class="form-control"  placeholder="Enter name"
+                            formControlName="remarks"> -->
+                            <textarea class="form-control"  rows="1" style="height: 38px;" formControlName="remarks"></textarea>
+
+                            <!-- <div *ngIf="convertSubmitClicked && conversionForm.controls.project_name.valid==false">
+                              <label class="e-error" for="projName" id="OrderID-info" >*Name is required</label>
+      
+                              </div> -->
+                        </div>
+                      </div>
+                      <!--<div class="form-group row">
+                       
+                        <div class="col-lg-12 col-xl-12">
+
+                          <label for="exampleTextarea">Design Type</label>
+                          <select2 [data]="designTypeData" [options]="taskOptions" [value]="desgnTypeVal"
+                          (valueChanged)="changedDesgnType($event)"></select2>
+                       
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                       
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Project Type</label>
+                      <select2 [data]="projectTypeData" [options]="taskOptions" [value]="projTypeVal"
+                            (valueChanged)="changedProjType($event)"></select2>
+                   
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                    <label>Amount</label>
+                 
+                    <div class="input-group ">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>								
+                      </div>
+                      <input class="form-control" min='0' type="number" value="" formControlName="amount"  placeholder="Enter Amount">
+
+                    
+                    </div>
+                         
+                    
+                </div>
+              
+               
+            </div>
+              
+              <div class="form-group row">
+                       
+                <div class="col-lg-12 col-xl-12">
+
+                  <label for="exampleTextarea">Packages</label>
+                  <select2 [data]="packageTypeData" [options]="taskOptions" [value]="pkgTypeVal"
+                  (valueChanged)="changedPkgType($event)"></select2>
+               
+            </div>
+          </div> -->
+                     <!-- <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Design Type</label>
+                        <div class="col-lg-4 col-xl-4">
+                          <select2 [data]="designTypeData" [options]="taskOptions" [value]="desgnTypeVal"
+                            (valueChanged)="changedDesgnType($event)"></select2>
+                        </div>
+                        <div aria-haspopup="true" (click)="AddDesignType()" aria-expanded="false"
+                          style="color:black;margin-top:5px;">
+                          <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                color: #fff;
+                                                font-size: 8px;
+                                                "></i>
+                            Add Design Type
+                          </a>
+      
+      
+      
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Project Type:</label>
+                        <div class="col-lg-4 col-xl-4">
+                          <select2 [data]="projectTypeData" [options]="taskOptions" [value]="projTypeVal"
+                            (valueChanged)="changedProjType($event)"></select2>
+                        </div>
+                        <div aria-haspopup="true" (click)="AddProjType()" aria-expanded="false"
+                          style="color:black;margin-top:5px;">
+                          <a><i class="flaticon2-plus" style="cursor: pointer;margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                color: #fff;
+                                                font-size: 8px;
+                                                "></i>
+                            Add Project Type
+                          </a>
+      
+      
+      
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Project Amount</label>
+
+                        <div class="col-lg-4 col-xl-4">
+                          
+                            <div class="input-group ">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>								
+                              </div>
+                              <input class="form-control" min='0' type="number" value="" formControlName="amount"  placeholder="Enter Amount">
+
+                            
+                            </div>
+                                 
+                            
+                        </div>
+                      
+                        
+                    </div>
+                      <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Packages:</label>
+                        <div class="col-lg-4 col-xl-4">
+                          <select2 [data]="packageTypeData" [options]="taskOptions" [value]="pkgTypeVal"
+                            (valueChanged)="changedPkgType($event)"></select2>
+                        </div>
+                        
+                      </div> -->
+  
+  
+  
+  
+  
+  
+  
+  
+                    </div>
+  
+  
+                  </form>
+  
+  
+  
+                </div>
+  
+  
+  
+  
+  
+              </div>
+            </div>
+  
+  
+  
+  
+  
+  
+  
+            <!--end::Form-->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+  
+          <button type="Submit" [disabled]='' class="button button-fill button-rose"
+           (click)="showManualDet?onConvertLeadProj():redirectToCost()" >{{showManualDet?'CONVERT':'ESTIMATION'}}</button>
+           
+          <button type="reset" class="btn btn-secondary" style="width: 90px;
+              padding: 7px 14px;font-size: 11px;
+              margin-top: -1px;" (click)="OnConversionClose()">CANCEL
+          </button>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+ 
+
+       <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="meeting_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Meeting Information</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnMeetingModalClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="meetingForm" >
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                  
+                    <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Subject</label>
+                        <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="meeeting_Name" > 
+                                          
+                       <div class="requiredField" *ngIf="meetingFormSubmit && meetingForm.get('meeeting_Name').value==''">Required.</div>
+                    </div>
+                      
+
+
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Location</label>
+                        <input  class="form-control" placeholder="Enter Location"  
+                                          formControlName="meeeting_loc" > 
+                                          
+                    </div>
+                      
+
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-lg-6">
+                        <label>Start Time</label>
+                        <div class="kt-input-icon materialPicker">
+                          <!-- <input type="text" class="form-control" placeholder="Enter CheckIn time"> -->
+                          <input class="form-control" placeholder="Enter Start time"
+                            (click)="startTimeChanged()" [ngxTimepicker]="startpicker" 
+                             formControlName="startTime">
+                          <ngx-material-timepicker  #startpicker>
+                          </ngx-material-timepicker>
+                        <div *ngIf="meetingFormSubmit && meetingForm.get('startTime').value==''" style="color: red;">Required.</div>
+
+                          <!-- <div class="input-group" appClockPicker>
+                                            <input type="text" class="form-control" value="09:30">
+                                            <span class="input-group-addon">
+                                              <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                          </div> -->
+                          <!-- <input   class="form-control" placeholder="Enter CheckIn time" ngClockPicker [ngClockPickerConfig]="configA" [value]="(checkIn!='')?checkIn:''" (ngClockPickerChange)="handleTimeChange($event)"  formControlName="checkIn"/> -->
+                          <!-- <div class="input-group clockpicker" id="clockP" (click)='showtimer()'>
+                                              <input type="text" class="form-control" value="09:30">
+                                              <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                              </span>
+                                            </div> -->
+                          <!-- <div class="ngx-timepicker-field-example">
+                                            <input placeholder="Append to input" aria-label="Append to input"
+                                                [ngxTimepicker]="appendedToInput" readonly>
+                                            <ngx-material-timepicker #appendedToInput
+                                                [appendToInput]="true"></ngx-material-timepicker>
+                                        </div> -->
+                          <!-- <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-map-marker"></i></span></span> -->
+                        </div>
+                        <!-- <span class="form-text text-muted">Please enter your address</span> -->
+                      </div>
+                      <div class="col-lg-6">
+                        <label class="">End Time</label>
+                        <div class="kt-input-icon">
+                          <input class="form-control" placeholder="Enter End time" [min]="minEndTime"
+                             [ngxTimepicker]="picker" formControlName="endTime">
+                          <ngx-material-timepicker #picker></ngx-material-timepicker>
+                        <!-- <div *ngIf="isFieldValid('endTime')" style="color: red;">Required.</div> -->
+                        <div *ngIf="meetingFormSubmit && meetingForm.get('endTime').value==''" style="color: red;">Required.</div>
+
+                        </div>
+                        <!-- <input   class="form-control" placeholder="Enter CheckOut time" ngClockPicker [ngClockPickerConfig]="configB" [value]="(checkOut!='')?checkOut:''" (ngClockPickerChange)="handleTimeChange($event)" formControlName="checkOut"/> -->
+
+                        <!-- <span class="form-text text-muted">Please enter your postcode</span> -->
+                      </div>
+                    </div>
+                  
+                   
+                  <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Host</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                                          <select2  [data]="empData" [options]="taskOptions"  [value]="empVal"   (valueChanged)="changedEmp($event)"></select2>
+                                          <div *ngIf="meetingFormSubmit && empVal==''" style="color: red;">Required.</div>
+
+                                        
+                    </div>
+                      
+
+
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Participants</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                        <!-- <ejs-multiselect #dropdown   style="margin-top:6px;" id='multiselectelement' [mode]='box'   formControlName="participantId"    [dataSource]='empData' [fields]="{text: 'text', value: 'id' }" placeholder="Select" popupHeight='300px'></ejs-multiselect> -->
+                        <ejs-multiselect id='multiselectelement' [dataSource]='empGroup' [fields]='fields'  formControlName="participantId"  [placeholder]='placeholder' [popupHeight]='height'></ejs-multiselect>
+                        <!-- <ejs-multiselect id='multiselectelement' [dataSource]='vegetableData' [fields]='fields'[placeholder]='placeholder' [popupHeight]='height' [mode]='mode' [enableGroupCheckBox]='enableGroupCheckBox' [allowFiltering]='allowFiltering' [filterBarPlaceholder]='filterBarPlaceholder' [showSelectAll]='showSelectAll'></ejs-multiselect>                  -->
+                        <!-- <ejs-multiselect id='multiselect-checkbox' #checkbox [dataSource]='vegetables' [placeholder]='checkWaterMark' [enableSelectionOrder]='false' [fields]='checkFields'
+                        [showDropDownIcon]='true' [mode]='mode' showSelectAll='true' [enableGroupCheckBox]= 'enableGroupCheckBox' [filterBarPlaceholder]='filterBarPlaceholder' ></ejs-multiselect> -->
+                      
+                        <div *ngIf="meetingFormSubmit && meetingForm.get('participantId').value==''" style="color: red;">Required.</div>
+
+
+                    </div>
+                      
+
+
+                    </div>
+                    <!-- <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Related To</label>
+                        
+                                          <select2  [data]="contactData" [options]="taskOptions"  [value]="empVal"   (valueChanged)="changedEmp($event)"></select2>
+
+                                        
+                       <div class="requiredField" *ngIf="submitClicked?projStatus=='':''">Required.</div>
+                    </div>
+                   
+
+
+                    </div>
+                    <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Lead</label>
+                      <input  class="form-control" placeholder="Enter Name"  
+                                        formControlName="meeeting_Name" > 
+                                        
+                     <div class="requiredField" *ngIf="submitClicked?projStatus=='':''">Required.</div>
+                  </div>
+                  </div> -->
+                  <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Description</label>
+                      <textarea style="display:block" formControlName="desc" class="form-control" 
+            placeholder="Add Description" rows="4"></textarea>
+                                        
+                  </div>
+                  </div>
+                    
+
+                   
+
+
+
+
+                  </div>
+
+
+
+                </form>
+              
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="meetingEditable?onUpdateMeeting():onAddMeeting()">Submit</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnMeetingModalClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="attachment_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Attach</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="closeAttachModal()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="meetingForm" >
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                  
+                    <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+                        <ejs-uploader #defaultupload  [autoUpload]='false'></ejs-uploader>
+                       
+                    </div>
+                      
+
+
+                    </div>
+                  
+                 
+
+                   
+
+
+
+
+                  </div>
+
+
+
+                </form>
+              
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="meetingEditable?onUpdateMeeting():onAddMeeting()">Submit</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnMeetingModalClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="call_modal" data-backdrop="static"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content contentHeighs">
+      <div class="modal-header" style="padding: 8px 15px;">
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Call Information</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="OnCallModalClose()" aria-label="Close">
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="max-height: 590px !important;
+          overflow-y: auto;
+          overflow-x: hidden;">
+
+        <div class="kt-demo-panel__body ">
+          <div class="kt-demo-panel__item ">
+
+            <div class="form-group row" style="margin-top:-12px;">
+              <div class="col-lg-12 col-sm-12">
+                <form class="kt-form kt-form--label-right" [formGroup]="callForm" >
+                  <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+                 
+                    <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Name</label>
+                        <select2  [data]="entityContactData" [options]="taskOptions"  [value]="entityContactVal"   (valueChanged)="changedEntityContact($event)"></select2>
+
+                                          
+                       <!-- <div class="requiredField" *ngIf="submitClicked?projStatus=='':''">Required.</div> -->
+                       <div class="requiredField" *ngIf="callFormSubmit?(entityContactVal==''):''">Required.</div>
+                       
+                    </div>
+                      
+
+
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Subject</label>
+                        <input  class="form-control" placeholder="Enter Subject"  
+                                          formControlName="subject" > 
+                                          
+                       <div class="requiredField" *ngIf="callFormSubmit && (callForm.get('subject').value==''||callForm.get('subject').value==null )">Required.</div>
+                    </div>
+                      
+
+
+                    </div>
+                  
+                   
+                    
+                   
+                  <div class="form-group row">
+
+                      <div class="col-lg-12 col-xl-12">
+
+                        <label for="exampleTextarea">Call Purpose</label>
+                        <!-- <input  class="form-control" placeholder="Enter Name"  
+                                          formControlName="customer_Name" (keyup)="enableAddAct()"> -->
+                                          <select2  [data]="purposeData" [options]="taskOptions"  [value]="purposeVal"   (valueChanged)="changedCallPurpose($event)"></select2>
+
+                       <div class="requiredField" *ngIf="callFormSubmit?purposeVal=='':''">Required.</div>
+                                        
+                       <!-- <div class="requiredField" *ngIf="submitClicked?projStatus=='':''">Required.</div> -->
+                    </div>
+                      
+
+
+                    </div>
+                   
+                    <div class="form-group row"  style="display: none;">
+                      <!-- <label for="exampleTextarea" style=" margin-left: 15px;">Call Details</label> -->
+
+                      <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio" >
+    
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="callType" value="current" (change)="callRadioChange()">
+                          Current Call
+                          <span></span>
+                        </label>
+    
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="callType" value="completed" (change)="callRadioChange()">
+                          Completed Call
+
+
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="callType" value="schedule" (change)="callRadioChange()">
+                          Schedule Call
+
+
+                          <span></span>
+                        </label>
+                        
+    
+                      </div>
+                    </div>
+                       <div class="form-group row" >
+                      <div class="col-lg-12 col-xl-12">
+                        <label>Start Time</label>
+                        <div class="kt-input-icon materialPicker">
+                          <!-- <input type="text" class="form-control" placeholder="Enter CheckIn time"> -->
+                          <input class="form-control" placeholder="Enter Start time"
+                            (click)="callStartTimeChanged()" [ngxTimepicker]="callstartpicker"  [max]="currentTime" 
+                             formControlName="startTime">
+                          <ngx-material-timepicker  #callstartpicker>
+                          </ngx-material-timepicker>
+                        <div *ngIf="callFormSubmit && (callForm.get('startTime').value==''||callForm.get('startTime').value==null)" style="color: red;">Required.</div>
+
+                 
+                        </div>
+                      </div>
+                      <div class="col-lg-12 col-xl-12">
+                        <label class="">End Time</label>
+                        <div class="kt-input-icon">
+                          <input class="form-control" placeholder="Enter End time" [min]="minEndTime" [max]="currentTime"
+                             [ngxTimepicker]="callendpicker" formControlName="endTime">
+                          <ngx-material-timepicker #callendpicker></ngx-material-timepicker>
+                        <div *ngIf="callFormSubmit &&  (callForm.get('endTime').value==''||callForm.get('endTime').value==null) " style="color: red;">Required.</div>
+                        <div *ngIf="showValidTimeError " style="color: red;">Please choose a valid time lesser than the  current time.</div>
+
+                        </div>
+                       
+                      </div>
+                      <div class="kt-radio-inline col-lg-12 col-xl-12 accessRadio" >
+    
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="no_mins" value="5" (change)="callMinsRadioChange()">
+                          5 mins
+                          <span></span>
+                        </label>
+    
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="no_mins" value="10" (change)="callMinsRadioChange()">
+                          10 mins
+
+
+
+                          <span></span>
+                        </label>
+                        <label class="kt-radio">
+                          <input type="radio" formControlName="no_mins" value="15" (change)="callMinsRadioChange()">
+                          15 mins
+
+
+                          <span></span>
+                        </label>
+                        
+    
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="callForm.get('showDateEndTime').value==true">
+                      <div class="col-lg-6">
+                        <label>Call Start Time</label>
+                        <div class="kt-input-icon materialPicker">
+                          <!-- <input type="text" class="form-control" placeholder="Enter CheckIn time"> -->
+                          <ejs-datepicker formControlName="startDate" (change)="onChange($event)" [value]='dateValue' placeholder='Enter date'></ejs-datepicker>
+
+                        <div *ngIf="callFormSubmit && callForm.get('startDate').value==''" style="color: red;">Required.</div>
+
+                 
+                        </div>
+                      </div>
+                      <div class="col-lg-6" style="margin-top: 6px;">
+                        <label></label>
+
+                        <div class="kt-input-icon">
+                          <input class="form-control" placeholder="Enter End time" [min]="minEndTime"
+                   [ngxTimepicker]="scheduleCallpicker" formControlName="scheduleTime">
+                <ngx-material-timepicker #scheduleCallpicker></ngx-material-timepicker>
+
+                        <div *ngIf="callFormSubmit && callForm.get('scheduleTime').value==''" style="color: red;">Required.</div>
+
+                        </div>
+                       
+                      </div>
+                    </div>
+                    <div class="form-group row" *ngIf="callForm.get('showDateEndTime').value==true">
+                      <div class="col-lg-12">
+                        <label>Owner</label>
+                        <div class="kt-input-icon materialPicker">
+                          <!-- <input type="text" class="form-control" placeholder="Enter CheckIn time"> -->
+                          <!-- <ejs-datepicker formControlName="startDate" (change)="onChange($event)" [value]='dateValue' placeholder='Enter date'></ejs-datepicker> -->
+                          <select2  [data]="empData" [options]="taskOptions"  [value]="empVal"   (valueChanged)="changedEmp($event)"></select2>
+
+                        <div *ngIf="callFormSubmit && callForm.get('startDate').value==''" style="color: red;">Required.</div>
+
+                 
+                        </div>
+                      </div>
+                      
+                    </div>
+                 
+                   
+                  <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Description</label>
+                      <textarea style="display:block" formControlName="desc" class="form-control" 
+            placeholder="Add Description" rows="4"></textarea>
+                                        
+                  </div>
+                  </div>
+                  <div class="form-group row">
+
+                    <div class="col-lg-12 col-xl-12">
+
+                      <label for="exampleTextarea">Call Result</label>
+                      <select2  [data]="callResultData" [options]="taskOptions"  [value]="callresVal"   (valueChanged)="changedCallRes($event)"></select2>
+                      <div class="requiredField" *ngIf="callFormSubmit?callresVal=='':''">Required.</div>
+
+                                        
+                  </div>
+                    
+
+
+                  </div>
+                    
+
+                   
+
+
+
+
+                  </div>
+
+
+
+                </form>
+              
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!--end::Form-->
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="kt-align-right modal-footer">
+
+        <button type="Submit" [disabled]='' class="button button-fill button-rose"
+          (click)="callEditable?onUpdateCall():onAddCall()">Submit</button>
+        <button type="reset" class="btn btn-secondary" style="width: 90px;
+            padding: 7px 14px;font-size: 11px;
+            margin-top: -1px;" (click)="OnCallModalClose()">CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal animated slideInRight faster myDiv" tabindex="-1" id="close_act_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content contentHeighs ">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Closed Activities</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="onCloseActClose()" aria-label="Close">
+          </button>
+        </div>
+  
+  
+        <div class="modal-body" style="max-height: 590px !important;
+            overflow-y: auto;
+            overflow-x: hidden;">
+  
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item ">
+  
+              <div class="form-group row" style="margin-top:-12px;">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="kt-portlet__body" style="padding:0px;margin-top: 15px;color:grey;">
+   
+                      <div class="kt-widget2" style="width:100%;margin-left:-8px">
+
+                        <div class="kt-widget2__item kt-widget2__item--primary"
+                        >
+                       
+                        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                          >
+                          <a class="kt-widget2__username">
+                             Subject
+                          
+                          </a>
+                         
+                          <a class="kt-widget2__title">
+                          <span style="margin-right: 4px;"> {{closeActData.subject}}</span> 
+                          </a>
+            
+                          
+                        </div>
+            
+                    </div>
+
+                    <div class="kt-widget2__item kt-widget2__item--primary"
+                        >
+                       
+                        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                          >
+                          <a class="kt-widget2__username">
+                             Type
+                           
+                          </a>
+                          
+                          <a class="kt-widget2__title">
+                          <span style="margin-right: 4px;"> {{closeActData.entity_type}}</span> 
+
+                          </a>
+            
+                          
+                        </div>
+            
+                    </div>
+                    <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="closeActData.remarks!=''" 
+                    >
+                   
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                      >
+                      <a class="kt-widget2__username">
+                         Remarks
+                        
+                      </a>
+                    
+                      <a class="kt-widget2__title">
+                      <span style="margin-right: 4px;"> {{closeActData.remarks}}</span> 
+
+                      </a>
+        
+                      
+                    </div>
+        
+                </div>
+                <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="closeActData.start_time!=''" 
+                    >
+                   
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                      >
+                      <a class="kt-widget2__username">
+                        Start Time
+                       
+                      </a>
+                     
+                      <a class="kt-widget2__title">
+                      <span style="margin-right: 4px;"> {{closeActData.start_time|date : "h:mm a"}}</span>
+                      </a>
+                      
+                    </div>
+        
+                </div>
+                <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="closeActData.end_time!=''" 
+                >
+               
+                <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+                  >
+                  <a class="kt-widget2__username">
+                    End Time
+                 
+                  </a>
+                
+                  <a class="kt-widget2__title">
+                  <span style="margin-right: 4px;"> {{closeActData.end_time|date : "h:mm a"}}</span>
+                  </a>
+    
+                  
+                </div>
+    
+            </div>
+            <div class="kt-widget2__item kt-widget2__item--primary"  *ngIf="closeActData.status!='' && closeActData.status!=null "
+            >
+           
+            <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+              >
+              <a class="kt-widget2__username">
+                Status
+             
+              </a>
+            
+              <a class="kt-widget2__title">
+              <span style="margin-right: 4px;"> {{closeActData.status}}</span>
+              </a>
+
+              
+            </div>
+
+        </div>
+        <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="closeActData.activity_owner!=''  && closeActData.activity_owner!=null"
+        >
+       
+        <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+          >
+          <a class="kt-widget2__username">
+          Owner
+         
+          </a>
+        
+          <a class="kt-widget2__title">
+          <span style="margin-right: 4px;">{{closeActData.activity_owner}} </span>
+          </a>
+
+          
+        </div>
+
+    </div>
+    <div class="kt-widget2__item kt-widget2__item--primary" *ngIf="closeActData.due_date!='' && closeActData.due_date!=null"
+    >
+   
+    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"  
+      >
+      <a class="kt-widget2__username">
+      Due Date
+     
+      </a>
+    
+      <a class="kt-widget2__title">
+      <span style="margin-right: 4px;"> {{closeActData.due_date}} </span>
+      </a>
+
+      
+    </div>
+
+</div>
+                      
+              
+              
+              
+                      </div>
+
+                     
+                 
+  
+  
+  
+  
+  
+                    </div>
+  
+  
+                 
+  
+  
+  
+                </div>
+  
+  
+  
+  
+  
+              </div>
+            </div>
+  
+  
+  
+  
+  
+  
+  
+            <!--end::Form-->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+  
+         
+          <button type="reset" class="btn btn-secondary" style="width: 90px;
+              padding: 7px 14px;font-size: 11px;
+              margin-top: -1px;" (click)="onCloseActClose()">CLOSE
+          </button>
+        </div> 
+      </div>
+    </div>
+  </div>

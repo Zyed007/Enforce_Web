@@ -1,0 +1,173 @@
+<div style="padding:10px 50px;">
+
+    <div
+        style="background-color: white;display: flex;justify-content: space-between;padding: 10px;margin-bottom: 10px;">
+        <div class="kt-portlet" style="margin-bottom: 0px">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Storage Usage Report
+                    </h3>
+                </div>
+                <div style="display: flex;justify-content: center;align-items: center;">
+                    <button class='btn btnColorAll' style="margin-left: 20px;" (click)='goBack()'>
+                        <i class="fa fa-chevron-left marTopnew padreq" aria-hidden="true"></i>
+                        Back
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row rowimp rowcard">
+        <div class="centered-chart-container">
+            <ng-container *ngIf="!isLoading; else loadingTemplate">
+                <ejs-accumulationchart id="container" [legendSettings]="legendSettings" [title]="title"
+                    [enableAnimation]='enableAnimation' [center]='center' class="ejs-accumulationchart">
+                    <e-accumulation-series-collection>
+                        <e-accumulation-series name='Browser' [dataSource]='pieData' xName='x' yName='y'
+                            [startAngle]="startAngle" [endAngle]="endAngle" innerRadius="0%" radius="70%"
+                            [explode]='explode' explodeOffset='10%' [explodeIndex]='0' [dataLabel]="dataLabel">
+                        </e-accumulation-series>
+                    </e-accumulation-series-collection>
+                </ejs-accumulationchart>
+            </ng-container>
+            <ng-template #loadingTemplate>
+                <div class="pieChartSkeleton">
+                    <div class="skeleton-chart"></div>
+                </div>
+            </ng-template>
+        </div>
+
+        <div style="width: 100%;">
+            <div class="admin-panel" *ngIf="!isLoading; else loadingSkeleton">
+                <!-- Overall Container -->
+                <div class="container overall-container">
+                    <div class="kt-portlet" style="margin-bottom: 10px">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Overall Data Storage & Plan Information
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-container">
+                        <div class="card">
+                            <h2>Plan</h2>
+                            <p>{{ usageData.plan }}</p>
+                        </div>
+                        <div class="card">
+                            <h2>Storage Usage</h2>
+                            <p>{{ usageData.usage.storageUsage | number }} MB/25 GB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Cycle Container -->
+                <div class="container monthly-cycle-container">
+                    <div class="kt-portlet" style="margin-bottom: 10px">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Monthly Billing Cycle: Requests, Credits Used & Last Updated
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-container">
+                        <div class="card">
+                            <h2>Total Requests</h2>
+                            <p>{{ usageData.usage.requests }}</p>
+                        </div>
+                        <div class="card">
+                            <h2>Last Updated</h2>
+                            <p>{{ usageData.lastUpdated }}</p>
+                        </div>
+                        <div class="card">
+                            <h2>Credits Used</h2>
+                            <p>{{ usageData.usage.credits.usage }}/{{ usageData.usage.credits.limit }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today Container -->
+                <div class="container today-container">
+                    <div class="kt-portlet" style="margin-bottom: 10px">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Daily Usage Overview
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-container">
+                        <div class="card">
+                            <h2>Request Limit Remaining</h2>
+                            <p>{{ usageData.rateLimit.remaining }}/{{ usageData.rateLimit.allowed }}</p>
+                        </div>
+                        <div class="card">
+                            <h2>Request Limit Reset At</h2>
+                            <p>{{ usageData.rateLimit.resetAt | date:'dd/MM/yyyy' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #loadingSkeleton>
+                <div class="admin-panel">
+                    <div class="container overall-container">
+                        <div class="card-container">
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container monthly-cycle-container">
+                        <div class="card-container">
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container today-container">
+                        <div class="card-container">
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                            <div class="card">
+                                <h2 class="skeleton skeleton-title"></h2>
+                                <p class="skeleton skeleton-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+
+
+        </div>
+
+
+
+    </div>
+
+</div>

@@ -1,0 +1,23 @@
+<div class="row dateDiv">
+  <div class="col-12">
+    <ejs-daterangepicker [max]="today" [value]='dateRangeValue' format='E, d MMM, y' (change)="changeDate($event)">
+    </ejs-daterangepicker>
+  </div>
+</div>
+<div class="row start">
+  <div class="col-3">
+    <div class="card" routerLink="/oOrganization">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="material-icons">
+            groups
+          </i>
+        </div>
+        <div class="otherdiv">
+          <p class="card-category">Organizations</p>
+          <h4 class="card-title">{{orgCount}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+.mainProfileDiv{
+  margin: 0px 15px 15px;
+}
+
+.pad2515{
+  padding: 25px 15px;
+  background: #fff;
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+}
+
+.labelMainHeader{
+  font-size: 20px;
+  font-weight: 400;
+  font-family: Source Sans Pro,sans-serif;
+}
+
+.teamDiv{
+  text-align: end;
+}
+
+.btnColorAll{
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.marTopnew{
+  margin-top: 5px;
+}
+
+.CardRow{
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  padding: 10px;
+}
+
+.marTop18{
+  margin-top: 18px;
+}
+
+.notifyModal{
+  height: -webkit-fill-available;
+}
+
+.rightModal700{
+  .modal.fade{
+    opacity:1 !important;
+    overflow-y: hidden !important;
+   }
+   .modal-open .modal {
+    overflow-x: hidden !important;
+    overflow: hidden !important;
+   }
+   body.modal-open {
+    overflow: hidden !important;
+   position: fixed;
+
+
+   }
+
+   .modal .modal-dialog {
+    position: fixed !important;
+    margin: auto !important;
+    width: 700px;
+    max-width: 100%;
+    height: 100% !important;
+    -webkit-transform: translate3d(0%, 0, 0);
+   -ms-transform: translate3d(0%, 0, 0);
+         -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+   }
+   .fade {
+    opacity: 0;
+    transition: opacity 0.3s linear !important;
+   }
+   .modal-dialog {
+    right: 0px !important;
+   }
+
+   .modal.right.fade.in .modal-dialog {
+    right: 0 !important;
+   }
+
+}
+
+.errorTxtx{
+  padding: 0px;
+  background: none;
+  color: #e12d2d;
+  margin-bottom: 0px;
+}
+
+.checkinOpt{
+  margin-top: -2px;
+  margin-left: 6px;
+  position: absolute;
+}

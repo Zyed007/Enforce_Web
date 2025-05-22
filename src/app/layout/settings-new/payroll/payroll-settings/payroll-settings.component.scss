@@ -1,0 +1,291 @@
+.headerbox {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  margin: 0px 25px 0px 25px;
+}
+
+.button{
+  border: none;
+  text-decoration: none;
+  padding: 8px 15px 9px 12px;
+  background-color: #2e3e4e;
+  color: white;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.settingsbox{
+  margin: 0px 25px 0px 25px;
+  padding: 15px;
+  margin-top: 5px;
+  min-height: 500px;
+  background-color: #ffffff;
+}
+#selectPaymentcycle{
+padding-left: 35px
+}
+
+label{
+  display: flex;
+  margin-top: 5px;
+}
+
+h6{
+  margin: 25px 20px 10px 20px;
+}
+
+.mainbox{
+  margin: 0px 25px 0px 25px;
+  padding: 15px;
+  margin-top: 5px;
+  min-height: 500px;
+  background-color: #ffffff;
+}
+
+.statusCard{
+  padding: 5px;
+  margin: 0px 5px 0px 5px;
+  border-radius: 2px;
+  max-width: fit-content;
+  min-height: min-content;
+  color: white;
+  font-weight: 500;
+}
+
+.fristcard{
+  display: flex;
+  align-items: center;
+
+  .head{
+    font-size: 16px;
+  }
+}
+
+.secondcard{
+  display: flex;
+  margin-top: 10px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  padding: 10px 20px 20px 20px;
+  align-items: center;
+
+  .row{
+    margin: 10px;
+  }
+
+  .cardlabel{
+    font-weight: 500;
+    min-width: 100px;
+  }
+
+  .cardvalue{
+    font-weight: 500;
+    min-width: 120px;
+    margin-left: 10px;
+  }
+}
+
+.selectorSubDiv{
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.ejsTabContainer{
+  background-color:#fcfdfddc;
+  border-radius: 10px;
+  margin-top: 5px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.saveDiv{
+  padding: 20px 0px 15px 0px;
+  margin-top: 10px;
+  border-top: 1px solid #dddede;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.btnColorAll{
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btndata{
+  margin-bottom: 0px;
+  font-size: 15px;
+  font-family: Source Sans Pro, sans-serif;
+  font-weight: 400;
+}
+
+.empName{
+  cursor: pointer;
+  color: blue;
+  border-bottom: 1px solid #396dff;
+}
+
+.EmpDetailcard {
+}
+
+.basicsalcard{
+  padding: 10px;
+
+}
+
+/* Style for the table */
+.table {
+  width: 100%;
+}
+
+/* Style for table rows */
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Style for table data (labels) */
+.table-data-label {
+  font-weight: bold;
+}
+
+.flexstyle{
+  display: flex;
+  align-items: baseline;
+
+}
+
+.labSec{
+  margin-right: 10px;
+}
+
+.labCont{
+  font-size: larger;
+  font-weight: 500;
+}
+
+.labMonth{
+  font-size: small;
+  font-weight: 500;
+}
+
+.salTable{
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.salTable tr{
+  height: 10px;
+}
+
+.salTable td{
+  padding: 4px;
+}
+
+// .salTable tr:nth-child(even) {
+//   background-color: rgb(236, 234, 235);
+// }
+
+.salTable td:nth-child(2) {
+  text-align: left;
+}
+
+.salTable thead th{
+  text-align: left;
+}
+
+.sslcard{
+  margin-top: 10px;
+  padding: 15px;
+  height: fit-content;
+  border-radius: 5px;
+  background-color: #fbf6f8;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+}
+
+.PayslipCard{
+  display: flex;
+  justify-content: center;
+}
+
+.PayslipTb{
+  margin-top: 10px;
+  border-collapse: collapse;
+  padding: 10px;
+  width: 100%;
+}
+
+.PayslipTb tr{
+  height: 20px;
+  padding: 15px;
+}
+
+.PayslipTb th{
+  text-align: center;
+}
+
+.PayslipTb td{
+ padding: 5px 5px ;
+}
+
+.PayslipTb td:nth-child(3) {
+  text-align: right;
+}
+
+.PayslipTb td:nth-child(2) {
+  text-align: center;
+}
+
+.tbPlaySlip{
+  text-align: center;
+  font-size: medium;
+  font-weight: 600;
+  background-color: #eeebec;
+}
+
+.tbMainHd{
+  padding-left: 20px;
+  font-weight:500;
+  font-size: small;
+  background-color: #f7cedf;
+}
+
+.borderCard{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.headerA{
+  font-size: 14px;
+  margin-bottom: 1px;
+  font-weight: 400;
+}
+
+.headerB{
+  font-size: 12px;
+    margin-bottom: 0px;
+    font-weight: 400;
+}
+
+.fullrow{
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
+.subPay{
+  text-align: center;
+  margin-top: 15px;
+}
+.margdtl{
+  margin-left: 20px;
+}

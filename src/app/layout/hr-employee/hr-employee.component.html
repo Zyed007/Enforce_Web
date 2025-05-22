@@ -1,0 +1,3207 @@
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+
+<div *ngIf="accessToPage" class="startdiv">
+  <!-- for testing -->
+  <!-- <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" (click)="openAddVariablePay()">
+    Add Variable Pay
+  </button>
+  <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" (click)="openAddAdjustment()">
+    Add Adjustment
+  </button>
+  <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" (click)="openAddReimbersment()">
+    Add Work Expensess
+  </button> -->
+
+  <!--Employee List Page-->
+  <div class="row rowimp rowcard" style="margin-top: 25px" *ngIf="!singleEmployeePage">
+    <ejs-tab id="element" #tabObjlist heightAdjustMode="Auto" overflowMode="Popup">
+      <e-tabitems>
+        <e-tabitem *ngFor="let header of listEmployeeHeader" [header]="header">
+          <ng-template #content *ngIf="header.text == 'Employees'">
+            <!-- Detail listing  -->
+            <div class="col-12">
+              <ejs-grid #empTabledataTableGrid [toolbar]="invoiceToolbar" (created)="empTableSearchKeyUp()"
+                [dataSource]="employeeList" allowTextWrap="true" height="500px" allowSorting="true">
+                <e-columns>
+                  <e-column field="full_name" headerText="Full Name" width="150">
+                    <ng-template #template let-data>
+                      <span class="empName" (click)="viewSingleEmployee(data)">{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="phone" headerText="Phone" width="100">
+                    <ng-template #template let-data>
+                      <span>{{
+                        data.phone !== null
+                        ? data.phone
+                        : "No Phone Number Added"
+                        }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="workemail" headerText="Email" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.workemail }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="employee_type_name" headerText="Type" width="100">
+                    <ng-template #template let-data>
+                      <span>{{ data.employee_type_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="role_name" headerText="Role" width="100">
+                    <ng-template #template let-data>
+                      <span>{{ data.role_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="employee_status_name" headerText="Status" width="80">
+                    <ng-template #template let-data>
+                      <span>{{ data.employee_status_name }}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+          <ng-template #content *ngIf="header.text == 'Summary'">
+            <!-- Summary listing  -->
+            <div class="col-12">
+              <!-- Range Selector -->
+              <div class="rangeselectorsummary">
+                <span class="myStyleee" style="border: none; padding: 10px; background-color: white">
+                  {{ DateRangeSelected + " : " }}
+                  <span style="font-weight: 300"> From : </span>
+                  {{ fromDate | date : "MMMM d, y" }}
+                  <span style="font-weight: 300">To : </span>
+                  {{ toDate | date : "MMMM d, y" }}
+                </span>
+
+                <div class="kt-subheader__wrapper">
+                  <ul
+                    class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+                    role="tablist" style="
+                      border-bottom: none;
+                      display: inline-flex;
+                      margin: 0 0 0px 0;
+                    ">
+                    <li class="nav-item dasboardRange">
+                      <a class="nav-link" data-toggle="tab" id="defaultrange_modal" aria-selected="false"
+                        style="padding-bottom: 5px !important; padding-top: 0px">
+                        <div style="display: flex; justify-content: start">
+                          <div>Range</div>
+                          <div>
+                            <form [formGroup]="dateRgeFrm" style="padding-left: 4px">
+                              <ejs-daterangepicker [min]="minRangeDate" [max]="maxRangeDate"
+                                placeholder="Select Date range" formControlName="daterange">
+                                <e-presets>
+                                  <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                                  <e-preset label="Week" [start]="weekStart" [end]="today"></e-preset>
+                                  <e-preset label="Month" [start]="monthStart" [end]="today"></e-preset>
+                                  <e-preset label="Year" [start]="yearStart" [end]="today"></e-preset>
+                                </e-presets>
+                              </ejs-daterangepicker>
+                            </form>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <ejs-grid #empTabledataTableGrid [toolbar]="summaryToolbar" (created)="empTableSearchKeyUp()"
+                [dataSource]="employeeSummaryList" (toolbarClick)="employeeSummaryListDownload($event)"
+                [searchSettings]="searchOptions" allowTextWrap="true" [allowExcelExport]="true" height="500px"
+                allowSorting="true">
+                <e-columns>
+                  <e-column field="Name" headerText="Full Name" width="120">
+                    <ng-template #template let-data>
+                      <span class="empName" (click)="viewSingleEmpRequestFromSettings(data.emp_id)">{{ data.Name
+                        }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="present_day" headerText="Present Days" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.present_day }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="absent_day" headerText="Absent Days" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.absent_day }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="leave_day" headerText="Leave Days" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.leave_day }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="lesshour_day" headerText="Less Hours" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.lesshour_day }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="overtime_day" headerText="Over Time" width="100">
+                    <ng-template #template let-data>
+                      <span>{{ data.overtime_day }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="break_day" headerText="Break Days" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.break_day }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="override_time" headerText="Override Request" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.override_time }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="leave_avail" headerText="Leave Available" width="110">
+                    <ng-template #template let-data>
+                      <span>{{ data.leave_avail }}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+
+            </div>
+          </ng-template>
+          <!-- Grid View -->
+          <!-- <ng-template #content *ngIf="header.text == 'Grid view'">
+          </ng-template> -->
+        </e-tabitem>
+      </e-tabitems>
+    </ejs-tab>
+  </div>
+
+  <!--Single Employe Details-->
+  <div *ngIf="singleEmployeePage">
+    <!--Close Button-->
+    <div class="col-12" style="display: flex; justify-content: end; padding: 0px 0px 2px 0px;">
+      <div style="margin-right: 5px;">
+        <button class="btn btn-primary" (click)="handlePrintEmpData()">
+          <i class="fas fa-print"></i> Print
+        </button>
+      </div>
+
+      <button class="btn btnColorAll" (click)="closeSingleEmp()">
+        <i class="fa fa-angle-left" aria-hidden="true" style="margin-top: -1px"></i>
+        <p style="display: contents">Back</p>
+      </button>
+
+    </div>
+    <!--Employee Snippet with photo and needed details-->
+    <div class="row marbot rowcard">
+      <div class="col-2">
+        <div class="eldata">
+          <div class="photoview">
+            <img class="images" [src]="photourl" style="margin-bottom: 12px" />
+          </div>
+        </div>
+      </div>
+      <div class="col-3 flx" style="padding-left: 25px">
+        <div class="eldata">
+          <h4 style="margin-bottom: 10px; margin-top: 20px">
+            {{ singleEmployeeData?.full_name }}
+          </h4>
+          <label>Role:</label>
+          <p class="empinput">{{ empRoleData?.employeeRole[0].role_name }}</p>
+        </div>
+        <div class="eldata">
+          <label>Status:</label>
+          <p class="empinput">
+            {{
+            empRoleData?.employee_status_name !== null
+            ? empRoleData?.employee_status_name
+            : "Not Updated"
+            }}
+          </p>
+        </div>
+        <div class="eldata">
+          <label>Type:</label>
+          <p class="empinput">
+            {{
+            empRoleData?.employee_type_name !== null
+            ? empRoleData?.employee_type_name
+            : ""
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="col-3 flx">
+        <div class="eldata">
+          <div class="eldata">
+            <label>Nationality:</label>
+            <!-- <p class="empinput">
+              {{
+                countryData[empextdata?.nationality-1]["value"]
+              }}
+            </p>  -->
+          </div>
+          <div class="eldata">
+            <label>Gender:</label>
+            <p class="empinput">
+              {{
+              singleEmployeeData?.gender !== null
+              ? singleEmployeeData?.gender
+              : "Not Updated"
+              }}
+            </p>
+          </div>
+          <div class="eldata">
+            <label>Date of Birth:</label>
+            <p class="empinput">
+              {{ empextdata?.dob !== null ? empextdata?.dob : "Not Updated" }}
+            </p>
+          </div>
+          <ng-container *ngIf="open_balance_days !== null">
+            <div class="eldata" *ngIf="open_balance_days == 0">
+              <label>Joining Date:</label>
+              <p class="empinput">
+                {{ singleEmployeeData?.joined_date | date: "MMMM d, y" }} ({{ datecalculator }})
+              </p>
+            </div>
+            <ng-container *ngIf="open_balance_days != 0">
+              <div class="eldata">
+                <label>Leave Profile:</label>
+                <p class="empinput">
+                  From {{ openBalanceStartDate | date: "MMM d, y" }}  to {{ leaveProfileEndDate | date: "MMM d, y" }} ({{ calnordays }}) which includes an opening balance of
+                  [<strong> {{ open_balance_days }} </strong> Days ] from {{ singleEmployeeData?.joined_date | date: "MMM d, y" }} to {{ openBalanceEndDate | date: "MMM d, y" }}({{calopendays}}).
+                </p>
+              </div>
+            </ng-container>
+
+          </ng-container>
+
+
+
+        </div>
+      </div>
+      <div class="col-4 flx">
+        <div class="eldata">
+          <label>Work Email:</label>
+          <p class="empinput">
+            {{
+            singleEmployeeData?.workemail !== null
+            ? singleEmployeeData?.workemail
+            : "Not Updated"
+            }}
+          </p>
+        </div>
+        <div class="eldata">
+          <label>Contact Number:</label>
+          <p class="empinput">
+            {{
+            singleEmployeeData?.phone !== null
+            ? singleEmployeeData?.phone
+            : "Not Updated"
+            }}
+          </p>
+        </div>
+        <div class="eldata">
+          <label>Contact Address:</label>
+          <p class="empinput">
+            {{
+            empextdata?.contact_adr_1 !== null
+            ? empextdata?.contact_adr_1
+            : "Not Updated"
+            }}
+            <br />
+            {{ empextdata?.contact_adr_2 }}<br />{{ empextdata?.contact_city }}
+            <br />{{ empextdata?.contact_conutry }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <!--Employee Mian Details Center-->
+    <div class="rowcard marbot" style="margin-top: 22px; margin-bottom: 35px">
+      <ejs-tab id="element" #tabObj heightAdjustMode="Auto" overflowMode="Popup" (selected)="onTabChange($event)">
+        <e-tabitems>
+          <e-tabitem *ngFor="let header of mainTab" [header]="header" [disabled]="disableTabs">
+            <!--Dashboard analytics-->
+            <ng-template #content *ngIf="header.text == 'DashBoard'">
+              <div>
+                <div class="tabsepration"></div>
+                <!--Range selector for DashBoard-->
+                <div class="rangeselectorsummary">
+                  <span class="myStyleee" style="border: none; padding: 10px; background-color: white">
+                    {{ DateRangeSelected + " : " }}
+                    <span style="font-weight: 300"> From : </span>
+                    {{ fromDate | date : "MMMM d, y" }}
+                    <span style="font-weight: 300">To : </span>
+                    {{ toDate | date : "MMMM d, y" }}
+                  </span>
+
+                  <div class="kt-subheader__wrapper">
+                    <ul
+                      class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+                      role="tablist" style="
+                        border-bottom: none;
+                        display: inline-flex;
+                        margin: 0 0 0px 0;
+                      ">
+                      <li class="nav-item dasboardRange">
+                        <a class="nav-link" data-toggle="tab" id="defaultrange_modal" aria-selected="false" style="
+                            padding-bottom: 5px !important;
+                            padding-top: 0px;
+                          ">
+                          <div style="display: flex; justify-content: start">
+                            <div>Range</div>
+                            <div>
+                              <form [formGroup]="dateRgeFrm" style="padding-left: 4px">
+                                <ejs-daterangepicker [min]="minRangeDate" [max]="maxRangeDate"
+                                  placeholder="Select Date range" formControlName="daterange">
+                                  <e-presets>
+                                    <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                                    <e-preset label="Week" [start]="weekStart" [end]="today"></e-preset>
+                                    <e-preset label="Month" [start]="monthStart" [end]="today"></e-preset>
+                                    <e-preset label="Year" [start]="yearStart" [end]="today"></e-preset>
+                                    <e-preset label="Profile Start Date" [start]="minRangeDate"
+                                      [end]="today"></e-preset>
+                                  </e-presets>
+                                </ejs-daterangepicker>
+                              </form>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!--EJS Analytics tab-->
+                <div class="row marbot rowcard">
+                  <div class="col-12"></div>
+
+                  <header>
+                    <div>
+                      <h1>Analytics</h1>
+                      <span class="spacer"></span>
+                    </div>
+                  </header>
+
+                  <!--Present Days-->
+                  <div class="col-3">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Present List')">
+                      <p class="headerA">
+                        Present
+                        <i class="fa fa-info-circle" container="body" ngbTooltip="Number of Present Days in the selected date range: from {{
+                            fromDate | date : 'MMMM d, y'
+                          }} till {{ toDate | date : 'MMMM d, y' }}" placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                          employeePresentData === ""
+                          ? "Loading.."
+                          : employeePresentData?.length + " Days"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--Absent Days-->
+                  <div class="col-3">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Absent List')">
+                      <p class="headerA">
+                        Absent
+                        <i class="fa fa-info-circle" container="body" ngbTooltip="Number of Absent Days in selected date range: from {{
+                            fromDate | date : 'MMMM d, y'
+                          }} till {{ toDate | date : 'MMMM d, y' }}" placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                          employeeAbsentData === ""
+                          ? "Loading.."
+                          : employeeAbsentData?.length + " Days"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--Less Hours-->
+                  <div class="col-3">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Less Hours')">
+                      <p class="headerA">
+                        Less Hours
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip="Numbers of Present Days that not completed the total working hours, within the selected date range."
+                          placement="top"></i>
+                      </p>
+                      <div style="display: flex; flex-direction: row">
+                        <p class="headerB">
+                          {{
+                          lessHoursWrkbyEmpIDData === ""
+                          ? "Loading.."
+                          : lessHoursWrkbyEmpIDData?.length + " Days"
+                          }}
+                        </p>
+                        <span class="timedate" style="margin-top: 7px; margin-left: 7px">Total:
+                          <span style="font-weight: bold">{{ totlesshh }}</span>
+                          :Hours</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--Over Time-->
+                  <div class="col-3">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Over Time')">
+                      <p class="headerA">
+                        Over Time
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip="Numbers of Days in which Employee worked more than the total working hours, within the selected date range."
+                          placement="top"></i>
+                      </p>
+                      <div style="display: flex; flex-direction: row">
+                        <p class="headerB">
+                          {{
+                          OverTimeWrkbyEmpIDData === ""
+                          ? "Loading.."
+                          : OverTimeWrkbyEmpIDData?.length + " Days"
+                          }}
+                        </p>
+                        <span class="timedate" style="margin-top: 7px; margin-left: 7px">Total:
+                          <span style="font-weight: bold">{{
+                            totloverhh
+                            }}</span>
+                          :Hours</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--Breaks-->
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Breaks List')">
+                      <p class="headerA">
+                        Breaks
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip="Number of Days in which Break time used between the Work Hours, within the selected date range"
+                          placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                          employeeBreakData === ""
+                          ? "Loading.."
+                          : breakdaycount +
+                          " Days, " +
+                          employeeBreakData?.length +
+                          " Times"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--Overrides Check in Check out-->
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Override Requests')">
+                      <p class="headerA">
+                        Override Request
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip="Number of Approved Check In or Check Out time chanege Requests, within the selected date range."
+                          placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                          employeeCheckInOutOverrideData === ""
+                          ? "Loading.."
+                          : employeeCheckInOutOverrideData?.length +
+                          " Times"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--Location Execptions-->
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" (click)="cardClick('Attendence', 'Location Exception')">
+                      <p class="headerA">
+                        Location Exception
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip="Number of Days in which employee had checked in with diffrent location, within the selected date range"
+                          placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                          employeeLocationData === ""
+                          ? "Loading.."
+                          : employeeLocationData?.length + " Days"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <!--Available Annual Leave-->
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" style="display: flex;">
+                      <div style="flex:1">
+                        <p class="headerA">
+                          Available Annual Leave
+                          <i class="fa fa-info-circle" container="body"
+                            ngbTooltip="Numbers of remaining Annual leaves which can be claimed by the given employee"
+                            placement="top"></i>
+                        </p>
+                        <div>
+                          <p class="headerB">{{ availableLeaveDays || 0 }} Days</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" style="display: flex;">
+                      <div style="flex:1">
+                        <p class="headerA">
+                          Eligible Annual Leave
+                          <i class="fa fa-info-circle" container="body"
+                            ngbTooltip="Numbers of Annual leaves which is eligible from the joining date"
+                            placement="top"></i>
+                        </p>
+                        <div>
+                          <p class="headerB">{{ multipliedMonths || 0 }} Days</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- <div style="flex: 1;display: flex;" *ngIf="open_balance_days!=0">
+                    <div class="card" style="background-color: #f8f9fa; border: 1px solid #ccc; border-radius: 3px;flex: 1;justify-content: center;">
+                      <div style=" margin-bottom: 1px;">
+                        <div style="font-weight: 500; color: #333; padding-left: 2px;">
+                          Open Balance Days - <span style="font-weight: 700;">{{ open_balance_days }} days</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+
+                  <!--Leaves Approved-->
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" (click)="cardClick('Leaves', 'Leaves Approved')" style="display: flex;">
+                      <div style="flex:1">
+                        <p class="headerA">
+                          Leaves Approved
+                          <i class="fa fa-info-circle" container="body"
+                            ngbTooltip="Number of Leave Days approved by the respective Manager, within the selected date range."
+                            placement="top"></i>
+                        </p>
+                        <div>
+                          <p class="headerB">
+                            {{
+                            !employeeApprovedLeaveData
+                            ? "Loading.."
+                            :  employeeApprovedLeaveData.length === 0? "0 Days" : leavesHeader[1].total_days + " Days"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                      <div style="flex: 1;display: flex;" *ngIf="!employeeApprovedLeaveData || employeeApprovedLeaveData.length != 0">
+                        <div class="card"
+                          style="background-color: #f8f9fa; border: 1px solid #ccc; border-radius: 3px;flex: 1;justify-content: center;">
+                          <div *ngFor="let item of leavesHeader" style=" margin-bottom: 1px;">
+                            <div
+                              *ngIf="item.name !== 'All' && item.name !== 'Leaves Approved' && item.name !== 'Pending Leave Request' && item.name !== 'Declined Request'"
+                              style="font-weight: 500; color: #333; padding-left: 2px;">
+                              {{ item.name }} - <span style="font-weight: 700;">{{ item.total_days }} days</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!--Pending Request -->
+                  <div class="col-3" style="margin-top: 20px">
+                    <div class="borderCard" (click)="cardClick('Leaves', 'Pending Leave Request')">
+                      <p class="headerA">
+                        Pending Leave Request
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip="Numbers of Pending leaves which is ment to be Approved or Reject"
+                          placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                          !employeePendingLeaveData
+                          ? "Loading.."
+                          : employeePendingLeaveData.length === 0? "0 Days" : leavesPendingHeader[0].request_count + " Days"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-3" style="margin-top: 20px" *ngIf="open_balance_days!=0">
+                    <div class="borderCard" (click)="cardClick('Leaves', 'Pending Leave Request')">
+                      <p class="headerA">
+                        Open Balance Details
+                        <i class="fa fa-info-circle" container="body"
+                          ngbTooltip='Opening Balance Leave Details : From ({{ singleEmployeeData?.joined_date | date: "MMM d, y" }} to {{ openBalanceEndDate | date: "MMM d, y" }})'
+                          placement="top"></i>
+                      </p>
+                      <div>
+                        <p class="headerB">
+                          {{
+                             open_balance_days + " Days"
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </ng-template>
+            <!--Details-->
+            <ng-template #content *ngIf="header.text == 'Details'">
+              <div class="tabsepration"></div>
+              <div class="row maincard">
+                <!-- ========== COLUMN 1: Personal Details ========== -->
+                <div class="col-4">
+                  <!-- Personal Details -->
+                  <p class="paymenttemphead">Personal Details</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><p class="prodata fire">Name</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ singleEmployeeData?.full_name || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Nationality</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ singleEmployeeData?.alias || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Date of Birth</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.dob ? (empextdata.dob | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Gender</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ singleEmployeeData?.gender || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Marital Status</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.marital_status || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Email Address</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.pesonal_email || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Phone Number</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.phone_no || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Home Phone Number</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.home_no || '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Emergency Contact -->
+                  <p class="paymenttemphead mt-3">Emergency Contact</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><p class="prodata fire">Contact Name</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.gardian_contact || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Contact Number</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.emergency_contact || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Contact Relation</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.gardian_relation || '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Contact Address -->
+                  <p class="paymenttemphead mt-3">Contact Address</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td style="vertical-align: top"><p class="prodata fire">Address</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.contact_adr_1 || '' }}</span></p>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.contact_adr_2 || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">City</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.contact_city || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Country</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ singleEmployeeData?.alias || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Postal Code</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.contact_postal_code || '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Permanent Address -->
+                  <p class="paymenttemphead mt-3">Permanent Address</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td style="vertical-align: top"><p class="prodata fire">Address</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.adr_1 || '' }}</span></p>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.adr_2 || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">City</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.adr_city || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Country</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.adr_country ? (countryData[empextdata.adr_country - 1]?.value || '') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Postal Code</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.adr_postal_code || '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- ========== COLUMN 2: Contract & Admin Details ========== -->
+                <div class="col-4">
+                  <!-- Contract Details -->
+                  <p class="paymenttemphead">Contract Details</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><p class="prodata fire">Joining Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ singleEmployeeData?.joined_date ? (singleEmployeeData.joined_date | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Contract Start Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.con_start ? (empextdata.con_start | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Contract End Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.con_end ? (empextdata.con_end | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Labour ID</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.labour_id || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Labour ID Expiry Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.labour_exp_date ? (empextdata.labour_exp_date | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Visa Number</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.visa_id || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Visa Type</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.visa_type || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Visa Expiry Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.visa_exp_date ? (empextdata.visa_exp_date | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Emirates ID</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.emirates_id || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Emirate ID Expiry Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.emirates_id_exp_date ? (empextdata.emirates_id_exp_date | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Administration Details -->
+                  <p class="paymenttemphead mt-3">Administration Details</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><p class="prodata fire">Employee Type</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empRoleData?.employee_type_name || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Employee Role</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{empRoleData.employeeRole[0].role_name }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Employee Status</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empRoleData?.employee_status_name || '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- ========== COLUMN 3: Passport & Bank Details ========== -->
+                <div class="col-4">
+                  <!-- Passport Details -->
+                  <p class="paymenttemphead">Passport Details</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><p class="prodata fire">Passport Number</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.passport_num || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Passport Issue Country</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.pass_issue_contry ? (countryData[empextdata.pass_issue_contry - 1]?.value || '') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Passport Issue Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.pass_issue_date ? (empextdata.pass_issue_date | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Passport Expiry Date</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.pass_exp_date ? (empextdata.pass_exp_date | date:'longDate') : '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Bank Details -->
+                  <p class="paymenttemphead mt-3">Bank Details</p>
+                  <div class="custboxxxxx">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><p class="prodata fire">Bank Name</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.bank_name || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Bank Branch</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.bank_branch || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Account Number</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.bank_account_num || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">IBAN</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.bank_Iban || '' }}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><p class="prodata fire">Swift Code</p></td>
+                          <td>
+                            <p class="prodata fire">: <span class="fonttext">{{ empextdata?.bank_swift || '' }}</span></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <!--Attendence-->
+            <ng-template #content *ngIf="header.text == 'Attendence'">
+              <div class="tabsepration"></div>
+              <!--Action Tab-->
+              <div>
+                <!--Range selector-->
+                <div class="rangeselectorsummary">
+                  <span class="myStyleee" style="border: none; padding: 10px; background-color: white">
+                    {{ DateRangeSelected + " : " }}
+                    <span style="font-weight: 300"> From : </span>
+                    {{ fromDate | date : "MMMM d, y" }}
+                    <span style="font-weight: 300">To : </span>
+                    {{ toDate | date : "MMMM d, y" }}
+                  </span>
+
+                  <div class="kt-subheader__wrapper">
+                    <ul
+                      class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+                      role="tablist" style="
+                        border-bottom: none;
+                        display: inline-flex;
+                        margin: 0 0 0px 0;
+                      ">
+                      <li class="nav-item dasboardRange">
+                        <a class="nav-link" data-toggle="tab" id="defaultrange_modal" aria-selected="false" style="
+                            padding-bottom: 5px !important;
+                            padding-top: 0px;
+                          ">
+                          <div style="display: flex; justify-content: start">
+                            <div>Range</div>
+                            <div>
+                              <form [formGroup]="dateRgeFrm" style="padding-left: 4px">
+                                <ejs-daterangepicker [min]="minRangeDate" [max]="maxRangeDate"
+                                  placeholder="Select Date range" formControlName="daterange">
+                                  <e-presets>
+                                    <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                                    <e-preset label="Week" [start]="weekStart" [end]="today"></e-preset>
+                                    <e-preset label="Month" [start]="monthStart" [end]="today"></e-preset>
+                                    <e-preset label="Year" [start]="yearStart" [end]="today"></e-preset>
+                                    <e-preset label="All" [start]="minRangeDate" [end]="today"></e-preset>
+                                  </e-presets>
+                                </ejs-daterangepicker>
+                              </form>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!--Matirial Tab Data-->
+                <div class="row">
+                  <div class="col-12">
+                    <mat-tab-group [selectedIndex]="mattabNumber">
+                      <mat-tab *ngFor="
+                          let header of attendanceHeader;
+                          let index = index
+                        " label="{{ header }}">
+                        <header>
+                          <div>
+                            <h1>{{ header }}</h1>
+                            <span class="spacer"></span>
+                          </div>
+                        </header>
+
+                        <!--Present List-->
+                        <div *ngIf="header == 'Present List'">
+                          <ejs-grid #singleEmpPresentGrid [toolbar]="singleEmpToolbar"
+                            [dataSource]="employeePresentData" [allowExcelExport]="true"
+                            (toolbarClick)="singleEmpGridDownload($event)" allowTextWrap="true" height="500px"
+                            allowSorting="true">
+                            <e-columns>
+                              <e-column field="ondate" headerText="Date" width="130">
+                                <ng-template #headerTemplate let-data>
+                                  <div style="text-align: center">
+                                    <p style="margin-bottom: 0px">Date</p>
+                                    <p style="
+                                        margin-bottom: 0px;
+                                        font-size: 10px;
+                                      ">
+                                      (DD/MM/YYYY)
+                                    </p>
+                                  </div>
+                                </ng-template>
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.ondate | date : "dd/MM/yyyy"
+                                    }}</span>
+                                  <i style="
+                                      font-weight: bold;
+                                      margin-left: 5px !important;
+                                    " *ngIf="data.is_app_check_In" class="fa fa-mobile" aria-hidden="true"></i>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="day" headerText="Day" textAlign="center" width="150">
+                                <ng-template #template let-data>
+                                  <span>{{ data.day }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="full_name" headerText="Employee" width="170">
+                                <ng-template #template let-data>
+                                  <span>{{ data.full_name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="project_category_type" headerText="Category" width="130">
+                                <ng-template #template let-data>
+                                  <span>{{ data.project_category_type }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="project_or_comp_name" headerText="Project" width="170">
+                                <ng-template #template let-data>
+                                  <span>{{ data.project_or_comp_name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_in" headerText="Check In" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.check_in }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_out" headerText="Check Out" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.check_out }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Total Hrs (Hr:Mn)" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.total_hrs }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                        <!--Absent List-->
+                        <div *ngIf="header == 'Absent List'">
+                          <ejs-grid #singleEmpAbsentGrid [toolbar]="singleEmpToolbar" [dataSource]="employeeAbsentData"
+                            [allowExcelExport]="true" (toolbarClick)="singleEmpAbGridDownload($event)"
+                            allowTextWrap="true" height="500px" allowSorting="true">
+                            <e-columns>
+                              <e-column field="name" headerText="Employee" width="170">
+                                <ng-template #template let-data>
+                                  <span>{{ data.name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="date" headerText="Date (DD/MM/YYYY)" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.date | date : "dd/MM/yyyy"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="day" headerText="Day" textAlign="center" width="120">
+                                <ng-template #template let-data>
+                                  <span>{{ data.day }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                        <!--Less Hours-->
+                        <div *ngIf="header == 'Less Hours'">
+                          <div class="lessTitle">
+                            <span style="font-size: small">Total Less Hours:
+                              <span style="font-weight: bold">{{
+                                totlesshh
+                                }}</span>
+                              :Hours, Equals to:
+                              <span style="font-weight: bold">{{
+                                lessdays
+                                }}</span>
+                              :Working Days, and
+                              <span style="font-weight: bold">{{
+                                lesshrs
+                                }}</span>
+                              :Hours.
+                            </span>
+                          </div>
+                          <p *ngIf="lessHoursWrkbyEmpIDData === ''" style="font-weight: 600">
+                            Loading Less Hours Data.......
+                          </p>
+                          <ejs-grid *ngIf="lessHoursWrkbyEmpIDData !== ''" #lessHoursWrkbyEmpIDGrid
+                            [toolbar]="singleEmpToolbar" [dataSource]="lessHoursWrkbyEmpIDData"
+                            [allowExcelExport]="true" (toolbarClick)="lessHoursWrkbyEmpIDDownload($event)"
+                            allowTextWrap="true" height="500px" allowSorting="true">
+                            <e-columns>
+                              <e-column field="check_in" headerText="Date" width="80">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.check_in | date : "mediumDate"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="dayName" headerText="Day" width="80">
+                                <ng-template #template let-data>
+                                  <span>{{ data.dayName }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_in" headerText="Check In" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.check_in | date : "shortTime"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_out" headerText="Check Out" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.check_out | date : "shortTime"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Total Hours" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.total_hrs }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Less Time" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.diff }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                        <!--Over Time-->
+                        <div *ngIf="header == 'Over Time'">
+                          <div class="lessTitle">
+                            <span style="font-size: small">Total Over Time:
+                              <span style="font-weight: bold">{{
+                                totloverhh
+                                }}</span>
+                              :Hours, Equals to:
+                              <span style="font-weight: bold">{{
+                                overdays
+                                }}</span>
+                              :Working Days, and
+                              <span style="font-weight: bold">{{
+                                overhrs
+                                }}</span>
+                              :Hours.
+                            </span>
+                          </div>
+                          <p *ngIf="OverTimeWrkbyEmpIDData === ''" style="font-weight: 600">
+                            Loading Over Time Data.......
+                          </p>
+
+                          <ejs-grid *ngIf="OverTimeWrkbyEmpIDData !== ''" #lessHoursWrkbyEmpIDGrid
+                            [toolbar]="singleEmpToolbar" [dataSource]="OverTimeWrkbyEmpIDData" [allowExcelExport]="true"
+                            (toolbarClick)="lessHoursWrkbyEmpIDDownload($event)" allowTextWrap="true" height="500px"
+                            allowSorting="true">
+                            <e-columns>
+                              <e-column field="check_in" headerText="Date" width="80">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.check_in | date : "mediumDate"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="dayName" headerText="Day" width="80">
+                                <ng-template #template let-data>
+                                  <span>{{ data.dayName }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_in" headerText="Check In" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.check_in | date : "shortTime"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_out" headerText="Check Out" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.check_out | date : "shortTime"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Total Hours" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.total_hrs }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Over Time" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.diff }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                        <!--Breaks List-->
+                        <div *ngIf="header == 'Breaks List'">
+                          <p *ngIf="employeeBreakData === ''" style="font-weight: 600">
+                            Loading Break Hours Data.......
+                          </p>
+                          <ejs-grid *ngIf="employeeBreakData !== ''" #breakdatagrid #grid [toolbar]="singleEmpToolbar"
+                            [dataSource]="employeeBreakData" [allowExcelExport]="true" [allowGrouping]="true"
+                            [groupSettings]="groupOptions" (toolbarClick)="employeeBreakDataDownload($event)"
+                            allowTextWrap="true" (dataBound)="dataBound()" (created)="created()" (load)="load()"
+                            height="500px" allowSorting="true">
+                            <e-columns>
+                              <e-column field="ondate" headerText="Date" width="80">
+                                <ng-template #template let-data>
+                                  <span>{{ data.ondate }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column headerText="Activity" width="200">
+                                <ng-template #template let-data>
+                                  <span>{{ "Not Mentioned" }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="Break_in" headerText="Break In" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.break_in | date : "shortTime"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_out" headerText="Break Out" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.break_out | date : "shortTime"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Total Hours" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.total_hrs }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                        <!--Location Exception-->
+                        <div *ngIf="header == 'Location Exception'">
+                          <p *ngIf="employeeLocationData === ''" style="font-weight: 600">
+                            Loading Location Exception Data.......
+                          </p>
+                          <ejs-grid *ngIf="employeeLocationData !== ''" #locationexceptionGrid
+                            [toolbar]="singleEmpToolbar" [dataSource]="employeeLocationData" [allowExcelExport]="true"
+                            (toolbarClick)="
+                              employeeLocationDataDownload($event)
+                            " allowTextWrap="true" height="500px" allowSorting="true">
+                            <e-columns>
+                              <e-column field="ondate" headerText="Date" width="40">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.ondate | date : "longDate"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="project_category_type" headerText="Place / Project" width="40">
+                                <ng-template #template let-data>
+                                  <span>{{ data.project_category_type }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="project_or_comp_name" headerText="Project Name/Place Address" width="40">
+                                <ng-template #template let-data>
+                                  <span>{{ data.project_or_comp_name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="lat" headerText="Location" width="30">
+                                <ng-template #template let-data>
+                                  <a href="https://maps.google.com/?q={{
+                                      data.lat
+                                    }},{{ data.lang }}" target="_blank">View Map</a>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_in" headerText="Check In" width="30">
+                                <ng-template #template let-data>
+                                  <span>{{ data.check_in }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="check_out" headerText="Check Out" width="30">
+                                <ng-template #template let-data>
+                                  <span>{{ data.check_out }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="total_hrs" headerText="Total Hours" width="30">
+                                <ng-template #template let-data>
+                                  <span>{{ data.total_hrs }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                        <!--Override Requests-->
+                        <div *ngIf="header == 'Override Requests'">
+                          <ejs-grid #singleEmpAssignedLeaveGrid [toolbar]="singleEmpToolbar"
+                            [dataSource]="employeeCheckInOutOverrideData" [allowExcelExport]="true"
+                            (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true" height="500px"
+                            allowSorting="true">
+                            <e-columns>
+                              <e-column field="created_date" headerText="Applied on" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.created_date | date : "dd/MM/yyyy"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column headerText="CheckIn" width="90">
+                                <ng-template #template let-data>
+                                  <div style="display: grid">
+                                    <span *ngIf="data.previous_check_in !== null">
+                                      {{ data.previous_check_in }}
+                                    </span>
+                                  </div>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column headerText="Override CheckIn" width="90">
+                                <ng-template #template let-data>
+                                  <div style="display: grid">
+                                    <span *ngIf="
+                                        data.check_in === data.previous_check_in
+                                      ">
+                                      {{ "No change" }}
+                                    </span>
+                                    <span *ngIf="
+                                        data.check_in != data.previous_check_in
+                                      " style="background-color: lightgreen">
+                                      {{ data.check_in }}
+                                    </span>
+                                  </div>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column headerText="CheckOut" width="90">
+                                <ng-template #template let-data>
+                                  <div style="display: grid">
+                                    <span>
+                                      {{
+                                      data.previous_check_out == null &&
+                                      data.check_out != null
+                                      ? "Not Marked"
+                                      : data.previous_check_out
+                                      }}
+                                    </span>
+                                  </div>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column headerText="Override CheckOut" width="90">
+                                <ng-template #template let-data>
+                                  <div style="display: grid">
+                                    <span *ngIf="data.check_out !== null">
+                                      <span *ngIf="
+                                          data.check_out ===
+                                          data.previous_check_out
+                                        ">
+                                        {{ "No change" }}
+                                      </span>
+                                      <span *ngIf="
+                                          data.check_out !=
+                                          data.previous_check_out
+                                        " style="background-color: lightcoral">
+                                        {{ data.check_out }}
+                                      </span>
+                                    </span>
+                                  </div>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="reasonName" headerText="Reason" width="90">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.reasonName !== null
+                                    ? data.reasonName
+                                    : data.reason_desc
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="approverName" headerText="Approver" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.approverName }}</span>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <!--Leaves-->
+            <ng-template #content *ngIf="header.text == 'Leaves'">
+              <div class="tabsepration"></div>
+              <!--Action Tab-->
+              <div>
+                <!--Range selector-->
+                <div class="rangeselectorsummary">
+                  <span class="myStyleee" style="border: none; padding: 10px; background-color: white">
+                    {{ DateRangeSelected + " : " }}
+                    <span style="font-weight: 300"> From : </span>
+                    {{ fromDate | date : "MMMM d, y" }}
+                    <span style="font-weight: 300">To : </span>
+                    {{ toDate | date : "MMMM d, y" }}
+                  </span>
+
+                  <div class="kt-subheader__wrapper">
+                    <ul
+                      class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+                      role="tablist" style="
+                        border-bottom: none;
+                        display: inline-flex;
+                        margin: 0 0 0px 0;
+                      ">
+                      <li class="nav-item dasboardRange">
+                        <a class="nav-link" data-toggle="tab" id="defaultrange_modal" aria-selected="false" style="
+                            padding-bottom: 5px !important;
+                            padding-top: 0px;
+                          ">
+                          <div style="display: flex; justify-content: start">
+                            <div>Range</div>
+                            <div>
+                              <form [formGroup]="dateRgeFrm" style="padding-left: 4px">
+                                <ejs-daterangepicker [min]="minRangeDate" [max]="maxRangeDate"
+                                  placeholder="Select Date range" formControlName="daterange">
+                                  <e-presets>
+                                    <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                                    <e-preset label="Week" [start]="weekStart" [end]="today"></e-preset>
+                                    <e-preset label="Month" [start]="monthStart" [end]="today"></e-preset>
+                                    <e-preset label="Year" [start]="yearStart" [end]="today"></e-preset>
+                                    <e-preset label="All" [start]="minRangeDate" [end]="today"></e-preset>
+                                  </e-presets>
+                                </ejs-daterangepicker>
+                              </form>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!--Matirial Tab Data-->
+                <div class="row">
+                  <div class="col-12">
+                    <mat-tab-group [selectedIndex]="lmattabnum">
+                      <mat-tab *ngFor="let lheader of leavesHeader; let index = index"
+                        label="{{ lheader.name }} ({{ lheader.request_count }} Requests)">
+                        <!-- Header Section -->
+                        <header>
+                          <div>
+                            <h1>{{lheader.name}}</h1>
+                            <span class="spacer"></span>
+                          </div>
+                        </header>
+                        <div class="lessTitle">
+                          <span style="font-size: small">
+                            <strong class="approved-header"> Approved :</strong>
+                            <ng-container *ngFor="let leave of leavesHeader; let last = last">
+                              <ng-container
+                                *ngIf="leave.name !== 'Leaves Approved' && leave.name!== 'Pending Leave Request' && leave.name!== 'Declined Request'">
+                                <strong>{{ leave.name }} :</strong>
+                                <span style="font-weight: bold"> {{ leave.total_days }}</span> days
+                                <span *ngIf="!last"> || </span> <!-- Add "||" separator, except for the last item -->
+                              </ng-container>
+                            </ng-container>
+                          </span>
+                        </div>
+                        <div class="lessTitle">
+                          <span style="font-size: small">
+                            <strong class="pending-header"> Pending :</strong>
+                            <ng-container *ngFor="let leave of leavesPendingHeader; let last = last">
+                              <strong>{{ leave.name }} :</strong>
+                              <span style="font-weight: bold">{{ leave.total_days }}</span> days
+                              <span *ngIf="!last"> || </span> <!-- Add "||" separator, except for the last item -->
+                            </ng-container>
+                          </span>
+                        </div>
+
+
+                        <!-- <br> -->
+                        <!-- <span style="font-size: small">
+                            <strong>All Leave Pending:</strong>
+                            <span style="font-weight: bold">{{ allLeavePending }}</span> days ||
+                            <strong>Annual Leave Pending:</strong>
+                            <span style="font-weight: bold">{{ annualLeavePending }}</span> days ||
+                            <strong>Sick Leave Pending:</strong>
+                            <span style="font-weight: bold">{{ sickLeavePending }}</span> days
+                          </span>
+                          <br> -->
+                        <!-- <span style="font-size: small">
+                            <strong>Available Annual Leave:</strong>
+                            <span style="font-weight: bold">{{ availableAnnualLeave }}</span> days ||
+                            <strong>Available Sick Leave:</strong>
+                            <span style="font-weight: bold">{{ availableSickLeave }}</span> days
+                          </span> -->
+                        <!-- </div> -->
+
+
+                        <!-- Dynamic Grid -->
+                        <ejs-grid #singleEmpAssignedLeaveGrid [toolbar]="singleEmpToolbar"
+                          [dataSource]="getDataSource(lheader.name)" [allowExcelExport]="true"
+                          (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true" height="500px"
+                          allowSorting="true">
+                          <e-columns>
+                            <e-column field="ondate_applied" headerText="Applied on" width="100">
+                              <ng-template #template let-data>
+                                <span>{{ data.ondate_applied | date : 'MMMM d, yyyy' }}</span>
+                              </ng-template>
+                            </e-column>
+                            <e-column field="leave_name" headerText="Leave Name" textAlign="center" width="100">
+                              <ng-template #template let-data>
+                                <span>{{ data.leave_name }}</span>
+                              </ng-template>
+                            </e-column>
+                            <e-column field="leave_start_date" headerText="From" textAlign="center" width="100">
+                              <ng-template #template let-data>
+                                <span>{{ data.leave_start_date | date : 'MMMM d, yyyy' }}</span>
+                              </ng-template>
+                            </e-column>
+                            <e-column field="leave_end_date" headerText="To" textAlign="center" width="100">
+                              <ng-template #template let-data>
+                                <span>{{ data.leave_end_date | date : 'MMMM d, yyyy' }}</span>
+                              </ng-template>
+                            </e-column>
+                            <e-column field="leave_days_applied" headerText="Duration" textAlign="center" width="100">
+                              <ng-template #template let-data>
+                                <span>{{ data.leave_days_applied }}</span>
+                              </ng-template>
+                            </e-column>
+                            <e-column field="leave_status" headerText="Status" textAlign="center" width="100">
+                              <ng-template #template let-data>
+                                <span *ngIf="data.leave_status === 'approved'">
+                                  <i class="fa fa-check-circle" style="color: green;"></i> Approved
+                                </span>
+                                <span *ngIf="data.leave_status === 'pending'">
+                                  <i class="fa fa-hourglass-half" style="color: orange;"></i> Pending
+                                </span>
+                                <span *ngIf="data.leave_status === 'declined'">
+                                  <i class="fa fa-times-circle" style="color: red;"></i> Declined
+                                  <div *ngIf="data.decline_reason"
+                                    style="color: gray; font-size: 0.9em; margin-top: 4px;">
+                                    {{ data.decline_reason }}
+                                  </div>
+                                </span>
+                              </ng-template>
+                            </e-column>
+                            <e-column field="doc_url" headerText="Uploaded Document" textAlign="center" width="100">
+                              <ng-template #template let-data>
+                                <span *ngIf="!data.doc_url">No Document</span>
+                                <span *ngIf="data.doc_url">
+                                  <a (click)="goToLinkdoc(data.doc_url)" class="hyperlinkdoc">View</a>
+                                </span>
+                              </ng-template>
+                            </e-column>
+                          </e-columns>
+                        </ejs-grid>
+
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </div>
+
+              </div>
+            </ng-template>
+            <!--PayRoll-->
+            <ng-template #content *ngIf="header.text == 'PayRoll'">
+              <div class="tabsepration"></div>
+              <div class="row">
+                <div class="col-12">
+                  <mat-tab-group (selectedIndexChange)="handlePayrollTabChange($event)">
+                    <mat-tab *ngFor="let header of PayrollHeader; let index = index" label="{{ header }}">
+
+                      <div *ngIf="header == 'Active Payroll Month' || header == 'Pay History'">
+                        <div style="padding: 15px">
+
+                          <div style="padding: 0px 250px 0px 250px;">
+
+                            <div style="
+                              display: flex;
+                              justify-content: space-between;
+                            ">
+                              <div>
+                                <h5 *ngIf="header == 'Active Payroll Month'">{{selectedPayroll.name}}</h5>
+                                <div class="d-flex align-items-center "
+                                  style="display: flex; justify-content: flex-start;" *ngIf="header == 'Pay History'">
+                                  <Label class="mr-3" style="font-weight: 500">Payroll Month:</Label>
+                                  <form [formGroup]="payrollHistoryFrm">
+                                    <ejs-dropdownlist (change)="changePayrollHistoryMonth($event)"
+                                      [dataSource]="payrollMonthHistory" [placeholder]="commonPlaceholder"
+                                      [value]="payrollmonth" class="ejsDrop"
+                                      formControlName="paymonth"></ejs-dropdownlist>
+                                  </form>
+                                </div>
+                                <span> <strong>Payment Period :</strong> {{ selectedPayroll.start_date |
+                                  date:'longDate' }} to {{ selectedPayroll.end_date | date:'longDate' }}</span>
+                              </div>
+                              <p>Currency in AED</p>
+                            </div>
+
+                            <div class="PayslipCard">
+                              <table class="PayslipTb" *ngIf="!isPaySlipLoading">
+                                <thead>
+                                  <tr>
+                                    <th colspan="3" class='tbPlaySlip'>Salary Slip</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class='tbMainHd' colspan="3">Fixed Salary</td>
+                                  </tr>
+
+                                  <tr>
+                                    <th>Pay Item</th>
+                                    <th>Remarks</th>
+                                    <th>Amount</th>
+                                  </tr>
+                                  <tr class="accordion-content" (click)="openSalaryAccordPress()">
+                                    <td><button class="acordbutton"><i *ngIf="openSalaryAccord" class="fa fa-angle-up"
+                                          aria-hidden="true"></i>
+                                        <i *ngIf="!openSalaryAccord" class="fa fa-angle-down"
+                                          aria-hidden="true"></i></button>
+                                      Salary <i class="fa fa-info-circle" aria-hidden="true"
+                                        ngbTooltip="The total salary is calculated by adding the earnings from each salary change, based on the duration of each period, ensuring all adjustments are accurately reflected."></i>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                      {{SinEmpData.fix_netpay}}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="3"></td>
+                                  </tr>
+                                  <ng-container *ngIf="openSalaryAccord">
+                                    <ng-container *ngIf="salaryHistory.length > 0">
+                                      <ng-container *ngFor="let item of salaryHistory">
+                                        <tr style="background-color: #f1f1f1; height: 5px;">
+                                          <td colspan="2">
+                                            StartDate: <strong>{{item.start_date | date: "dd/MM/y"}}</strong> to End
+                                            Date:
+                                            <strong>{{item.end_date | date: "dd/MM/y"}}</strong>
+                                          </td>
+                                          <td style="text-align: right;"><strong>{{item.net_pay}}</strong></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Basic Salary</td>
+                                          <td></td>
+                                          <td>{{item.basic_salary}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Tax</td>
+                                          <td></td>
+                                          <td><span *ngIf="item.tax_deduc>0">-</span>{{item.tax_deduc}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Travel</td>
+                                          <td></td>
+                                          <td>{{item.travel_allow}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Insurance</td>
+                                          <td></td>
+                                          <td><span *ngIf="item.insurance_deduc>0">-</span>{{item.insurance_deduc}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Accommodation</td>
+                                          <td></td>
+                                          <td>{{item.accommed_allow}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.a_one_name">
+                                          <td>{{item.a_one_name}}</td>
+                                          <td></td>
+                                          <td>{{item.a_one}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.a_two_name">
+                                          <td>{{item.a_two_name}}</td>
+                                          <td></td>
+                                          <td>{{item.a_two}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.a_three_name">
+                                          <td>{{item.a_three_name}}</td>
+                                          <td></td>
+                                          <td>{{item.a_three}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.d_one_name">
+                                          <td>{{item.d_one_name}}</td>
+                                          <td></td>
+                                          <td>-{{item.d_one}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.d_two_name">
+                                          <td>{{item.d_two_name}}</td>
+                                          <td></td>
+                                          <td>-{{item.d_two}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.d_three_name">
+                                          <td>{{item.d_three_name}}</td>
+                                          <td></td>
+                                          <td>-{{item.d_three}}</td>
+                                        </tr>
+                                      </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="salaryHistory.length === 0">
+                                      <tr>
+                                        <td colspan="3">No salary history available.</td>
+                                      </tr>
+                                    </ng-container>
+                                  </ng-container>
+
+
+                                  <tr>
+                                    <td class='tbMainHd' colspan="3">Earnings</td>
+                                  </tr>
+                                  <tr>
+                                    <th>Pay Item</th>
+                                    <th>Remarks</th>
+                                    <th>Amount</th>
+                                  </tr>
+                                  <tr *ngIf="SinEmpData && SinEmpData.a_one_name">
+                                    <td>{{SinEmpData.a_one_name}}</td>
+                                    <td></td>
+                                    <td>{{SinEmpData.a_one}}</td>
+                                  </tr>
+                                  <tr *ngIf="SinEmpData && SinEmpData.a_two_name">
+                                    <td>{{SinEmpData.a_two_name}}</td>
+                                    <td></td>
+                                    <td>{{SinEmpData.a_two}}</td>
+                                  </tr>
+                                  <tr *ngIf="SinEmpData && SinEmpData.a_three_name">
+                                    <td>{{SinEmpData.a_three_name}}</td>
+                                    <td></td>
+                                    <td>{{SinEmpData.a_three}}</td>
+                                  </tr>
+                                  <tr *ngFor="let item of empvariableList">
+                                    <td>Variable Pay : {{item.pay_item + " " +item.date_incurred}}</td>
+                                    <td>{{item.remarks }}</td>
+                                    <td>{{item.amount}}</td>
+                                  </tr>
+                                  <tr *ngFor="let item of empadjaddList">
+                                    <td>Adjustment : {{item.pay_item + " " +item.date_incurred}}</td>
+                                    <td>{{item.remarks }}</td>
+                                    <td>{{item.amount}}</td>
+                                  </tr>
+                                  <tr *ngFor="let item of empexpenssList">
+                                    <td>Work Expense : {{item.pay_item + " " +item.reference_id }}</td>
+                                    <td>{{item.remarks }}</td>
+                                    <td>{{item.amount}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class='tbMainHd' colspan="3">Deductions</td>
+                                  </tr>
+                                  <!-- <tr>
+                                    <td>Tax</td>
+                                    <td></td>
+                                    <td> {{SinEmpData.tax_deduc}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Insurance </td>
+                                    <td></td>
+                                    <td> {{SinEmpData.insurance_deduc}}</td>
+                                  </tr> -->
+                                  <tr *ngIf="SinEmpData && SinEmpData.d_one_name">
+                                    <td>{{SinEmpData.d_one_name}}</td>
+                                    <td></td>
+                                    <td>-{{SinEmpData.d_one}}</td>
+                                  </tr>
+                                  <tr *ngIf="SinEmpData && SinEmpData.d_two_name">
+                                    <td>{{SinEmpData.d_two_name}}</td>
+                                    <td></td>
+                                    <td>-{{SinEmpData.d_two}}</td>
+                                  </tr>
+                                  <tr *ngIf="SinEmpData && SinEmpData.d_three_name">
+                                    <td>{{SinEmpData.d_three_name}}</td>
+                                    <td></td>
+                                    <td>-{{SinEmpData.d_three}}</td>
+                                  </tr>
+                                  <tr *ngFor="let item of empadjdeducList">
+                                    <td>Adjustment: {{item.pay_item + " " +item.date_incurred }}</td>
+                                    <td>{{item.remarks }}</td>
+                                    <td>-{{item.amount}}</td>
+                                  </tr>
+
+                                  <tr class="accordion-content" (click)="openAccordPress()">
+                                    <td><button class="acordbutton"><i *ngIf="openAccord" class="fa fa-angle-up"
+                                          aria-hidden="true"></i>
+                                        <i *ngIf="!openAccord" class="fa fa-angle-down" aria-hidden="true"></i></button>
+                                      Auto
+                                      Deductions</td>
+                                    <td> Items : {{autoCout}} </td>
+                                    <td>Total:-{{autototal}}.00 </td>
+                                  </tr>
+
+                                  <ng-container *ngIf="openAccord">
+                                    <tr *ngFor="let item of empadjautodeducList">
+                                      <td>Adjustment: {{item.pay_item + " " +item.date_incurred }}</td>
+                                      <td>{{item.remarks }}</td>
+                                      <td>-{{item.amount}}</td>
+                                    </tr>
+                                  </ng-container>
+                                  <tr>
+                                    <td></td>
+                                    <td class="totsub"> Total Earnings </td>
+                                    <td>AED {{SinEmpData.netearning || 0}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td class="totsub"> Total Deductions </td>
+                                    <td>AED {{SinEmpData.netdeduction || 0}}</td>
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                  <tr>
+                                    <td></td>
+                                    <td>Total Payable </td>
+                                    <td>AED {{SinEmpData.netpayable || 0}}</td>
+                                  </tr>
+                                </tfoot>
+                              </table>
+                              <div *ngIf="isPaySlipLoading" style="height: 250px;">
+                                <div class="spinner-overlay">
+                                  <div class="spinner-border text-primary custom-spinner" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngIf="header == 'Variable Pay'">
+                        <div class="selbox col-12" style="display: flex; justify-content: end">
+                          <div class="d-flex align-items-center col-10"
+                            style="display: flex; justify-content: flex-start">
+                            <Label class="mr-3" style="font-weight: 500">Payroll Month:</Label>
+                            <form [formGroup]="payrollMonthFrm">
+                              <ejs-dropdownlist (change)="changePayrollMonthFrm($event)" [dataSource]="payrollmonth"
+                                [placeholder]="commonPlaceholder" [value]="payrollmonth" class="ejsDrop"
+                                formControlName="paymonth"></ejs-dropdownlist>
+                            </form>
+                          </div>
+                          <div class="col-2 text-right">
+                            <button class="btn" style="
+                                background-color: #e91e63;
+                                color: white;
+                                font-weight: 600;
+                              " (click)="openAddVariablePay()">
+                              Add Variable Pay
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <ejs-grid #singleEmpAssignedLeaveGrid [toolbar]="singleEmpToolbar"
+                            [dataSource]="variablePayList" [allowExcelExport]="true"
+                            (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true" height="500px"
+                            allowSorting="true">
+
+                            <e-columns>
+
+                              <e-column field="pay_item" headerText="Pay Item" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.pay_item }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="Status" headerText="Status" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.status }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="amount" headerText="Amount(AED)" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.amount }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="date_incurred" headerText="Assosiated Period" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.assc_start_date | date : "dd/MM/yyyy"
+                                    }} </span>
+                                  <span> to {{
+                                    data.assc_end_date | date : "dd/MM/yyyy"
+                                    }} </span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="remark" headerText="Remark" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.remarks }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <!-- <e-column
+                                field=""
+                                headerText="Action"
+                                textAlign="center"
+                                width="120"
+                              >
+                                <ng-template #template let-data>
+                                  <span>{{ data.leave_days_applied }}</span>
+                                </ng-template>
+                              </e-column> -->
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                      </div>
+
+                      <div *ngIf="header == 'Adjustments'">
+                        <div class="selbox col-12" style="display: flex; justify-content: end">
+                          <div class="d-flex align-items-center col-10"
+                            style="display: flex; justify-content: flex-start">
+                            <Label class="mr-3" style="font-weight: 500">Payroll Month:</Label>
+                            <ejs-dropdownlist (change)="changePayrollMonthFrm($event)" [dataSource]="payrollmonth"
+                              [fields]="commonFields"></ejs-dropdownlist>
+                          </div>
+                          <div class="col-2 text-right">
+                            <button class="btn" style="
+                                background-color: #e91e63;
+                                color: white;
+                                font-weight: 600;
+                              " (click)="openAddAdjustment()">
+                              Add Adjustment
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <ejs-grid #singleEmpAssignedLeaveGrid [toolbar]="singleEmpToolbar"
+                            [dataSource]="adjustmentPayList" [allowExcelExport]="true"
+                            (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true" height="500px"
+                            allowSorting="true">
+                            <e-columns>
+                              <e-column field="type" headerText="Type" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.type }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="pay_item" headerText="Item Name" width="50">
+                                <ng-template #template let-data>
+                                  <span>{{ data.pay_item }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="amount" headerText="Amount(AED)" width="50">
+                                <ng-template #template let-data>
+                                  <span>{{ data.amount }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="date_incurred" headerText="Date Incurred" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.date_incurred | date : "dd/MM/yyyy"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="remark" headerText="Remark" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.remark }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <!-- <e-column
+                                field=""
+                                headerText="Action"
+                                textAlign="center"
+                                width="120"
+                              >
+                                <ng-template #template let-data>
+                                  <span>{{ data.leave_days_applied }}</span>
+                                </ng-template>
+                              </e-column> -->
+
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+                      </div>
+
+                      <div *ngIf="header == 'Work Expensess'">
+
+                        <div class="selbox col-12" style="display: flex; justify-content: end">
+                          <div class="d-flex align-items-center col-10"
+                            style="display: flex; justify-content: flex-start">
+                            <Label class="mr-3" style="font-weight: 500">Payroll Month:</Label>
+                            <ejs-dropdownlist (change)="changePayrollMonthFrm($event)" [dataSource]="workexpenssPayList"
+                              [fields]="commonFields"></ejs-dropdownlist>
+                          </div>
+                          <div class="col-2 text-right">
+                            <button class="btn" style="
+                                background-color: #e91e63;
+                                color: white;
+                                font-weight: 600;
+                              " (click)="openAddReimbersment()">
+                              Add Reimbursement
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <ejs-grid #singleEmpAssignedLeaveGrid [toolbar]="singleEmpToolbar"
+                            [dataSource]="empexpenssList" [allowExcelExport]="true"
+                            (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true" height="500px"
+                            allowSorting="true">
+                            <e-columns>
+                              <e-column field="type" headerText="Type" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.type }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="name" headerText="Item Name" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="amount" headerText="Amount(AED)" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.amount }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="date_incurred" headerText="Date Incurred" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.date_incurred | date : "dd/MM/yyyy"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="remark" headerText="Remark" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.remark }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <!-- <e-column
+                                field=""
+                                headerText="Action"
+                                textAlign="center"
+                                width="120"
+                              >
+                                <ng-template #template let-data>
+                                  <span>{{ data.leave_days_applied }}</span>
+                                </ng-template>
+                              </e-column> -->
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                      </div>
+                      <div *ngIf="header == 'Wave Off'">
+                        <div style="margin-top: 20px;">
+                          <ejs-grid #pendingExpGrid [toolbar]="singleEmpToolbar" [dataSource]="empWaveOffList"
+                            [allowExcelExport]="true" (toolbarClick)="singleEmpALGridDownload($event)" allowTextWrap="true"
+                            height="500px" allowSorting="true">
+                            <e-columns>
+                              <e-column field="full_name" headerText="Employee Name" width="80">
+                                <ng-template #template let-data>
+                                  <span>{{ data.full_name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="pay_item" headerText="Pay Item" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.pay_item }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="type" headerText="Type" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.type }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="amount" headerText="Amount(AED)" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.amount }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="date_incurred" headerText="Date Incurred" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.date_incurred | date : "dd/MM/yyyy"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="remarks" headerText="Remark" width="70">
+                                <ng-template #template let-data>
+                                  <span>{{ data.remarks }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="waive_off_status" headerText="waiveOff status" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.waive_off_status }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="waive_off_created_by" headerText="WaiveOff By" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.waive_off_created_by }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="waive_off_modified_date" headerText="WaiveOff Date" width="60">
+                                <ng-template #template let-data>
+                                  <span>{{ data.waive_off_modified_date | date : "dd/MM/yyyy" }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column headerText="Action" width="100">
+                                <ng-template #template let-data>
+                                  <button class="foreye" (click)="viewWaiveOff(data)"><i class="fa fa-eye"
+                                      aria-hidden="true"></i></button>
+                                  <button *ngIf="allowWaiveoff && isPayrollActive"
+                                    ngbTooltip="This option delete Waive Off and add this Auto Deduction to the Paytable."
+                                    class="custbtn" (click)="waiveoffDelete(data)">Delete WaiveOff</button>
+                                </ng-template>
+                              </e-column>
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+                      </div>
+
+                      <div *ngIf="header == 'Adavnce & Loan'">
+
+                        <div class="selbox col-12" style="display: flex; justify-content: end">
+                          <div class="d-flex align-items-center col-10"
+                            style="display: flex; justify-content: flex-start">
+                            <Label class="mr-3" style="font-weight: 500">Payroll Month:</Label>
+                            <ejs-dropdownlist (change)="changePayrollMonthFrm($event)" [dataSource]="payrollmonth"
+                              [fields]="commonFields"></ejs-dropdownlist>
+                          </div>
+                          <div class="col-2 text-right">
+                            <button class="btn" style="
+                                background-color: #e91e63;
+                                color: white;
+                                font-weight: 600;
+                              " (click)="openAddReimbersment()">
+                              Add Loan Payments
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <ejs-grid #singleEmpAssignedLeaveGrid [toolbar]="singleEmpToolbar" [dataSource]="empLoanList"
+                            [allowExcelExport]="true" (toolbarClick)="singleEmpALGridDownload($event)"
+                            allowTextWrap="true" height="500px" allowSorting="true">
+                            <e-columns>
+                              <e-column field="type" headerText="Type" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.type }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="name" headerText="Item Name" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.name }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="amount" headerText="Amount(AED)" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.amount }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="date_incurred" headerText="Date Incurred" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{
+                                    data.date_incurred | date : "dd/MM/yyyy"
+                                    }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <e-column field="remark" headerText="Remark" width="100">
+                                <ng-template #template let-data>
+                                  <span>{{ data.remark }}</span>
+                                </ng-template>
+                              </e-column>
+
+                              <!-- <e-column
+                                field=""
+                                headerText="Action"
+                                textAlign="center"
+                                width="120"
+                              >
+                                <ng-template #template let-data>
+                                  <span>{{ data.leave_days_applied }}</span>
+                                </ng-template>
+                              </e-column> -->
+                            </e-columns>
+                          </ejs-grid>
+                        </div>
+
+                      </div>
+
+                      <div *ngIf="header == 'Pay History'"> Nothing to display Now</div>
+
+                      <div *ngIf="header == 'Salary Details'">
+                        <div style="padding: 10px 450px;background-color: #f3f3f3;">
+                          <ng-container *ngIf="salaryDetails.length > 0">
+                            <ng-container *ngFor="let item of salaryDetails">
+                              <div
+                                style="border: 1px solid #ccc; margin-bottom: 20px; padding: 10px; background-color: #f9f9f9;">
+                                <table class="PayslipTb" style="width: 100%; border-collapse: collapse;">
+                                  <tr style="background-color: #e6e6e6;">
+                                    <td colspan="2">
+                                      Start Date: <strong>{{item.start_date | date: "dd/MM/y"}}</strong> to End Date:
+                                      <strong *ngIf="!item.is_active">{{item.end_date | date: "dd/MM/y"}}</strong>
+                                      <strong *ngIf="item.is_active">Active</strong>
+                                    </td>
+                                    <td style="text-align: right;"><strong>{{item.net_pay}}</strong></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Basic Salary</td>
+                                    <td></td>
+                                    <td>{{item.basic_salary}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Tax</td>
+                                    <td></td>
+                                    <td><span *ngIf="item.tax_deduc > 0">-</span>{{item.tax_deduc}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Travel</td>
+                                    <td></td>
+                                    <td>{{item.travel_allow}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Insurance</td>
+                                    <td></td>
+                                    <td><span *ngIf="item.insurance_deduc > 0">-</span>{{item.insurance_deduc}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Accommodation</td>
+                                    <td></td>
+                                    <td>{{item.accommed_allow}}</td>
+                                  </tr>
+                                  <tr *ngIf="item.a_one_name">
+                                    <td>{{item.a_one_name}}</td>
+                                    <td></td>
+                                    <td>{{item.a_one}}</td>
+                                  </tr>
+                                  <tr *ngIf="item.a_two_name">
+                                    <td>{{item.a_two_name}}</td>
+                                    <td></td>
+                                    <td>{{item.a_two}}</td>
+                                  </tr>
+                                  <tr *ngIf="item.a_three_name">
+                                    <td>{{item.a_three_name}}</td>
+                                    <td></td>
+                                    <td>{{item.a_three}}</td>
+                                  </tr>
+                                  <tr *ngIf="item.d_one_name">
+                                    <td>{{item.d_one_name}}</td>
+                                    <td></td>
+                                    <td>-{{item.d_one}}</td>
+                                  </tr>
+                                  <tr *ngIf="item.d_two_name">
+                                    <td>{{item.d_two_name}}</td>
+                                    <td></td>
+                                    <td>-{{item.d_two}}</td>
+                                  </tr>
+                                  <tr *ngIf="item.d_three_name">
+                                    <td>{{item.d_three_name}}</td>
+                                    <td></td>
+                                    <td>-{{item.d_three}}</td>
+                                  </tr>
+                                  <tr style="border-top: 1px solid #ccc;">
+                                    <td>Gross Pay</td>
+                                    <td></td>
+                                    <td>{{item.gross_pay}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Net Deduction</td>
+                                    <td></td>
+                                    <td><span *ngIf="item.net_deduc > 0">-</span>{{item.net_deduc}}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Net Pay</td>
+                                    <td></td>
+                                    <td>{{item.net_pay}}</td>
+                                  </tr>
+                                </table>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+
+
+                      </div>
+
+                    </mat-tab>
+                  </mat-tab-group>
+                </div>
+              </div>
+            </ng-template>
+            <!--Assets-->
+            <ng-template #content *ngIf="header.text == 'Assets'">
+              <div class="tabsepration">
+                <ejs-grid [dataSource]="assignedAsset" height="500px" [toolbar]="employeeGridToolItems">
+                  <e-columns>
+              
+                    <e-column field="name" headerText="Asset Name" width="100">
+                      <ng-template #template let-data>
+                        {{data.name }}
+                      </ng-template>
+                    </e-column>
+              
+                    <e-column field="status" headerText="Status" width="100">
+                      <ng-template #template let-data>
+                        {{data.status }}
+                      </ng-template>
+                    </e-column>
+              
+                    <e-column field="type" headerText="Type" width="100">
+                      <ng-template #template let-data>
+                        {{data.type }}
+                      </ng-template>
+                    </e-column>
+              
+                    <e-column field="brand" headerText="Brand" width="100">
+                      <ng-template #template let-data>
+                        {{data.brand}}
+                      </ng-template>
+                    </e-column>
+              
+                    <e-column field="assign_from" headerText="Start Date" width="100">
+                      <ng-template #template let-data>
+                        {{data.assign_from | date: 'MMM d, y'}}
+                      </ng-template>
+                    </e-column>
+              
+                    <e-column field="assign_to" headerText="End Date" width="100">
+              
+                      <ng-template #template let-data>
+                        {{data.assign_to | date: 'MMM d, y'}}
+                      </ng-template>
+              
+                    </e-column>
+
+                    <e-column field="assigned_by" headerText="Assigned By" width="100">
+                      <ng-template #template let-data>
+                        {{data.assigned_by}}
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="assign_status" headerText="Assign status" width="100">
+                      <ng-template #template let-data>
+                        {{data.assign_status}}
+                      </ng-template>
+                    </e-column>
+
+              
+                    <e-column headerText="Action" textAlign="Centre" width="100">
+                      <ng-template #template let-data>
+              
+                        <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Asset Details" container="body"
+                          (click)="viewAssetData(data)">
+                          <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                        </button>
+              
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+              
+                </ejs-grid>
+                <div *ngIf="isLoading" class="spinner-overlay">
+                  <div class="spinner-border text-primary custom-spinner" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <!--Documents-->
+            <ng-template #content *ngIf="header.text == 'Documents'">
+              <div class="tabsepration"></div>
+              <div class="CardRow CardRow1">
+                <div class="docAlign">
+                  <div class="row">
+                    <!--Coloumn For Contract and Visa details -->
+                    <div class="col-10">
+                      <!--Essential Documents details -->
+                      <div class="details marTop">
+                        <p class="linebottom">Essential Documents</p>
+                        <div class="marbot">
+                          <div class="rowdoc">
+                            <div class="col-12">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Document Name</th>
+                                    <th>Expiry Date</th>
+                                    <th>Status</th>
+                                    <th>Date Uploaded</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let doc of esdocs">
+                                    <td>
+                                      {{ doc.docname }}
+                                    </td>
+                                    <td>
+                                      {{ doc.docexp | date : "longDate" }}
+                                    </td>
+                                    <td>
+                                      {{ doc.status }}
+                                    </td>
+                                    <td>
+                                      {{ doc.crdate | date : "longDate" }}
+                                    </td>
+                                    <td>
+                                      <button class="btn buttonSt btnScc edbtnSt" placement="top"
+                                        ngbTooltip="View Document" container="body"
+                                        (click)="viewEssentalDoc(doc.docname)">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                      </button>
+                                      <button class="btn buttonSt btnScc edbtnSt" placement="top"
+                                        ngbTooltip="Download Document" container="body"
+                                        (click)="downloadDoc(doc.docname)">
+                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                      </button>
+                                    </td>
+                                    <!--<td>
+                                       <div class ="document">
+                                        <ejs-uploader  (selected)="uploadEssentalDoc($event, doc.docname)" allowedExtensions=".jpg,.png,.jpeg,.pdf" [autoUpload]="true"
+                                        [buttons]="{ browse: 'Upload' }"
+                                        multiple="false"
+                                        ></ejs-uploader>
+                                      </div>
+                                    </td>-->
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-10">
+                      <!--Additional Documents-->
+                      <div class="details marTop">
+                        <p class="linebottom">Additional Documents</p>
+                        <div class="marbot">
+                          <div class="form-group row">
+                            <div class="col-12">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Document Name</th>
+                                    <th>Expiry Date</th>
+                                    <th>Date Uploaded</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let doc of repaddocs">
+                                    <td>{{ doc.docname }}</td>
+                                    <td>
+                                      {{ doc.docexp | date : "longDate" }}
+                                    </td>
+                                    <td>
+                                      {{ doc.crdate | date : "longDate" }}
+                                    </td>
+                                    <td>
+                                      <button class="btn buttonSt btnScc edbtnSt" placement="top"
+                                        ngbTooltip="View Document" container="body"
+                                        (click)="viewEssentalDoc(doc.docname)">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                      </button>
+                                      <button class="btn buttonSt btnScc edbtnSt" placement="top"
+                                        ngbTooltip="Download Document" container="body"
+                                        (click)="downloadDoc(doc.docname)">
+                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+
+            <!--Documents-->
+            <ng-template #content *ngIf="header.text == 'Final Settlement'">
+              <div class="tabsepration"></div>
+              <div class="CardRow CardRow1">
+                <div class="docAlign">
+                <app-gratuity  [data]="gratuityCompData"></app-gratuity>
+                </div>
+              </div>
+            </ng-template>
+          </e-tabitem>
+        </e-tabitems>
+      </ejs-tab>
+    </div>
+  </div>
+
+</div>
+
+<!-- Models -->
+<!-- Add Variable Pay -->
+<ng-template #variablepayModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Variable Pay</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="AddVaraiableForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="VarItem" (change)="changeAdjTyp($event)" [fields]="commonFields"
+                formControlName="item"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Associated Period<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker format="MMM d, y" formControlName="startdate" placeholder="Start Date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker format="MMM d, y" formControlName="enddate" placeholder="End Date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitVariablePay()">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<!--Add  Adjustment-->
+<ng-template #adjustmentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Adjustment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="AddAdjustmentForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="adjType" (change)="changeAdjTyp($event)" formControlName="type"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="adjItem" formControlName="item"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount"
+                  (change)="generateTermDetails()" (keyup)="generateTermDetails()" />
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showRecurring" class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Terms<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-light btn-sm" id="minus-btn" (click)="changeTermCount('minus')">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                </div>
+                <span style="text-align: center; margin: 0px 10px 0px 10px">{{ termCount }}</span>
+                <div class="input-group-prepend">
+                  <button class="btn btn-light btn-sm" id="plus-btn" (click)="changeTermCount('plus')">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <div style="margin-left: 5px; margin-right: 10px">Months</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showRecurring" class="form-group row" style="margin-top: 0px !important">
+            <label class="col-xl-4 col-lg-4 col-form-label"></label>
+            <div class="col-lg-6 col-xl-6">
+              <table style="width: 100%; border-collapse: collapse">
+                <thead>
+                  <tr style="background-color: lightgrey">
+                    <th style="font-weight: 500; text-align: center">Term</th>
+                    <!-- <th style="font-weight: 500; text-align: center"> Payroll </th> -->
+                    <th style="font-weight: 500; text-align: center">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of termDetails">
+                    <td style="text-align: center">{{ item.index }}</td>
+                    <!-- <td style="text-align: left">{{ item.payroll_term }}</td> -->
+                    <td style="text-align: right">{{ item.amountstring }}</td>
+                  </tr>
+                  <tr style="background-color: lightgrey">
+                    <td style="text-align: right">Total</td>
+                    <td style="text-align: right">{{ totalAmountString }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker formControlName="dateincurred" format="MMM d, y"
+                placeholder="Enter date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Attach Document</label>
+            <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+              <ejs-uploader *ngIf="!isadjDocUp" (selected)="onFileSelected($event)" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Browse' }" multiple="false"></ejs-uploader>
+            </div>
+            <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+              <a (click)="goToLink()" class="hyperlink"> View Document </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" (click)="DocDelete()"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitAdjustment()">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<!-- Add Reimbursement -->
+<ng-template #reimbursmentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Reimbursement</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="AddAdjustmentForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <!-- <ngx-select-dropdown [config]="dropdownConfig" formControlName="item" [options]="adjItem"></ngx-select-dropdown> -->
+              <ejs-dropdownlist [dataSource]="rembItem" formControlName="item"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker format="MMM d, y" formControlName="dateincurred"
+                placeholder="Enter date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Attach Document</label>
+            <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+              <ejs-uploader *ngIf="!isadjDocUp" (selected)="onFileSelected($event)" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Browse' }" multiple="false"></ejs-uploader>
+            </div>
+            <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+              <a (click)="goToLink()" class="hyperlink"> View Document </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" (click)="DocDelete()"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitReimbersment()">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<!-- Add Loan Payments -->
+<ng-template #loanpaymentModel>
+
+</ng-template>
+
+<!-- Print modal -->
+<ng-template #printModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Print</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="background-color: #f1f1f1;" id="print-section">
+    <div class="container" style="background-color: #f1f1f1 !important;">
+      <div class="preview-section">
+        <div class="profile-preview">
+          <div>
+            <img class="images" [src]="photourl"
+                 style="width: 100px; height: 125px; display: block; margin-left: auto; margin-right: auto; margin-bottom: 12px;border: 1px solid;" />
+          </div>
+
+          <div class="row">
+            <div class="col-8">
+              <strong>Employee Name: </strong> <span>{{ empData.full_name }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Employee Code: </strong> <span>{{ empData.emp_code }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <strong>Employer: </strong> <span>{{ empData.org_name || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Role: </strong> <span>{{ empData.roleName }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Work Email: </strong> <span>{{ empData.workemail }}</span>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <strong>Mobile: </strong> <span>{{ empData.mobile || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Gender: </strong> <span>{{ empData.gender || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>DOB: </strong> <span>{{ empData.dob || 'N/A' }}</span>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <strong>Address: </strong> <span>{{ empData.address || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>City: </strong> <span>{{ empData.city || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Country: </strong> <span>{{ empData.alias || 'N/A' }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <strong>Joined Date: </strong> <span>{{ empData.joined_date || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Contact Start Date: </strong> <span>{{ empData.contract_enddate || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Contact End Date: </strong> <span>{{ empData.contract_enddate || 'N/A' }}</span>
+            </div>
+
+          </div>
+
+
+          <div class="row">
+            <div class="col-4">
+              <strong>Labour Id: </strong> <span>{{ empData.labour_id || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Labour Expiry Date: </strong> <span>{{ empData.labour_enddate || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Emirates Id: </strong> <span>{{ empData.emirates_id || 'N/A' }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div *ngFor="let item of salaryData" [ngClass]="getColumnClass(salaryData.length)">
+              <strong>{{ item.type  }}: </strong>
+              <span>{{ item.value }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <strong>Bank IBAN: </strong> <span>{{ empData.bank_Iban || 'N/A' }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Bank Account Number: </strong> <span>{{ empData.bank_account_num || 'N/A' }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <strong>Bank Name: </strong> <span>{{ empData.bank_name || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Bank Branch: </strong> <span>{{ empData.bank_branch || 'N/A' }}</span>
+            </div>
+            <div class="col-4">
+              <strong>Bank Swift: </strong> <span>{{ empData.bank_swift || 'N/A' }}</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="printContent()">
+      Print
+    </button>
+  </div>
+</ng-template>
+<iframe id="print-frame" style="display:none;"></iframe>
+<!-- View Waiveoff marked details -->
+<ng-template #waiveoffdetailsModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Waiveoff Detials
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="kt-portlet__body">
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.full_name" />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Type </label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.type" />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Pay Item</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.pay_item" />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Amount</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">AED</div>
+              </div>
+              <input type="text" class="form-control" disabled [(ngModel)]="singleData.amount" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred</label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled
+              [ngModel]="singleData.date_incurred | date : 'mediumDate'" />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+          <div class="col-lg-6 col-xl-6">
+            <textarea class="form-control" id="exampleTextarea" rows="4" disabled
+              [(ngModel)]="singleData.remarks"></textarea>
+          </div>
+        </div>
+
+        <div *ngIf="showDateIncured" class="table-responsive">
+          <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Date Incurred Status</strong> </u></p>
+          <table class="table table-striped table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Tot Hours</th>
+                <th>Location</th>
+                <th>Time Status</th>
+                <th>Day Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Example Row -->
+              <tr>
+                <td>{{DateIncuredData[0].check_in ? DateIncuredData[0].check_in : 'N/A'}} </td>
+                <td>{{DateIncuredData[0].check_out ? DateIncuredData[0].check_out : 'N/A'}}</td>
+                <td>{{DateIncuredData[0].tot_min ? DateIncuredData[0].tot_min : 'N/A'}}</td>
+                <td>{{DateIncuredData[0].worklocation ? DateIncuredData[0].worklocation : 'N/A'}}</td>
+                <td>{{DateIncuredData[0].worktimestatus ? DateIncuredData[0].worktimestatus : 'N/A'}}</td>
+                <td>{{DateIncuredData[0].workdaystatus ? DateIncuredData[0].workdaystatus : 'N/A'}}</td>
+              </tr>
+              <!-- Add more rows dynamically -->
+            </tbody>
+          </table>
+          <p *ngIf="singleData.pay_item =='Absent'"><strong>Note : </strong> Absent Deduction Per Day Salary </p>
+          <p *ngIf="singleData.pay_item =='Absent Penality'" ><strong>Note : </strong> {{ForAbsentDeduction}} </p>
+          <p *ngIf="singleData.pay_item =='Less Hour'" ><strong>Note : </strong> {{ForLessHourDeduction}} </p>
+          <p *ngIf="singleData.pay_item =='Checkout Missed'" ><strong>Note : </strong> {{ForCheckoutMissing}} </p>
+          <p *ngIf="singleData.pay_item =='Late CheckIn'" ><strong>Note : </strong>{{ForLateCheckin}} </p>
+        </div>
+
+        <div>
+          <p *ngIf="singleData.waive_off_created_by" style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u>
+              <strong>Waiveoff Created Details</strong> </u></p>
+          <p *ngIf="singleData.singleData" style="margin-bottom: 2px">Created by :
+            {{singleData.waive_off_created_by}}</p>
+          <p *ngIf="singleData.waive_off_created_by" style="margin-bottom: 2px">Created Date :
+            {{singleData.waive_off_modified_date | date }} </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer"></div>
+</ng-template>

@@ -1,0 +1,89 @@
+* {
+    -webkit-transition: margin-left 0.2s ease-in-out;
+    -moz-transition: margin-left 0.2s ease-in-out;
+    -ms-transition: margin-left 0.2s ease-in-out;
+    -o-transition: margin-left 0.2s ease-in-out;
+    transition: margin-left 0.2s ease-in-out;
+}
+.main-content {
+  min-height: 100vh;
+  //background: url('/assets/images/harli-marten-n7a2OJDSZns-unsplash.jpg');
+  background-color:#f0f0f0;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.main-container {
+ margin-top: 56px;
+margin-left: 235px;
+    min-height: 592px;
+    padding: 15px;
+    -ms-overflow-x: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    // overflow: hidden;
+    font-family: Poppins;
+
+    color: #f8f8f8;
+     background: url('/assets/images/harli-marten-n7a2OJDSZns-unsplash.jpg');
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    background-color:#e6ecef;
+    //background:url('/assets/images/form-wizard-bg.jpg');
+    background-repeat: no-repeat;
+     background-size: cover;
+
+}
+.collapsed {
+    margin-left: 60px;
+}
+
+
+.modal-open {
+    #main-text  .content .e-content-animation {
+  transform: none !important;
+   margin-left: 236px !important;
+  transition: none !important;
+      }
+
+    }
+    .modal-open {
+      .content{
+  transform: none !important ;
+   margin-left: 236px !important ;
+  transition: none !important;
+      }
+
+    }
+@media screen and (max-width: 992px) {
+    .main-container,.main-content {
+        margin-left: 0px !important;
+    }
+
+}
+@media screen and (max-width: 414px){
+   .main-content {
+        position: relative;
+
+    }
+    .marginTop5{
+        margin-top: 5px !important;
+      }
+  }
+@media all and (max-width: 360px){
+
+    .main-container,.main-content {
+      padding:0px !important;
+     padding-right:14px !important;
+    }
+  //   #reset {
+  //     margin-top: 6.31px;
+  //   }
+  }
+@media print {
+    .main-container,.main-content {
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+    }
+}
+

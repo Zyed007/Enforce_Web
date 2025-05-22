@@ -1,0 +1,159 @@
+.btnColorAll {
+    background-color: #2e3e4e !important;
+    color: #f5f5f6 !important;
+    font-weight: 500 !important;
+}
+
+.rowimp {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
+.startdiv {
+    margin: 20px 25px;
+}
+
+
+.rowcard {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+.centered-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px; 
+    width: 100%; 
+}
+
+.ejs-accumulationchart {
+    width: 100%;
+    height: 100%;
+}
+.admin-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    position: relative; /* Position relative for the shimmer effect */
+    overflow: hidden;   /* Hide overflow */
+}
+
+.skeleton {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    position: relative; /* Position relative for the shimmer effect */
+    overflow: hidden;   /* Hide overflow */
+}
+
+/* Skeleton Text Style */
+.skeleton-text {
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+/* Skeleton Title Style */
+.skeleton-title {
+    height: 25px;
+    margin-bottom: 15px;
+}
+
+/* Shimmer Effect */
+.skeleton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    animation: shimmer 1.5s infinite;
+}
+
+/* Keyframes for shimmer effect */
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+.card h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.card p {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.pieChartSkeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.skeleton-chart {
+    width: 300px; /* Set the width as per your pie chart */
+    height: 300px; /* Set the height as per your pie chart */
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 400% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 50%;
+}
+
+.skeleton-text {
+    width: 200px;
+    height: 20px;
+    margin-top: 10px;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 400% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 0%;
+    }
+}

@@ -1,0 +1,663 @@
+<!-- begin:: Subheader -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">  
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+               Set Up                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                            Delegation                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Delegation                    </a>
+                                            <span *ngIf="editable  && !showDeptList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showDeptList" class="kt-subheader__breadcrumbs-link">
+                              Edit Delegation                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+       
+    </div>
+</div>
+<!-- end:: Subheader -->
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+											
+    <!-- begin:: Subheader -->
+    
+    <!-- end:: Subheader -->
+                        
+                        <!-- begin:: Content -->
+        <div *ngIf="showDeptList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+    <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <!-- <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-line-chart"></i>
+                        </span> -->
+                        <h3 class="kt-portlet__head-title">
+                                Delegations 
+                        </h3>
+                        <div *ngIf="planType == 'Basic'"  data-container="body" data-toggle="kt-tooltip" data-placement="top" title="" data-original-title="Upgrade"style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;" [routerLink]="['/pricing']"  class="btn btn-bold btn-sm btn-font-sm btn-label-warning"  >UPGRADE</div>
+                        <div *ngIf="planType == 'Basic'" style="color:#2c77f4!important;margin-left: 10px;" >Upgrade to enable delegation management</div>
+                       
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                       
+                        <div class="dropdown dropdown-inline">
+                                <button  type="button" class="button button-fill button-rose"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon2-plus" ></i> Add New  	
+                                    </button>
+        <button type="button" style="margin-left: 10px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+
+                      
+                        </div>
+                    </div>	
+                    </div>		</div>
+               
+                </div>
+           
+    
+        <div class="kt-portlet__body "  style=" border-bottom-color: #f0f3ff;
+        color: #595d6e;" >
+       
+            <!--begin: Datatable -->
+             <!-- <div class="kt-datatable" id="local_data"></div> -->
+            <!--end: Datatable -->
+            <!-- <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  </mat-form-field> -->
+                  <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="kt_table_1_length">
+                                      
+                                        </div></div>
+                                      
+  
+                                        <!-- <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"><label>Search: <mat-form-field>
+                                                <input matInput [(ngModel)]="searchField" class="form-control" (keyup)="applyFilter($event.target.value)"  >
+                                                <i class="fa fa-close closeBtnIcon"  (click)="clearSearchField()" *ngIf="searchField" ></i>
+                                              </mat-form-field > </label></div></div> -->
+                                    </div>
+    
+
+                  <ejs-grid [dataSource]='data' #grid height="315px" [searchSettings]='searchOptions'   allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'  (toolbarClick)='toolbarClick($event)'
+                  [allowExcelExport]='true' [allowPdfExport]='true'   >
+                    <e-columns>
+                        
+                           
+                            
+                                <!-- <e-column type=''  headerText='No' width=60 
+                                         > 
+                                          <ng-template #template let-data let-i=index > 
+{{i+1}}
+                                        </ng-template>
+
+                               </e-column>  -->
+                               <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+            
+                        <e-column field='full_name' headerText='Delegatee Name' width=120></e-column>
+                        <e-column field='is_type_permanent' headerText='Permanent'  width=90>
+                            <ng-template #template let-data let-i=index > 
+                                {{data.is_type_permanent==false?'No':'Yes'}}
+                            </ng-template>
+                        </e-column>
+                        <e-column field='role_name' headerText='Role'  width=90>
+                            <ng-template #template let-data let-i=index > 
+                                {{data.role_name}}
+                            </ng-template>
+                        </e-column>
+                        <e-column field='' headerText='Expiry Date'  width=90>
+                            <ng-template #template let-data let-i=index > 
+                                {{data.expires_on| date:'MM/dd/yyyy'}}
+                            </ng-template>
+                        </e-column>
+                        
+                        
+                        <!-- <e-column field='workemail' headerText='Description' textAlign='Left' width=120></e-column>
+                        <e-column field='alias' headerText='Alias' textAlign='Left' width=120></e-column> -->
+                        <e-column type='' headerText='Actions'  width='200'>
+                            <ng-template #template let-data>
+                            
+                                    <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                                    <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.empid,data.delegationsid)"> <i class="la la-edit"></i> </a>
+                                     
+                                    <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.empid)"><i class="la la-trash"></i>						</a>
+                                              
+                            </ng-template>
+                        </e-column>
+                        <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                    </e-columns>
+                    </ejs-grid>
+                  <!-- <ejs-pager #pager [totalRecordsCount]="pgData.length" [currentPage]="currentPage" [pageSize]= "pageSize" [pageSizes]="true" (dropDownChanged)="changed($event)" (click)="click($event)"></ejs-pager> -->
+
+                </div>
+
+        </div>
+    </div>
+  </div>
+
+    <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+           
+       
+                        <div class="row">
+                    <div class="col-lg-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                                <div class="kt-portlet__head kt-portlet__head--lg">
+                                        <div class="kt-portlet__head-label">
+                                            
+                                            <h3 class="kt-portlet__head-title">
+                                                Delegations
+                                            </h3>
+                                        </div>
+                                        <div class="kt-portlet__head-toolbar">
+                                            <div class="kt-portlet__head-wrapper">
+                                    <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                                        <i class="la la-long-arrow-left"></i>
+                                        Back
+                                    </a> -->
+                                    &nbsp;
+                                    <div class="dropdown dropdown-inline">
+                                        <button type="button" class="button button-fill button-rose"  (click)='DeptView()' aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back	
+                                        </button>
+                
+                                  
+                                    </div>
+                                </div>		</div>
+                                    </div>
+                            <!--begin::Form-->
+                            <form class="kt-form kt-form--label-right" [formGroup]="deptForm" >
+                                <div class="kt-portlet__body">
+
+                                        <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Delegator</label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 4px;">
+                                                    <!-- <select2 [data]="deptData" [value]="deptValue"  [options]="deptOptions" (valueChanged)="changedDept($event)"  ></select2> -->
+                                              {{delegatorName}}
+                                            <!-- <input type="email" class="form-control" placeholder="Enter name" formControlName="team_name"> -->
+                                                </div>
+                                              
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Delegation Name<span class="error-msg" style="color: red;">*</span></label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 4px;">
+                                                    <!-- <select2 [data]="deptData" [value]="deptValue"  [options]="deptOptions" (valueChanged)="changedDept($event)"  ></select2> -->
+                                              <!-- {{delegatorName}} -->
+                                            <input type="email" class="form-control" placeholder="Enter name" (keyup)="nameChange($event)" formControlName="delegation_name">
+                                             <div *ngIf="isFieldValid('delegation_name')" class="error-msg">Required.</div>
+                                                
+                                        
+                                        </div>
+                                              
+                                            </div>
+                                            
+                         
+                                                
+                                             
+
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Role</label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 4px;">
+                                                    <select2 [data]="roleData" [value]="roleValue"  [options]="deptOptions" (valueChanged)="changedRole($event)"  ></select2>
+                                              
+                                            <!-- <input type="email" class="form-control" placeholder="Enter name" formControlName="team_name"> -->
+                                                </div>
+                                              
+                                            </div>
+                                           
+                                    <!-- <div class="form-group row">
+                     
+                                            <div class="col-lg-5">
+                                                <label for="exampleTextarea">Description:</label>
+                                                <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                                              </div>
+                                          </div>	  -->
+                                          <div *ngIf="showDelegatee" class="form-group row" >
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Delegatee</label>
+                                                <div class="col-lg-4 col-xl-4">
+                                            <select2 [data]="deptData" [disabled]="editable == true?'disabled':''"  [value]="delegateeValue"  [options]="delegateeOptions" (valueChanged)="changedDelegatee($event)"  ></select2>
+
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!showDelegatee" class="form-group row" >
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Delegatee</label>
+                                                <div class="col-lg-4 col-xl-4">
+                                                    {{emailValue}}
+                                                </div>
+                                            </div>
+                                         <!-- <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Invitees</label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 4px;">
+                                                  
+                                              <input  class="form-control" placeholder="New Invitee..."
+                                              [matChipInputFor]="chipList"
+                                              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                              [matChipInputAddOnBlur]="addOnBlur"
+                                              (matChipInputTokenEnd)="add($event)">                                                </div>
+                                              
+                                            </div>  -->
+                                            <div class="form-group row" *ngIf="!editable">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Invitees</label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 4px;">
+                                                  
+                                                    <tag-input formControlName="inviteeEmail"
+                                                    (onSelect)="onSelect($event)"
+                                                    [errorMessages]="errorMessages" 
+                                                    [validators]="validators"
+                                                    [placeholder]="'Invitee Email'"
+                                                    [secondaryPlaceholder]="'New Invitee Email'"
+                                                    [modelAsStrings]="true">
+                                         </tag-input>                                               </div>
+                                              
+                                            </div>
+
+                                             <!-- <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                                <div class="col-lg-4 col-xl-4" >
+                                                    <mat-chip-list #chipList aria-label="Fruit selection">
+                                                        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+                                                                 [removable]="removable" (removed)="remove(fruit)">
+                                                          {{fruit.name}}
+                                                          <mat-icon matChipRemove *ngIf="removable"><i style="" class="fa fa-times"></i></mat-icon>
+                                                        </mat-chip>
+                                                      
+                                                      </mat-chip-list>    
+                                                </div>
+
+                                                                                      
+                                              
+                                            </div>  -->
+                                            
+                                            <!-- <div class="form-group row" >
+                                                <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                                <div class="col-lg-4 col-xl-4">
+                                                    <div style="margin-top:5px;">
+                                                        <div class="kt-widget2">
+                                                            <div class="kt-widget2__item kt-widget2__item--success"
+                                                              *ngFor="let fruit of fruits ; let i = index">
+                                                             
+                                          
+                                                              <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem;cursor: pointer;"
+                                                               >
+                                                                <a class="kt-widget2__title">
+                                                                    {{fruit.name}}
+                                                                 
+                                                                </a>
+                                                               
+                                                                
+                                                              </div>
+                                                              <div class="kt-widget2__actions" >
+                                                                <a title="Delete" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                                                  (click)="remove(fruit)"><i class="la la-trash"></i></a>
+                                                              </div>
+                                          
+                                                            </div>
+                                          
+                                          
+                                                          </div>
+                                                      </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Type</label>
+                                                <div class="kt-radio-inline col-lg-4 col-xl-4 accessRadio">
+                                                   
+                                                    <label class="kt-radio">
+                                                      <input type="radio" formControlName="type"  value="is_temporary" (change)="onTypeChange()"> Temporary
+                                                      <span></span>
+                                                    </label>
+                                  
+                                                    <label class="kt-radio">
+                                                      <input type="radio" formControlName="type"  value="is_permanent" (change)="onTypeChange()"> Permanent
+                                                      <span></span>
+                                                    </label>
+                                                    
+                                                  </div>
+                                  
+                                            </div>
+                                            <div class="form-group row" *ngIf="showExpiryField" >
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Expires On<span class="error-msg" style="color: red;">*</span></label>
+                                                <div class="col-lg-4 col-xl-4">
+                                                  <ejs-datepicker formControlName="startDate" (change)="onstartDtChange($event)" [value]='startdateValue' placeholder='Enter date'></ejs-datepicker>
+                                                  <div style="color: #6c757d!important;margin-top: 5px;
+                                                  "  >Note: Expiry Date.</div>
+                                                <div *ngIf="isFieldValid('startDate')" class="error-msg">Required.</div>
+                                
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label">Notification</label>
+                                                <div class="kt-radio-inline col-lg-4 col-xl-4 accessRadio">
+                                                   
+                                                   
+                                  
+                                                    <label class="kt-radio">
+                                                      <input type="radio" formControlName="notifyType"  value="is_delegator">Delegator & Delegatee
+                                                      <span></span>
+                                                    </label>
+                                                    <label class="kt-radio">
+                                                        <input type="radio" formControlName="notifyType"  value="is_delegatee"> Delegatee
+                                                        <span></span>
+                                                      </label>
+                                                    
+                                                  </div>
+                                  
+                                            </div>
+
+                                                <!-- <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Type:</label>
+                                                    <div class="kt-radio-inline col-lg-4 col-xl-4">
+                                                      <label class="kt-radio" style="margin-right:106px;">
+                                                        <input type="radio" name="radio1" checked="checked" > Temporary
+                                                        <span></span>
+                                                      </label>
+                                                      <label class="kt-radio">
+                                                        <input type="radio" name="radio1"> Permanent
+                                                        <span></span>
+                                                      </label>
+                                                      
+                                                    </div>
+                                                  </div> -->
+
+                                             
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Description:</label>
+                                                    <div class="col-lg-4 col-xl-4">
+                                                        <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="desc"></textarea>
+                                                <!-- <input type="email" class="form-control" placeholder="Enter name" formControlName="team_name"> -->
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" *ngIf="editable">
+                                                    <div class="col-xl-3 col-lg-3  col-form-label" style="text-align: right;" ></div>
+                                                    <label class=" kt-checkbox">
+                                                            <input type="checkbox"  [value]="addCurrentUser" (change)="onCheckChange($event)">
+                                                            <span  style="margin-left:15px;margin-right: 5px;"></span>
+                                                    </label>
+                                                            <div class="col-xl-4 col-lg-4  col-sm-4"  style="">Remove Admin Role </div>
+                                      
+                                               
+                                                </div>
+
+                                                    
+                                                
+
+                                                  
+                                        <!-- <div class="form-group row">
+                                                <div class="col-lg-6">
+                                                        <label class="kt-checkbox">
+                                                                <input type="checkbox" [value]="addCurrentUser" (change)="onCheckChange($event)">
+                                                                <div style="margin-top: 2px;">Add me to the Team</div>
+                                                                <span></span>
+                                                              </label>
+
+
+                                                  
+                                                    
+                                                </div>
+                                                
+                                            </div> -->
+                                      
+
+                                        <!-- <div class="form-group row">
+                                                <div class="col-lg-6">
+                                                    <label>Team Lead:</label>
+                                                    <angular2-multiselect [data]="dropdownList" 
+                                                    [settings]="dropdownSettings" 
+                                                    (onSelect)="onItemSelect($event)" 
+                                                    (onDeSelect)="OnItemDeSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)"
+                                                    (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                                                    
+                                                </div>
+                                                
+                                            </div> -->
+                                   
+
+                                                    
+                                </div>
+                                <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <!-- <div class="col-lg-2"></div> -->
+                                            <div class="col-lg-10">
+                                                    <span *ngIf="AddNewSubmit" style="margin-right: 10px;">
+                                                            <button type="submit" 
+                                                            class="btn btn-success" (click)=" onAddNewSubmit()">Submit & New</button>
+                                                        </span>
+                                                    <button type="submit" 
+                                                     class="btn btn-success"  (click)="editable ? onEditSubmit() : onAddSubmit()">Submit</button>
+                                                    <button type="reset" class="btn btn-secondary" (click)="DeptView()" style="margin-left:10px;">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <!--end::Form-->
+                          
+                        </div>
+                        <!--end::Portlet-->
+                
+                        <!--begin::Portlet-->
+                    
+                        <!--end::Portlet-->
+                
+                        <!--begin::Portlet-->
+                          <!-- <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        3 Columns Form Layout
+                                    </h3>
+                                </div>
+                            </div>
+                          <form class="kt-form kt-form--label-right">
+                                <div class="kt-portlet__body">
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label>Full Name:</label>
+                                            <input type="email" class="form-control" placeholder="Enter full name">
+                                            <span class="form-text text-muted">Please enter your full name</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="">Email:</label>
+                                            <input type="email" class="form-control" placeholder="Enter email">
+                                            <span class="form-text text-muted">Please enter your email</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Username:</label>
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend"><span class="input-group-text"><i class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your username</span>
+                                        </div>
+                                    </div>	  
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label class="">Contact:</label>
+                                            <input type="email" class="form-control" placeholder="Enter contact number">
+                                            <span class="form-text text-muted">Please enter your contact</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="">Fax:</label>
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control" placeholder="Fax number">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-info-circle"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter fax</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label>Address:</label>
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control" placeholder="Enter your address">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-map-marker"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your address</span>
+                                        </div>
+                                    </div>	  
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <label class="">Postcode:</label>
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control" placeholder="Enter your postcode">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-bookmark-o"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your postcode</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="">User Group:</label>
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" checked value="2"> Sales Person
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" value="2"> Customer
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <span class="form-text text-muted">Please select user group</span>
+                                        </div>
+                                    </div>	                
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-lg-8">
+                                                <button type="reset" class="btn btn-primary">Submit</button>
+                                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form> 
+                        
+                        </div>
+                        end::Portlet-->
+                
+                        <!--begin::Portlet-->
+                        <!-- <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        3 Columns Horizontal Form Layout
+                                    </h3>
+                                </div>
+                            </div>
+                        
+                            <form class="kt-form kt-form--label-right">
+                                <div class="kt-portlet__body">
+                                    <div class="form-group row form-group-marginless kt-margin-t-20">
+                                        <label class="col-lg-1 col-form-label">Full Name:</label>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" placeholder="Full name">
+                                            <span class="form-text text-muted">Please enter your full name</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Email:</label>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" placeholder="Email">
+                                            <span class="form-text text-muted">Please enter your email</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Username:</label>
+                                        <div class="col-lg-3">
+                                            <div class="input-group">
+                                                  <div class="input-group-prepend"><span class="input-group-text"><i class="la la-user"></i></span></div>
+                                                <input type="text" class="form-control" placeholder="">
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your username</span>
+                                        </div>
+                                    </div>	  
+                
+                                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg kt-separator--portlet-fit"></div>
+                
+                                    <div class="form-group row form-group-marginless">
+                                        <label class="col-lg-1 col-form-label">Contact:</label>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" placeholder="Enter contact number">
+                                            <span class="form-text text-muted">Please enter your contact</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Fax:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Fax number">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-info-circle"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter fax</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">Address:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Enter your address">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-map-marker"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your address</span>
+                                        </div>
+                                    </div>	  
+                
+                                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg kt-separator--portlet-fit"></div>
+                
+                                    <div class="form-group row">
+                                        <label class="col-lg-1 col-form-label">Postcode:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Enter your postcode">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-bookmark-o"></i></span></span>
+                                            </div>
+                                            <span class="form-text text-muted">Please enter your postcode</span>
+                                        </div>
+                                        <label class="col-lg-1 col-form-label">User Group:</label>
+                                        <div class="col-lg-3">
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" checked value="2"> Sales Person
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio kt-radio--solid">
+                                                    <input type="radio" name="example_2" value="2"> Customer
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <span class="form-text text-muted">Please select user group</span>
+                                        </div>
+                                    </div>	               
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-5"></div>
+                                            <div class="col-lg-7">
+                                                <button type="reset" class="btn btn-brand">Submit</button>
+                                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                           
+                        </div> -->
+                        <!--end::Portlet-->
+                    </div>
+                </div>	
+    <!-- end:: Content -->				</div>

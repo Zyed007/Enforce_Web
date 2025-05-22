@@ -1,0 +1,29 @@
+<div class="row pad2515">
+  <div class="col-8">
+    <h1 class="headertxt">Open Balance</h1>
+  </div>
+  <div class="col-4" style="text-align: end;">
+    <button type="button" (click)="submitData()" class="button button-fill button-rose" style="margin-right: 15px;">
+      Submit
+    </button>
+    <button type="button" (click)="btnfun()" class="button button-fill button-rose">
+      {{showBackBtn ? 'Back' : 'Cancel'}}
+    </button>
+  </div>
+  <div class="col-12">
+    <ejs-grid #openBalanceTableGrid [dataSource]='openBalanceData' allowTextWrap='true' [toolbar]='invoiceToolbar'
+      [editSettings]='editSettings' (cellSave)='cellSave($event)'
+      height="400px" allowSorting='true' (created)='searchKeyStroke()'>
+      <e-columns>
+        <e-column [allowEditing]= 'false' field='accountsId' headerText='Acc ID' width=60></e-column>
+        <e-column [allowEditing]= 'false' field='project_name' headerText='Project' width=90></e-column>
+        <e-column [allowEditing]= 'false' field='customerName' headerText='Customer' width=90></e-column>
+        <e-column [allowEditing]= 'false' field='customerPhone' headerText='Phone' width=90></e-column>
+        <e-column [allowEditing]= 'false' field='revenueAmt' headerText='Revenue' width=90></e-column>
+        <e-column [allowEditing]= 'false' field='balance' headerText='Balance' width=90></e-column>
+        <e-column field='adjustRev' headerText='Adjust Revenue' editType= 'numericedit' width=70></e-column>
+        <e-column field='adjustBal' headerText='Adjust Balance' editType= 'numericedit' width=70></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>

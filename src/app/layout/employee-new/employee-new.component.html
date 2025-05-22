@@ -1,0 +1,192 @@
+<div class="employeeDiv" *ngIf="employeeListingDiv">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <h1 class="headerText">Employee</h1>
+    </div>
+    <div class="col-md-6 col-12 btnsection">
+      <button type="button" class="button button-emp" (click)='AddEmployeeForm()' aria-haspopup="true" aria-expanded="false">
+        <i class="flaticon2-plus" ></i>
+        Add New
+      </button>
+      <button type="button"  (click)='goBack()' class="button button-emp" style="margin-left:10px;" > <i class="fa fa-angle-left"></i>
+        Back
+      </button>
+    </div>
+  </div>
+  <div class="mainCard">
+    <ejs-grid #employeeGrid [dataSource]='fullEmployeeData' height="430px" allowSorting='true' [toolbar]='toolbar'
+     (toolbarClick)='toolbarClick($event)' (created)='employeeGridSearch()'
+     [allowExcelExport]='true' [allowPdfExport]='true'>
+      <e-columns>
+        <e-column field='full_name' headerText='Employee Name' textAlign='' width=150>
+          <ng-template #template let-data>
+            <div>{{data.full_name}}, {{data.designation_name}}</div>
+            <div>{{data.workemail}}</div>
+          </ng-template>
+        </e-column>
+        <e-column field='employee_type_name' headerText='Type' textAlign='' width=120>
+          <ng-template #template let-data>
+            <span>{{data.employee_type_name}}</span>
+          </ng-template>
+        </e-column>
+        <e-column field='employee_status_name' headerText='Status' textAlign='' width=120>
+          <ng-template #template let-data>
+            <span >{{data.employee_status_name}}</span>
+          </ng-template>
+        </e-column>
+        <e-column field='phone' headerText='Number' width=90></e-column>
+        <!-- <e-column type='' textAlign='' headerText='Action'  width='90'>
+          <ng-template #template let-data>
+            <a *ngIf='showEditBtn'  title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="empEdit(data.id,data.deptid)">
+              <i class="la la-edit"></i>
+            </a>
+            <a *ngIf='showDeleteBtn'  title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="empDelete(data.id)">
+              <i class="la la-trash"></i>
+            </a>
+          </ng-template>
+        </e-column> -->
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>
+
+<div class="newEmployee" *ngIf="newEmployeeDiv">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <h1 class="headerText">Add Employee</h1>
+    </div>
+    <div class="col-md-6 col-12 btnsection">
+      <button type="button" class="button button-emp" (click)='saveNewEmployee()' aria-haspopup="true" aria-expanded="false">
+        <i class="flaticon2-plus" ></i>
+        Save Employee
+      </button>
+      <button type="button"  (click)='mainEmployeeListing()' class="button button-emp" style="margin-left:10px;" > <i class="fa fa-angle-left"></i>
+        Back
+      </button>
+    </div>
+  </div>
+  <div class="mainCard">
+    <div class="row">
+      <div class="col-md-4 col-12">
+        <div class="details">
+          <p class="linebottom">Personal Details</p>
+          <form [formGroup]="employeeForm">
+            <div class="form-group row">
+              <div class="col-6">
+                <label for="nameArea" style="padding-right: 5px;">First Name</label>
+                <i class="fa fa-info-circle" placement="top" ngbTooltip="Employee's First name" container="body"></i>
+                <input formControlName="FirstName" type="text" class="form-control" id="nameArea">
+              </div>
+              <div class="col-6">
+                <label for="nameArea" style="padding-right: 5px;">Last Name</label>
+                <i class="fa fa-info-circle" placement="top" ngbTooltip="Employee's Last name" container="body"></i>
+                <input formControlName="LastName" type="text" class="form-control" id="nameArea">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-12">
+                <label for="nameArea" style="padding-right: 5px;">Joining Date</label>
+                <div class="kt-input-icon">
+                  <ejs-datepicker formControlName="JoinedDate" (change)="employeeStartDateChange($event)" [value]='startdateEmployeeValue' placeholder='Enter date'></ejs-datepicker>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="details marTop">
+          <p class="linebottom">Employee details</p>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Employee Type</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Assign Team</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Department</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Designation</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Employee Grades</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Contract Status</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Choose role</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="details">
+          <p class="linebottom">Work Info</p>
+          <form>
+            <div class="form-group row">
+              <div class="col-12">
+                <label for="nameArea" style="padding-right: 5px;">Work Email</label>
+                <i class="fa fa-info-circle" placement="top" ngbTooltip="Employee's Work Email" container="body"></i>
+                <input formControlName="eWorkEmail" type="text" class="form-control" id="nameArea">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-12">
+                <label for="nameArea" style="padding-right: 5px;">Phone</label>
+                <i class="fa fa-info-circle" placement="top" ngbTooltip="Employee's Phone Number" container="body"></i>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="details">
+          <p class="linebottom">Leave</p>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Leave Profile</label>
+            <select2 [options]='employeeProfileOpt'></select2>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Leave Profile Effective From</label>
+            <ejs-datepicker formControlName="JoinedDate" (change)="employeeLeaveProfileStartDateChange($event)" [value]='startdateEmployeeLeaveProfileValue' placeholder='Enter date'></ejs-datepicker>
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Annual Leave Opening Balance Days</label>
+            <input formControlName="LastName" type="text" class="form-control" id="nameArea" placeholder="Annual Leave Opening Balance">
+          </div>
+          <div class="form-group">
+            <label for="nameArea" style="padding-right: 5px;">Sick Leave Opening Balance Days</label>
+            <input formControlName="LastName" type="text" class="form-control" id="nameArea" placeholder="Sick Leave Opening Balance">
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="newEmployee" *ngIf="editEmployeeDiv">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <h1 class="headerText">Edit Employee</h1>
+    </div>
+    <div class="col-md-6 col-12 btnsection">
+      <button type="button" class="button button-emp" (click)='saveNewEmployee()' aria-haspopup="true" aria-expanded="false">
+        <i class="flaticon2-plus" ></i>
+        Save Employee
+      </button>
+      <button type="button"  (click)='mainEmployeeListing()' class="button button-emp" style="margin-left:10px;" > <i class="fa fa-angle-left"></i>
+        Back
+      </button>
+    </div>
+  </div>
+  <div class="mainCard">
+
+  </div>
+</div>

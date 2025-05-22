@@ -1,0 +1,436 @@
+<div style="padding:10px 50px;">
+
+    <div
+        style="background-color: white;display: flex;justify-content: space-between;padding: 10px;margin-bottom: 10px;">
+        <div class="kt-portlet" style="margin-bottom: 0px">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Attendence Report
+                    </h3>
+                </div>
+                <div style="display: flex;justify-content: center;align-items: center;">
+                    <button class='btn btnColorAll' style="margin-left: 20px;" (click)='goBack()'>
+                        <i class="fa fa-chevron-left marTopnew padreq" aria-hidden="true"></i>
+                        Back
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row rowimp rowcard">
+
+        <div class="kt-portlet" style="margin-bottom: 0px">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <!-- <h3 class="kt-portlet__head-title">
+                        Attendence Report
+                    </h3> -->
+                </div>
+                <div class="datewidth">
+                    <form [formGroup]="dateRangeForm">
+                        <ejs-daterangepicker format="MM/dd/yyyy" [max]="maxRangeDateTwo" placeholder="Range"
+                            formControlName="dateRange" style="width: 100%">
+                            <e-presets>
+                                <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                                <e-preset label="This Month" [start]="monthStart" [end]="monthEnd"></e-preset>
+                                <e-preset label="Last Month" [start]="lastStart" [end]="lastEnd"></e-preset>
+                                <e-preset label="Last Year" [start]="yearStart" [end]="yearEnd"></e-preset>
+                            </e-presets>
+                        </ejs-daterangepicker>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container-fluid mb-3 mt-3">
+
+            <div class="row rowimp justify-content-center">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="navigateToAttendence()">
+                    <div class="card admin-card" [class.active]="showForceCheckins">
+                        <div class="card-body">
+                            <h5 class="card-title">Force Checkins</h5>
+                            <p class="card-text">{{force_checkin}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('Force Checkouts')">
+                    <div class="card admin-card" [class.active]="showForceCheckouts">
+                        <div class="card-body">
+                            <h5 class="card-title">Force Checkouts</h5>
+                            <p class="card-text">{{force_checkout}}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Uncomment if needed
+              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('Web Checkin')">
+                <div class="card admin-card" [class.active]="showWebCheckin">
+                  <div class="card-body">
+                    <h5 class="card-title">Web Checkin</h5>
+                    <p class="card-text">{{web_checkin}}</p>
+                  </div>
+                </div>
+              </div>
+              -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('Less Hours')">
+                    <div class="card admin-card" [class.active]="showLessHours">
+                        <div class="card-body">
+                            <h5 class="card-title">Less Hours</h5>
+                            <p class="card-text">{{less_hours}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" (click)="handleShowData('Checkout Missed')">
+                    <div class="card admin-card" [class.active]="showCheckoutMissed">
+                        <div class="card-body">
+                            <h5 class="card-title">Checkout Missed</h5>
+                            <p class="card-text">{{checkout_missed}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="overflow-x: auto;">
+            <div class="container-fluid mb-1 mt-3 border-bottom py-2 px-2 custom-filter">
+
+                <div class="row rowimp justify-content-end">
+                    <div class="col-auto">
+                        <form [formGroup]="attendenceFilter" class="d-flex flex-row align-items-center">
+                            <label for="employee"
+                                class="col-form-label font-weight-bold text-dark mr-2">Employee:</label>
+                            <ejs-dropdownlist id="employee" [dataSource]="activeEmpList" [fields]="commonFields"
+                                formControlName="emp_name" [allowFiltering]="true" class="mr-2"></ejs-dropdownlist>
+
+                            <label for="work_location" class="col-form-label font-weight-bold text-dark mr-2">Work
+                                Location:</label>
+                            <ejs-dropdownlist id="work_location" [dataSource]="workLocation" [fields]="commonFields"
+                                formControlName="work_location" [allowFiltering]="true" class="mr-2"></ejs-dropdownlist>
+
+                            <label for="work_location"
+                                class="col-form-label font-weight-bold text-dark mr-2">Application:</label>
+                            <ejs-dropdownlist id="work_location" [dataSource]="application" [fields]="commonFields"
+                                formControlName="app" [allowFiltering]="true" class="mr-2"></ejs-dropdownlist>
+
+                            <button class="button button-rose mr-2" (click)="applyAttendenceFilter()">Apply
+                                Filter</button>
+                            <button type="button" class="button button-fill button-rose" (click)="clearAllFilters()"
+                                aria-haspopup="true" aria-expanded="false" style="width: 105px !important;">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> Clear Filter
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-container">
+                <ejs-grid #hrBreakGrid [toolbar]="invoiceToolbar" [allowExcelExport]="true" [allowPdfExport]="true"
+                    (toolbarClick)="hrBreakGridDownload($event)" [dataSource]="hrCheckAttData" allowTextWrap="true"
+                    height="400px" allowSorting="true" (queryCellInfo)="
+                attendenceGridCellInfo($event) 
+              " [allowFiltering]="true">
+                    <e-columns>
+                        <e-column field="theday" headerText="Date" textAlign="" width="100">
+                            <ng-template #template let-data>
+                                <span>{{ data.theday }}</span>
+                                <i style="
+                            font-weight: bold;
+                            margin-left: 5px !important;
+                          " *ngIf="data.isappcheckin" class="fa fa-mobile" aria-hidden="true"
+                                    [title]="data.is_app_version"></i>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="full_name" headerText="Employee Name" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.full_name }}</span>
+                            </ng-template>
+                        </e-column>
+                        <e-column field="check_in" headerText="Check In" textAlign="" width="90">
+                            <ng-template #template let-data>
+                                <span [ngStyle]="{'font-weight': data.isforcecheckin ? 'bold' : 'normal'}">{{
+                                    data.check_in
+                                    }}</span>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="data.isforcecheckin"
+                                    style="color: rgb(221, 163, 5);padding-left: 5px;"
+                                    [title]="data.forcecheckinreson"></i>
+                            </ng-template>
+                        </e-column>
+                        <e-column field="checkinplatform" headerText="Check In Platform" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.checkinplatform }}</span>
+
+                            </ng-template>
+                        </e-column>
+
+
+                        <e-column field="check_out" headerText="Check Out" textAlign="" width="100">
+                            <ng-template #template let-data>
+                                <span [ngStyle]="{'font-weight': data.isforcechecout ? 'bold' : 'normal'}">{{
+                                    data.check_out
+                                    }}</span>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="data.isforcechecout"
+                                    style="color: rgb(221, 163, 5);padding-left: 5px;"
+                                    [title]="data.forcecheckoutreson"></i>
+                            </ng-template>
+                        </e-column>
+
+
+                        <e-column field="checkoutplatform" headerText="Check Out Platform" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.checkoutplatform }}</span>
+
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="tot_min" headerText="Total Hrs" textAlign="" width="70">
+                            <ng-template #template let-data>
+                                <span>{{ data.tot_min }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="worklocation" headerText="Work Location" textAlign="" width="80">
+                            <ng-template #template let-data>
+                                <span>{{ data.worklocation }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="weekday" headerText="Week Day" textAlign="" width="80">
+                            <ng-template #template let-data>
+                                <span>{{ data.weekday }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="workdaystatus" headerText="WorkDay Status" textAlign="" width="100">
+                            <ng-template #template let-data>
+                                <span>{{ data.workdaystatus }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="worktimestatus" headerText="WorkTime Status" textAlign="" width="100">
+                        </e-column>
+
+                        <e-column field="app" headerText="Application" textAlign="" width="80">
+                        </e-column>
+                        <e-column type='' textAlign='' headerText='' width='100' headerTextAlign="Center"
+                            textAlign='Center'>
+                            <ng-template #template let-data><button (click)="handleShowMoreDetails(data)">View
+                                    More</button> </ng-template></e-column>
+                    </e-columns>
+                </ejs-grid>
+
+                <div *ngIf="isLoading" class="spinner-overlay">
+                    <div class="spinner-border text-primary custom-spinner" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #viewMoreModal>
+    <div class="modal-content" data-backdrop="static" aria-hidden="true" tabindex="-1">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Event logs</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" style="margin-top: 5px;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- First Row -->
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Date:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.date" disabled style="flex: 2;">
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Name:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.full_name" disabled
+                            style="flex: 2;">
+                    </div>
+                </div>
+
+                <!-- Second Row -->
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Application:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.app" disabled style="flex: 2;">
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Work Day Status:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.workdaystatus" disabled
+                            style="flex: 2;">
+                    </div>
+                </div>
+
+                <!-- Third Row -->
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Total Hours:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.tot_min" disabled
+                            style="flex: 2;">
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Weekday:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.weekday" disabled
+                            style="flex: 2;">
+                    </div>
+                </div>
+
+                <!-- Fourth Row -->
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Is Less Hour:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.islesshour" disabled
+                            style="flex: 2;">
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="flex: 1;"><strong>Work Time Status:</strong></label>
+                        <input type="text" class="form-control" [value]="viewMoreData.worktimestatus" disabled
+                            style="flex: 2;">
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <ejs-grid [toolbar]="invoiceToolbar" [allowExcelExport]="true" [allowPdfExport]="true"
+                    (toolbarClick)="hrBreakGridDownload($event)" [dataSource]="viewMoreEvents" allowTextWrap="true"
+                    height="400px" allowSorting="true" (queryCellInfo)="
+                attendenceGridCellInfo($event) 
+              " [allowFiltering]="true" width="100%">
+                    <e-columns>
+                        <e-column field="check_in" headerText="Check In" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span [ngStyle]="{'font-weight': data.isforcecheckin ? 'bold' : 'normal'}">{{
+                                    data.check_in
+                                    }}</span>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="data.isforcecheckin"
+                                    style="color: rgb(221, 163, 5);padding-left: 5px;"
+                                    [title]="data.forcecheckinreson"></i>
+                            </ng-template>
+                        </e-column>
+                        <e-column field="checkin_tag_id" headerText="Check In Tag" textAlign="" width="150">
+                        </e-column>
+                        <e-column field="checkinplatform" headerText="Check In Platform" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.checkin_platform }}</span>
+
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="check_out" headerText="Check Out" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <a href="#" (click)="openMapModal(data); $event.preventDefault();" [ngStyle]="{
+                                       'font-weight': data.isforcechecout ? 'bold' : 'normal',
+                                       'color': data.isforcechecout ? 'blue' : 'black',
+                                       'text-decoration': data.isforcechecout ? 'underline' : 'none'
+                                   }">
+                                    {{ data.check_out }}
+                                </a>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true" *ngIf="data.isforcechecout"
+                                    style="color: rgb(221, 163, 5); padding-left: 5px; cursor: pointer;"
+                                    [title]="'Click to view location details'" (click)="openMapModal(data)"></i>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="checkout_tag_id" headerText="Check Out Tag" textAlign="" width="150">
+                        </e-column>
+
+                        <e-column field="checkoutplatform" headerText="Check Out Platform" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.checkout_platform }}</span>
+
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="tot_min" headerText="Total Minutes" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.totmin }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="worklocation" headerText="Work Location" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.workloc }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="manual_address" headerText="Place" textAlign="" width="120">
+                            <ng-template #template let-data>
+                                <span>{{ data.manual_address }}</span>
+                            </ng-template>
+                        </e-column>
+
+                        <e-column field="geo_address" headerText="Geo Location" width="120">
+                            <ng-template #template let-data>
+                              <a href="#" (click)="openMapModal(data); $event.preventDefault();" 
+                                 [ngStyle]="{
+                                    'font-weight': 'bold',
+                                    'color': 'blue',
+                                    'text-decoration': 'underline'
+                                  }">
+                                {{ data.geo_address }}
+                              </a>
+                            </ng-template>
+                          </e-column>                          
+
+                        <!-- <e-column field="app" headerText="Application" textAlign="" width="80">
+                    </e-column> -->
+                    </e-columns>
+                </ejs-grid>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
+
+<div *ngIf="isMapModalOpen" class="custom-modal-backdrop">
+    <div class="custom-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h4 class="modal-title">Location Details</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeMapModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="showMapLoader" class="skeleton-loader"></div>
+            <div *ngIf="!showMapLoader">
+                <div style="height: 300px;">
+                    <agm-map (mapReady)="onMapReady($event)" [latitude]="mapData.checkinLat"
+                        [longitude]="mapData.checkinLong" [zoom]="mapData.zoom">
+                        <agm-marker [latitude]="mapData.checkinLat" [longitude]="mapData.checkinLong"
+                            [markerDraggable]="false" [title]="'Check-in Location'"></agm-marker>
+                        <agm-circle [latitude]="mapData.checkinLat" [longitude]="mapData.checkinLong"
+                            [clickable]="false" [draggable]="false" [editable]="false" [fillColor]="'green'"
+                            [fillOpacity]="0.5" [radius]="mapData.radius">
+                        </agm-circle>
+
+                        <agm-marker  *ngIf="mapData.checkoutLat" [latitude]="mapData.checkoutLat" [longitude]="mapData.checkoutLong"
+                            [markerDraggable]="false" [title]="'Check-out Location'"></agm-marker>
+                    </agm-map>
+                </div>
+                <div style="padding-top: 5px;" *ngIf="mapData.isforcecheckout">
+                    <span>The Check-out Location is <strong>{{mapData.distanceBtw}}</strong> away from the Check-in
+                        Location.<span *ngIf="mapData.rangeExceed">Hence, the range is exceeded.</span></span>
+
+                </div>
+                <div style="padding-top: 10px;display: flex;flex-direction: column;gap: 3px;">
+
+                    <div style="display: flex;gap: 5px;align-items: center;" *ngIf="mapData.isforcecheckout"><Label style="flex:1">Reason:</Label>
+                        <input style="flex:2" type="text" class="form-control" value="{{mapData.forcecheckoutreson}}"
+                            disabled="true" />
+                    </div>
+                    <div style="display: flex;gap: 5px;align-items: center;"><Label style="flex:1">Work
+                            Location:</Label>
+                        <input type="text" class="form-control" style="flex:2" value="{{mapData.workLocation}}"
+                            disabled="true" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+.startdiv{
+  margin: 20px 25px;
+}
+
+.datetxt{
+  margin-bottom: 0px;
+  background: white;
+  padding: 10px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.rowcard{
+  background: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}
+/* Style for expanded content */
+.expanded-content {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.dropdown-btn-sm {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+.table {
+  margin: 0;
+  background-color: #f8f9fa;
+}
+
+.dropdown-icon-sm {
+  font-size: 20px;
+  color: #007bff;
+}
+
+.dropdown-btn-sm:hover .dropdown-icon-sm {
+  transform: rotate(180deg);  /* Rotate the icon when expanded */
+}
+
+
+.tabseStyle2{
+  display: inline-block;
+}
+
+.savedraf{
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.combinecardcss{
+  margin: 15px 20px;
+  padding: 15px 20px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+  background: white;
+  font-family: sans-serif;
+}
+
+.selectInvictxt{
+  margin-bottom: 0px !important;
+  width: fit-content;
+  border: 1px solid #dee2e6;
+  padding: 5px 12px;
+  background: #f1f1f1;
+}
+
+.button.button-rose {
+  color: #fff;
+  background-color: #e91e63;
+  border-radius: 5px;
+  font-weight: 500;
+  border: none !important;
+  width: auto !important;
+  border-color: #e91e63;
+  padding: 6px 17px !important;
+  box-shadow: 0 2px 2px 0 rgba(233,30,99,.14), 0 3px 1px -2px rgba(233,30,99,.2), 0 1px 5px 0 rgba(233,30,99,.12) !important;
+}
+
+.headerft{
+  border-bottom: 1px solid #bfb2b2;
+  margin-bottom: 10px;
+}
+
+.headerfont{
+  font-size: 20px;
+  font-weight: 400;
+  font-family: sans-serif;
+}
+
+.button.button-rose2 {
+  color: #fff;
+  background-color: #e91e63;
+  border-radius: 5px;
+  font-weight: 500;
+  border: none !important;
+  border-color: #e91e63;
+  box-shadow: 0 2px 2px 0 rgba(233,30,99,.14), 0 3px 1px -2px rgba(233,30,99,.2), 0 1px 5px 0 rgba(233,30,99,.12) !important;
+}
+
+.pprep{
+  margin-bottom: 0px !important;
+  text-align: end;
+}
+
+.multheat{
+  margin-bottom: 0px !important;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: sans-serif;
+}
+
+.cardgggg{
+  margin: 15px 7px 0px;
+  padding: 15px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px;
+  background: white;
+  font-family: sans-serif;
+}
+
+.heradersgsgs{
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #adaaa5;
+}
+
+.numSmaller{
+  color: #af1313;
+  font-weight: 400;
+}
+
+.numGreater{
+  color: #11b111;
+  font-weight: 400;
+}
+
+.custercard{
+  margin: 15px;
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 10px;
+}
+
+.prodata{
+  margin-bottom: 0px !important;
+  font-size: 14px !important;
+  font-family: sans-serif !important;
+}
+
+.paymenttemphead{
+  margin-bottom: 0px;
+  font-weight: 700;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  padding: 4px 10px;
+  width: fit-content;
+}
+
+th     { background:#eee; }
+

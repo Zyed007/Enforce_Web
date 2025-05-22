@@ -1,0 +1,216 @@
+.btndiv{
+  margin: auto;
+  text-align: right;
+}
+
+.buttonSt{
+  color: #999da1;
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.details{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 15px 15px 25px;
+  border-radius: 5px;
+}
+.overtime{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 15px 15px 25px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+
+.btnColorAll{
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btnScc{
+  display: inline-flex;
+ }
+
+.CardRow{
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+}
+
+.bodyOne{
+  padding: 15px 18px 15px ;
+}
+
+.teamDiv{
+  text-align: end;
+}
+
+.martop15{
+  margin-top: 15px;
+}
+
+.marTopnew{
+  margin-top: 5px;
+}
+
+.flextxt{
+  margin-top: 1px;
+  margin-left: 3px;
+}
+
+.edbtnSt{
+  height: 25px;
+  width: 35px;
+  padding-top: 9px;
+}
+
+.linebottom{
+  border-bottom: 1px solid #d7d2d2;
+  padding-bottom: 5px;
+  font-weight: 500;
+}
+
+.firstDiv{
+  display: flex;
+}
+
+.nameDiv{
+  padding: 7px 10px;
+  margin: auto;
+  width: -webkit-fill-available;
+}
+
+.martop{
+  margin-top: 20px;
+ }
+
+//rounded checkbox
+.round-checkboxes {
+  display: inline-block;
+  height: 34px;
+  width: 34px;
+  position: relative;
+  margin-right: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.round-checkboxes input[type=checkbox] {
+  visibility: hidden;
+}
+input[type=checkbox][disabled], input[type=radio].disabled, input[type=radio][disabled] {
+  cursor: not-allowed;
+}
+.round-checkboxes label {
+  background-color: #fff;
+  border: 1px solid #cfd2d5;
+  border-radius: 50%;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: 0;
+  color: #9a9a9a;
+}
+.round-checkboxes label, .round-checkboxes label:after {
+  height: 35px;
+  width: 35px;
+  line-height: 32px;
+  text-align: center;
+  font-weight: 600;
+}
+.round-checkboxes input[type=checkbox]:checked+label {
+  background-color: #404952;
+  border-color: #0c0e10;
+  color: #fff;
+  font-weight: 600;
+}
+.round-checkboxes input[type=checkbox]:disabled+label {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.e-add:before {
+  content: '\e823';
+}
+
+.btnColor{
+  background-color: #2e3e4e !important;
+  color: white !important;
+}
+
+.teamMemberTxt{
+  color: #333c43;
+  font-size: 1.625rem;
+  font-family: Source Sans Pro,sans-serif;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.btndata{
+  margin-bottom: 0px;
+  font-size: 15px;
+  font-family: Source Sans Pro, sans-serif;
+  font-weight: 400;
+}
+
+.dateColor{
+  margin-left: 1px;
+  color: #767778;
+}
+
+.borderTop{
+  border-top: 1px solid #d7d2d2;
+  padding-top: 12px;
+}
+
+.marTop{
+  margin-top: 20px;
+}
+
+.active{
+  background-color: black;
+}
+
+.cardHeadertxt{
+  color: #333c43;
+  font-size: 15px;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.mainProfileDiv{
+  margin: 0px 15px 15px;
+}
+
+.pad2515{
+  padding: 25px 15px;
+  background: #fff;
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+}
+
+.labelMainHeader{
+  font-size: 20px;
+  font-weight: 400;
+  font-family: Source Sans Pro,sans-serif;
+}
+
+.marTop18{
+  margin-top: 18px;
+}
+
+agm-map {
+  height: 300px;
+}
+
+
+
+
+.marTopLef{
+  margin-top: 3px;
+  margin-left: 4px;
+}
+
+.marleft7{
+  margin-left: 7px;
+}

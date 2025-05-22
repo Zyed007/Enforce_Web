@@ -1,0 +1,70 @@
+.form-group label{
+  color: black !important;
+}
+.e-datepicker .e-date-wrapper{
+  border: 1px solid #ced4da !important;
+  border-radius: .25rem !important;
+//  height: calc(2.25rem + 2px) !important;
+//  padding: 5px .75rem !important;
+padding-left: .75rem !important;
+}
+.displayBlock{
+  display: block;
+
+}
+.hiddenBlock{
+    visibility: hidden;
+height: 0px;
+}
+.ng2-dropdown-menu {
+  z-index: 1051 !important;
+  width: 60% !important;
+ max-height: 150px !important; overflow-y: scroll;
+
+}
+// .ng2-dropdown-container { height: 150px !important; overflow-y: scroll;}
+.displayTxt{
+  display: block;
+  opacity: 1;
+}
+.hideTxt{
+  visibility: hidden;
+  opacity: 0;
+}
+.taskForm{
+  .ng2-tag-input .ng2-tags-container{
+    border: 1px solid #ced4da !important;
+    margin-top: -4px;
+  }
+  .ng2-tag-input{
+    border-bottom: none !important;
+   // padding: .375rem 1rem !important;
+
+  }
+  .ng2-menu-item{
+    height: 30px !important;
+    line-height: 30px !important;
+  }
+  .ng2-tag-input .ng2-tags-container{
+    padding: .075rem .75rem !important;
+
+  }
+  .ng2-tag-input__text-input{
+  height: calc(2.25rem + 2px) !important;
+  }
+  tag{
+  background-color: white !important;
+  box-shadow: none !important;
+  }
+  delete-icon:hover {
+  -webkit-transform: none !important;
+  transform: none !important;
+  }
+  tag[_ngcontent-dfs-c6]:not(:focus):not(.tag--editing):not(:active):not(.readonly):hover{
+  background-color: white !important;
+  }
+  tag[_ngcontent-oam-c6]:not(:focus):not(.tag--editing):not(:active):not(.readonly):hover{
+  box-shadow: none !important;
+
+  }
+  }

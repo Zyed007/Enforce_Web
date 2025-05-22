@@ -1,0 +1,337 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+  <div class="kt-grid__item" id="kt_subheader">
+    <div class="kt-container kt-container--fluid dasboardDatePicker ">
+      <div class="kt-grid__item" id="kt_subheader">
+        <div class="kt-container kt-container--fluid dasboardDatePicker ">
+          <div class="kt-subheader kt-grid__item">
+            <div class="kt-subheader__main" style="margin-bottom: 5px;">
+              <h3 class="kt-subheader__title invoicetxt" style="font-size: 23px;">
+                Revenue Adjustment
+              </h3>
+              <div class="kt-portlet__head-toolbar backbtn">
+                <div class="dropdown dropdown-inline">
+                  <button type="button" style="margin-left: 15px;" (click)='goBack()'
+                    class="button button-fill button-rose"> <i class="fa fa-angle-left"></i> Back </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-11" style="text-align: end;">
+      <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+          <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+            role="tablist" style="border-bottom: none;display: inline-flex; margin: 0 0 0px 0;">
+            <li class="nav-item" (click)="getCommonDateType('today')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isTodayActive}" data-toggle="tab"
+                href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                Today
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('weeks')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isWeekActive}" data-toggle="tab"
+                href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                Week
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('month')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isMonthActive}" data-toggle="tab"
+                href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                Month
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('six-month')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isMonthActive}" data-toggle="tab"
+                href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                Six Months
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('year')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isMonthActive}" data-toggle="tab"
+                href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                Year
+              </a>
+            </li>
+            <li class="nav-item dasboardRange" style="margin-right: 20px;">
+              <a class="nav-link" data-toggle="tab" id="defaultrange_modal" role="tab" aria-selected="false"
+                style="padding-bottom: 5px !important; padding-top: 5px;">
+                <div style="display: flex;justify-content: start;">
+                  <div>Range</div>
+                  <div>
+                    <form [formGroup]="dateRangeForm" id="formId" style="padding-left:4px; ">
+                      <ejs-daterangepicker [max]="maxRangeDate" placeholder='Select Date range'
+                        formControlName='daterange'></ejs-daterangepicker>
+                    </form>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- <div *ngIf="showSpinner" class="row rowimp rowcard"
+        style="padding: 0px; margin-bottom: 20px;padding-bottom: 20px;">
+        <h3 class="col-12 kt-subheader__title invoicetxt"
+          style="font-size: 17px;font-weight: 300;border-bottom: 1px solid #ada8a8; padding-bottom: 7px; padding-top: 3px; margin: 0px;">
+          Loading Analytics
+        </h3>
+        <mat-spinner style="margin-top: 10px; margin-left: 10px;"></mat-spinner>
+      </div> -->
+
+
+      <!-- <div *ngIf="!showSpinner" class="row rowimp rowcard"> -->
+      <div  class="row rowcard" style="margin: 0px 0px 23px;">
+        <div class="kt-portlet " style="margin-bottom: 0px">
+          <div class="kt-portlet__head" style="padding: 0px 15px;">
+            <div class="kt-portlet__head-label">
+              <h3 class="allHeader mainboxhead">Summary</h3>
+            </div>
+          </div>
+          <div class="row rowimp col-lg-12 col-xl-12 order-lg-1 order-xl-1" style="padding: 20px 0px;">
+            <div class="col-xl-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body"
+                  style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;text-align: left;">
+                  <h5 class="kt-iconbox__title">Revenue</h5>
+                  <div class="kt-iconbox__desc">
+                    <h6 class="kt-iconbox__title" >
+                      Total Count :- <span>
+                        <h3> {{cardDataToDisplay.Revenue?.toBeClaimCount}}</h3>
+                      </span>
+                    </h6>
+                    <h6 class="kt-iconbox__title" >
+                      Total Amount <span>
+                        <h3> AED. {{cardDataToDisplay.Revenue?.toBeClaimValue | number: '.2'}}</h3>
+                      </span>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-xl-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body"
+                  style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;text-align: left;">
+                  <h5 class="kt-iconbox__title">Open Balance </h5>
+                  <div class="kt-iconbox__desc">
+                    <h6 class="kt-iconbox__title" *ngIf="!showTimeSpinner">
+                      Total Count Open Balance Project:-  <span>
+                     <h3>117 </h3>
+                    </span>
+                    </h6>
+                    <h6 class="kt-iconbox__title" *ngIf="!showTimeSpinner">
+                      Total Amount <span>
+                        <h3> AED. 5345634</h3>
+                      </span>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+      <div class="row rowcard" style="margin: 0px 0px 23px;">
+        <div class="kt-portlet " style="margin-bottom: 0px">
+          <div class="kt-portlet__head" style="padding: 0px 15px;display: inline-block;">
+            <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)"
+              class="tabseStyle2" style="text-align: start;">
+              <e-tabitems>
+                <e-tabitem *ngFor='let header of headerText' [header]='header'>
+                  <ng-template #content>
+                    <form
+                      style="display: flex; justify-content: start; background: #fafafa; border: 1px solid rgba(0, 0, 0, 0.12); padding: 5px 10px 13px;">
+                    </form>
+
+                    <ejs-grid #revenueDataTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true'
+                      [allowPdfExport]='true' (toolbarClick)='revenueDataDownload($event)' [dataSource]='revenueData'
+                      allowTextWrap='true' height="350px" allowSorting='true'>
+                      <e-columns>
+                        <e-column field='accountsId' headerText='Acc ID' width=100>
+                          <ng-template #template let-data>
+                            <span>{{data.accountsId}}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='projectPrefix' headerText='Project ID' width=100>
+                          <ng-template #template let-data>
+                            <span>{{data.projectPrefix}}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column headerText='Type' textAlign='center' width=100>
+                          <ng-template #template let-data>
+                            <span *ngIf="!data.isCommission">Project</span>
+                            <span *ngIf="data.isCommission">Other Income</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='projectName' headerText='Project Name' width=200 style="text-align: center;">
+                          <ng-template #template let-data>
+                            <div style="display: grid;">
+                              <span style="text-align: left;">{{data.projectName}}</span>
+                              <span *ngIf="!data.isCommission" container="body" placement="top"
+                                ngbTooltip="View Project Statement"
+                                style="width: fit-content;font-size: 11px; color: blue; cursor: pointer;"
+                                (click)="showProjectStatement(data.projectId)">
+                                <i class="fa fa-file-text-o" aria-hidden="true" style="margin-right: 5px;"></i>Project
+                              </span>
+                            </div>
+                          </ng-template>
+                        </e-column>
+
+
+                        <e-column field='customerName' headerText='Customer Name' width=200>
+                          <ng-template #template let-data>
+                            <div style="display: grid;">
+                              <span style="text-align:left;">{{data.customerName}}</span>
+                              <span *ngIf="!data.isCommission" container="body" placement="top"
+                                ngbTooltip="View Customer Statement"
+                                style="font-size: 11px; color: blue; cursor: pointer; width: fit-content;"
+                                (click)="showCustomerStatement(data.projectId)">
+                                <i class="fa fa-file-text-o" aria-hidden="true" style="margin-right: 5px;"></i>Customer
+                              </span>
+                            </div>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='customerPhone' headerText='Phone' width=150>
+                          <ng-template #template let-data>
+                            <span>{{data.customerPhone}}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='createdDate' headerText='Created Data' width=150>
+                          <ng-template #template let-data>
+                            <span>{{ data.createdDate | date:'dd MMMM yyyy' }}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column headerText="Action" textAlign="center">
+                          <ng-template #template let-data>
+                            <!-- <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Details"
+                          container="body" (click)="editDetails()">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button> -->
+                            <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="Edit Details"
+                              container="body" (click)="editDetails(data)">
+                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                          </ng-template>
+                        </e-column>
+                      </e-columns>
+
+                    </ejs-grid>
+                  </ng-template>
+                </e-tabitem>
+              </e-tabitems>
+            </ejs-tab>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="revenueeditmodal" data-backdrop="static"
+        role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog importWid" role="document">
+          <div class="modal-content notifyModal">
+            <div class="modal-header" style="padding: 8px 15px;">
+              <h5 class="modal-title" id="exampleModalLabel" style="font-size: 18px;">Adjust the Revenue Payemnt</h5>
+              <button type="button" class="close" #modifyCloseBtn (click)="closemodal()" aria-label="Close"></button>
+            </div>
+            <div *ngFor="let item of projectDataDetails" class="modal-body"
+              style="overflow-y: auto;overflow-x: hidden;">
+              <div style="    display: grid;
+              background-color: rgba(44,119,244,.1);
+              margin-bottom: 20px;
+              text-align: center;
+              font-size: medium;
+              font-weight: 600;">
+                <div style="display: flex;background-color: rgba(44,119,244,.1); margin-bottom: 20px;">
+                  <label>Project Name : {{item.projectName}}</label>
+                </div>
+                <div style="display: flex;background-color: rgba(44,119,244,.1); margin-bottom: 20px;">
+                  <label>Project No : {{item.projectPrefix}}</label>
+                </div>
+                <div style="display: flex;background-color: rgba(44,119,244,.1); margin-bottom: 20px;">
+                  <label>Acc ID : {{item.accountId}} </label>
+                </div>
+                <div style="display: flex;background-color: rgba(44,119,244,.1); margin-bottom: 20px;">
+                  <label>Customer Name : {{item.customerName}}</label>
+                </div>
+                <div style="display: flex;background-color: rgba(44,119,244,.1); margin-bottom: 20px;">
+                  <label>Total Revenue : {{totalAmount}}</label>
+                </div>
+                <div style="display: flex;background-color: rgba(44,119,244,.1); margin-bottom: 20px;">
+                  <label>Total Balance : {{totalbalance}}</label>
+                </div>
+              </div>
+
+
+              <div style="overflow-x: clip;text-align: center;max-width: none;" *ngFor="let item of projectRevData">
+                <table class="table" style="width: 100%;">
+                    <thead >
+                        <tr *ngIf="item.amount!=0" >
+                            <th style="width: 20%;">{{ item.createdDate | date:'dd MMMM yyyy' }}</th>
+                            <th scope="col" style="width: 3%;">Original Revenue</th>
+                            <th scope="col" style="width: 20%;">Adjust Rev</th>
+                            <th scope="col" style="width: 20%;">Balance</th>
+                        </tr>
+                        <tr *ngIf="item.amount==0">
+                            <th style="width: 0%;"><input type="date" id="dateInput"></th>
+                            <th scope="col" style="width: 5%;text-align: left;">Original Revenue</th>
+                            <th scope="col" style="width: 12%;text-align: center;">Adjust Rev</th>
+                            <th scope="col" style="width: 16%;text-align: center;">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 20%;text-align: center;">
+                                <button *ngIf="item.amount==0" class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="Delete Revenue" container="body" (click)="deleteRevenue(item)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                            <td style="width: 20%;text-align: center;">
+                                <span class="amount">{{ item.amount }}</span>
+                            </td>
+                            <td>
+                                <input type="number" class="inputValue" style="width: 100px;" (change)="updateAmount(item,$event)">
+                            </td>
+                            <td class="balance" style="width: 20%;">{{ item.balance !== undefined ? item.balance : 0 | number:'1.2-2' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+              <button type="Submit" class="button button-fill button-rose" (click)="addreve()" [disabled]="rembal"  title="Create a Additional Entry in Revenue Payment">
+                Create Record
+              </button>
+              <div class="kt-align-right modal-footer bottomBtn">
+                <button type="Submit" class="button button-fill button-rose" [disabled]="totalsum"
+                  (click)="onSubmit()">Submit</button>
+                <button type="reset" class="btn btn-secondary" style="color: #fff;
+                background-color: grey;
+                border-radius: 5px;
+                font-weight: 500;
+                border: none !important;
+                width: auto !important;
+                border-color: #e91e63;
+                padding: 6px 17px !important;
+                box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12) !important;
+            " (click)="closemodal()">Close</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

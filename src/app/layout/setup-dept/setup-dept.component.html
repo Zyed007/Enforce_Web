@@ -1,0 +1,226 @@
+<!-- 
+  <div class="" style="    display: flex;
+  justify-content: flex-start;" >
+  <ul class="check-card" *ngFor="let item of deptList;">
+    <li class="check-card-item">
+      <input type="checkbox" id="check_{{item.id}}" name="{{item.Name}}" value="{{item.id}}" (change)="onCheckChange(item.id,$event)" >
+      <label for="check_{{item.id}}" class="radio"></label>
+      <div class="check-card-bg"></div>
+      <div class="check-card-body">
+        <div class="check-card-toggle">
+          <span></span>
+          <span></span>
+        </div>
+        <div class="check-card-body-in">
+          <h3 class="check-card-title">{{item.Name}}</h3>
+          <p class="check-card-description">
+            {{item.Desc}}
+          </p>
+        </div>
+        <div class="check-card-cancel">CANCEL</div>
+      </div>
+    </li>
+  </ul>
+  
+
+
+ 
+
+</div> -->
+<link href="../../../assets/css/pages/wizard/wizard-4.css" rel="stylesheet" type="text/css" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-desktop.min.css"> -->
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+  <div class="kt-container  kt-container--fluid ">
+      <div class="kt-subheader__main">
+          <h3 class="kt-subheader__title">
+      
+          Setup                       </h3>
+
+                          <span class="kt-subheader__separator kt-hidden"></span>
+              <div class="kt-subheader__breadcrumbs">
+                  <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                          <span class="kt-subheader__breadcrumbs-separator"></span>
+                      <a  class="kt-subheader__breadcrumbs-link">
+                          Department                        </a>
+                                          <span  class="kt-subheader__breadcrumbs-separator"></span>
+                      <a   class="kt-subheader__breadcrumbs-link">
+                            Choose Department                    </a>
+                      
+              </div>
+                  </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+     
+  </div>
+</div>
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+  <div class="kt-wizard-v4" id="kt_wizard_v4" data-ktwizard-state="step-first">
+
+
+<div class="kt-portlet" >
+  <div class="kt-portlet__head kt-portlet__head--lg">
+    <div class="kt-portlet__head-label">
+        <!-- <span class="kt-portlet__head-icon">
+            <i class="kt-font-brand flaticon2-line-chart"></i>
+        </span> -->
+        <h3 class="kt-portlet__head-title">
+                Department 
+        </h3>
+      
+          <div *ngIf="planType == 'Basic'" style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;" [routerLink]="['/pricing']"  class="btn btn-bold btn-sm btn-font-sm btn-label-warning"  >UPGRADE</div>
+          <div *ngIf="planType == 'Basic'" style="color:#2c77f4!important;margin-left: 10px;" >Upgrade to enable this feature</div>
+                  
+        
+        <!-- <button type="button" class="btn btn-outline-warning" [routerLink]="['/pricing']" style="margin-left:5px">Upgrade</button> -->
+    </div>
+
+    <div class="kt-portlet__head-toolbar">
+      <div class="kt-portlet__head-wrapper">
+<!-- <a href="#" class="btn btn-clean btn-icon-sm">
+  <i class="la la-long-arrow-left"></i>
+  Back
+</a> -->
+&nbsp;
+<div class="dropdown dropdown-inline">
+  <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+        
+  <!-- </button> -->
+<button type="button"  (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;" > <i class="fa fa-angle-left"></i> Back	</button>
+
+</div>
+</div>		</div>  
+
+</div>
+
+  <div class="kt-portlet__body kt-portlet__body--fit">
+    
+        <!--begin: Form Wizard Form-->
+        <form class="kt-form" id="kt_form">
+          <!--begin: Form Wizard Step 1-->
+          <div style="color: red;margin-left: 25px;margin-top: 5px;margin-bottom: 5px;">Note: One click installation for departments and designation.</div>
+            <div class="row">
+              <div class="col-md-offset-3 col-md-9 col-xl-8">
+                <div >
+                 
+                  <div class="" style="padding:5px 0px 5px 15px;margin-left: 15px;">
+                    <div class="row">
+                      <div class="col-xs-6 col-sm-4 col-xl-3" style="padding:5px 10px 5px 0px" *ngFor="let item of deptList;">
+                        <a class="" style="background: #f5f5f5;
+                        display: block;
+                        border-radius: 4px;
+                        padding: 25px 10px;
+                        text-align: center;
+                        position: relative;
+                        height: 130px;">
+                          <i class="fa fa-2x fa-users " style="color:#bbb;display: block;
+                          text-align: center;
+                          margin-bottom: 5px;"></i>
+                          <div>
+                            <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
+                              <input type="checkbox" id="check_{{item.id}}" name="{{item.Name}}" [checked]="item.checked" [disabled]="item.checked" value="{{item.id}}" (change)="onCheckChange(item,$event)" >
+    
+                              <span style="margin-top: 4px;"></span>
+                              <div style="font-size:1.1rem;font-weight: 600;margin-top: 2px; color: #74788d ;
+                              "> {{item.Name}} <span class="label label-info" style="position: absolute;
+                                top: 10px;
+                                right: 10px;"> 
+                               </span></div>
+                            </label>
+                          </div>
+                          
+                        
+                          <!-- <div style="font-size:10px;color: #959cb6;">{{item.Desc}}</div>   -->
+                        </a>
+                      </div>
+                         
+                    </div>
+                  </div>
+                  
+                  
+                  
+                 
+                </div>
+              </div>
+              <div class="col-md-offset-3 col-md-3 col-xl-4" style="margin-top:10px;height: 300px;" >
+                
+                  <div class="form-group form-group-last" style="padding-right: 15px;">
+                    <div class="alert alert-secondary" role="alert" style="background-color: #f5f5f5 !important;display: flex;flex-direction: column;">
+                      <div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
+                        <div class="alert-text">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.                       </div>
+                    </div>
+                  
+                  
+                <!-- <div class="alert alert-secondary" role="alert">
+                  <div class="alert-text">
+                   <span class="kt-badge kt-badge--inline kt-badge--pill kt-badge--danger kt-badge--rounded">NOTE:</span>
+                    <div style="margin:5px" *ngFor="let dept of deptDesc ">
+                      {{dept.name}}-
+                      <span>{{dept.desc}}</span>
+                    </div>
+                  </div>
+                </div> -->
+                  
+                 
+                </div>
+              </div>
+            </div>
+        
+<!-- <div class="kt-wizard-v4__nav" style="padding: 12px;">
+
+  <div class="kt-wizard-v4__nav-items" >
+
+    <div class="kt-wizard-v4__nav-item" data-ktwizard-type="step" *ngFor="let item of deptList;" style="background-color: #ccc9 !important; ">
+      
+      <div class="kt-wizard-v4__nav-body">
+        <div class="form-group row" style="margin-right:5px;">
+         
+
+            <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
+              <input type="checkbox" id="check_{{item.id}}" name="{{item.Name}}" [checked]="item.checked" [disabled]="item.checked" value="{{item.id}}" (change)="onCheckChange(item.id,$event)" >
+
+              <span style="margin-top: 4px;"></span>
+              <div class="kt-wizard-v4__nav-label">
+                <div class="kt-wizard-v4__nav-label-title">
+                  {{item.Name}}
+                </div>
+                <div class="kt-wizard-v4__nav-label-desc">
+                  {{item.Desc}}
+                </div>
+              </div>
+            </label>
+
+     
+      </div>
+       
+      </div>
+    </div>
+   
+  </div>
+</div> -->
+         
+
+<div class="dropdown dropdown-inline" style="    display: flex;
+justify-content: flex-end;
+margin-right: 24px;margin-top: 10px;margin-bottom: 12px;">
+  <button type="button" class="button button-fill button-rose" [disabled]="(selectedDept.length==0)"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+    ADD 	
+</button>
+<!-- <button type="button" class="button button-fill button-rose" [disabled]="(selectedDept.length==0 || planType=='Basic')"  (click)='AddForm()' aria-haspopup="true" aria-expanded="false">
+  ADD 	
+</button> -->
+
+</div>
+         
+          <!--end: Form Actions -->
+        </form>
+
+        
+        <!--end: Form Wizard Form-->
+      
+  </div>
+</div>
+</div>
+</div>
+

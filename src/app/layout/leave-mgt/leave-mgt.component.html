@@ -1,0 +1,3066 @@
+<div *ngIf="showNotFound">
+  <app-not-found></app-not-found>
+</div>
+
+<div class="kt-container kt-container--fluid kt-grid__item kt-grid__item--fluid" *ngIf="showLeavePage">
+  <div class="row" style="margin-top: 20px">
+    <div class="col-lg-12 col-xl-3 order-lg-6 order-xl-1">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="kt-portlet">
+            <div class="kt-portlet__head" style="min-height: 36px">
+              <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">Assigned Leaves</h3>
+              </div>
+            </div>
+            <form class="kt-form" style="height: 180px; overflow-y: auto">
+              <div class="kt-portlet__body" *ngIf="probationperiodOver" style="padding: 10px 15px 0px 0px">
+                <div *ngIf="assignedLeavesDataLength?.length !== 0" class="kt-widget2" style="display: flex">
+                  <div class="kt-widget2__item kt-widget2__item--primary" style="margin-bottom: 0px">
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem; cursor: pointer">
+                      <a class="kt-widget2__title">{{
+                        assignedLeavesData?.leave_name
+                        }}</a>
+                    </div>
+                  </div>
+                  <div style="margin-left: 10px; margin-right: 8px">
+                    <p class="leaveenttitle">Entitled</p>
+                    <div style="color: black; text-align: center">
+                      {{ assignedLeavesData?.entitled_leave_days }}
+                    </div>
+                  </div>
+                  <span style="border: 1px solid #ebedf2"
+                    class="kt-subheader__separator kt-subheader__separator--v"></span>
+                  <div style="margin-left: 10px">
+                    <p class="leaveenttitle">Available</p>
+                    <div style="color: black; text-align: center">
+                      {{ assignedLeavesData?.available_leave_days_new }}
+                    </div>
+                  </div>
+                </div>
+                <div class="kt-widget2" style="display: flex; padding-top: 10px">
+                  <div class="kt-widget2__item kt-widget2__item--primary" style="margin-bottom: 0px">
+                    <div class="kt-widget2__info" style="padding: 0.1rem 0 0 2.2rem; cursor: pointer">
+                      <a class="kt-widget2__title">{{
+                        sickleaveassigneddata?.leave_name
+                        }}</a>
+                    </div>
+                  </div>
+                  <div style="margin-left: 41px; margin-right: 24px">
+                    <!-- <p class="leaveenttitle">Entitled</p> -->
+                    <div style="color: black; text-align: center">
+                      {{ sickleaveassigneddata?.entitled_leave_days }}
+                    </div>
+                  </div>
+                  <span style="border: 1px solid #ebedf2"
+                    class="kt-subheader__separator kt-subheader__separator--v"></span>
+                  <div style="margin-left: 31px">
+                    <!-- <p class="leaveenttitle">Available</p> -->
+                    <div style="color: black; text-align: center">
+                      {{ sickleaveassigneddata?.available_leave_days }}
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="assignedLeavesDataLength?.length === 0">
+                  <h1 class="noleaveProfileMessage">
+                    It seems no leave profile have been assigned to you
+                  </h1>
+                  <p>Pleace contact your Admin</p>
+                </div>
+              </div>
+              <div class="kt-portlet__body" *ngIf="probationperiodRunning">
+                <h1 class="noleaveProfileMessage">
+                  You are currently on Probation period, so you can't apply
+                  leave till {{ probationperiodOverDate | date }}
+                </h1>
+              </div>
+              <div class="kt-portlet__body" *ngIf="noLvprfAssign">
+                <h1 class="noleaveProfileMessage">
+                  Leave Profile Not Assigned
+                </h1>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="kt-portlet">
+            <div class="kt-portlet__head">
+              <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">Upcoming Holiday</h3>
+              </div>
+              <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-actions">
+                  <div class="dropdown dropdown-inline">
+                    <div class="caption">
+                      <div class="actions">
+                        <div>
+                          <span (click)="openCalendarModal()" style="color: #0070d0; cursor: pointer">View
+                            Holidays</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  &nbsp;
+                </div>
+              </div>
+            </div>
+
+            <form class="kt-form" style="
+                background-color: #ff6292;
+                color: white !important;
+                padding: 20px;
+              ">
+              <div class="padding-top: 12px;">
+                <div class="form-group" style="display: flex; justify-content: space-between">
+                  <div style="
+                      border-right: 1px solid lightgray;
+                      padding-right: 25px;
+                    ">
+                    <div class="kt-subheader kt-grid__item" id="kt_subheader"
+                      style="padding: 0px; margin: 0px !important">
+                      <div class="kt-container kt-container--fluid">
+                        <div class="" style="
+                            display: flex;
+                            flex-direction: column;
+                            font-size: 15px;
+                          ">
+                          <div style="font-size: 20px">30</div>
+                          <div style="font-size: 15px">November</div>
+                          <div class="kt-subheader__main">
+                            <div class="kt-subheader__title" style="
+                                padding-right: 8px;
+                                font-size: 11px;
+                                color: white !important;
+                              ">
+                              SAT
+                            </div>
+                            <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                            <div class="kt-subheader__title" style="
+                                padding-right: 8px;
+                                font-size: 11px;
+                                color: white !important;
+                              ">
+                              2019
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                  <div>
+                    <div class="kt-subheader kt-grid__item" id="kt_subheader"
+                      style="padding: 0px; margin: 0px !important">
+                      <div class="kt-container kt-container--fluid">
+                        <div class="kt-subheader__main">
+                          <div style="display: flex; flex-direction: column">
+                            <div class="kt-subheader__title" style="
+                                font-size: 14px;
+                                color: white !important;
+                                text-align: center;
+                                margin-top: 12px;
+                                padding-right: 0px !important;
+                              ">
+                              Milad-Un-Nabi Holiday
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-xl-9 order-lg-6 order-xl-1">
+      <ejs-tab id="element" #tabObj heightAdjustMode="Auto" overflowMode="Popup" (selected)="requesHistoryTab($event)"
+        class="tabseStyle2">
+        <e-tabitems>
+          <e-tabitem *ngFor="let header of requestHeaderText" [header]="header">
+            <ng-template #content *ngIf="header.text === 'Leave'">
+              <div class="filterDiv" *ngIf="appDisapproveLeaveRequestsAccess">
+                <div class="selfopt">
+                  <ejs-radiobutton label="All" name="default" (change)="selfRequestHistory('All')"
+                    checked="true"></ejs-radiobutton>
+                  <ejs-radiobutton label="Self" name="default" style="margin-left: 12px"
+                    (change)="selfRequestHistory('self')"></ejs-radiobutton>
+                  <ejs-radiobutton label="My Tray" name="default" style="margin-left: 12px"
+                    (change)="intraypending()"></ejs-radiobutton>
+                </div>
+                <div *ngIf="showLeaveFilter">
+                  <ejs-dropdownlist (change)="changeleaveFilter($event)" [dataSource]="commonFilterValue"
+                    [placeholder]="commonPlaceholder" [value]="commonSelectedValue" class="ejsDrop"></ejs-dropdownlist>
+                </div>
+              </div>
+              <div>
+                <ejs-grid [dataSource]="listEmployeeLeaveHistoryData" allowTextWrap="true" height="260px"
+                  allowSorting="true" (queryCellInfo)="attendanceOverwriteCellCustomise($event)">
+                  <e-columns>
+                    <e-column headerText="Applied Date" textAlign="" width="45">
+                      <ng-template #template let-data>
+                        <span>{{
+                          data.ondate_applied | date : "d MMM, y"
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Employee" width="60">
+                      <ng-template #template let-data>
+                        <span>{{ data.emp_name }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Leave Name" width="60">
+                      <ng-template #template let-data>
+                        <span>{{ data.leave_name }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Start Date" width="40">
+                      <ng-template #template let-data>
+                        <span>{{
+                          data.leave_start_date | date : "d MMM, y"
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="End Date" width="40">
+                      <ng-template #template let-data>
+                        <span>{{
+                          data.leave_end_date | date : "d MMM, y"
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Status" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span *ngIf="data.leave_status === 'pending'" class="pending">Pending</span>
+                        <span *ngIf="data.leave_status === 'approved'" class="approve">Approved</span>
+                        <span *ngIf="data.leave_status === 'declined'" class="decline">
+                          Declined
+                          <div *ngIf="data.decline_reason" class="decline-reason">({{data.decline_reason}})</div>
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Action" textAlign="center" width="35">
+                      <ng-template #template let-data>
+                        <div>
+                          <mat-icon (click)="leaveCancelModel(data)" *ngIf="
+                              data.emp_id === userInfoLocal?.id &&
+                              data.leave_status === 'pending'
+                            " class="matcancel" placement="top" ngbTooltip="You can cancel your Leave"
+                            container="body">delete_forever</mat-icon>
+
+                          <!-- <mat-icon (click)="leaveCancelModel(data)" *ngIf="data.emp_id === userInfoLocal?.id" class="matcancel" placement="top" ngbTooltip="You can cancel your Leave" container="body">delete_forever</mat-icon> -->
+
+                          <mat-icon (click)="openApproverLeaveFormModel(data)" style="cursor: pointer" *ngIf="
+                              data.approver1_roleId ===
+                                userInfoLocal?.role_id ||
+                              data.approver2_roleId === userInfoLocal?.role_id || data.emp_id === userInfoLocal?.id
+                            ">visibility</mat-icon>
+                          <mat-icon (click)="leaveCancelModel(data)" style="cursor: pointer" *ngIf="
+                              (data.approver1_roleId ===
+                                userInfoLocal?.role_id ||
+                                data.approver2_roleId ===
+                                  userInfoLocal?.role_id) &&
+                              data.leave_status === 'approved'
+                            ">delete_forever</mat-icon>
+                        </div>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+              <div class="btndiv">
+                <button type="button" [disabled]="probationperiodRunning || noLvprfAssign" (click)="addLeave()"
+                  class="button button-rose" style="margin-top: 10px; width: auto !important">
+                  <i class="flaticon2-plus"></i> Apply Leave
+                </button>
+                <p *ngIf="noLvprfAssign" class="probclass">
+                  *You are currently not assigned any Leave Profile
+                </p>
+                <p *ngIf="probationperiodRunning" class="probclass">
+                  *You are currently on Probation period, so you cannot apply
+                  leave
+                </p>
+              </div>
+            </ng-template>
+            <ng-template #content *ngIf="header.text === 'Carry Forward'">
+              <div class="filterDiv">
+                <div>
+                  <ejs-dropdownlist (change)="changeleaveFilterCF($event)" [dataSource]="commonFilterValue"
+                    [placeholder]="commonPlaceholder" [value]="commonSelectedValue" class="ejsDrop"></ejs-dropdownlist>
+                </div>
+              </div>
+              <div>
+                <ejs-grid [dataSource]="listEmployeeCarryForHistoryData" allowTextWrap="true" height="250px"
+                  allowSorting="true">
+                  <e-columns>
+                    <e-column headerText="Applied Date" textAlign="" width="60">
+                      <ng-template #template let-data>
+                        <span>{{ data.ondate_applied }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Name" width="60">
+                      <ng-template #template let-data>
+                        <span>{{ data.emp_name }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Actual Carry Forward Days" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.carry_forward_to_approve }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="En-cashed Days" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.encash_days }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Cancelled Days" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.carry_forward_days }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Onhold Days" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.onbehalf_applied }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Status" textAlign="center" width="50">
+                      <ng-template #template let-data>
+                        <span *ngIf="data.carry_forward_status === 'pending'" class="pending">Pending</span>
+                        <span *ngIf="data.carry_forward_status === 'approved'" class="approve">Approved</span>
+                        <span *ngIf="data.carry_forward_status === 'decline'" class="decline">Decline</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+              <div class="btndiv">
+                <button type="button" (click)="carryForwardModelOpen()" class="button button-rose marRight"
+                  style="width: auto !important">
+                  <i class="flaticon2-plus"></i> Apply Carry forward Leave
+                </button>
+              </div>
+            </ng-template>
+            <ng-template #content *ngIf="header.text === 'Holidays'">
+              <div class="filterDiv">
+                <div>
+                  <ejs-dropdownlist (change)="changeleaveFilterHO($event)" [value]="commonSelectedValue"
+                    [dataSource]="commonFilterValue" [placeholder]="commonPlaceholder"
+                    class="ejsDrop"></ejs-dropdownlist>
+                </div>
+              </div>
+              <div>
+                <ejs-grid [dataSource]="listHolidayHistoryData" allowTextWrap="true" height="280px" allowSorting="true">
+                  <e-columns>
+                    <e-column headerText="Created Date" textAlign="" width="60">
+                      <ng-template #template let-data>
+                        <span>{{ data.created_date | date : "d MMM, y" }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Name" width="60">
+                      <ng-template #template let-data>
+                        <span>{{ data.holiday_name }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Start Date" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.start_date | date : "d MMM, y" }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="End Date" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.end_date | date : "d MMM, y" }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Status" textAlign="center" width="50">
+                      <ng-template #template let-data>
+                        <span *ngIf="data.status === 'pending'" class="pending">Pending</span>
+                        <span *ngIf="data.status === 'approved'" class="approve">Approved</span>
+                        <span *ngIf="data.status === 'decline'" class="decline">Decline</span>
+                      </ng-template>
+                    </e-column>
+                    <div>
+                      <e-column headerText="Action" textAlign="center" width="50">
+                        <ng-template #template let-data>
+                          <mat-icon (click)="HolidayCancelModel(data)" class="matcancel" placement="top"
+                            ngbTooltip="You can cancel your Holiday" container="body">delete_forever</mat-icon>
+                          <mat-icon (click)="openApproverholidayFormModel(data)"
+                            style="cursor: pointer">visibility</mat-icon>
+                        </ng-template>
+                      </e-column>
+                    </div>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+              <div class="btndiv">
+                <button type="button" (click)="holidayModelOpen()" class="button button-rose marRight"
+                  style="width: auto !important">
+                  <i class="flaticon2-plus"></i> Add Holiday
+                </button>
+              </div>
+            </ng-template>
+            <ng-template #content *ngIf="header.text === 'Attendance Override'">
+              <div class="filterDiv" style="height: 46px">
+                <div style="padding-top: 4px; padding-left: 15px">
+                  <ejs-daterangepicker style="padding-left: 10px" (change)="changeDateAO($event)"
+                    floatLabelType="Always" [startDate]="aoMonthStart" [endDate]="aoMonthEnd"></ejs-daterangepicker>
+                </div>
+                <div>
+                  <ejs-dropdownlist (change)="changeleaveFilterAO($event)" [value]="commonSelectedValue"
+                    [dataSource]="commonFilterValue" [placeholder]="commonPlaceholder"
+                    class="ejsDrop"></ejs-dropdownlist>
+                </div>
+              </div>
+              <div>
+                <ejs-grid [dataSource]="appDisAttOverHistoryData" allowTextWrap="true" height="280px"
+                  allowSorting="true">
+                  <e-columns>
+                    <e-column headerText="Created Date" textAlign="" width="30">
+                      <ng-template #template let-data>
+                        <span>{{ data.ondate | date : "d MMM, y" }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Name" width="40">
+                      <ng-template #template let-data>
+                        <span>{{ data.full_name }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="For Date" textAlign="" width="30">
+                      <ng-template #template let-data>
+                        <span>{{
+                          data.previous_checkin | date : "d MMM, y"
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Checkin" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <div *ngIf="data.previous_checkin !== null" style="display: grid">
+                          <span>{{ data.check_in }} </span>
+                          <span *ngIf="
+                              data.check_in !==
+                              (data.previous_checkin | date : 'hh:mm a')
+                            " container="body" ngbTooltip="Override: Original checkin time is {{
+                              data.previous_checkin | date : 'h:mm a'
+                            }}" placement="bottom" style="font-size: 0.8rem">
+                            ({{ data.previous_checkin | date : "h:mm a" }})
+                          </span>
+                        </div>
+                        <span *ngIf="data.previous_checkin === null">{{
+                          data.check_in
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Checkout" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span *ngIf="
+                            data.previous_checkin === null &&
+                            data.previous_checkout === null
+                          ">{{ data.check_out }}</span>
+                        <div *ngIf="
+                            data.previous_checkin !== null &&
+                            data.previous_checkout === null
+                          " style="display: grid">
+                          <span>{{ data.check_out }}</span>
+                          <span *ngIf="data.check_out === 'NA'" container="body"
+                            ngbTooltip="Override: Checkout was not done" placement="bottom"
+                            style="font-size: 0.8rem">(No Checkout)</span>
+                        </div>
+                        <span *ngIf="
+                            data.previous_checkin !== null &&
+                            data.previous_checkout !== null
+                          ">{{ data.check_out }}
+                          <span container="body" *ngIf="
+                              data.check_out !==
+                              (data.previous_checkout | date : 'hh:mm a')
+                            " ngbTooltip="Override: Original checkout time is: {{
+                              data.previous_checkout | date : 'h:mm a'
+                            }} " style="font-size: 0.8rem">
+                            ({{ data.previous_checkout | date : "h:mm a" }})
+                          </span>
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Status" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span *ngIf="
+                            data.leave_status === 'Overwrite Request Pending'
+                          " class="pending">Pending</span>
+                        <span *ngIf="data.leave_status === 'Checkin Approved'" class="approve">Approved</span>
+                        <span *ngIf="data.leave_status === 'Checkin Declined'" class="decline">Declined
+                          <div *ngIf="data.declinereasons" class="decline-reason">({{data.declinereasons}})</div>
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <div>
+                      <e-column headerText="Action" textAlign="center" width="50">
+                        <ng-template #template let-data>
+                          <mat-icon (click)="openApproverAttOverFormModel(data)"
+                            style="cursor: pointer">visibility</mat-icon>
+                        </ng-template>
+                      </e-column>
+                    </div>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </ng-template>
+            <ng-template #content *ngIf="header.text === 'Force CheckIn/Checkout'">
+              <div class="filterDiv" style="height: 46px">
+                <div style="padding-top: 4px; padding-left: 15px">
+                  <ejs-daterangepicker style="padding-left: 10px" (change)="changeDateFRC($event)"
+                    floatLabelType="Always" [startDate]="aoMonthStart" [endDate]="aoMonthEnd"></ejs-daterangepicker>
+                </div>
+                <div>
+                  <ejs-dropdownlist (change)="changedatafilterFRC($event)" [value]="commonSelectedValue"
+                    [dataSource]="commonFilterValue" [placeholder]="commonPlaceholder"
+                    class="ejsDrop"></ejs-dropdownlist>
+                </div>
+              </div>
+              <div>
+                <ejs-grid [dataSource]="appFrcAttOverHistoryData" allowTextWrap="true" height="280px"
+                  allowSorting="true">
+                  <e-columns>
+                    <e-column headerText="Created Date" textAlign="" width="30">
+                      <ng-template #template let-data>
+                        <span (click)="openApproverForceClosureModel(data)">{{
+                          data.created_date | date : "longDate"
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Name" width="35">
+                      <ng-template #template let-data>
+                        <span (click)="openApproverForceClosureModel(data)">{{
+                          data.full_name
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText="Type" width="30">
+                      <ng-template #template let-data>
+                        <span (click)="openApproverForceClosureModel(data)">{{
+                          data.type
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <!-- <e-column headerText='For Date' textAlign='' width=30>
+                      <ng-template #template let-data>
+                        <span>{{data.ondate | date :  "d MMM, y"}}</span>
+                      </ng-template>
+                    </e-column> -->
+                    <e-column headerText="Checkin" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span *ngIf="data.check_in == null">NA</span>
+                        <span (click)="openApproverForceClosureModel(data)" *ngIf="data.check_in != null">{{
+                          data.check_in }}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText="Checkout" textAlign="center" width="40">
+                      <ng-template #template let-data>
+                        <span *ngIf="data.check_out == null">NA</span>
+                        <span (click)="openApproverForceClosureModel(data)" *ngIf="data.check_out != null">{{
+                          data.check_out }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText="Reason" width="40">
+                      <ng-template #template let-data>
+                        <span (click)="openApproverForceClosureModel(data)">{{
+                          data.desc
+                          }}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText="Status" textAlign="center" width="30">
+                      <ng-template #template let-data>
+                        <span (click)="openApproverForceClosureModel(data)" *ngIf="data.status == 'pending'"
+                          class="pending">Pending</span>
+                        <span (click)="openApproverForceClosureModel(data)" *ngIf="data.status === 'approved'"
+                          class="approve">Approved</span>
+                        <span (click)="openApproverForceClosureModel(data)" *ngIf="data.status === 'declined'"
+                          class="decline">Decline</span>
+                      </ng-template>
+                    </e-column>
+
+                    <!-- <e-column headerText='Action' textAlign='' width=40>
+                      <ng-template #template let-data>
+                        <span style="color:blue;cursor: pointer;text-transform: capitalize;" (click)='openApproverForceClosureModel(data)'>
+                          View
+                        </span>
+                      </ng-template>
+                    </e-column> -->
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </ng-template>
+          </e-tabitem>
+        </e-tabitems>
+      </ejs-tab>
+    </div>
+  </div>
+
+  <div class="row" style="margin: 0px">
+    <div class="kt-portlet" style="margin-bottom: 0px">
+      <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+          <h3 class="kt-portlet__head-title">Manage Leave and Attendance</h3>
+        </div>
+        <div class="datewidth">
+          <form [formGroup]="commonDateRangeForm">
+            <ejs-daterangepicker format="MM/dd/yyyy" [max]="maxRangeDate" placeholder="Range"
+              formControlName="dateRangeCom" style="width: 100%">
+              <e-presets>
+                <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                <e-preset label="This Month" [start]="monthStart" [end]="monthEnd"></e-preset>
+                <e-preset label="Last Month" [start]="lastStart" [end]="lastEnd"></e-preset>
+                <e-preset label="Last Year" [start]="yearStart" [end]="yearEnd"></e-preset>
+              </e-presets>
+            </ejs-daterangepicker>
+          </form>
+        </div>
+      </div>
+    </div>
+    <ejs-tab id="element" heightAdjustMode="Auto" overflowMode="Popup" (selected)="tabSelected($event)"
+      class="tabseStyle2">
+      <e-tabitems>
+        <e-tabitem *ngFor="let header of headerText" [header]="header">
+          <ng-template #content *ngIf="header.text == 'Attendance'">
+            <div>
+              <ejs-grid #grid [dataSource]="attendanceData" allowTextWrap="true" height="300px" allowSorting="true"
+                (queryCellInfo)="attendanceOverwriteCellCustomise($event)">
+                <e-columns>
+                  <e-column field="ondate" headerText="Date" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.ondate }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field="full_name" headerText="Employee Name" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="check_in" headerText="Check In" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <div *ngIf="data.previous_checkin !== null" style="display: grid">
+                        <span>{{ data.check_in }} </span>
+                        <span *ngIf="
+                            data.check_in !==
+                            (data.previous_checkin | date : 'hh:mm a')
+                          " container="body" ngbTooltip="Override; Original checkin time is {{
+                            data.previous_checkin | date : 'h:mm a'
+                          }}" placement="bottom" style="width: 71px; font-size: 0.8rem">
+                          ({{ data.previous_checkin | date : "h:mm a" }})
+                        </span>
+                      </div>
+                      <span *ngIf="data.previous_checkin === null">{{
+                        data.check_in
+                        }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="check_out" headerText="Check Out" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span *ngIf="
+                          data.previous_checkin === null &&
+                          data.previous_checkout === null
+                        ">{{ data.check_out }}</span>
+                      <div *ngIf="
+                          data.previous_checkin !== null &&
+                          data.previous_checkout === null
+                        " style="display: grid">
+                        <span>{{ data.check_out }}</span>
+                        <span *ngIf="data.check_out === 'NA'" container="body"
+                          ngbTooltip="Override; Checkout was not done" placement="bottom" style="font-size: 0.8rem">(No
+                          Checkout)</span>
+                      </div>
+                      <span *ngIf="
+                          data.previous_checkin !== null &&
+                          data.previous_checkout !== null
+                        ">{{ data.check_out }}
+                        <span container="body" *ngIf="
+                            data.check_out !==
+                            (data.previous_checkout | date : 'hh:mm a')
+                          " ngbTooltip="Override; Original checkout time is: {{
+                            data.previous_checkout | date : 'h:mm a'
+                          }} " style="font-size: 0.8rem">
+                          ({{ data.previous_checkout | date : "h:mm a" }})
+                        </span>
+                      </span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="total_hrs" headerText="Total Hrs" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.total_hrs }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="leave_status" headerText="Status" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span *ngIf="
+                          data.leave_status ===
+                          'Checkin/Checkout Overwrite Pending'
+                        " class="pending">Pending</span>
+                      <span *ngIf="
+                          data.leave_status ===
+                          'Checkin/Checkout Overwrite Declined'
+                        " class="decline">Declined
+                       <div *ngIf="data.declinereasons" class="decline-reason">({{data.declinereasons}})</div>
+                      </span>
+                      <span *ngIf="
+                          data.leave_status ===
+                          'Checkin/Checkout Overwrite Approved'
+                        " class="approve">Approved</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column headerText="Action" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span *ngIf="
+                          data.leave_status !==
+                          'Checkin/Checkout Overwrite Pending'
+                        " style="
+                          color: blue;
+                          cursor: pointer;
+                          text-transform: capitalize;
+                        " (click)="updateAttendance(data)">
+                        Manage
+                      </span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+          <ng-template #content *ngIf="header.text == 'Absent'">
+            <div>
+              <!-- <div>
+                <p class="note">*You can apply within 7 days only</p>
+              </div> -->
+              <ejs-grid #grid [dataSource]="absentData" allowTextWrap="true" height="300px" allowSorting="true"
+                (queryCellInfo)="customiseCell($event)">
+                <e-columns>
+                  <e-column field="ondate" headerText="Date" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.ondate }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field="full_name" headerText="Employee Name" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field="employee_status_name" headerText="Status" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.employee_status_name }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field="employee_type_name" headerText="Type" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.employee_type_name }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field="designation_name" headerText="Designation" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.designation_name }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field="leave_status" headerText="Leave Status" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span>{{ data.leave_status }}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column headerText="Action" textAlign="" width="120">
+                    <ng-template #template let-data>
+                      <span  style="
+                          color: blue;
+                          cursor: pointer;
+                          text-transform: capitalize;
+                        " (click)="absendRequestModel(data)">
+                        manage
+                      </span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+        </e-tabitem>
+      </e-tabitems>
+    </ejs-tab>
+  </div>
+</div>
+
+<!-- Models -->
+<div class="rightModal700">
+  <!-- Apply Leave range model -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="leave_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px">
+            Apply Leave
+          </h5>
+          <button type="button" #closeBtn class="close" data-dismiss="modal" (click)="OnLeaveClose()"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; overflow-x: hidden">
+          <div class="kt-demo-panel__body">
+            <div class="kt-demo-panel__item">
+              <div *ngIf="onbehalfApplyLeaveRequestAccess" class="form-group row">
+                <div class="col-lg-12">
+                  <label for="exampleTextarea" class="form-label">Employee Name</label>
+                  <select2 [data]="employeeData" [options]="options" (valueChanged)="changedEmp($event)"></select2>
+                </div>
+              </div>
+              <div *ngIf="!onbehalfApplyLeaveRequestAccess" class="form-group row">
+                <div class="col-lg-12">
+                  <label for="exampleTextarea" class="form-label">Employee Name</label>
+                  <input type="text" class="form-control" disabled name="employee name" value="{{ employeeName }}" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12 col-sm-12">
+                  <form class="kt-form kt-form--label-right" [formGroup]="leaveForm">
+                    <div class="kt-portlet__body">
+                      <label *ngIf="selectedLeaveSetup" for="exampleTextarea" class="form-label"
+                        style="margin-bottom: 0px">Leave Type</label>
+                      <div class="form-group row">
+                        <div class="kt-radio-inline col-lg-12 col-xl-12 leaveRadio">
+                          <label class="kt-radio" *ngFor="
+                              let leave of selectedLeaveSetup;
+                              let i = index
+                            ">
+                            <input id="{{ i }}" type="radio" name="leaveType" formControlName="leaveType"
+                              value="{{ leave.leave_name }}" (change)="
+                                customRadioChange(
+                                  leave.id,
+                                  leave.leave_name,
+                                  leave.entitled_leave_days,
+                                  leave.leave_type,
+                                  leave.is_calendar_days
+                                )
+                              " />
+                            <div style="display: flex">
+                              <div>
+                                {{ leave.leave_name
+                                }}<span style="font-size: 10px">({{ leave.leave_type }})</span>
+                              </div>
+                              <div style="
+                                  margin-left: 10px;
+                                  padding: 3px 5px;
+                                  font-size: 11px;
+                                ">
+                                {{ leave.entitled_leave_days }} Days
+                              </div>
+                            </div>
+                            <span></span>
+                          </label>
+
+                          <label class="kt-radio">
+                            <input id="other" type="radio" name="leaveType" formControlName="leaveType"
+                              value="Exeptional Leave" (change)="
+                                customRadioChangefor(10)  " />
+                            <div style="display: flex">
+                              <div>
+                                Exeptional Leave<span style="font-size: 10px"></span>
+                              </div>
+                              <div style="
+                                  margin-left: 10px;
+                                  padding: 3px 5px;
+                                  font-size: 11px;
+                                ">
+                              </div>
+                            </div>
+                            <span></span>
+                          </label>
+
+                        </div>
+                      </div>
+
+                      <p *ngIf="selectedLeaveSetup?.length == 0">
+                        No leave profile Assigned
+                      </p>
+
+                      <div *ngIf="isExeptionalLeave" class="form-group row">
+                        <div class="col-12">
+                          <label  class="form-label">Leave Name</label>
+                          <input type="text" class="form-control"
+                            id="exampleFormControlInput10" placeholder="eg : Paternity Leave"  formControlName="leaveName" required />
+                        </div>
+                      </div>
+
+                      <div *ngIf="isExeptionalLeave" class="col-12" style="display: flex; margin: 5px;">
+
+                        <label class="radio-box" style="display: flex; margin-right: 25px;">
+                          <input id="other1" type="radio" name="leaveTypePaid" (change)="selectType('Paid')" value="paid" />
+                          <div style="display: flex; margin-left: 5px"> Paid</div>
+                        </label>
+
+                        <label class="radio-box" style="display: flex; margin-right: 25px;">
+                          <input id="other2" type="radio" name="leaveTypePaid" (change)="selectType('HalfPaid')"  value="halfpaid" />
+                          <div style="display: flex; margin-left: 5px">  Half Paid </div>
+                        </label>
+
+                        <label class="radio-box" style="display: flex; margin-right: 25px;">
+                          <input id="other3" type="radio" name="leaveTypePaid" (change)="selectType('UnPaid')"  value="unpaid" />
+                          <div style="display: flex; margin-left: 5px"> Un Paid </div>
+                        </label>
+
+                      </div>
+
+                      <label for="LeavePeriod" class="form-label" style="margin-bottom: 10px">Leave Period</label>
+                      <form [formGroup]="dateRangeForm" id="formId" style="
+                          display: flex;
+                          justify-content: space-between;
+                          background: #fafafa;
+                          border: 1px solid rgba(0, 0, 0, 0.12);
+                          padding: 5px 10px;
+                        ">
+                        <div class="col-lg-12 col-sm-12 rangePicker">
+                          <ejs-daterangepicker #default (focus)="onFocus($event)" (change)="leaveRange($event)"
+                            placeholder="Range" formControlName="daterangeAtt" (renderDayCell)="onRenderCell($event)">
+                            <e-presets>
+                              <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                            </e-presets>
+                          </ejs-daterangepicker>
+                        </div>
+                      </form>
+
+                      <label for="LeavePeriod" style="margin-top: 10px" class="form-label" *ngIf="leaveSpan">*Number of
+                        selected Days : {{ leaveSpan }} ({{
+                        this.isCalanderDays === true
+                        ? "Calander Days"
+                        : "Working Days"
+                        }})</label>
+                      <label for="LeavePeriod" style="margin-top: 10px; display: flex; color: red" class="form-label"
+                        *ngIf="leaveSpan > leftDays">*it seems you have only {{ leftDays }} days</label>
+
+                      <div style="margin-top: 13px" *ngIf="leaveSpan <= 1">
+                        <label for="LeaveLocation" class="form-label" style="display: block">Duration</label>
+                        <label class="kt-radio kt-radio-type">
+                          <input type="radio" name="Duration" formControlName="Duration" value="full" />
+                          <div style="display: flex">
+                            <div>Full day</div>
+                          </div>
+                          <span></span>
+                        </label>
+                        <label class="kt-radio kt-radio-type" style="margin-left: 12px">
+                          <input type="radio" name="Duration" formControlName="Duration" value="half" />
+                          <div style="display: flex">
+                            <div>Half day</div>
+                          </div>
+                          <span></span>
+                        </label>
+                      </div>
+
+                      <div style="margin-top: 13px">
+                        <label for="LeaveLocation" class="form-label" style="display: block">Leave Location</label>
+                        <label class="kt-radio kt-radio-type">
+                          <input type="radio" name="leaveLocation" formControlName="leaveLocation"
+                            value="local Leave" />
+                          <div style="display: flex">
+                            <div>Local Leave</div>
+                          </div>
+                          <span></span>
+                        </label>
+                        <label class="kt-radio kt-radio-type" style="margin-left: 12px">
+                          <input type="radio" name="leaveLocation" formControlName="leaveLocation"
+                            value="Outside Country" />
+                          <div style="display: flex">
+                            <div>Outside Country</div>
+                          </div>
+                          <span></span>
+                        </label>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-6">
+                          <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                          <input type="email" class="form-control" formControlName="emailAddress"
+                            id="exampleFormControlInput1" placeholder="name@example.com" />
+                        </div>
+                        <div class="col-6">
+                          <label for="exampleFormControlInput1" class="form-label">Contact Number</label>
+                          <input type="number" class="form-control" formControlName="phoneNumber"
+                            id="exampleFormControlInput1" />
+                        </div>
+                      </div>
+
+                      <div class="uploadtab">
+                        <div class="col-3">
+                          <label>Attach Document :</label>
+                        </div>
+                        <div *ngIf="!isLeaveDocUp" class="col-8">
+                          <ejs-uploader *ngIf="!isLeaveDocUp" (selected)="onFileSelected($event)"
+                            allowedExtensions=".jpg,.png,.pdf" [autoUpload]="true" [buttons]="{ browse: 'Browse' }"
+                            multiple="false"></ejs-uploader>
+                        </div>
+                        <div *ngIf="isLeaveDocUp" class="col-8">
+                          <a *ngIf="isLeaveDocUp" (click)="goToLink()" class="hyperlink">
+                            View Document
+                          </a>
+                          <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                            ngbTooltip="Delete File" container="body" (click)="LeaveDocDelete()"></i>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea">Reason</label>
+                          <textarea class="form-control" id="reasonValue" rows="5" formControlName="desc"
+                            #reasonValue></textarea>
+                        </div>
+                      </div>
+
+                      <div *ngIf="approverAssigned" class="form-group row">
+                        <div class="col-lg-12" *ngIf="is_leave_apply_self_approve">
+                          <label class="form-label">Upon Submission leave request will be approved.</label>
+                        </div>
+                        <div class="col-lg-12" *ngIf="!is_leave_apply_self_approve">
+                          <label class="form-label">Upon Submission leave request needs to be approved
+                            by:</label>
+                          <ol>
+                            <li>Level 1 - {{ applyLeaveApprover1Name }}</li>
+                            <li *ngIf="dualApprovalDiv">
+                              Level 2 - {{ applyLeaveApprover2Name }}
+                            </li>
+                          </ol>
+                        </div>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn">
+          <button *ngIf="approverAssigned" type="Submit" [disabled]="leaveForm.invalid"
+            class="button button-fill button-rose" (click)="applyLeave(reasonValue)">
+            Submit
+          </button>
+          <p *ngIf="noApproverAssigned">
+            No Leave Approver is assigned to you. please contact your Admin
+          </p>
+          <button type="reset" class="btn btn-secondary" style="
+              width: 90px;
+              padding: 7px 14px;
+              font-size: 11px;
+              margin-top: -1px;
+            " (click)="OnLeaveClose()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Holiday model -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="calendar_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px">
+            Holiday Calendar
+          </h5>
+          <button type="button" #calndrBtn class="close" data-dismiss="modal" (click)="OnCalendarClose()"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; overflow-x: hidden">
+          <div class="kt-demo-panel__body">
+            <div class="kt-demo-panel__item">
+              <div class="form-group row" style="margin-bottom: 15px">
+                <div class="col-lg-12 col-sm-12 col-xl-12">
+                  <div style="margin-bottom: 4px" style="font-size: 16px; font-weight: 500">
+                    United Arab Emirates Holidays
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="padding-top: 15px">
+                <div class="col-lg-6 col-sm-12 col-xl-6">New Year's Day</div>
+                <div class="col-lg-6 col-sm-12 col-xl-6">
+                  Jan 01, 2020 (Wed)
+                </div>
+              </div>
+              <div class="row" style="padding-top: 15px">
+                <div class="col-lg-6 col-sm-12 col-xl-6">Eid al-Fitr Eve</div>
+                <div class="col-lg-6 col-sm-12 col-xl-6">
+                  May 23, 2020 (Sat)
+                </div>
+              </div>
+              <div class="row" style="padding-top: 15px">
+                <div class="col-lg-6 col-sm-12 col-xl-6">Eid al-Fitr</div>
+                <div class="col-lg-6 col-sm-12 col-xl-6">
+                  May 25, 2020 (Sat)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn">
+          <button type="reset" class="btn btn-secondary" style="
+              width: 90px;
+              padding: 7px 14px;
+              font-size: 11px;
+              margin-top: -1px;
+            " (click)="OnCalendarClose()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attendance Overwrite manage model -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="attendance_Overwrite_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px">
+            Manage Attendance Overwrite
+          </h5>
+          <button type="button" class="close" #modifyCloseBtn (click)="attendanceOverwriteModelClose()"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; overflow-x: hidden">
+          <div style="
+              display: flex;
+              background-color: rgba(44, 119, 244, 0.1);
+              margin-bottom: 20px;
+            ">
+            <div style="
+                color: #2c77f4;
+                padding: 10px 14px;
+                font-weight: bold;
+                font-size: 12px;
+              ">
+              <span style="margin-right: 5px; text-transform: uppercase"
+                class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill">
+                <div class="ng-star-inserted" style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                  ">
+                  <i aria-hidden="true" class="fa fa-user" style="font-size: 13px; margin-right: 6px"></i>
+                  {{ attendanceSelectedData?.full_name }}
+                </div>
+              </span>
+              {{ attendanceSelectedData?.ondate }}
+            </div>
+          </div>
+          <div class="kt-demo-panel__body">
+            <div class="kt-demo-panel__item locationModel">
+              <div class="delegationTabs" style="margin-top: 10px">
+                <form class="kt-form kt-form--label-right" [formGroup]="attendanceApproveForm">
+                  <div class="col-lg-12 col-xl-12" style="padding: 0px; margin-bottom: 10px">
+                    <label for="exampleTextarea">Attendance overwrite reason</label>
+                    <select2 [data]="attendanceOverwriteReasonData" [options]="deptOptions"
+                      (valueChanged)="changedReasonAtt($event)"></select2>
+                    <div *ngIf="attendanceOverwriteReasonIDYesNO">
+                      <label class="errorReqq" for="date">*Reason is required</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row" *ngIf="attendanceReasonValueTxt != 'Select a reason'">
+                    <div class="col-lg-12">
+                      <label>Reason Description</label>
+                      <div class="kt-input-icon materialPicker">
+                        <textarea class="form-control" id="exampleTextarea" rows="5"
+                          formControlName="reasondesc"></textarea>
+                        <div *ngIf="attendanceReasonOtherValue">
+                          <label class="errorReqq" for="date">*Description is required</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-lg-6">
+                      <label>Checkin Time</label>
+                      <div class="kt-input-icon materialPicker">
+                        <input class="form-control" placeholder="Enter Start time" (click)="startTimeChanged()"
+                          [ngxTimepicker]="startpicker" [min]="attendminStartTime" [max]="attendmaxCurrentTime"
+                          formControlName="startTime" />
+                        <ngx-material-timepicker #startpicker></ngx-material-timepicker>
+                        <div *ngIf="attendIsActivityLogFieldValid('startTime')" style="color: red">
+                          Required.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                      <label class="">Checkout Time</label>
+                      <div class="kt-input-icon">
+                        <input class="form-control" placeholder="Enter End time" [min]="minForEndTime"
+                          [max]="attendmaxCurrentTime" [ngxTimepicker]="picker" (click)="endTimeChanged()"
+                          formControlName="endTime" />
+                        <ngx-material-timepicker #picker></ngx-material-timepicker>
+                        <div *ngIf="attendIsActivityLogFieldValid('endTime')" style="color: red">
+                          Required.
+                        </div>
+                        <div *ngIf="startEqualEnd" style="color: red">
+                          Start time shouldn't be equal to end time.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="approverDiv" *ngIf="approverAssignedAO">
+                    <div class="approverHeader">
+                      Attendance overwrite approver
+                    </div>
+                    <div class="approverBody">
+                      <p style="margin-bottom: 2px">
+                        Level 1: {{ AttendanceOverwriteApprover1Name }}
+                      </p>
+                      <p style="margin-bottom: 2px" *ngIf="dualApprovalDivAO">
+                        Level 2: {{ AttendanceOverwriteApprover2Name }}
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kt-align-right modal-footer bottomBtn" *ngIf="approverAssignedAO === false">
+          <p class="noapprovermessage">
+            It seems the role assigned to you dont have an Approver.
+          </p>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn" *ngIf="approverAssignedAO === true">
+          <button type="Submit" [disabled]="attendanceReasonValue === ''" class="button button-fill button-rose"
+            (click)="attendanceOverwrite(attendanceSelectedData)">
+            Submit
+          </button>
+          <button type="reset" class="btn btn-secondary" style="
+              width: 90px;
+              padding: 7px 14px;
+              font-size: 11px;
+              margin-top: -1px;
+            " (click)="attendanceOverwriteModelClose()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Absent manage model -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="absent_Approval_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px" *ngIf="selectedModifiedGroupVal === 'Leave'">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px">
+            Manage - Absent to Leave
+          </h5>
+          <button type="button" class="close" #modifyCloseBtn (click)="convertAbsentToLeaveModel()"
+            aria-label="Close"></button>
+        </div>
+        <!-- <div class="modal-header" style="padding: 8px 15px;" *ngIf="selectedModifiedGroupVal === 'Checkin'">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Manage - Absent to Present Overwrite</h5>
+          <button type="button" class="close"  #modifyCloseBtn (click)="convertAbsentToLeaveModel()" aria-label="Close"></button>
+        </div> -->
+
+        <div class="modal-body" style="overflow-y: auto; overflow-x: hidden; padding-top: 0px">
+          <div style="display: flex">
+            <div style="
+                color: #2c77f4;
+                padding: 10px 14px;
+                font-weight: bold;
+                font-size: 12px;
+              ">
+              <span style="margin-right: 5px; text-transform: uppercase"
+                class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill">
+                <div class="ng-star-inserted" style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                  ">
+                  <i aria-hidden="true" class="fa fa-user" style="font-size: 13px; margin-right: 6px"></i>
+                  {{ absentSelectedData?.full_name }} -
+                  {{ absentSelectedData?.ondate | date : "MMM d, y" }}
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <!-- <div class="kt-demo-panel__item locationModel">
+            <div class="checkinCateg" >
+              <mat-button-toggle-group #manageid="matButtonToggleGroup" [value]="selectedModifiedGroupVal" (change)="onModifyValChange(manageid.value)" class="width100">
+                <mat-button-toggle value="Leave" class="width50">
+                  Convert Absent to Leave
+                  <span placement="top" ngbPopover="Send request to convert this Leave to absent" triggers="mouseenter:mouseleave" container="body">
+                    <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%; padding: 5px 8px; color: #fff; font-size: 11px;margin-left: 4px;"></i>
+                  </span>
+                 </mat-button-toggle>
+                <mat-button-toggle value="Checkin" class="width50">
+                  Convert Absent to Present
+                  <span placement="top" ngbPopover="Send request to convert this Leave to present" triggers="mouseenter:mouseleave" container="body">
+                    <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;padding: 5px 8px;color: #fff;font-size: 11px;"></i>
+                  </span>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div> -->
+
+          <form class="kt-form kt-form--label-right" [formGroup]="absentToLeaveForm">
+            <div class="kt-portlet__body portletbody">
+              <div class="form-group row">
+                <div class="col-12">
+                  <label for="exampleTextarea" class="form-label">Employee Name</label>
+                  <input type="text" class="form-control" disabled name="employee name" value="{{ employeeName }}" />
+                </div>
+              </div>
+
+              <label *ngIf="selectedLeaveSetup" for="exampleTextarea" class="form-label"
+                style="margin-bottom: 0px">Leave Type</label>
+              <div class="form-group row">
+                <div class="kt-radio-inline col-lg-12 col-xl-12 leaveRadio">
+                  <label class="kt-radio" *ngFor="let leave of selectedLeaveSetup; let i = index">
+                    <input id="{{ i }}" type="radio" name="leaveType" formControlName="leaveType"
+                      value="{{ leave.leave_name }}" (change)="
+                        customRadioChange(
+                          leave.id,
+                          leave.leave_name,
+                          leave.entitled_leave_days,
+                          leave.leave_type,
+                          leave.is_calendar_days
+                        )
+                      " />
+                    <div style="display: flex">
+                      <div>
+                        {{ leave.leave_name
+                        }}<span style="font-size: 10px">({{ leave.leave_type }})</span>
+                      </div>
+                      <div style="
+                          margin-left: 10px;
+                          padding: 3px 5px;
+                          font-size: 11px;
+                        ">
+                        {{ leave.entitled_leave_days }} Days
+                      </div>
+                    </div>
+                    <span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div style="margin-top: 13px">
+                <label for="LeaveLocation" class="form-label" style="display: block">Leave Location</label>
+                <label class="kt-radio kt-radio-type">
+                  <input type="radio" name="leaveLocation" formControlName="leaveLocation" value="local Leave" />
+                  <div style="display: flex">
+                    <div>local Leave</div>
+                  </div>
+                  <span></span>
+                </label>
+                <label class="kt-radio kt-radio-type" style="margin-left: 12px">
+                  <input type="radio" name="leaveLocation" formControlName="leaveLocation" value="Outside Country" />
+                  <div style="display: flex">
+                    <div>Outside Country</div>
+                  </div>
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-6">
+                  <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                  <input type="email" class="form-control" formControlName="emailAddress" id="exampleFormControlInput1"
+                    placeholder="name@example.com" />
+                </div>
+                <div class="col-6">
+                  <label for="exampleFormControlInput1" class="form-label">Contact Number</label>
+                  <input type="number" class="form-control" formControlName="phoneNumber"
+                    id="exampleFormControlInput1" />
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-lg-12 col-xl-12">
+                  <label for="exampleTextarea">Reason</label>
+                  <textarea class="form-control" id="reasonValue" rows="5" formControlName="desc"
+                    #reasonValue></textarea>
+                </div>
+              </div>
+
+              <div *ngIf="approverAssigned" class="form-group row">
+                <div class="col-lg-12">
+                  <label class="form-label">Leave requests will be Approved by</label>
+                  <ol>
+                    <li>{{ applyLeaveApprover1Name }}</li>
+                    <li *ngIf="dualApprovalDiv">
+                      {{ applyLeaveApprover2Name }}
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- <form class="kt-form kt-form--label-right" *ngIf='selectedModifiedGroupVal=="Checkin"' [formGroup]="absentToPresentForm">
+            <div class="kt-portlet__body portletbody">
+              <div class="form-group row">
+                <div class="col-12" style="display: flex;">
+                  <p style="margin-bottom: 0px !important; margin-right: 10px !important;">Office</p>
+                  <label class="switch" style="margin-top: 2px;">
+                    <input type="checkbox" id='OfficeCheck' name="chec" (change)="checkIsHome($event)">
+                    <span></span>
+                  </label>
+                  <p style="margin-bottom: 0px;margin-top: 0px;">WFH</p>
+                </div>
+              </div>
+              <div class="form-group" style="width: 100%;" *ngIf='homeInput'>
+                <input type="text" class="form-control" id='homeCheck' value="{{formatted_address}}" [disabled]='homeInput' type="text">
+              </div>
+              <div style="margin-top: -15px; width: 100%;">
+                <mat-accordion class="col-lg-12 col-sm-12" *ngIf="officeInput">
+                  <mat-expansion-panel style="color: #74788d;" [(expanded)]="xpandStatus">
+                    <mat-expansion-panel-header style="background-color: #f7f8fa;" [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                      <mat-panel-title>
+                        <div> {{selectedValue?selectedValue:'Select'}}</div>
+                      </mat-panel-title>
+                      <mat-panel-description></mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="row " style="margin: 5px -8px -12px -8px;">
+                      <div class="col-lg-12 accordionRadio" *ngFor="let option of officeData">
+                        <label class="kt-option">
+                          <span class="kt-option__control" style="margin-top:-6px;">
+                            <span class="kt-radio">
+                              <input type="radio" name="m_option_1" [value]="selecteOptionValue"
+                                [checked]="option.org_id===OrgId" (change)="selectedOption(option)">
+                              <span></span>
+                            </span>
+                          </span>
+                          <span class="kt-option__label">
+                            <span class="kt-option__head">
+                              <span class="kt-option__title">
+                                {{option.org_name}}
+                              </span>
+                              <span class="kt-option__focus"></span>
+                            </span>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+
+              <div class="form-group row" style="width: -webkit-fill-available; padding-top: 10px;">
+                <div class="col-lg-6">
+                  <label>Checkin Time</label>
+                  <div class="kt-input-icon materialPicker">
+                    <input class="form-control" placeholder="Enter Start time" [ngxTimepicker]="startpicker" [min]="absentMinStartTime" [max]='absentMaxCurrentTime' formControlName="startTime">
+                    <ngx-material-timepicker  #startpicker></ngx-material-timepicker>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <label class="">Checkout Time</label>
+                  <div class="kt-input-icon">
+                    <input class="form-control" placeholder="Enter End time" [min]="absentMinStartTime" [max]='absentMaxCurrentTime'
+                       [ngxTimepicker]="picker" formControlName="endTime" >
+                    <ngx-material-timepicker #picker></ngx-material-timepicker>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-xl-12" style="padding: 0px; margin-bottom: 10px;">
+                <label for="exampleTextarea" >Reason</label>
+                <select2  [data]="reasonDataAtten" [options]="deptOptions"
+                  (valueChanged)="changedReasonAtt($event)"></select2>
+                <div *ngIf="attendanceReasonID" >
+                  <label class="e-error" for="date" id="OrderID-info" >*Reason is required</label>
+                </div>
+              </div>
+
+              <div class="form-group row" *ngIf="attendanceReasonValueTxt =='Other'" >
+                <div class="col-lg-12">
+                  <label>Reason Description</label>
+                  <div class="kt-input-icon materialPicker">
+                    <textarea class="form-control" id="exampleTextarea" rows="5" formControlName="reasondesc"></textarea>
+                    <div *ngIf="attendanceReasonOtherValue" >
+                      <label class="e-error" for="date" id="OrderID-info" >*Description is required</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex;" *ngIf="approverServerData?.length !== 0">
+                <div style="color: grey;margin-right:5px;">Approver for this request is : <strong>{{approverEmployeeName}}</strong></div>
+              </div>
+            </div>
+          </form> -->
+
+          <div class="kt-align-right modal-footer bottomBtn" *ngIf="probationperiodOver">
+            <button *ngIf="approverAssigned" type="Submit" [disabled]="absentToLeaveForm.invalid"
+              class="button button-fill button-rose" (click)="convertAbsentToLeave(reasonValue)">
+              Submit
+            </button>
+            <p *ngIf="noApproverAssigned">
+              No Leave Approver is assigned to you. please contact your Admin
+            </p>
+            <button type="reset" class="btn btn-secondary" style="
+                width: 90px;
+                padding: 7px 14px;
+                font-size: 11px;
+                margin-top: -1px;
+              " (click)="convertAbsentToLeaveModel()">
+              CLOSE
+            </button>
+          </div>
+          <div class="kt-align-right modal-footer bottomBtn" *ngIf="probationperiodRunning">
+            <p *ngIf="probationperiodRunning" class="probclass">
+              *You are currently on Probation period, so you cannot apply leave
+            </p>
+          </div>
+
+          <!-- <div class="kt-align-right modal-footer bottomBtn" *ngIf="selectedModifiedGroupVal === 'Checkin'">
+            <button type="Submit" class="button button-fill button-rose" (click)="convertAbsentToPresent()">
+              Submit
+            </button>
+            <button type="reset" class="btn btn-secondary" style="width: 90px;padding: 7px 14px;font-size: 11px;margin-top: -1px;">
+              CLOSE
+            </button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- carry forward model -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="carry_forward_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px">
+            Apply Carry Forward Leave
+          </h5>
+          <button type="button" #calndrBtn class="close" data-dismiss="modal" (click)="carryForwardModelClose('outer')"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; overflow-x: hidden">
+          <div *ngIf="!userCarryForwardApplyDiv">
+            <ejs-grid #carryForwardTableGrid height="450" [dataSource]="carryForwardData" allowSorting="true"
+              (created)="carryForwardTableGridSearch()" [toolbar]="carryForwardTableGridToolItems">
+              <e-columns>
+                <e-column field="full_name" headerText="Employee Name" width="90"></e-column>
+                <e-column field="previous_year_balance_days" headerText="Old Leave Balance" textAlign="center"
+                  width="90"></e-column>
+                <e-column field="profile_carry_forward_days" headerText="Assigned Carry Forward Days" textAlign="center"
+                  width="130"></e-column>
+                <e-column field="carry_forward_to_approve" headerText="Additional Carry Forward Days" textAlign="center"
+                  width="100"></e-column>
+                <e-column headerText="Action" width="70">
+                  <ng-template #template let-data>
+                    <span class="applybtn" (click)="applyCarryForwardProcess(data)"
+                      *ngIf="data.request_status === null">
+                      Apply
+                    </span>
+                  </ng-template>
+                </e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+
+          <div *ngIf="userCarryForwardApplyDiv" class="outerbox">
+            <div class="row" style="border-bottom: 1px solid #dddddd">
+              <div class="col-10">
+                <p>Carry Forward Bifurcation</p>
+              </div>
+              <div class="col-2" style="text-align: end">
+                <i class="fa fa-times-circle" aria-hidden="true" style="cursor: pointer; font-size: 16px"
+                  (click)="carryForwardModelClose('inner')"></i>
+              </div>
+            </div>
+            <p style="font-size: 16px; margin-top: 10px">
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i> -
+              {{ selectedCarryForwardUserData?.full_name }}
+            </p>
+            <div class="row approverDivCW testdivcm" style="margin: 13px auto">
+              <div class="col-6" style="border-bottom: 1px solid #dddddd">
+                <label for="nameArea" style="padding-right: 5px">Additional Carry Forward Days</label>
+                <label for="nameArea" style="padding-right: 5px">{{
+                  selectedCarryForwardUserData?.carry_forward_to_approve
+                  }}</label>
+              </div>
+              <div class="col-6" style="border-bottom: 1px solid #dddddd">
+                <label for="nameArea" style="padding-right: 5px">Assigned Carry Forward Days</label>
+                <label for="nameArea" style="padding-right: 5px">{{
+                  selectedCarryForwardUserData?.profile_carry_forward_days
+                  }}</label>
+              </div>
+              <div class="col-6">
+                <form [formGroup]="applyCarryForwardProcessForm">
+                  <div class="mmartio">
+                    <label for="nameArea" style="padding-right: 5px">Carry Forward Days</label>
+                    <input type="number" class="form-control widthNum" formControlName="carryForwardDays" />
+                  </div>
+                  <div *ngIf="carryForwardEnCash" class="mmartio">
+                    <label for="nameArea" style="padding-right: 5px">En-Cash Days</label>
+                    <input type="number" class="form-control widthNum" formControlName="enCashDays" />
+                  </div>
+                  <div *ngIf="carryForwardEnCash" class="mmartio">
+                    <label for="nameArea" style="padding-right: 5px">Cancel Days</label>
+                    <input type="number" class="form-control widthNum" formControlName="cancelDays" />
+                  </div>
+                  <div *ngIf="carryForwardEnCash" class="mmartio">
+                    <label for="nameArea" style="padding-right: 5px">On Hold Days</label>
+                    <input type="number" class="form-control widthNum" formControlName="onHoldDays" />
+                  </div>
+                </form>
+              </div>
+              <div class="col-6">
+                <div class="approverDivCW" *ngIf="approverAssignedCF">
+                  <div class="approverHeader">Carry forward approver</div>
+                  <div class="approverBody">
+                    <p style="margin-bottom: 2px">
+                      Level 1: {{ carryForwardApprover1Name }}
+                    </p>
+                    <p style="margin-bottom: 2px" *ngIf="dualApprovalDivCF">
+                      Level 2: {{ carryForwardApprover2Name }}
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <p class="balancetxt">
+                    Please assigne all balance days before applying
+                  </p>
+                </div>
+                <div>
+                  <label for="nameArea" style="padding-right: 5px">Balance</label>
+                  <label for="nameArea" style="padding-right: 5px">{{ carryForwardBalance }} days</label>
+                  <label for="nameArea" class="errorTxtx" *ngIf="balanceZeroError">*Balance days should allways be
+                    0.</label>
+                </div>
+              </div>
+              <div class="col-12" style="padding: 18px; text-align: end">
+                <div>
+                  <label for="nameArea" class="errorTxtx" *ngIf="balanceZeroError">*Balance days should allways be
+                    0.</label>
+                  <p class="errorTxtx" *ngIf="!approverAssignedCF">
+                    It Seems no Approver for this request
+                  </p>
+                </div>
+                <button [disabled]="balanceZeroError" type="submit" class="btn btn-secondary"
+                  style="padding: 7px 14px; font-size: 15px" (click)="applyForFinalCarryForward()">
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn">
+          <button type="submit" class="btn btn-secondary" style="
+              width: 90px;
+              padding: 7px 14px;
+              font-size: 11px;
+              margin-top: -1px;
+            " (click)="carryForwardModelClose('outer')">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- carry forward model -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="holiday_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog importWid" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px">
+            Add Holiday
+          </h5>
+          <button type="button" #calndrBtn class="close" data-dismiss="modal" (click)="holidayModelClose()"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; overflow-x: hidden">
+          <div class="outerbox">
+            <form [formGroup]="holidayProcessForm" *ngIf="holidayProcessForm">
+              <div class="row">
+                <div class="col-4">
+                  <label for="nameArea" style="padding-right: 5px">Holiday Name</label>
+                  <input type="text" class="form-control" formControlName="holidayName" />
+                </div>
+                <div class="col-4">
+                  <label for="nameArea" style="padding-right: 5px">Holiday Description</label>
+                  <textarea rows="1" class="form-control" formControlName="description"></textarea>
+                </div>
+                <div class="col-4">
+                  <label for="nameArea" style="padding-right: 5px">Date</label>
+                  <ejs-daterangepicker placeholder="Select Start and End Date"
+                    formControlName="dateRange"></ejs-daterangepicker>
+                </div>
+              </div>
+            </form>
+            <div class="approverDivCW" style="width: fit-content" *ngIf="approverAssignedHO">
+              <div class="approverHeader">Carry forward approver</div>
+              <div class="approverBody">
+                <p style="margin-bottom: 2px">
+                  Level 1: {{ holidayApprover1Name }}
+                </p>
+                <p style="margin-bottom: 2px" *ngIf="dualApprovalDivHO">
+                  Level 2: {{ holidayApprover2Name }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer bottomBtn">
+          <p *ngIf="!approverAssignedHO">No Approver for this request.</p>
+          <p *ngIf="selfApproverAssignedHO">Self Approver.</p>
+          <button *ngIf="approverAssignedHO || selfApproverAssignedHO" type="submit" class="btn btn-secondary" style="
+              width: 90px;
+              padding: 7px 14px;
+              font-size: 11px;
+              margin-top: -1px;
+            " (click)="submitHolidayValue()">
+            Submit
+          </button>
+          <button type="submit" class="btn btn-secondary" style="
+              width: 90px;
+              padding: 7px 14px;
+              font-size: 11px;
+              margin-top: -1px;
+            " (click)="holidayModelClose()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- view single Notification model -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog importWid" role="document">
+    <div class="modal-content" *ngIf="applyLeaveModel">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ viewEditNotificationModelData?.message }}
+        </h5>
+        <button type="button" class="close" (click)="closeLeaveModelNot()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="viewEditNotificationModelData.is_exception"><p><strong style="color: red">EXCEPTION LEAVE</strong></p></div>
+        <div>
+          <p>
+            <strong>{{
+              viewEditNotificationModelData?.created_by_name
+              }}</strong>
+            has applied for
+            <strong>{{ viewEditNotificationModelData?.leave_name }}</strong>
+            from
+            <strong>{{
+              viewEditNotificationModelData?.leave_start_date
+              | date : "MMM d, y"
+              }}</strong>
+            to
+            <strong>{{
+              viewEditNotificationModelData?.leave_end_date | date : "MMM d, y"
+              }}</strong>
+            for a duration of
+            <strong>{{
+              viewEditNotificationModelData?.leave_days_applied
+              }}</strong>
+            days.
+          </p>
+          <p>Leave Type : <strong>{{ viewEditNotificationModelData?.leave_type }}</strong></p>
+          <p>
+            Reason mentioned for leave :
+            {{ viewEditNotificationModelData?.emp_notes }}
+          </p>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="contactBox">
+              <div class="contheader">
+                <h1 style="font-size: 13px">Contact Details</h1>
+              </div>
+              <div style="padding: 3px 15px 15px 15px">
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Email: {{ viewEditNotificationModelData?.email }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Phone: {{ viewEditNotificationModelData?.phone }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Leave Location:
+                  {{
+                  viewEditNotificationModelData?.is_local_leave === true
+                  ? "Local Leave"
+                  : "Outside Country"
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="contactBox">
+              <div class="contheader">
+                <h1 style="font-size: 13px;">Leave Details</h1>
+              </div>
+              <div style="padding: 3px 15px 15px 15px;">
+                <p style="margin-bottom: 0px;margin-top: 0px;">Leave Name: {{assignedLeavesToEmpData?.leave_name}}</p>
+                <p style="margin-bottom: 0px;margin-top: 0px;">Total Available leave days:
+                  {{assignedLeavesToEmpData?.available_leave_days}}</p>
+                <p *ngIf="showLeaveFunBtn" style="margin-bottom: 0px;margin-top: 0px;">Pending Leave Approval
+                  :{{remaingpending}}</p>
+                <p style="margin-bottom: 0px;margin-top: 0px;">Current Leave Request
+                  days:{{(leaveData)?.leave_days_applied}}</p>
+                <!-- <p style="margin-bottom: 0px;margin-top: 0px;">Available leave days : {{assignedLeavesToEmpData?.available_leave_days - pendingleaveapp}}</p> -->
+                <!-- <p *ngIf="!showLeaveFunBtn"style="margin-bottom: 0px;margin-top: 0px;">Balance leave days: {{assignedLeavesToEmpData?.available_leave_days}}</p> -->
+                <p *ngIf="showLeaveFunBtn" style="margin-bottom: 0px;margin-top: 0px;">Balance leave days:
+                  {{(assignedLeavesToEmpData?.available_leave_days - remaingpending - leaveData?.leave_days_applied ) |
+                  number: '.2'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="statusBox" *ngIf="viewEditNotificationModelData?.doc_url">
+          <div>
+            <span style="font-size: 14px; font-weight: 500; margin-right: 55px;">Document :</span>
+            <!-- <a style="font-size: 13px" (click)="ViewDoc(viewEditNotificationModelData.doc_url)" class="hyperlink">View</a> -->
+            <a style="font-size: 13px"  (click)="ViewDoc(viewEditNotificationModelData.doc_url)" class="hyperpoint"><i class="fa fa-eye" aria-hidden="true" style="font-size: medium;"></i></a>
+          </div>
+        </div>
+
+        <div class="statusBox">
+          <span style="font-size: 14px; font-weight: 500; margin-right: 30px;">All Leave Status</span>
+          <a *ngIf="!showleavestatus" style="font-size: 13px" (click)="showleave()" class="hyperpoint"><i class="fa fa-eye" aria-hidden="true" style="font-size: medium;"></i></a>
+          <a *ngIf="showleavestatus" style="font-size: 13px" (click)="showleave()" class="hyperpoint"><i class="fa fa-close" aria-hidden="true" style="font-size: medium;"></i></a>
+          <table class="table" style="margin: 10px 0px;border: 1px solid #e9ecef;" *ngIf="showleavestatus">
+            <thead style="width: 100%;text-align: center;">
+              <tr>
+                <th scope="col">Leave Name</th>
+                <th scope="col">Entitled Leave </th>
+                <th scope="col">Available Leave</th>
+              </tr>
+            </thead>
+            <tbody style="overflow: auto;text-align: center;">
+              <tr *ngFor="let profile of otherAssignedLeavesToEmpData">
+                <td style="padding: 5px !important;">{{ profile.leave_name }}</td>
+                <td style="padding: 5px !important;">{{ profile.entitled_leave_days}}</td>
+                <td style="padding: 5px !important;">{{profile.available_leave_days}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="statusBox">
+          <h1 style="font-size: 13px">Request Status</h1>
+          <p style="margin-bottom: 0px">
+            Level 1:
+            {{ viewEditNotificationModelData?.approver1_Emp_Name }} (<strong>{{
+              viewEditNotificationModelData?.approver1_Role_Name
+              }}</strong>) approval status is
+            <span style="padding: 0px" [ngClass]="
+                viewEditNotificationModelData?.approval1_status == 'pending'
+                  ? 'pending'
+                  : viewEditNotificationModelData?.approval1_status ===
+                    'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ viewEditNotificationModelData?.approval1_status }}</span>
+          </p>
+          <p style="margin-bottom: 0px" *ngIf="viewEditNotificationModelData?.approver2_roleId !== null">
+            Level 2:
+            {{ viewEditNotificationModelData?.approver2_Emp_Name }} (<strong>{{
+              viewEditNotificationModelData?.approver2_Role_Name
+              }}</strong>) approval status is
+            <span style="padding: 0px" [ngClass]="
+                viewEditNotificationModelData?.approval2_status == 'pending'
+                  ? 'pending'
+                  : viewEditNotificationModelData?.approval2_status ===
+                    'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ viewEditNotificationModelData?.approval2_status }}</span>
+          </p>
+        </div>
+
+
+        <div class="statusBox">
+          <h1 style="font-size: 13px">
+            Leave History - Total {{ employeeLeaveHistory?.length }} Leave Requests
+          </h1>
+          <h1 style="font-size: 13px;">
+            Leave Profile Start Date - {{ assignedLeavesToEmpData?.profile_effective_from_date | date: 'MMMM d, y' }} ({{datecalculator}})
+          </h1>
+
+          <div class="leave-filter">
+            <label class="radio-option">
+              <input type="radio" name="leaveType" value="all" checked (change)="filterLeaves('all')"> All Leaves ({{totalsepLeaveDays}} Days)
+            </label>
+            <label *ngFor="let leave of leavesHistory" class="radio-option" [for]="leave.leave_name">
+              <input 
+                type="radio" 
+                [id]="leave.type" 
+                name="leaveType" 
+                [value]="leave.leave_name" 
+                (change)="filterLeaves(leave.leave_name)">
+                {{ leave.leave_name }} ({{ leave.total_days || 0 }} Days)
+              </label>
+          </div>
+          <table class="table">
+            <thead style="width: 100%; display: inline-table">
+              <tr>
+                <th scope="col">Applied Date</th>
+                <th scope="col">Leave Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Total Days</th>
+              </tr>
+            </thead>
+            <tbody style="display: block; height: 90px; overflow: auto">
+              <tr *ngFor="let empData of leavebackup">
+                <td>{{ empData.ondate_applied | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_name }}</td>
+                <td>{{ empData.leave_start_date | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_end_date | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_days_applied }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showLeaveFunBtn">
+        <button type="button" class="btn approvebtn btn-outline-dark"
+          (click)="approveNotification(viewEditNotificationModelData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark"
+          (click)="declineNotification(viewEditNotificationModelData)">
+          Decline
+        </button>
+      </div>
+      <div class="modal-footer" *ngIf="showOwnerMessage">
+        <p>This request was approved directly by the Account Owner</p>
+      </div>
+    </div>
+
+    <div class="modal-content" *ngIf="applyOverwriteModel">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ viewEditNotificationModelData?.message }}
+        </h5>
+        <button type="button" class="close" (click)="closeviewEditNotificationModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p>
+            <strong>{{
+              viewEditNotificationModelData?.Onbehalf_fullname
+              }}</strong>
+            has applied for Attendance Overwrite on
+            <strong>{{
+              viewEditNotificationModelData?.ondate | date : "MMM d, y, h:mm a"
+              }}</strong>
+            because of
+            <strong>{{
+              viewEditNotificationModelData?.reasons_desc === null ||
+              viewEditNotificationModelData?.reasons_desc === ""
+              ? viewEditNotificationModelData?.reasons_name
+              : viewEditNotificationModelData?.reasons_desc
+              }}
+              ({{ viewEditNotificationModelData.reason_desc }})
+            </strong>
+          </p>
+
+          <p>Further are the Overwrite time details :</p>
+          <table class="table">
+            <thead>
+              <tr style="text-align: center">
+                <th scope="col">
+                  For Date -
+                  {{
+                  viewEditNotificationModelData?.check_in_old
+                  | date : "MMM d, y"
+                  }}
+                </th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center">
+              <tr>
+                <td>
+                  <strong>Old time</strong>
+                </td>
+                <td>
+                  {{
+                  viewEditNotificationModelData?.check_in_old !== null
+                  ? (viewEditNotificationModelData?.check_in_old
+                  | date : "h:mm a")
+                  : "-"
+                  }}
+                </td>
+                <td>
+                  {{
+                  viewEditNotificationModelData?.check_out_old !== null
+                  ? (viewEditNotificationModelData?.check_out_old
+                  | date : "h:mm a")
+                  : "-"
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>New Time</strong>
+                </td>
+                <td>
+                  {{
+                  viewEditNotificationModelData?.check_in !== null
+                  ? (viewEditNotificationModelData?.check_in
+                  | date : "h:mm a")
+                  : "-"
+                  }}
+                </td>
+                <td>
+                  {{
+                  viewEditNotificationModelData?.check_out !== null
+                  ? (viewEditNotificationModelData?.check_out
+                  | date : "h:mm a")
+                  : "-"
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showButtonDiv">
+        <button type="button" class="btn approvebtn btn-outline-dark"
+          (click)="approveOwerwrite(viewEditNotificationModelData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark"
+          (click)="declineOwerwrite(viewEditNotificationModelData)">
+          Decline
+        </button>
+      </div>
+    </div>
+
+    
+
+    <!-- Force CheckIn Modal -->
+    <div class="modal-content" *ngIf="applyFrcChkInModel">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ frcckinModalData?.message }}
+        </h5>
+        <button type="button" class="close" (click)="closeviewEditNotificationModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p>
+            <strong>{{
+              frcckinModalData?.created_by_name
+              ? frcckinModalData?.created_by_name
+              : frcckinModalData?.full_name
+              }}</strong>
+            has applied for Force {{ frcckinModalData?.chkintype }}
+            {{ frcckinModalData?.type }} at
+            {{ frcckinModalData?.chkinplace }} on
+            <strong>{{
+              frcckinModalData?.createdDate | date : "MMM d, y"
+              }}</strong>
+            because of <strong>{{ frcckinModalData?.desc }}</strong>
+          </p>
+
+          <p>
+            Further are the Force {{ frcckinModalData?.type }} time details :
+          </p>
+
+          <!-- //issue  Forgot to Checkout
+            <div *ngIf=" ( frcckinModalData?.desc == 'Location Issue & Failure in Face Recognition' || frcckinModalData?.desc == 'Location Isuue' ) &&  frcckinModalData?.type == 'checkin' ">
+              <a href="https://maps.google.com/?q={{frcckinModalData.checkin_lat}},{{frcckinModalData.checkin_lat}}" target="_blank">View Map</a>
+            </div>
+
+            <div *ngIf=" ( frcckinModalData?.desc == 'Forgot to Checkout' ||    frcckinModalData?.desc == 'Location Issue & Failure in Face Recognition' ) &&  frcckinModalData?.type == 'checkout' ">
+                <a href="https://maps.google.com/?q={{frcckinModalData.checkout_lat}},{{frcckinModalData.checkout_lang}}" target="_blank">View Map</a>
+
+            </div> -->
+
+          <table class="table">
+            <thead>
+              <tr style="text-align: center">
+                <th scope="col">
+                  {{ frcckinModalData?.type | titlecase }} Date/Time
+                </th>
+                <th colspan="2" scope="col">
+                  {{
+                  frcckinModalData?.check_in || frcckinModalData?.check_out
+                  }}
+                </th>
+                <!--  <th scope="col">End Time</th>  -->
+              </tr>
+            </thead>
+            <tbody style="text-align: center">
+              <!-- <tr>
+                <td>
+                  <strong>Timing Details</strong>
+                </td>
+                <td *ngIf="frcckinModalData?.type != 'checkout'"  >  {{frcckinModalData?.check_in !== null ? (frcckinModalData?.check_in | date:'h:mm a') : '-'}}</td>
+                <td *ngIf="frcckinModalData?.type === 'checkout'" >   9:05 AM </td>
+
+                <td>{{frcckinModalData?.check_out !== null ? (frcckinModalData?.check_out | date:'h:mm a') : '-'}}</td>
+              </tr> -->
+
+              <tr *ngIf="
+                  frcckinModalData?.desc == 'Failure in Face Recognition'">
+                <td>
+                  <strong>Face Recognition Details</strong>
+                </td>
+                <td>
+                  <a href="{{ frcckinModalData.real_photo }}" target="_blank">View Original Photo</a>
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Employee Picture as per the Personal details in the System" container="body"></i>
+                  </label>
+                </td>
+                <td>
+                  <a href="{{ frcckinModalData.imgUrl }}" target="_blank">View Captured Photo</a>
+                  &nbsp;
+                  <label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Employee Picture taken during Face Checkin Request" container="body"></i>
+                  </label>
+                </td>
+              </tr>
+
+              <tr *ngIf="
+                  frcckinModalData?.desc ==
+                    'Location Issue & Failure in Face Recognition' &&
+                  frcckinModalData?.type == 'checkin'
+                ">
+                <td>
+                  <strong>Face Recognition Details</strong>
+                </td>
+                <td>
+                  <a href="{{ frcckinModalData.real_photo }}" target="_blank">View Original Photo</a>
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Employee Picture as per the Personal details in the System" container="body"></i>
+                  </label>
+                </td>
+                <td>
+                  <a href="{{ frcckinModalData.imgUrl }}" target="_blank">View Captured Photo</a>
+                  <label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Employee Picture taken during Force Checkin/Checkout Request" container="body"></i>
+                  </label>
+                </td>
+              </tr>
+
+              <tr *ngIf="
+                  frcckinModalData?.desc ==
+                    'Location Issue & Failure in Face Recognition' &&
+                  frcckinModalData?.type == 'checkin'
+                ">
+                <td>
+                  <strong>Location Details</strong>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkin_lat
+                    }},{{ frcckinModalData.checkin_lang }}" target="_blank">View Required Checkin Location</a>
+
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Location Details as per registered in the System" container="body"></i>
+                  </label>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkin_lat
+                    }},{{ frcckinModalData.checkin_lang }}" target="_blank">View Actual Checkin Location</a>
+
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Location Details fetched during Force Checkin/Checkout Request" container="body"></i>
+                  </label>
+                </td>
+              </tr>
+
+              <tr *ngIf="
+                  frcckinModalData?.desc == 'Still am in the Location' &&
+                  frcckinModalData?.type == 'checkout'
+                ">
+                <td>
+                  <strong>Location Details</strong>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkin_lat
+                    }},{{ frcckinModalData.checkin_lang }}" target="_blank">View Required Checkout Location</a>
+
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Location Details as per registered in the System" container="body"></i>
+                  </label>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkout_lat
+                    }},{{ frcckinModalData.checkout_lang }}" target="_blank">View Actual Checkout Location</a>
+
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Location Details fetched during Force Checkin/Checkout Request" container="body"></i>
+                  </label>
+                </td>
+              </tr>
+
+              <tr *ngIf="
+                  frcckinModalData?.desc == 'Forgot to Checkout' &&
+                  frcckinModalData?.type == 'checkout'
+                ">
+                <td>
+                  <strong>Location Details</strong>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkin_lat
+                    }},{{ frcckinModalData.checkin_lang }}" target="_blank">View Required Checkout Location</a>
+
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Location Details as per registered in the System" container="body"></i>
+                  </label>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkout_lat
+                    }},{{ frcckinModalData.checkout_lang }}" target="_blank">View Actual Checkout Location</a>
+
+                  &nbsp;<label><i class="fa fa-info-circle matpointer" placement="left"
+                      ngbTooltip="Location Details fetched during Force Checkin/Checkout Request" container="body"></i>
+                  </label>
+                </td>
+              </tr>
+              <tr *ngIf="
+                  frcckinModalData?.desc == 'Location Issue' &&
+                  frcckinModalData?.type == 'checkout'
+                ">
+                <td>
+                  <strong>Location Details</strong>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkin_lat
+                    }},{{ frcckinModalData.checkin_lang }}" target="_blank">View Checkout Location</a>
+                </td>
+                <td>
+                  <a href="https://maps.google.com/?q={{
+                      frcckinModalData.checkout_lat
+                    }},{{ frcckinModalData.checkout_lang }}" target="_blank">View Checkout Location</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <div *ngIf="showMap && frcckinModalData?.desc != 'Failure in Face Recognition'">
+              <div *ngIf="showMapLoader" class="skeleton-loader"></div>
+              <div *ngIf="!showMapLoader">
+                <div style="height: 300px;">
+                  <agm-map (mapReady)="onMapReady($event)" [latitude]="mapData.checkinLat"
+                    [longitude]="mapData.checkinLong" [zoom]="mapData.zoom">
+                    <agm-marker [latitude]="mapData.checkinLat" [longitude]="mapData.checkinLong"
+                      [markerDraggable]="false" [title]="'Check-in Location'"></agm-marker>
+                    <agm-circle [latitude]="mapData.checkinLat" [longitude]="mapData.checkinLong" [clickable]="false"
+                      [draggable]="false" [editable]="false" [fillColor]="'green'" [fillOpacity]="0.5"
+                      [radius]="mapData.radius">
+                    </agm-circle>
+
+                    <agm-marker [latitude]="mapData.checkoutLat" [longitude]="mapData.checkoutLong"
+                      [markerDraggable]="false" [title]="'Check-out Location'"></agm-marker>
+                  </agm-map>
+                </div>
+                <div style="padding-top: 5px;">
+                  <span>The Check-out Location is <strong>{{mapData.distanceBtw}}</strong> away from the Check-in
+                    Location.<span *ngIf="mapData.rangeExceed">Hence, the range is exceeded.</span></span>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showButtonDiv">
+        <button type="button" class="btn approvebtn btn-outline-dark" (click)="approvalFRC(frcckinModalData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark" (click)="disapprovalFRC(frcckinModalData)">
+          Decline
+        </button>
+      </div>
+    </div>
+
+    <!-- End Force CheckIn Modal -->
+    <div class="modal-content" *ngIf="leaveProfileModel">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ viewEditNotificationModelData?.message }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeviewEditNotificationModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div>
+            <p>
+              A profile named as
+              <strong>{{ viewEditNotificationModelData?.profileName }}</strong>
+              was created by
+              <strong>{{
+                viewEditNotificationModelData?.created_by_emp
+                }}</strong>
+              on
+              {{
+              viewEditNotificationModelData?.created_date
+              | date : "MMM d, y, h:mm a"
+              }}.
+            </p>
+            <p style="margin-bottom: 0px">
+              Following are the Approvers for the leave profile
+            </p>
+            <ol>
+              <li>{{ viewEditNotificationModelData?.approver1_RoleName }}</li>
+              <li *ngIf="isApprov2View">
+                {{ viewEditNotificationModelData?.approver2_RoleName }}
+              </li>
+            </ol>
+          </div>
+          <p style="margin-bottom: 0px"><strong>Leave Summary</strong></p>
+          <table class="table innerBoxTab">
+            <thead>
+              <tr>
+                <th style="font-weight: 600">Leave Name</th>
+                <th style="font-weight: 600">Leave Type</th>
+                <th style="font-weight: 600">Number of Days</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let leaveData of viewEditNotificationModelData?.leaveDetails
+                ">
+                <td>
+                  <p style="margin-bottom: 1px">{{ leaveData.leave_name }}</p>
+                  <p class="carryforwardDays" *ngIf="
+                      leaveData.leave_name === 'Annual leave' &&
+                      leaveData.carry_forward_days !== null &&
+                        leaveData.carry_forward_days !== ''
+                    ">
+                    Carrie forward Days: {{ leaveData.carry_forward_days }}
+                  </p>
+                </td>
+                <td>
+                  <p>{{ leaveData.leave_type }}</p>
+                </td>
+                <td>
+                  <p>
+                    {{ leaveData.entitled_leave_days }}
+                    <span *ngIf="leaveData.leave_name === 'Annual leave'">{{
+                      leaveData.is_calendar_days === true
+                      ? " (Working days)"
+                      : " (Calendar days)"
+                      }}</span>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showButtonDiv">
+        <button type="button" class="btn approvebtn btn-outline-dark"
+          (click)="approveLeaveProfile(viewEditNotificationModelData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark"
+          (click)="disapproveLeaveProfile(viewEditNotificationModelData)">
+          Decline
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-content" *ngIf="carryForwardModel">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ viewEditNotificationModelData?.message }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeCarryForwardModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p>
+            <strong>{{
+              viewEditNotificationModelData?.created_by_name
+              }}</strong>
+            has applied for carry forward on behalf of
+            <strong>{{ viewEditNotificationModelData?.emp_name }}</strong> on
+            {{
+            viewEditNotificationModelData?.created_date
+            | date : "MMM d, y, h:mm a"
+            }}. further are the details of the request.
+          </p>
+          <div class="contactBox" style="width: auto">
+            <div class="contheader">
+              <h1 style="font-size: 13px">Carry Forward Details</h1>
+            </div>
+            <div style="padding: 3px 15px 15px 15px">
+              <p style="margin-bottom: 0px">
+                Actual Carry forward is
+                <strong>{{
+                  viewEditNotificationModelData?.carry_forward_to_approve
+                  }}</strong>
+                days
+              </p>
+              <p style="margin-bottom: 0px" *ngIf="viewEditNotificationModelData?.encash_days !== '0'">
+                Encashed
+                <strong>{{
+                  viewEditNotificationModelData?.encash_days
+                  }}</strong>
+                days
+              </p>
+              <p style="margin-bottom: 0px" *ngIf="
+                  viewEditNotificationModelData?.carry_forward_days !== '0'
+                ">
+                Cancelled
+                <strong>{{
+                  viewEditNotificationModelData?.carry_forward_days
+                  }}</strong>
+                days
+              </p>
+              <p style="margin-bottom: 0px" *ngIf="viewEditNotificationModelData?.onbehalf_applied !== '0'">
+                Onhold
+                <strong>{{
+                  viewEditNotificationModelData?.onbehalf_applied
+                  }}</strong>
+                days
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showButtonDiv">
+        <button type="button" class="btn approvebtn btn-outline-dark"
+          (click)="approveCarryForward(viewEditNotificationModelData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark"
+          (click)="disapproveCarryForward(viewEditNotificationModelData)">
+          Decline
+        </button>
+      </div>
+    </div>
+    <!-- For Notification -->
+    <div class="modal-content" *ngIf="HoliadyModel">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ viewEditNotificationModelData?.message }}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="holidayCloseModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div>
+            <p>
+              <strong>{{
+                viewEditNotificationModelData?.created_by_name
+                }}</strong>
+              has requested to add a day as holiday. further are its details.
+            </p>
+          </div>
+          <table class="table innerBoxTab">
+            <thead>
+              <tr>
+                <th style="font-weight: 600">Holiday Name</th>
+                <th style="font-weight: 600">Description</th>
+                <th style="font-weight: 600">Start Date</th>
+                <th style="font-weight: 600">End Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p style="margin-bottom: 1px">
+                    {{ viewEditNotificationModelData?.holiday_name }}
+                  </p>
+                </td>
+                <td>
+                  <p>{{ viewEditNotificationModelData?.description }}</p>
+                </td>
+                <td>
+                  <p>
+                    {{
+                    viewEditNotificationModelData?.start_date
+                    | date : "d MMM, y"
+                    }}
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    {{
+                    viewEditNotificationModelData?.end_date
+                    | date : "d MMM, y"
+                    }}
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showButtonDiv">
+        <button type="button" class="btn approvebtn btn-outline-dark"
+          (click)="approveHoliday(viewEditNotificationModelData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark"
+          (click)="disapproveHoliday(viewEditNotificationModelData)">
+          Decline
+        </button>
+      </div>
+    </div>
+    <!-- For Holiday Section Approvsl -->
+    <div class="modal-content" *ngIf="HoliadyModelApprove">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Holiday Request Approval for
+          <strong>{{ HoliadyModelApproveData.holiday_name }}</strong>
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="holidayCloseModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div>
+            <p>
+              Hoilday request to add a day as holiday. further are its details.
+            </p>
+          </div>
+          <table class="table innerBoxTab">
+            <thead>
+              <tr>
+                <th style="font-weight: 600">Holiday Name</th>
+                <th style="font-weight: 600">Description</th>
+                <th style="font-weight: 600">Start Date</th>
+                <th style="font-weight: 600">End Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p style="margin-bottom: 1px">
+                    {{ HoliadyModelApproveData?.holiday_name }}
+                  </p>
+                </td>
+                <td>
+                  <p>{{ HoliadyModelApproveData?.description }}</p>
+                </td>
+                <td>
+                  <p>
+                    {{
+                    HoliadyModelApproveData?.start_date | date : "d MMM, y"
+                    }}
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    {{ HoliadyModelApproveData?.end_date | date : "d MMM, y" }}
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="HoliadyModelApproveData.status == 'pending'">
+        <button type="button" class="btn approvebtn btn-outline-dark"
+          (click)="approveHolidayLeave(HoliadyModelApproveData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark"
+          (click)="disapproveHoliday(HoliadyModelApproveData)">
+          Decline
+        </button>
+      </div>
+    </div>
+    <div class="modal-content" *ngIf="leaveCanModel">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="
+            leaveCancelData?.leave_status === 'approved' ||
+            leaveCancelData?.leave_status === 'decline'
+              ? true
+              : false
+          ">
+          View Leave
+        </h4>
+        <h4 class="modal-title" *ngIf="leaveCancelData?.leave_status === 'pending' ? true : false">
+          Leave Cancelation
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="leaveCancelCloseModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p *ngIf="leaveCancelData?.leave_status === 'pending' ? true : false">
+            Dear <strong>{{ leaveCancelData?.emp_name }}</strong> this is a
+            confirmation from your part to
+            <strong>cancel the leave request </strong>made by you on
+            {{ leaveCancelData?.ondate_applied | date : "MMM d, y" }} which is
+            <span style="padding: 0px" [ngClass]="
+                leaveCancelData?.leave_status === 'pending'
+                  ? 'pending'
+                  : leaveCancelData?.leave_status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ leaveCancelData?.leave_status }}</span>.
+          </p>
+          <p *ngIf="
+              leaveCancelData?.leave_status === 'approved' ||
+              leaveCancelData?.leave_status === 'decline'
+                ? true
+                : false
+            ">
+            Dear <strong>{{ leaveCancelData?.emp_name }}</strong> this is a
+            leave request made by you on
+            {{ leaveCancelData?.ondate_applied | date : "MMM d, y" }} which is
+            <span style="padding: 0px" [ngClass]="
+                leaveCancelData?.leave_status === 'pending'
+                  ? 'pending'
+                  : leaveCancelData?.leave_status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ leaveCancelData?.leave_status }}</span>.
+          </p>
+          <div class="row leavecard">
+            <p class="leaveCanceltxt">Leave Details</p>
+            <div class="col-12">
+              <p class="leaveothertxtx">
+                Leave reason:
+                {{
+                leaveCancelData?.emp_notes !== ""
+                ? leaveCancelData?.emp_notes
+                : "No reason mentioned"
+                }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">
+                Start Date:
+                {{ leaveCancelData?.leave_start_date | date : "MMM d, y" }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">
+                End Date:
+                {{ leaveCancelData?.leave_end_date | date : "MMM d, y" }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">
+                Total Days: {{ leaveCancelData?.leave_days_applied }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">
+                Leave Type: {{ leaveCancelData?.leave_type }}
+              </p>
+            </div>
+            <div class="col-6" style="margin-bottom: 8px">
+              <p class="leaveothertxtx">Email: {{ leaveCancelData?.email }}</p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">Phone: {{ leaveCancelData?.phone }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="
+          leaveCancelData?.leave_status === 'pending' ||
+          leaveCancelData?.leave_status === 'approved'
+            ? true
+            : false
+        ">
+        <button type="button" class="btn approvebtn btn-outline-dark" (click)="leaveDelete()">
+          Cancel Leave
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-content" *ngIf="HolidayCanModel">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="
+            HolidayCancelData?.status === 'approved' ||
+            HolidayCancelData?.leave_status === 'decline'
+              ? true
+              : false
+          ">
+          View Holiday
+        </h4>
+        <h4 class="modal-title" *ngIf="HolidayCancelData?.status === 'pending' ? true : false">
+          Holiday Cancelation
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="leaveCancelCloseModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p *ngIf="HolidayCancelData?.status === 'pending' ? true : false">
+            this is a confirmation from your part to
+            <strong>cancel the Holiday request </strong>made on
+            {{ HolidayCancelData?.created_date | date : "MMM d, y" }} which is
+            <span style="padding: 0px" [ngClass]="
+                HolidayCancelData?.status === 'pending'
+                  ? 'pending'
+                  : HolidayCancelData?.status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ HolidayCancelData?.status }}</span>.
+          </p>
+          <p *ngIf="
+              HolidayCancelData?.status === 'approved' ||
+              HolidayCancelData?.status === 'decline'
+                ? true
+                : false
+            ">
+            this is a leave request made by you on
+            {{ HolidayCancelData?.ondate_applied | date : "MMM d, y" }} which is
+            <span style="padding: 0px" [ngClass]="
+                HolidayCancelData?.status === 'pending'
+                  ? 'pending'
+                  : HolidayCancelData?.status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ HolidayCancelData?.status }}</span>.
+          </p>
+          <div class="row leavecard">
+            <p class="leaveCanceltxt">Holiday Details</p>
+            <div class="col-12">
+              <p class="leaveothertxtx">
+                Holiday Name:
+                {{
+                HolidayCancelData?.holiday_name !== ""
+                ? HolidayCancelData?.holiday_name
+                : "No Name mentioned"
+                }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">
+                Start Date:
+                {{ HolidayCancelData?.start_date | date : "MMM d, y" }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">
+                End Date: {{ HolidayCancelData?.end_date | date : "MMM d, y" }}
+              </p>
+            </div>
+            <!-- <div class="col-6">
+              <p class="leaveothertxtx">Total Days: {{HolidayCancelData?.leave_days_applied}}</p>
+            </div> -->
+            <!-- <div class="col-6">
+              <p class="leaveothertxtx">Leave Type: {{HolidayCancelData?.leave_type}}</p>
+            </div> -->
+            <!-- <div class="col-6" style="margin-bottom: 8px;">
+              <p class="leaveothertxtx">Email: {{HolidayCancelData?.email}}</p>
+            </div>
+            <div class="col-6">
+              <p class="leaveothertxtx">Phone: {{HolidayCancelData?.phone}}</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="
+          HolidayCancelData?.status === 'pending' ||
+          HolidayCancelData?.status === 'approved'
+            ? true
+            : false
+        ">
+        <button type="button" class="btn approvebtn btn-outline-dark" (click)="HolidayDelete(HolidayCancelData)">
+          Cancel Holiday
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- view leave apply module -->
+<div class="modal fade" id="leave_apply_modul" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog importWid" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Approval for New Leave Request
+        </h5>
+        <button type="button" class="close" (click)="closeApproverLeaveFormModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="leaveData?.is_exception"><p><strong style="color: red">EXCEPTION LEAVE</strong></p></div>
+        <div *ngIf="leaveData?.onbehalf_applied">
+          <p>
+            
+              <strong *ngIf="leaveData?.onbehalf_applied" >{{ leaveData.onbehalf_applied }}</strong> has applied leave on behalf of
+              <strong >{{ leaveData?.full_name }}</strong> for
+            
+            
+            
+            <strong>{{ leaveData?.leave_name }}</strong> from
+            <strong>{{
+              leaveData?.leave_start_date | date : "MMM d, y"
+              }}</strong>
+            to
+            <strong>{{ leaveData?.leave_end_date | date : "MMM d, y" }}</strong>
+            for a duration of
+            <strong>{{ leaveData?.leave_days_applied }}</strong> days.
+          
+          <p>Leave Type : <strong>{{ leaveData?.leave_type }}</strong></p>
+          <p>Reason mentioned for leave : {{ leaveData?.emp_notes }}</p>
+        </div>
+        <div *ngIf="!leaveData?.onbehalf_applied">
+          <p>
+            
+              <strong >{{ leaveData?.full_name }}</strong> has applied for
+            
+            
+            <strong>{{ leaveData?.leave_name }}</strong> from
+            <strong>{{
+              leaveData?.leave_start_date | date : "MMM d, y"
+              }}</strong>
+            to
+            <strong>{{ leaveData?.leave_end_date | date : "MMM d, y" }}</strong>
+            for a duration of
+            <strong>{{ leaveData?.leave_days_applied }}</strong> days.
+          
+          <p>Leave Type : <strong>{{ leaveData?.leave_type }}</strong></p>
+          <p>Reason mentioned for leave : {{ leaveData?.emp_notes }}</p>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="contactBox">
+              <div class="contheader">
+                <h1 style="font-size: 13px">Contact Details</h1>
+              </div>
+              <div style="padding: 3px 15px 15px 15px">
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Email: {{ leaveData?.email }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Phone: {{ leaveData?.phone }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Leave Location:
+                  {{
+                  leaveData?.is_local_leave === true
+                  ? "Local Leave"
+                  : "Outside Country"
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="contactBox">
+              <div class="contheader">
+                <h1 style="font-size: 13px">Leave Details</h1>
+              </div>
+              <div style="padding: 3px 15px 15px 15px">
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Leave Name: {{ assignedLeavesToEmpData?.leave_name || (leaveData?.is_exception ? leaveData?.leave_name : '') }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Total Available leave days:
+                  {{ assignedLeavesToEmpData?.available_leave_days || (leaveData?.is_exception ? 0 : '') }}
+                  <i class="fa fa-info-circle" container="body" *ngIf="assignedLeavesToEmpData?.leave_name == 'Sick Leave' || assignedLeavesToEmpData?.leave_name == 'Sick leave'"
+                  [ngbTooltip]="(sickLeaveProfileDetails?.is_accrued ? 
+                  'Calculation Method: Accrued Methodology' : 
+                  'Calculation Method: Full Availability' + ' ' + 
+                  (sickLeaveProfileDetails?.is_full_eoy ? 'Based on Calendar End of Year' : 'Based on Contract Year')) + 
+                  ' Duration: ' + lastsickDuration"
+                  placement="top"></i>
+                  <i class="fa fa-info-circle" container="body" *ngIf="assignedLeavesToEmpData?.leave_name == 'Annual leave' || assignedLeavesToEmpData?.leave_name == 'Annual leave'"
+                  [ngbTooltip]="'Eligible Annual Leave from the Date of Joining: ' + eligibleannualleave + ' Days'" 
+                  placement="top"></i>
+                </p>
+                <p *ngIf="showLeaveFunBtn" style="margin-bottom: 0px; margin-top: 0px">
+                  Pending Leave Approval :{{ remaingpending }}
+                </p>
+                <p style="margin-bottom: 0px; margin-top: 0px">
+                  Current Leave Request days:{{ leaveData?.leave_days_applied }}
+                </p>
+                <!-- <p style="margin-bottom: 0px;margin-top: 0px;">Available leave days : {{assignedLeavesToEmpData?.available_leave_days - pendingleaveapp}}</p> -->
+                <!-- <p *ngIf="!showLeaveFunBtn"style="margin-bottom: 0px;margin-top: 0px;">Balance leave days: {{assignedLeavesToEmpData?.available_leave_days}}</p> -->
+                <p *ngIf="showLeaveFunBtn" style="margin-bottom: 0px; margin-top: 0px">
+                  Balance leave days:
+                  {{
+                    leaveData?.is_exception ? 0 : (assignedLeavesToEmpData?.available_leave_days - remaingpending - leaveData?.leave_days_applied) | number:'.2'
+                  }}                  
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="statusBox" *ngIf="leaveData?.doc_url">
+          <div>
+            <span style="font-size: 14px; font-weight: 500; margin-right: 55px;">Document :</span>
+            <!-- <a style="font-size: 13px" (click)="ViewDoc(leaveData.doc_url)" class="hyperlink">View</a> -->
+            <a style="font-size: 13px"  (click)="ViewDoc(leaveData.doc_url)" class="hyperpoint"><i class="fa fa-eye" aria-hidden="true" style="font-size: medium;"></i></a>
+          </div>
+        </div>
+
+        <div class="statusBox">
+          <span style="font-size: 14px; font-weight: 500; margin-right: 30px;">All Leave Status</span>
+          <a *ngIf="!showleavestatus" style="font-size: 13px" (click)="showleave()" class="hyperpoint"><i class="fa fa-eye" aria-hidden="true" style="font-size: medium;"></i></a>
+          <a *ngIf="showleavestatus" style="font-size: 13px" (click)="showleave()" class="hyperpoint"><i class="fa fa-close" aria-hidden="true" style="font-size: medium;"></i></a>
+          <!-- <mat-icon (click)="showleave()" style="cursor: pointer">visibility</mat-icon> -->
+          <table class="table" style="margin: 10px 0px; border: 1px solid #e9ecef" *ngIf="showleavestatus">
+            <thead style="width: 100%; text-align: center">
+              <tr>
+                <th scope="col">Leave Name</th>
+                <th scope="col">Entitled Leave</th>
+                <th scope="col">Available Leave</th>
+              </tr>
+            </thead>
+            <tbody style="overflow: auto; text-align: center">
+              <tr *ngFor="let profile of otherAssignedLeavesToEmpData">
+                <td style="padding: 5px !important">
+                  {{ profile.leave_name }}
+                </td>
+                <td style="padding: 5px !important">
+                  {{ profile.entitled_leave_days }}
+                </td>
+                <td style="padding: 5px !important">
+                  {{ profile.available_leave_days }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="statusBox">
+          <h1 style="font-size: 13px">Request Status</h1>
+          <p style="margin-bottom: 0px" *ngIf="leaveData?.approver1_roleId == null">
+           <strong class="approve"> Self Approved</strong>
+          </p>
+          <p style="margin-bottom: 0px"  *ngIf="leaveData?.approver1_roleId != null">
+            Level 1: {{ leaveData?.approver1_Emp_Name }} (<strong>{{
+              leaveData?.approver1_Role_Name
+              }}</strong>) approval status is
+            <span style="padding: 0px" [ngClass]="
+                leaveData?.approval1_status == 'pending'
+                  ? 'pending'
+                  : leaveData?.approval1_status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ leaveData?.approval1_status }}</span>
+          </p>
+          <p style="margin-bottom: 0px" *ngIf="leaveData?.approver2_roleId !== null">
+            Level 2: {{ leaveData?.approver2_Emp_Name }} (<strong>{{
+              leaveData?.approver2_Role_Name
+              }}</strong>) approval status is
+            <span style="padding: 0px" [ngClass]="
+                leaveData?.approval2_status == 'pending'
+                  ? 'pending'
+                  : leaveData?.approval2_status === 'approved'
+                  ? 'approve'
+                  : 'decline'
+              ">{{ leaveData?.approval2_status }}</span>
+          </p>
+        </div>
+
+
+        <div class="statusBox">
+          <h1 style="font-size: 13px">
+            Leave History - Total {{ employeeLeaveHistory?.length }} Leave Requests
+          </h1>
+          <h1 style="font-size: 13px;">
+            Leave Profile Start Date - {{ assignedLeavesToEmpData?.profile_effective_from_date | date: 'MMMM d, y' }} ({{datecalculator}})
+          </h1>
+          <h1 *ngIf="openbalancedays!=0" style="font-size: 13px;">
+            Open Balance Days  - {{ openbalancedays }} 
+          </h1>
+
+          <div class="leave-filter">
+            <label class="radio-option">
+              <input type="radio" name="leaveType" value="all" checked (change)="filterLeaves('all')"> All Leaves ({{totalsepLeaveDays}} Days)
+            </label>
+            <label *ngFor="let leave of leavesHistory" class="radio-option" [for]="leave.leave_name">
+              <input 
+                type="radio" 
+                name="leaveType" 
+                [value]="leave.leave_name" 
+                (change)="filterLeaves(leave.leave_name)">
+                {{ leave.leave_name }} ({{ leave.total_days || 0 }} Days)
+                <i class="fa fa-info-circle" 
+                container="body" 
+                *ngIf="leave.leave_name?.toLowerCase() === 'sick leave'" 
+                [ngbTooltip]="sickLeaveDetails"
+                placement="top">
+             </i>             
+              </label>
+          </div>
+          <table class="table">
+            <thead style="width: 100%; display: inline-table">
+              <tr>
+                <th scope="col">Applied Date</th>
+                <th scope="col">Leave Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Total Days</th>
+              </tr>
+            </thead>
+            <tbody style="display: block; height: 90px; overflow: auto">
+              <tr *ngFor="let empData of leavebackup">
+                <td>{{ empData.ondate_applied | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_name }}</td>
+                <td>{{ empData.leave_start_date | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_end_date | date : "mediumDate" }}</td>
+                <td>{{ empData.leave_days_applied }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="showLeaveFunBtn">
+        <button type="button" class="btn approvebtn btn-outline-dark" (click)="approveNotificationLeave(leaveData)">
+          Approve
+        </button>
+        <button type="button" class="btn declinebtn btn-outline-dark" (click)="declineNotificationLeave(leaveData)">
+          Decline
+        </button>
+      </div>
+      <div class="modal-footer" *ngIf="showOwnerMessage">
+        <p>This request was approved directly by the Account Owner</p>
+      </div>
+    </div>
+  </div>
+</div>

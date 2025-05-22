@@ -1,0 +1,89 @@
+.headerbox {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #ffffff;
+    margin: 0px 25px 0px 25px;
+  }
+
+  .button{
+    border: none;
+    text-decoration: none;
+    padding: 8px 15px 9px 12px;
+    background-color: #2e3e4e;
+    color: white;
+    border-radius: 3px;
+    margin-right: 10px;
+  }
+
+  .mainSettingBox{
+    margin: 0px 25px 0px 25px;
+    padding: 15px;
+    margin-top: 5px;
+    min-height: 500px;
+    background-color: #ffffff;
+  }
+  .settingsbox{
+    padding: 10px;
+    margin-top: 5px;
+  }
+
+  .defaultCard{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 10px;
+  }
+  .vehicle-item {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+  }
+  .actionButton{
+    color: #2e3e4e !important;
+    cursor: pointer;
+  }
+
+  .buttonSt{
+    background-color: #e91e63 !important;
+    color: #f5f5f6 !important;
+    font-weight: 500 !important;
+  }
+  .borderSt{
+    border: none;
+    border-radius: 3px;
+  }
+  .custom-codes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width:500px;
+    height:100px;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    padding: 5px;
+    overflow-x: hidden;
+  }
+
+  .custom-code-card {
+    background: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+    height: 40px;
+  }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .add-code-section {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }

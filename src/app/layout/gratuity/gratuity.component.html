@@ -1,0 +1,344 @@
+<div>
+  <div class="tabsepration"></div>
+  <div class="CardRow CardRow1">
+    <div class="docAlign">
+      <div class="row">
+        <div *ngIf="isFinalSettlementLoading" style="height: 350px;">
+          <div class="spinner-overlay">
+            <div class="spinner-border text-primary custom-spinner" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-11" style="margin-left: 30px;" *ngIf="!isFinalSettlementLoading">
+          <div class="col-12" style="margin-top: 5px; margin-bottom: 5px;">
+            <h3 class="text-center">Employee Final Settlement</h3>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="card mb-4 mt-4" style="width: 50%; min-width: 350px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+              <div class="card-body">
+
+                <div class="row">
+                  <!-- Left Column -->
+                  <div class="col-md-6">
+                    <div class="card-info mb-3" *ngIf="isTerminated">
+                      <h6 class="text-muted">Last Working Day</h6>
+                      <p class="font-weight-bold">{{ singleEmployeeData.term_end_date | date: 'longDate' }}</p>
+                    </div>
+                    <div class="card-info mb-3">
+                      <h6 class="text-muted">Last Basic Salary</h6>
+                      <p class="font-weight-bold">{{ gtData.basicsalary | currency:'AED ' }}</p>
+                    </div>
+                    <div class="card-info mb-3">
+                      <h6 class="text-muted">Joined Date</h6>
+                      <p class="font-weight-bold">{{ gtData.joined_date | date: 'longDate' }}</p>
+                    </div>
+                    <div class="card-info mb-3">
+                      <h6 class="text-muted">Labour Contract End Date</h6>
+                      <p class="font-weight-bold">{{ gtData.labour_exp_date | date: 'longDate' }}</p>
+                    </div>
+
+
+                  </div>
+
+                  <!-- Right Column -->
+                  <div class="col-md-6">
+                    <div class="card-info mb-3" *ngIf="isTerminated">
+                      <h6 class="text-muted">Termination Type</h6>
+                      <p class="font-weight-bold">{{ singleEmployeeData.term_type}}
+                      </p>
+                    </div>
+                    <div class="card-info mb-3">
+                      <h6 class="text-muted">Years of Service</h6>
+                      <p class="font-weight-bold">{{ gtData.durationWords }}
+                      </p>
+                    </div>
+                    <div class="card-info mb-3">
+                      <h6 class="text-muted">Contract Start Date</h6>
+                      <p class="font-weight-bold">{{ gtData.con_start | date: 'longDate' }}</p>
+                    </div>
+
+                    <div class="card-info mb-3">
+                      <h6 class="text-muted">Contract End Date</h6>
+                      <p class="font-weight-bold">{{ gtData.con_end | date: 'longDate' }}</p>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-10" style="margin-top: 10px;">
+
+            <!-- Gratuity Calculation -->
+            <div class="unsettled-adjustments-statements" style="margin-top: 20px;">
+              <div class="final-settlement-header">
+                <h4 style="margin: 0;">Gratuity Calculation</h4>
+              </div>
+
+              <p class="d-flex justify-content-between mb-3"><strong>Status:</strong> <span>{{
+                  gtData.status }}</span></p>
+              <p *ngIf="gratuityDesc.intro" class="mb-3">{{gratuityDesc.intro}}</p>
+              <p *ngIf="gratuityDesc.calculation" class="mb-3">{{ gratuityDesc.calculation }}</p>
+              <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                <p class="d-flex justify-content-between mb-3">
+                  <strong>Total Gratuity:</strong>
+                  <strong>{{ gtData.gratuity_total | currency:'AED ' }}</strong>
+                </p>
+              </div>
+              <p class="d-flex  mb-3">
+                <strong>*Note:</strong>
+                <span>Gratuity calculated up to {{ (isTerminated ? singleEmployeeData.term_end_date : gtData.end_date) |
+                  date: 'longDate' }}</span>
+              </p>
+            </div>
+
+            <!-- Final Salary Payment -->
+            <div class="final-salary-statements" style="margin-top: 20px;">
+              <div class="final-settlement-header">
+                <h4 style="margin: 0;">Salary Payment</h4>
+              </div>
+              <div *ngIf="holdDetails.length > 0">
+                <div *ngFor="let item of holdDetails">
+                  <p class="d-flex justify-content-between mb-3"><strong>Salary for
+                      {{item.name}} <span *ngIf="item.on_hold">(On Hold)</span>:</strong>
+                    <span>AED {{item.netpayable}}</span>
+                  </p>
+                </div>
+              </div>
+              <div *ngIf="finalSalary">
+                <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                  <p class="mb-3 d-flex justify-content-between">
+                    <strong>Final Salary:</strong>
+                    <strong>AED {{finalSalary}}</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Leave Compensation (Unused Annual Leaves) -->
+            <div class="leave-compensation-statements" style="margin-top: 20px;">
+              <div class="final-settlement-header">
+                <h4 style="margin: 0;">Leave Compensation</h4>
+              </div>
+              <div *ngFor="let item of EligibleGratuityLeaves">
+                <p class="mb-3 d-flex justify-content-between">
+                  <strong>Unused {{item.leaveName}}:</strong>
+                  <span>{{item.availableLeaveDays}}</span>
+                </p>
+              </div>
+              <p class="d-flex justify-content-between mb-3">
+                <strong>Total Unused Leaves:</strong>
+                <span>{{leaveCompensationData.totalUnusedLeaves}}</span>
+              </p>
+              <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                <p class="d-flex justify-content-between mb-3">
+                  <strong>Leave Compensation Amount:</strong>
+                  <strong>AED {{leaveCompensationData.totalLeaveCompensation}}
+                    ({{leaveCompensationData.totalUnusedLeaves}} days at AED
+                    {{leaveCompensationData.basic_perdaysal}} per day)</strong>
+                </p>
+              </div>
+            </div>
+
+
+
+            <!-- Other Deductions or Additions -->
+            <div class="other-deductions-statements" style="margin-top: 20px;">
+              <div class="final-settlement-header" style="display: flex;justify-content: space-between;">
+                <h4 style="margin: 0;">Other Deductions or Additions</h4>
+                <div style="display: flex;align-items: center;gap: 5px;cursor: pointer;font-size: 13px;" (click)="addAdjustment()">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  Add Adjustment
+                </div>
+              </div>
+
+              <div>
+                <div class="final-settlement-subheader">
+                  <p style="margin: 0;">Additions:</p>
+                </div>
+                <div *ngIf="filteredEmpadjaddList.length > 0">
+                  <div *ngFor="let item of filteredEmpadjaddList">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <span><strong>Adjustment for </strong>{{item.pay_item}} on
+                        {{item.date_incurred}}:</span>
+                      <span>AED {{item.amount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="filteredEmpvariableList.length > 0">
+                  <div *ngFor="let item of filteredEmpvariableList">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <span><strong>Variable Pay for </strong>{{item.pay_item}} on
+                        {{item.date_incurred}}:</span>
+                      <span>AED {{item.amount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="filteredEmpLoanAddList.length > 0">
+                  <div *ngFor="let item of filteredEmpLoanAddList">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <span><strong>Advance & Loan for </strong>{{item.pay_item}} on
+                        {{item.date_incurred}}:</span>
+                      <span>AED {{item.amount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="filteredEmpexpenssList.length > 0">
+                  <div *ngFor="let item of filteredEmpexpenssList">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <span><strong>Work Expense for </strong>{{item.pay_item}} on
+                        {{item.date_incurred}}:</span>
+                      <span>AED {{item.amount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="additionsOrDeductions.additions">
+                  <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <strong>Total Additions:</strong>
+                      <strong>AED {{additionsOrDeductions.additions}}</strong>
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div>
+                <div class="final-settlement-subheader">
+                  <p style="margin: 0;">Deductions:</p>
+                </div>
+                <div *ngIf="filteredEmpadjdeducList.length > 0">
+                  <div *ngFor="let item of filteredEmpadjdeducList">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <span><strong>Adjustment for </strong>{{item.pay_item}} on
+                        {{item.date_incurred}}:</span>
+                      <span>- AED {{item.amount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="filteredEmpLoanDeductList.length > 0">
+                  <div *ngFor="let item of filteredEmpLoanDeductList">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <span>Advance & Loan for {{item.pay_item}} on {{item.date_incurred}}:</span>
+                      <span>- AED {{item.amount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="additionsOrDeductions.deduction">
+                  <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                    <p class="mb-3 d-flex justify-content-between">
+                      <strong>Total Deductions:</strong>
+                      <strong>- AED {{additionsOrDeductions.deduction}}</strong>
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div>
+                <div class="final-settlement-subheader">
+                  <p style="margin: 0;">Total Deductions or Additions:</p>
+                </div>
+                <div>
+                  <p class="d-flex justify-content-between">
+                    <span>Additions:</span>
+                    <span>AED {{additionsOrDeductions.additions || 0}}</span>
+                  </p>
+                  <p class="d-flex justify-content-between">
+                    <span>Deductions:</span>
+                    <span>- AED {{additionsOrDeductions.deduction || 0}}</span>
+                  </p>
+                  <div style="padding: 5px 0; border-top: 1px solid #f1f1f1;">
+                    <p class="d-flex justify-content-between">
+                      <strong>Total:</strong>
+                      <strong>AED {{additionsOrDeductions.total || 0}}</strong>
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="final-settlement-statements"
+              style="width: 50%;margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; padding: 15px; background-color: #f9f9f9;">
+              <div style="background-color: #e0e0e0; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                <h4 style="margin: 0; font-weight: bold; text-align: center;">Total Final Settlement</h4>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span><strong>Gratuity:</strong></span>
+                <span>{{ gtData.gratuity_total | currency:'AED ' }}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span><strong>Final Salary Payment:</strong></span>
+                <span>AED {{finalSalary}}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span><strong>Leave Compensation:</strong></span>
+                <span>AED {{leaveCompensationData.totalLeaveCompensation}}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span><strong>Other Deductions/Additions:</strong></span>
+                <span>AED {{additionsOrDeductions.total}}</span>
+              </div>
+              <!-- <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span><strong>Unsettled Adjustments:</strong></span>
+                <span>AED 1,200</span>
+              </div> -->
+
+              <hr style="border-top: 2px solid #e3165b; margin: 15px 0;">
+
+              <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: bold;">
+                <span>Total Settlement Amount:</span>
+                <span>AED {{finalAmount}}</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end;padding: 20px 0px;border-top: 1px solid #e0e0e0;margin-top: 20px;" *ngIf="!finalSettementDone">
+            <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" [disabled]="!finalSubmitButton"
+              (click)="handleSubmitFinalSettlement()">
+              Submit Final Settlement
+            </button>
+          </div>
+          <!-- <div class="card bg-warning text-dark mb-3" style="max-width: 100%;" *ngIf="finalSettementDone">
+            <div class="card-body">
+              <p class="card-text text-center">Final settlement has already been initiated.</p>
+            </div>
+          </div> -->
+          <div style="background-color: #e0e0e0; padding: 10px; margin: 10px 0px; border-radius: 5px;" *ngIf="finalSettementDone">
+            <h6 style="margin: 0; font-weight: bold; text-align: center;">Final settlement has already been initiated.</h6>
+          </div>
+
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Final Settlemnt model -->
+<ng-template #apprMarkPaidModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Mark Paid</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+   <div>
+    <app-payment-voucher [voucherData]="voucherData"  (formDataEmitter)="submitFinalSettlement($event)" mode="Create with amount"></app-payment-voucher>
+   </div>
+  </div>
+
+</ng-template>

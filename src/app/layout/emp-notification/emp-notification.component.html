@@ -1,0 +1,178 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor dashboardContainer" id="kt_content">
+  <div class="kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+        <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+              <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+                font-weight: 500;">
+                  Notification
+                </h3>
+              </div>
+          </div>
+    </div>
+    <div class="col-xl-12 col-lg-12 order-lg-12 order-xl-1">
+      <div class="kt-portlet kt-portlet--height-fluid">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-toolbar" style="width: 100%; justify-content: flex-end;">
+              <ul class="nav nav-pills nav-pills-sm nav-pills-label nav-pills-bold" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#pendingTab" (click)="tabevent($event)" role="tab">
+                    Pending
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#approvedTab" (click)="tabevent($event)" role="tab">
+                    Approved
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#declinedTab" (click)="tabevent($event)" role="tab">
+                    Declined
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="kt-portlet__body" style="height: 600px; overflow-y: auto;">
+            <div *ngIf="pendingDiv">
+              <div class="search-hero">
+                  <input class="form-control" type="text" name="search" [(ngModel)]="pendingLeavesSearchText" autocomplete="off" placeholder="Search">
+              </div>
+              <table class="table" style="margin-top: 15px;" *ngIf="pendingTable">
+              <tbody>
+              <tr *ngFor="let pend of pendingLeaves | filter:pendingLeavesSearchText">
+                <td>
+                  <div class="kt-widget__head" style="display: flex;padding-bottom: 10px;padding-top: 5px;">
+                    <div class="kt-widget__media" >
+                      <img style="height: 62px;width: 62px;border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                    </div>
+                    <div class="kt-widget__content" style="padding-left: 20px;">
+                      <div class="kt-widget__section">
+                        <div class="pr-requester-name" style="cursor: pointer;" (click)="requestTypePending(pend.id, pend.leave_name)">
+                          <div style="font-weight: 500;margin-bottom: 5px;">
+                            {{pend.full_name}}
+                          </div>
+                          <div style="font-size: 12px;color: #607787;">
+                            Applied on : {{pend.created_date | date :  "d MMM, y"}}
+                          </div>
+                            <div style="display: flex; margin-top: 5px;">
+                              <div *ngIf='pend.leave_name === "Checkin"'  style="background-color: #1dc9b7; margin-top: 4px;"  class="leave-circle">
+                              </div>
+                              <div *ngIf='pend.leave_name === "Annual Leave" || pend.leave_name === "Sick Leave"' style="background-color: #FEDF88; margin-top: 4px;"  class="leave-circle">
+                              </div>
+                              <div *ngIf='pend.leave_name === "Checkin/Checkout Overwrite"' style="background-color: #3f77f4; margin-top: 4px"  class="leave-circle">
+                              </div>
+                              <div *ngIf='pend.leave_name === "Checkin"'>Checkin/Checkout on Leave</div>
+                              <div *ngIf='pend.leave_name === "Annual Leave" || pend.leave_name === "Sick Leave"'>{{pend.leave_name}}</div>
+                              <div *ngIf='pend.leave_name === "Checkin/Checkout Overwrite"'>{{pend.leave_name}}</div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                </tr>
+              </tbody>
+              </table>
+              <div *ngIf="noPendingDiv" style="padding: 15px 12px;">
+                <p>No Pending Leave Notification</p>
+              </div>
+            </div>
+
+            <div *ngIf="approvedDiv">
+              <div class="search-hero">
+                <input class="form-control" type="text" name="search" [(ngModel)]="approvedLeavesSearchText" autocomplete="off" placeholder="Search">
+              </div>
+              <table class="table" style="margin-top: 15px;" *ngIf="approvedTable">
+                  <tbody>
+                    <tr *ngFor="let appr of approvedLeaves | filter:approvedLeavesSearchText">
+                  <td>
+                    <div class="kt-widget__head" style="display: flex;padding-bottom: 10px;padding-top: 5px;">
+                      <div class="kt-widget__media" >
+                        <img style="height: 62px;width: 62px;border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                      </div>
+                      <div class="kt-widget__content" style="padding-left: 20px;">
+                        <div class="kt-widget__section">
+                          <div class="pr-requester-name" style="cursor: pointer;" (click)="requestTypeApproved(appr.id, appr.leave_name)">
+                            <div style="font-weight: 500;margin-bottom: 5px;">
+                              {{appr.full_name}}
+                            </div>
+                            <div style="font-size: 12px;color: #607787;">
+                              Applied on : {{appr.created_date | date :  "d MMM, y"}}
+                            </div>
+                              <div style="display: flex; margin-top: 5px;">
+                                <div *ngIf='appr.leave_name === "Checkin"'  style="background-color: #1dc9b7; margin-top: 4px;"  class="leave-circle">
+                                </div>
+                                <div *ngIf='appr.leave_name === "Annual Leave" || appr.leave_name === "Sick Leave"' style="background-color: #FEDF88; margin-top: 4px;"  class="leave-circle">
+                                </div>
+                                <div *ngIf='appr.leave_name === "Checkin/Checkout Overwrite"' style="background-color: #3f77f4; margin-top: 4px"  class="leave-circle">
+                                </div>
+                                <div *ngIf='appr.leave_name === "Checkin"'>Checkin/Checkout on Leave</div>
+                                <div *ngIf='appr.leave_name === "Annual Leave" || appr.leave_name === "Sick Leave"'>{{appr.leave_name}}</div>
+                                <div *ngIf='appr.leave_name === "Checkin/Checkout Overwrite"'>{{appr.leave_name}}</div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                    </tr>
+                  </tbody>
+              </table>
+              <div *ngIf="noApprovedDiv" style="padding: 15px 12px;">
+                <p>No Approved Leave Notification</p>
+              </div>
+            </div>
+
+            <div *ngIf="declinedDiv">
+              <div class="search-hero">
+                <input class="form-control" type="text" name="search" [(ngModel)]="declinedLeavesSearchText" autocomplete="off" placeholder="Search">
+              </div>
+              <table class="table" style="margin-top: 15px;" *ngIf="declinedTable">
+                 <tbody>
+                    <tr *ngFor="let decl of declinedLeaves | filter:declinedLeavesSearchText">
+                  <td>
+                    <div class="kt-widget__head" style="display: flex;padding-bottom: 10px;padding-top: 5px;">
+                      <div class="kt-widget__media" >
+                        <img style="height: 62px;width: 62px;border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                      </div>
+                      <div class="kt-widget__content" style="padding-left: 20px;">
+                        <div class="kt-widget__section">
+                          <div class="pr-requester-name" style="cursor: pointer;" (click)="requestTypeDeclined(decl.id, decl.leave_name)">
+                            <div style="font-weight: 500;margin-bottom: 5px;">
+                              {{decl.full_name}}
+                            </div>
+                            <div style="font-size: 12px;color: #607787;">
+                              Applied on : {{appr.created_date | date :  "d MMM, y"}}
+                            </div>
+                            <div style="display: flex; margin-top: 5px;">
+                              <div *ngIf='decl.leave_name === "Checkin"'  style="background-color: #1dc9b7; margin-top: 4px;"  class="leave-circle">
+                              </div>
+                              <div *ngIf='decl.leave_name === "Annual Leave" || decl.leave_name === "Sick Leave"' style="background-color: #FEDF88; margin-top: 4px;"  class="leave-circle">
+                              </div>
+                              <div *ngIf='decl.leave_name === "Checkin/Checkout Overwrite"' style="background-color: #3f77f4; margin-top: 4px"  class="leave-circle">
+                              </div>
+                              <div *ngIf='decl.leave_name === "Checkin"'>Checkin/Checkout on Leave</div>
+                              <div *ngIf='decl.leave_name === "Annual Leave" || decl.leave_name === "Sick Leave"'>{{decl.leave_name}}</div>
+                              <div *ngIf='decl.leave_name === "Checkin/Checkout Overwrite"'>{{decl.leave_name}}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                    </tr>
+                 </tbody>
+              </table>
+              <div *ngIf="noDeclinedDiv" style="padding: 15px 12px;">
+                <p>No Declined Leave Notification</p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

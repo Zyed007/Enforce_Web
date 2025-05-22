@@ -1,0 +1,140 @@
+
+
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Other Income Payment Term</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openPaymentTermModel('Add')">Add Payment Term</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToMainIncome()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div>
+      <ejs-grid [dataSource]='allIncomePaymentTermData' height='300px'>
+        <e-columns>
+          <e-column field='createdDate' headerText='Created Date'>
+            <ng-template #template let-data>
+              <div>
+                <p style="margin-bottom: 0px;">{{data.createdDate}}</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field='paymentName' headerText='Name'></e-column>
+          <e-column field='creditTermsDays' headerText='Type'></e-column>
+          <e-column field='is_default' headerText='Default'>
+            <ng-template #template let-data>
+              <div *ngIf="data.is_default">
+                <p class="defaulttag">Default</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="openPaymentTermModel(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deletePaymentTerm(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="rightModal700">
+  <!-- leave profile create module -->
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="Payment_terms_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 900px;">
+      <div class="modal-content notifyModal" >
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title">{{paymentTermFormType}} - Payment terms</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closePaymentTermModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+          <form [formGroup]="paymentMethodologyForm">
+            <div class="mainCardDiv defaultLeaveCard">
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div>
+                    <label>Payment Term Name*</label>
+                    <input class="form-control" formControlName="paymentName" type="text" placeholder="Enter a Payment Name">
+                  </div>
+                  <div class="errorreq" *ngIf="paymentName?.invalid && isValidFormSubmitted != null && !isValidFormSubmitted">
+                      Payment Term Name is required *.
+                  </div>
+                </div>
+                <div class="col-md-6 col-12" *ngIf="paymentTermFormType === 'Add' && allIncomePaymentTermData?.length !== 0">
+                  <label>Copy from existing Template</label>
+                  <ejs-dropdownlist #resetDropDown [dataSource]='allPaymentTermDropData' [fields]='commonFields' (change)="selectToCopyFrom($event)"></ejs-dropdownlist>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class="table" style="margin-bottom: 0px;">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 30%;">Payment terms</th>
+                        <th scope="col" style="width: 30%;">% of project value</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="paymentPolicy">
+                      <tr  *ngFor="let item of paymentPolicy.controls; let i = index" [formGroupName]="i">
+                        <td style="display: none">
+                          <p class="val">{{returnItem(i, item)}}</p>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" formControlName="paymentTerms">
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" placeholder="Enter Percentage" formControlName="perProjValue">
+                          <label *ngIf="paymentPolicy.controls[i].get('perProjValue')?.errors?.required && isValidFormSubmitted != null && !isValidFormSubmitted" class="errorreq">
+                            Percentage required *
+                          </label>
+                          <label *ngIf="paymentPolicy.controls[i].get('perProjValue')?.errors?.max" class="errorreq">
+                            Percentage should not be more than 100%.
+                          </label>
+                        </td>
+                        <td>
+                          <i class="fa fa-trash" aria-hidden="true" (click)="deletePayment(i)" style="font-size: 16px; margin-top: 6px;"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="display: flex; margin: 10px 0px;">
+                    <button class="btn reqbtn"(click)="addItemRow()">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      <p style="margin-bottom: 4px; margin-top: 0px;">Add New Payemnt Term</p>
+                    </button>
+                    <p *ngIf="showPercentageError" class="errorreq" style="margin-left: 10px;">Cannot Add more row as the Percentage of Project reached 100 %</p>
+                  </div>
+                  <p *ngIf="showPercentageError2" class="errorreq" style="margin-left: 10px;">Percentage should always be 100.</p>
+                  <div style="margin: 10px 0px; display: flex;">
+                    <p style="font-weight: 500; margin: auto 0px;">Credit Terms</p>
+                    <ejs-dropdownlist style="width: 20%; margin-left: 15px;" formControlName="creditTermsDays" [dataSource]='creditTermsDaysData' [fields]='commonFields'></ejs-dropdownlist>
+                  </div>
+                  <div style="display: flex;">
+                    <input type="checkbox" class="marTopLef" formControlName="isDefault">
+                    <p class="marleft7" style="margin-bottom: 0px !important; margin-top: 1px !important; margin-left: 5px !important;">Set this Payment profile as default</p>
+                    <i class="fa fa-info-circle" style="margin: 4px 5px;" ngbTooltip="by default this payment profile will be added to the Quotation"></i>
+                  </div>
+                </div>
+                <div class="col-12 buttonDiv">
+                  <button class="btn buttonSt btnScc" style="width: 100px; justify-content: center;" (click)="savePaymentTerms()">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    <p style="margin-top: 0px; margin-bottom: 0px;">
+                      {{paymentTermFormType === 'Add' ? 'Save' : 'Update'}}
+                    </p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

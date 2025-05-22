@@ -1,0 +1,1198 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <div class="kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+      <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+        <div class="kt-subheader__main">
+          <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+          font-weight: 500;">
+            Travel Claims
+          </h3>
+          <span class="kt-subheader__separator kt-hidden"></span>
+          <div class="kt-subheader__breadcrumbs">
+          </div>
+        </div>
+      </div>
+
+      <!-- <form [formGroup]="datePickerForm" style="padding-bottom: 15px;">
+        <ejs-datepicker formControlName="singleData" dayHeaderFormat="Abbreviated" [max]="maxRangeDate"
+          [showClearButton]="false" [allowEdit]='false' [value]='dateValue'></ejs-datepicker>
+        <span class="date-container" disabled="disabled"
+          style="border: none;pointer-events:none;position: absolute;left:24px">{{dateText}}</span>
+      </form> -->
+
+      <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+        <div style="padding:15px;">
+          <div class="row align-items-center border p-3 rounded bg-white"
+            style="display: flex; justify-content: flex-end;gap: 10px;">
+            <div class="d-flex justify-content-end" style="display: flex; gap: 10px; align-items: center;"
+              *ngIf="!isEmpDelLoading && is_admin">
+              <h5 class="mb-3 mb-lg-0">Select an Employee</h5>
+              <form [formGroup]="empForm">
+                <!-- <ejs-dropdownlist #empDropdown [dataSource]="empDelData" formControlName="emp" [fields]="commonFields"
+                  [allowFiltering]="true" placeholder="Select Employee"   (change)="onValueChange($event)" class="dropdown-reset">
+                </ejs-dropdownlist> -->
+                <select2 [data]="empDelData" [options]="deptOptions" (valueChanged)="onValueChange($event)"></select2>
+              </form>
+
+            </div>
+            <div *ngIf="!is_admin && !isEmpDelLoading" [formGroup] = "empForm">
+              <input type="text" class="form-control" formControlName="empName" style="width: 100%;"
+                readonly>
+            </div>
+
+            <!-- <div class=" d-flex justify-content-end" style="display: flex; gap: 10px; align-items: center;">
+              <h5 class="mb-3 mb-lg-0">Select a Range</h5>
+              <form [formGroup]="dateRangeForm" id="formId" class="d-flex align-items-center">
+                <ejs-daterangepicker format="dd/MM/yyyy" [max]="maxRangeDateTwo" formControlName="dateRange"
+                  class="form-control">
+                  <e-presets>
+                    <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                    <e-preset label="This Month" [start]="monthStart" [end]="monthEnd"></e-preset>
+                    <e-preset label="Last Month" [start]="lastStart" [end]="lastEnd"></e-preset>
+                    <e-preset label="Last Year" [start]="yearStart" [end]="yearEnd"></e-preset>
+                  </e-presets>
+                </ejs-daterangepicker>
+              </form>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3 mt-lg-0" style="gap: 5px; align-items: center;">
+              <button class="button button-fill button-rose" type="button" (click)="viewTravel()">View Travel</button>
+              <button class="button button-fill button-rose" type="button" (click)="travelclaims()">Claim
+                Travel</button>
+            </div> -->
+          </div>
+
+        </div>
+
+
+
+        <div style=" border-bottom-color: #f0f3ff;color: #595d6e;">
+          <div style="padding: 0px 25px 15px; background: white;">
+            <mat-tab-group (selectedTabChange)="onTabChange($event)">
+              <mat-tab *ngFor="let tab of newTeamData; let i = index" [label]="tab.text">
+
+                <ng-container *ngIf="i==0">
+                  <div class="row align-items-center border p-3 rounded bg-white"
+                    style="display: flex; justify-content: flex-end;gap: 10px;">
+
+                    <div class=" d-flex justify-content-end" style="display: flex; gap: 10px; align-items: center;">
+                      <h5 class="mb-3 mb-lg-0">Select a Range</h5>
+                      <form [formGroup]="dateRangeForm" id="formId" class="d-flex align-items-center">
+                        <ejs-daterangepicker format="dd/MM/yyyy" [max]="maxRangeDateTwo" formControlName="dateRange"
+                          class="form-control">
+                          <e-presets>
+                            <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                            <e-preset label="This Month" [start]="monthStart" [end]="monthEnd"></e-preset>
+                            <e-preset label="Last Month" [start]="lastStart" [end]="lastEnd"></e-preset>
+                            <e-preset label="Last Year" [start]="yearStart" [end]="yearEnd"></e-preset>
+                          </e-presets>
+                        </ejs-daterangepicker>
+                      </form>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3 mt-lg-0" style="gap: 5px; align-items: center;">
+                      <button class="button button-fill button-rose" type="button" (click)="viewTravel()">View
+                        Travel</button>
+                      <button class="button button-fill button-rose" type="button" (click)="handleTravelClaim()">Claim
+                        Travel</button>
+                      <button class="button button-fill button-rose" type="button" (click)="handleDisputeAll()">Dispute
+                        All
+                      </button>
+
+                    </div>
+                  </div>
+                  <ejs-grid style="overflow-y: auto;" [dataSource]="filteredtravelData" [height]='400' #grid
+                    [allowTextWrap]='true' allowSorting='true' [toolbar]='toolbar' [allowExcelExport]='true'
+                    [allowPdfExport]='true' (toolbarClick)='toolbarClick($event)'>
+                    <e-columns>
+                      <e-column field="createdby" headerText="Employee" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.createdby}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="created_date" headerText="Date" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.created_date | date}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field='checkout_project' headerText='Project/Place' width=15>
+                        <ng-template #template let-data>
+                          <p class="marbott">{{data.checkout_project !== null ? data.checkout_project : 'NA'}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="checkout_formatted_address" headerText="Staring Point" width="25"
+                        textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.checkout_formatted_address}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="checkin_formatted_address" headerText="Ending Point" width="25"
+                        textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.checkin_formatted_address}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field='checkin_project' headerText='Project/Place' width=15>
+                        <ng-template #template let-data>
+                          <p class="marbott">{{data.checkin_project !== null ? data.checkin_project : 'Office'}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="distance" headerText="Distance" width="25" textAlign="center">
+                        <ng-template #template let-data>
+                          <div style="text-align: center;">
+                            <p style="font-weight: 600;">{{data.updatedDistance | number : '1.2-2'}} km</p>
+                            <span *ngIf="data.disputeStatus && data.disputeStatus=='Approved'" class="success">Dispute
+                              Success</span>
+                            <span *ngIf="data.disputeStatus && data.disputeStatus=='Pending'" class="pending">Dispute
+                              Pending</span>
+                          </div>
+                        </ng-template>
+                      </e-column>
+                      <e-column textAlign="centre" width="25">
+                        <ng-template #template let-data>
+                          <a style="color:blue;cursor: pointer;text-transform: capitalize;"
+                            (click)='MapModal(data, data.travelClaimTrack)'>View In Map</a>
+                        </ng-template>
+                      </e-column>
+                      <e-column width="35">
+                        <form [formGroup]="travelDispute">
+                          <ng-template #template let-data>
+                            <div *ngIf="data.disputeButtonDisabled" style="margin-top: 3px;">
+                              <label for="newKm">New KM</label>
+                              <input *ngIf="!data.pending" class="form-control" placeholder="New KM"
+                                formControlName="new_val" type="number" min="0" id="newKm">
+                            </div>
+
+                            <div *ngIf="data.disputeButtonDisabled" style="margin-top: 3px;">
+                              <label for="reasondesc">Reason for Dispute</label>
+                              <textarea class="form-control" rows="2" formControlName="reasondesc"
+                                placeholder="Enter Reason" id="reasondesc">
+                              </textarea>
+                            </div>
+
+                            <div *ngIf="!data.pending" class="col-xl-3 col-lg-3"
+                              style="margin-top: 3px; display: flex;">
+                              <button *ngIf="!data.disputeRaised && !data.claimRaised && !data.disputeButtonDisabled"
+                                class="button button-fill button-rose" #disputeButton [disabled]="data.disputeRaised"
+                                type="button" (click)="distancechanges(data)">
+                                Dispute
+                              </button>
+                              <span *ngIf="data.disputeRaised && !data.claimRaised" class="text-danger"
+                                style="font-weight: 900;">Dispute
+                                Raised</span>
+                              <span *ngIf="data.claimRaised" class="text-success" style="font-weight: 900;">Claim
+                                Submitted</span>
+
+                            </div>
+
+                            <div *ngIf="data.disputeButtonDisabled">
+                              <label for="reasondesc">Upload Document</label>
+                              <div style="display: flex;">
+                                <button class="fa fa-upload" style="border: none; background: none;padding-right: 17px;"
+                                  ngbTooltip="Upload the Document" *ngIf="data.disputeButtonDisabled"
+                                  (click)="fileInput.click()">
+                                </button>
+
+                                <button class="fa fa-eye" style="border: none; background: none;padding-right: 17px;"
+                                  ngbTooltip="View the Document" *ngIf="travelDispute.get('doc').value"
+                                  (click)="goToLink(travelDispute.get('doc').value)">
+                                </button>
+
+                                <i *ngIf="travelDispute.get('doc').value" class="fa fa-trash"
+                                  ngbTooltip="Delete Document" style="font-size: 14px;" (click)="disputeDelete(data)">
+                                </i>
+
+                                <input type="file" #fileInput style="display: none;"
+                                  (change)="onFileSelected($event, data)" accept=".jpg,.png,.pdf" [multiple]="false">
+                              </div>
+                            </div>
+
+                            <!-- Submit/Cancel Buttons -->
+                            <div
+                              style="margin-top: 5px;border-top: 1px;padding-top: 5px;display: flex;justify-content: space-between;border-top-color: #f1f1f1;">
+                              <button *ngIf="data.disputeButtonDisabled" class="button button-fill button-rose"
+                                type="button" (click)="handleSubmitTravelDispute(data)">
+                                Submit
+                              </button>
+
+                              <button *ngIf="data.disputeButtonDisabled" class="button button-fill button-rose"
+                                type="button" (click)="Canceldispute(data)">
+                                Cancel
+                              </button>
+                            </div>
+                          </ng-template>
+                        </form>
+                      </e-column>
+
+                      <!-- <e-column width="25">
+                        <ng-template #headerTemplate>
+                          <input type="checkbox" (change)="toggleSelectAll($event)" [checked]="selectAllDispute" />
+                          Select All
+                        </ng-template>
+                        <ng-template #template let-data>
+                          <input type="checkbox" (change)="onSelectionChange($event, data)"
+                            [checked]="isDisputeSelected(data.id)"
+                            [disabled]="data.disputeRaised || data.claimRaised" />
+                        </ng-template>
+                      </e-column> -->
+
+                    </e-columns>
+                  </ejs-grid>
+                  <!-- <div class="text-right" style="padding: 10px;">
+                    <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600"
+                      (click)="handleDisputeAll()">
+                      Dispute All
+                    </button>
+                  </div> -->
+                </ng-container>
+
+                <ng-container *ngIf="i==1">
+                  <ejs-grid style="overflow-y: auto;" [dataSource]="claimData" [height]='400' #claimgrid
+                    [allowTextWrap]='true' allowSorting='true' [toolbar]='toolbar' [allowExcelExport]='true'
+                    [allowPdfExport]='true' (toolbarClick)='toolbarClick($event)'>
+                    <e-columns>
+                      <e-column field="employee" headerText="Employee" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.emp_name}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="created_date" headerText="Created Date" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.created_date | date}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="status" headerText="Status" width="25" textAlign="centre">
+                      </e-column>
+                      <e-column field="count" headerText="Claim count" width="25" textAlign="centre">
+                      </e-column>
+
+
+                      <e-column type='' textAlign='' headerText='Actions' width='20' headerTextAlign="Center"
+                        textAlign='Center'>
+                        <ng-template #template let-data>
+                          <div>
+                            <a title="Click to view details, edit, approve, or reject"
+                              class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="viewClaimDetails(data.id)">
+                              <i class="fa fa-pencil-square-o"></i> </a>
+                          </div>
+                        </ng-template>
+                      </e-column>
+                    </e-columns>
+                  </ejs-grid>
+                </ng-container>
+                <ng-container *ngIf="i==2">
+                  <ejs-grid style="overflow-y: auto;" [dataSource]="pendingDisputeData" [height]='400' #pendinggrid
+                    [allowTextWrap]='true' allowSorting='true' [toolbar]='toolbar' [allowExcelExport]='true'
+                    [allowPdfExport]='true' (toolbarClick)='toolbarClick($event)'>
+                    <e-columns>
+                      <e-column field="employee" headerText="Employee" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.empName}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="created_date" headerText="Created Date" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.created_date | date}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="status" headerText="Status" width="25" textAlign="centre">
+                      </e-column>
+                      <e-column field="count" headerText="Dispute count" width="25" textAlign="centre">
+                      </e-column>
+
+
+                      <e-column type='' textAlign='' headerText='Actions' width='20' headerTextAlign="Center"
+                        textAlign='Center'>
+                        <ng-template #template let-data>
+                          <div>
+                            <a title="Click to view details, edit, approve, or reject"
+                              class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="apprTravelDisputeData(data)">
+                              <i class="fa fa-pencil-square-o"></i> </a>
+                          </div>
+                        </ng-template>
+                      </e-column>
+                    </e-columns>
+                  </ejs-grid>
+                </ng-container>
+                <ng-container *ngIf="i==3 || i==4">
+                  <ejs-grid style="overflow-y: auto;" [dataSource]="filteredDisputeData" [height]='400' #claimgrid
+                    [allowTextWrap]='true' allowSorting='true' [toolbar]='toolbar' [allowExcelExport]='true'
+                    [allowPdfExport]='true' (toolbarClick)='toolbarClick($event)'>
+                    <e-columns>
+                      <e-column field="employee" headerText="Employee" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.empName}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="created_date" headerText="Date" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.created_date | date }}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="Starting Point" headerText="Starting Point" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.checkout_addr}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="Starting Point" headerText="Ending Point" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.checkin_addr}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="Status" headerText="Status" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.status}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="Ending Point" headerText="Previous Distance" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.old_val}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="Distance" headerText="New Distance" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.new_val}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column type='' textAlign='' headerText='Actions' width='20' headerTextAlign="Center"
+                        textAlign='Center'>
+                        <ng-template #template let-data>
+                          <div>
+                            <a title="Click to view details, edit, approve, or reject"
+                              class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="viewTravelDisputeData(data)">
+                              <i class="fa fa-pencil-square-o"></i> </a>
+                          </div>
+                        </ng-template>
+                      </e-column>
+                    </e-columns>
+                  </ejs-grid>
+                </ng-container>
+              </mat-tab>
+            </mat-tab-group>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="map_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Location</h5>
+          <button type="button" class="close" #mapCloseBtn (click)="OnClose()" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;background: #f1f0ee;padding-top: 25px;">
+          <div class="kt-demo-panel__body ">
+            <div class="kt-demo-panel__item mapModel">
+              <div class="col-lg-12 col-sm-12">
+                <div style="display: flex;margin-bottom: 8px;background-color: rgba(44,119,244,.1);margin-top: -12px;">
+                  <div style="color: #2c77f4;padding: 10px 14px;font-weight: bold;font-size: 12px;"> {{selectedDateModel
+                    | date}}</div>
+                </div>
+                <div class="userDetails">
+                  <div class="kt-portlet kt-portlet--fit kt-portlet--head-noborder kt-portlet--height-fluid-half"
+                    style="margin-top: 17px;">
+                    <div class="row" style="padding: 11px 16px 0px;">
+                      <div class="col-sm-6">
+                        <!-- <div style="display: flex;">
+                        <i class="fa fa-user" aria-hidden="true"></i> <h1 class="username">User Name : {{}}</h1>
+                      </div> -->
+                        <div style="display: flex;">
+                          <i class="fa fa-road" aria-hidden="true"></i>
+                          <h1 class="username" style="margin-top: -3px; margin-left: 8px;">Total Distance :
+                            {{selectedKmModel}} KM</h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="position:relative">
+                  <div class="avatar_logo" style="position:absolute"></div>
+                  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+                    [zoomControl]="false">
+                    <agm-marker *ngFor="let coordinate of start_end_mark; let i=index" [latitude]="coordinate[0]"
+                      [longitude]="coordinate[1]" [agmFitBounds]="true">
+                    </agm-marker>
+                    <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'#FF0000'">
+                      <agm-polyline-point *ngFor="let coordinate of selectedLatLong; let i=index"
+                        [latitude]="coordinate[0]" [longitude]="coordinate[1]">
+                      </agm-polyline-point>
+                    </agm-polyline>
+                  </agm-map>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary"
+            style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="OnClose()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="claim_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Travel Claim</h5>
+          <button type="button" class="close" #mapCloseBtn (click)="OntotalCloseChanes()" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;background: #f1f0ee;padding-top: 25px;">
+          <div class="kt-demo-panel__body ">
+            <form [formGroup]="claimForm">
+              <div style=" border-bottom-color: #f0f3ff;color: #595d6e;">
+
+                <div style="padding: 25px 15px; background: white;">
+                  <div
+                    style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                      <label style="margin-bottom: 0 !important; width: 100px;">Employee:</label>
+                      <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                        formControlName="empName" readonly>
+                    </div>
+
+                    <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                      <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                        Claim Id :
+                      </label>
+                      <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                        formControlName="claim_id" [disabled]="is_claimSubmitted">
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                      <label style="margin-bottom: 0 !important; width: 100px;">Total Distance:</label>
+                      <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                        formControlName="totalDistance" readonly>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                      <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                        Vehicle Type :
+                      </label>
+                      <select2 [data]="VehicleType" [options]="deptOptions"
+                        (valueChanged)="onVehicleValueChange($event)" style="width: 180px;" *ngIf="!is_claimSubmitted">
+                      </select2>
+                      <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                        formControlName="vehicleType" readonly *ngIf="is_claimSubmitted">
+                    </div>
+                  </div>
+                  <div
+                    style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+
+                    <div style="flex: 1; display: flex; align-items: center; gap: 5px;"
+                      *ngIf="claimForm.get('calcType').value === 'actual' || claimForm.get('calcType').value === 'fixed'">
+                      <label style="margin-bottom: 0 !important; width: 100px;">Date:</label>
+                      <ejs-datepicker formControlName="date" format="MMM d, y" placeholder="Enter date"
+                        *ngIf="claimForm.get('calcType').value=='actual' && !is_claimSubmitted"></ejs-datepicker>
+                      <ejs-daterangepicker formControlName="dateRange" format="MMM d, y" placeholder="Select date range"
+                        *ngIf="claimForm.get('calcType').value=='fixed' && !is_claimSubmitted">
+                        <e-presets>
+                          <e-preset label="Today" [start]="today" [end]="today"></e-preset>
+                          <e-preset label="This Month" [start]="monthStart" [end]="monthEnd"></e-preset>
+                          <e-preset label="Last Month" [start]="lastStart" [end]="lastEnd"></e-preset>
+                          <e-preset label="Last Year" [start]="yearStart" [end]="yearEnd"></e-preset>
+                        </e-presets>
+                      </ejs-daterangepicker>
+                      <div style="display: flex; gap: 5px; max-width: 180px; width: 100%;" *ngIf="is_claimSubmitted">
+                        <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                          formControlName="date" readonly>
+                      </div>
+                    </div>
+
+
+                    <div style="flex: 1; display: flex; align-items: center; gap: 10px;"
+                      *ngIf="claimForm.get('calcType').value=='actual'">
+                      <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                        Time:
+                      </label>
+                      <div *ngIf="!is_claimSubmitted">
+                        <input class="form-control" placeholder="Enter time" [ngxTimepicker]="callendpicker"
+                          formControlName="time" style="max-width: 180px;">
+                        <ngx-material-timepicker #callendpicker></ngx-material-timepicker>
+
+                      </div>
+                      <div style="display: flex; gap: 5px; max-width: 180px; width: 100%;" *ngIf="is_claimSubmitted">
+                        <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                          formControlName="time" readonly>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div *ngIf="claimForm.get('calcType').value=='actual'"
+                    style="background: rgb(246 246 246); padding: 20px 0px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    <!-- <div
+                      style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+                      <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="margin-bottom: 0 !important; width: 100px;">Plate Code: </label>
+                        <div style="display: flex; gap: 5px; max-width: 180px; width: 100%;" *ngIf="!is_claimSubmitted">
+                          <input type="text" class="form-control" style="flex: 40%;" formControlName="vehicle_text"
+                            [disabled]="is_claimSubmitted" [maxlength]="maximumStringLength" placeholder="Eg:ABCD...">
+                        </div>
+                        <div style="display: flex; gap: 5px; max-width: 180px; width: 100%;" *ngIf="is_claimSubmitted">
+                          <input type="text" id="exampleFormControlInput3" class="form-control"
+                            style="max-width: 180px;" formControlName="vehicle_number" *ngIf="is_claimSubmitted"
+                            readonly>
+                        </div>
+
+                      </div> -->
+                    <!-- Newly added for category -->
+                    <div
+                      style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+                      <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 100px;">
+                          Plate Source :
+                        </label>
+                        <select2 [data]="emirates" [options]="deptOptions" (valueChanged)="onEmirateValueChange($event)"
+                          style="width: 180px;" *ngIf="!is_claimSubmitted"></select2>
+                        <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                          formControlName="emirate" *ngIf="is_claimSubmitted" readonly>
+                      </div>
+                      <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                        <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                          Plate Category :
+                        </label>
+                        <select2 [data]="plateCategory" [options]="deptOptions"
+                          (valueChanged)="onPlateCategoryValueChange($event)" style="width: 180px;"
+                          *ngIf="!is_claimSubmitted"></select2>
+                        <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 120px;"
+                          formControlName="plate_category" *ngIf="is_claimSubmitted" readonly>
+                      </div>
+
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+                      <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 100px;">
+                          Plate Code :
+                        </label>
+                        <select2 [data]="numberPlateCodes" [options]="deptOptions"
+                          (valueChanged)="onPlateCodeValueChange($event)" style="width: 180px;"
+                          *ngIf="!is_claimSubmitted"></select2>
+                        <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 120px;"
+                          formControlName="vehicle_text" *ngIf="is_claimSubmitted" readonly>
+                      </div>
+
+
+                      <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                        <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                          Plate No:
+                        </label>
+                        <div style="display: flex; gap: 5px; max-width: 180px; width: 100%;" *ngIf="!is_claimSubmitted">
+                          <input type="number" class="form-control" style="flex: 60%;" formControlName="vehicle_number"
+                            [disabled]="is_claimSubmitted" placeholder="Eg:12345...">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div
+                      style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+
+                      <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="margin-bottom: 0 !important; width: 100px;">Odometer reading :</label>
+                        <input type="number" id="exampleFormControlInput3" class="form-control"
+                          style="max-width: 180px;" formControlName="odometer">
+                      </div>
+
+                      <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                        <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                          Fuel Station Brand :
+                        </label>
+                        <select2 [data]="fuelStations" [options]="deptOptions"
+                          (valueChanged)="onfuelStationValueChange($event)" style="width: 180px;"
+                          *ngIf="!is_claimSubmitted"></select2>
+                        <input type="text" id="exampleFormControlInput3" class="form-control" style="max-width: 180px;"
+                          formControlName="fuel_pump" *ngIf="is_claimSubmitted" readonly>
+                      </div>
+
+                    </div>
+                    <div
+                      style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: -12px;">
+
+                      <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="margin-bottom: 0 !important; width: 100px;">Fuel Price(AED):</label>
+                        <input type="number" id="exampleFormControlInput3" class="form-control"
+                          style="max-width: 180px;" formControlName="actual_fuel_Price">
+                      </div>
+
+                      <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                        <label for="exampleFormControlInput4" style="margin-bottom: 0 !important; width: 120px;">
+                          Fuel Quantity(L):
+                        </label>
+                        <input type="number" id="exampleFormControlInput3" class="form-control"
+                          style="max-width: 180px;" formControlName="actual_fuel_quantity">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex;padding: 10px;justify-content: space-between;">
+                    <div style="font-size: 11px;">
+                      <span *ngIf="claimForm.get('calcType').value=='actual'">*Note: {{companyCarDesc}}</span>
+                      <span *ngIf="claimForm.get('calcType').value=='fixed'">*Note: {{personalCarDesc}}</span>
+                    </div>
+                    <button type="Submit" class="button button-fill button-rose" (click)="fetchTravelClaimData()"
+                      *ngIf="!is_claimSubmitted">
+                      View travel
+                    </button>
+                  </div>
+
+                  <div *ngIf="prevClaimData.length > 0">
+                    <div style="background-color: #f1f1f1;padding: 5px;font-size: 14px;font-weight: 600;">Previous Claim
+                      Details</div>
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Vehicle Number</th>
+                          <th>Odometer</th>
+                          <th>Fuel Price</th>
+                          <th>Fuel Quantity</th>
+                          <th>Claim Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let expense of prevClaimData">
+                          <td>{{ expense.actual_fuel_date | date }}</td>
+                          <td>{{ expense.vehicle_number }}</td>
+                          <td>{{ expense.odometer }}KM</td>
+                          <td>AED: {{ expense.actual_fuel_price }}</td>
+                          <td>{{ expense.actual_fuel_quantity }}L</td>
+                          <td>AED: {{ expense.amount }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+
+                  <ejs-grid style="overflow-y: auto;" [dataSource]="selectedItems" [height]='470' #toClaimgrid
+                    [allowTextWrap]='true' allowSorting='true' [toolbar]='toolbar' [allowExcelExport]='false'
+                    [allowPdfExport]='false' (toolbarClick)='claimToolbarClick($event)'>
+                    <e-columns>
+                      <e-column field="selectClaim" width="35" textAlign="center">
+                        <ng-template #headerTemplate>
+                          <input type="checkbox" (change)="onClaimSelectionChange($event)" [checked]="selectAllClaims"
+                            *ngIf="!is_claimSubmitted" />
+                          Select All
+                        </ng-template>
+                        <ng-template #template let-data>
+                          <input type="checkbox" [checked]="data.selected" (change)="onCheckboxChange(data)"
+                            *ngIf="!is_claimSubmitted" />
+                        </ng-template>
+                      </e-column>
+
+                      <!-- <e-column field="createdby" headerText="Employee" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.createdby || data.empName}}</p>
+                        </ng-template>
+                      </e-column> -->
+
+                      <e-column field="created_date" headerText="Date" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.created_date | date}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="checkout_formatted_address" headerText="Staring Point" width="25"
+                        textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.checkout_formatted_address}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="checkin_formatted_address" headerText="Ending Point" width="25"
+                        textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.checkin_formatted_address}}</p>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="distance" headerText="Distance" width="25" textAlign="centre">
+                        <ng-template #template let-data>
+                          <p>{{data.updatedDistance | number : '1.2-2'}} km</p>
+                          <span *ngIf="data.pending" class="pending">( Pending )</span>
+                        </ng-template>
+                      </e-column>
+                      <e-column field="status" headerText="Status" width="25" textAlign="centre"
+                        *ngIf="is_claimSubmitted"></e-column>
+                    </e-columns>
+
+                  </ejs-grid>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px;">
+
+                    <div
+                      style="display: flex;flex: 1; align-items: center; justify-content: space-between; padding: 10px 14px;">
+                      <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                        <label style="margin-bottom: 0 !important; width: 100px;">Upload Document:</label>
+                        <div style="display: flex;gap: 5px;">
+                          <ejs-uploader (selected)="onFileSelectedForClaim($event)" allowedExtensions=".jpg,.png,.pdf"
+                            [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"
+                            *ngIf="!is_claimSubmitted">
+                          </ejs-uploader>
+                          <div style="display: flex; align-items: center; gap: 10px;">
+
+                            <i (click)="goToClaimLink()" class="fa fa-eye" style="cursor: pointer;"></i>
+
+                            <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top"
+                              ngbTooltip="Delete File" container="body" (click)="deleteClaimDoc()"
+                              *ngIf="!is_claimSubmitted"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                      <label for="exampleFormControlInput5" style="margin-bottom: 0 !important; width: 120px;">
+                        Remarks :
+                      </label>
+                      <textarea class="form-control" rows="2" placeholder="Enter Remarks" id="exampleFormControlInput6"
+                        style="max-width: 180px;" formControlName="remarks" [disabled]="is_claimSubmitted"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="kt-align-right modal-footer">
+          <button type="Submit" class="button button-fill button-rose" (click)="handleTravelClaimSubmit()"
+            *ngIf="!is_claimSubmitted">
+            Submit
+          </button>
+          <button type="Submit" class="button button-fill button-rose" (click)="handlePrintAfterClaim()"
+            *ngIf="is_claimSubmitted">
+            Print
+          </button>
+          <button type="reset" class="btn btn-secondary"
+            style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="OntotalCloseChanes()">
+            CLOSE
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="dispute_modal" data-backdrop="static"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Travel Dispute</h5>
+          <button type="button" class="close" #mapCloseBtn (click)="OnDisputeClose()" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;background: #ffffff;padding-top: 25px;">
+          <div>
+            <div style="display: flex;justify-content: flex-end;padding: 10px 0px;" *ngIf="!is_submitted">
+              <span style="font-weight: bold; margin-right: 10px;">Select All</span>
+              <input type="checkbox" (change)="onDisputeSelectionChange($event, data)" [checked]="selectAllDispute" />
+            </div>
+            <form [formGroup]="disputeAllForm">
+              <div formArrayName="disputeDetails">
+                <div *ngFor="let dispute of disputeDetails.controls; let i = index" [formGroupName]="i"
+                  style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px;">
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                    <label for="travel_created_date"
+                      style="width: 150px; margin-right: 10px; font-weight: bold;">Date:</label>
+                    <div style="flex: 1;display: flex;justify-content:space-between;">
+                      <span>{{ dispute.value.travel_created_date | date }}</span>
+                      <input type="checkbox" (change)="onSelectionChange($event, data)" formControlName="selected"
+                        *ngIf="!is_submitted" />
+                    </div>
+
+                  </div>
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                    <label for="checkout_address" style="width: 150px; margin-right: 10px; font-weight: bold;">Starting
+                      Point:</label>
+                    <span style="flex: 1;">{{ dispute.value.checkout_addr }}</span>
+                  </div>
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                    <label for="checkin_address" style="width: 150px; margin-right: 10px; font-weight: bold;">Ending
+                      Point:</label>
+                    <span style="flex: 1;">{{ dispute.value.checkin_addr }}</span>
+                  </div>
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                    <label for="old_val" style="width: 150px; margin-right: 10px; font-weight: bold;">Original
+                      Distance:</label>
+                    <span style="flex: 1;">{{ dispute.value.old_val }}</span>
+                  </div>
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;" *ngIf="is_submitted">
+                    <label for="old_val" style="width: 150px; margin-right: 10px; font-weight: bold;">New
+                      Distance:</label>
+                    <span style="flex: 1;">{{ dispute.value.new_val }}</span>
+                  </div>
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;" *ngIf="!is_submitted">
+                    <label for="new_val" style="width: 150px; margin-right: 10px; font-weight: bold;">New
+                      Distance:</label>
+                    <input type="number" class="form-control" style="flex: 1;" placeholder="New Distance"
+                      formControlName="new_val">
+                  </div>
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                    <label for="document" style="width: 150px; margin-right: 10px; font-weight: bold;">Document:</label>
+                    <div style="display: flex;" *ngIf="!is_submitted">
+                      <button class="fa fa-upload" style="border: none; background: none;padding-right: 17px;"
+                        ngbTooltip="Upload the Document" (click)="fileInput.click()">
+                      </button>
+
+                      <button class="fa fa-eye" style="border: none; background: none;padding-right: 17px;"
+                        ngbTooltip="View the Document" *ngIf="dispute.get('doc').value" (click)="goToDisputeDocLink(i)">
+                      </button>
+
+                      <i *ngIf="dispute.get('doc').value" class="fa fa-trash" ngbTooltip="Delete Document"
+                        style="font-size: 14px;" (click)="disputeDelete(data)">
+                      </i>
+
+                      <input type="file" #fileInput style="display: none;"
+                        (change)="onFileSelectedForDispute($event, i)" accept=".jpg,.png,.pdf" [multiple]="false">
+                    </div>
+                    <div style="display: flex;" *ngIf="is_submitted">
+
+
+                      <button class="fa fa-eye" style="border: none; background: none;padding-right: 17px;"
+                        ngbTooltip="View the Document" *ngIf="dispute.get('doc').value" (click)="goToDisputeDocLink(i)">
+                      </button>
+                      <span *ngIf="!dispute.get('doc').value">No document uploaded</span>
+
+
+                    </div>
+                  </div>
+
+                  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                    <label for="remarks" style="width: 150px; margin-right: 10px; font-weight: bold;">Remarks:</label>
+                    <textarea rows="2" placeholder="Enter Reason" id="reasondesc" formControlName="remarks"
+                      class="form-control" style="flex: 1;"></textarea>
+                  </div>
+
+                  <hr style="border: 1px solid #ddd; margin: 20px 0;">
+
+                </div>
+              </div>
+            </form>
+
+
+          </div>
+
+
+        </div>
+        <div class="kt-align-right modal-footer">
+
+          <button type="Submit" class="button button-fill button-rose" (click)="onDisputeAllSubmit()"
+            *ngIf="!is_submitted">
+            Submit
+          </button>
+          <button class="btn" style="background-color: #07a913; color: white; font-weight: 600"
+            (click)="handleApproveDisputes()" *ngIf="is_submitted">
+            Approve All
+          </button>
+          <button class="btn" style="background-color: #e91e1e; color: white; font-weight: 600"
+            (click)="handleRejectDisputes()" *ngIf="is_submitted">
+            Reject All
+          </button>
+
+
+          <button type="reset" class="btn btn-secondary" style="width: 60px; padding: 7px 14px;font-size: 11px;"
+            (click)="OnDisputeClose()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ng-template #aprDisputeModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Approve / Reject Travel Dispute
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="kt-portlet__body">
+
+        <!-- <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.reference_id">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.full_name">
+          </div>
+        </div> -->
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Previous Distance <span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="disputeModalData.old_val">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">New Distance<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="disputeModalData.new_val">
+          </div>
+        </div>
+        <!--
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">AED</div>
+              </div>
+              <input type="text" class="form-control" disabled [(ngModel)]="singleData.amount">
+            </div>
+          </div>
+        </div> -->
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled
+              [ngModel]="disputeModalData.travel_created_date | date:'mediumDate'">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+          <div class="col-lg-6 col-xl-6">
+            <textarea class="form-control" id="exampleTextarea" rows="4" disabled
+              [(ngModel)]="disputeModalData.remarks"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Attached Document</label>
+          <div class="col-lg-6 col-xl-6">
+            <div style="margin-top:auto; margin-bottom: auto;" *ngIf="disputeModalData.doc==''">
+              No Document Uploaded
+            </div>
+            <div style="margin-top:auto; margin-bottom: auto;" *ngIf="disputeModalData.doc!=''">
+              <a (click)="goToLink(disputeModalData.doc)" class="hyperlink"> View Document </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div>
+      <p *ngIf="singleData.created_by" style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Adjustment Request
+            Details</strong> </u></p>
+      <p *ngIf="singleData.created_by" style="margin-bottom: 2px">Created by : {{singleData.created_by}}</p>
+      <p *ngIf="singleData.created_by" style="margin-bottom: 2px">Created Date : {{singleData.created_date | date }}
+      </p>
+    </div>
+
+    <div *ngIf="singleData.created_by != 'System' && singleData.approver1_roleId">
+      <p style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Approval Status</strong> </u></p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.status == 'Rejected' ">
+        Level 1: {{singleData.approver1_roleName}}
+        <span class="approve" *ngIf="singleData.is_approved_1 == true"> Approved</span>
+        <span class="decline" *ngIf="singleData.is_approved_1 == false"> Rejected</span>
+      </p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.status == 'Rejected' ">
+        Level 2: {{singleData.approver1_roleName}}
+        <span class="decline" *ngIf="singleData.is_approved_2 == false"> Rejected</span>
+      </p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.status != 'Rejected' ">
+        Level 1: {{singleData.approver1_roleName}}
+        <span class="pending" *ngIf="singleData.is_approved_1 == false"> Pending</span>
+        <span class="approve" *ngIf="singleData.is_approved_1 == true"> Approved</span>
+      </p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.approver2_roleId && singleData.status != 'Rejected' ">
+        Level 2: {{singleData.approver2_roleName}}
+        <span class="pending" *ngIf="singleData.is_approved_2 == false"> Pending</span>
+        <span class="approve" *ngIf="singleData.is_approved_2 == true"> Approved</span>
+      </p>
+    </div> -->
+
+
+  </div>
+  <!-- <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="aprAJ(singleData)">Approve</button>
+    <button class="btn btn-danger" (click)="rejAJ(singleData)">Reject</button>
+  </div> -->
+</ng-template>
+
+
+<!-- Print modal -->
+<ng-template #printModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Print</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closePrint()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" id="print-section">
+    <div class="invoice-container">
+      <div class="invoice-header">
+        <h2>Travel Claim Invoice</h2>
+      </div>
+
+      <div class="invoice-details">
+        <div class="invoice-column">
+          <div class="detail-item">
+            <label>Employee:</label>
+            <span>{{ claimForm.get('empName').value }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Submitted Date:</label>
+            <span>{{ claimForm.get('createdDate').value | date: 'dd-MM-yyyy' }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Distance:</label>
+            <span>{{ claimForm.get('totalDistance').value }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Date:</label>
+            <span *ngIf="!is_claimSubmitted">{{ claimForm.get('date').value | date: 'dd-MM-yyyy' }}</span>
+            <span *ngIf="is_claimSubmitted">{{ claimForm.get('date').value}}</span>
+          </div>
+        </div>
+
+        <div class="invoice-column">
+          <div class="detail-item">
+            <label>Claim ID:</label>
+            <span>{{ claimForm.get('claim_id').value }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Submitted By:</label>
+            <span>{{ claimForm.get('createdBy').value }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Vehicle Type:</label>
+            <span>{{ claimForm.get('vehicleType').value }}</span>
+          </div>
+          <div *ngIf="claimForm.get('calcType').value=='actual'" class="detail-item">
+            <label>Time:</label>
+            <span>{{ claimForm.get('time').value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="claimForm.get('calcType').value=='actual'" class="invoice-details">
+        <div class="invoice-column">
+          <div class="detail-item">
+            <label>Car Number:</label>
+            <span>{{ claimForm.get('vehicle_number').value }}</span>
+          </div>
+
+          <div class="detail-item">
+            <label>Fuel Station:</label>
+            <span>{{ claimForm.get('fuel_pump').value }}</span>
+          </div>
+
+          <div class="detail-item">
+            <label>Odometer:</label>
+            <span>{{ claimForm.get('odometer').value }} KM</span>
+          </div>
+
+        </div>
+        <div class="invoice-column">
+          <div class="detail-item">
+            <label>Registered Emirate:</label>
+            <span>{{ claimForm.get('emirate').value }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Fuel Price (AED):</label>
+            <span>{{ claimForm.get('actual_fuel_Price').value }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Fuel Quantity (L):</label>
+            <span>{{ claimForm.get('actual_fuel_quantity').value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <table class="travel-data-invoice">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Starting Point</th>
+            <th>Ending Point</th>
+            <th>Distance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of travelDataForPrint">
+            <td>{{ data.travel_created_date | date }}</td>
+            <td>{{ data.checkout_addr }}</td>
+            <td>{{ data.checkin_addr }}</td>
+            <td>
+              {{ data.distance}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div class="invoice-footer">
+        <div class="note">
+          <span *ngIf="claimForm.get('calcType').value=='actual'">*Note: {{ companyCarDesc }}</span>
+          <span *ngIf="claimForm.get('calcType').value=='fixed'">*Note: {{ personalCarDesc }}</span>
+        </div>
+
+        <!-- <div class="end-div">
+          <div class="">
+            <span>Submitted By : </span>
+            <span>{{userInfo.full_name}}</span>
+          </div>
+          <div class="">
+            <span>Submitted Date : </span>
+            <span>{{ today | date: 'MMM d, y' }}</span>
+          </div>
+          <div>
+            <span>Signature : </span>
+            <span></span>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="printContent()">
+      Print
+    </button>
+  </div>
+</ng-template>
+<iframe id="print-frame" style="display:none;"></iframe>

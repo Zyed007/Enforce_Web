@@ -1,0 +1,644 @@
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+
+<div *ngIf="accessToPage" style="padding: 15px; background-color: white; margin: 10px 15px 0px 15px;">
+
+  <div class="selbox col-12" style="display: flex;justify-content: end;">
+    <div class="d-flex align-items-center col-10 " style="display: flex; justify-content: flex-start;">
+    </div>
+    <div class="col-2 text-right">
+      <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" (click)="openAddAdjustment()">
+        Add Variable Pay
+      </button>
+    </div>
+  </div>
+
+  <div style="display: inline-block;">
+    <ejs-tab id="element"  #tabObjlist heightAdjustMode="Auto" overflowMode="Popup">
+      <e-tabitems>
+        <e-tabitem *ngFor="let header of Tabs" [header]="header">
+
+          <ng-template #content *ngIf="header.text == 'Pending'" >
+
+            <div style="margin-top: 20px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="pendingList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+            >
+            <e-columns>
+
+              <e-column field="full_name" headerText="Employee Name" width="80">
+                <ng-template #template let-data>
+                  <span>{{ data.full_name }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="pay_item" headerText="Pay Item" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.pay_item }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="Status" headerText="Status" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.status }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="amount" headerText="Amount(AED)" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.amount }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="date_incurred" headerText="Assosiated Period" width="60">
+                <ng-template #template let-data>
+                  <span>{{
+                    data.assc_start_date | date : "dd/MM/yyyy"
+                    }} </span>
+                    <span> to {{
+                      data.assc_end_date | date : "dd/MM/yyyy"
+                      }} </span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="remark" headerText="Remark" width="80">
+                <ng-template #template let-data>
+                  <span>{{ data.remarks }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column headerText="Action" width="100">
+                <ng-template #template let-data>
+                  <button  class="custbtn" *ngIf="addPayrollPaymentsFullAccess || (data.approver1_roleId == user_info.role_id && data.is_approved_1 == false)"(click)="aprRejVP(data)">Approve/Reject</button>
+                  <button class="foreye" (click)="viewVariablePay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                </ng-template>
+              </e-column>
+
+            </e-columns>
+            </ejs-grid>
+            </div>
+
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Rejected'" >
+            <div style="margin-top: 20px;">
+              <ejs-grid
+                #singleEmpAssignedLeaveGrid
+                [toolbar]="singleEmpToolbar"
+                [dataSource]="rejectedList"
+                [allowExcelExport]="true"
+                (toolbarClick)="singleEmpALGridDownload($event)"
+                allowTextWrap="true"
+                height="500px"
+                allowSorting="true"
+              >
+              <e-columns>
+
+                <e-column field="full_name" headerText="Employee Name" width="80">
+                  <ng-template #template let-data>
+                    <span>{{ data.full_name }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="pay_item" headerText="Pay Item" width="50">
+                  <ng-template #template let-data>
+                    <span>{{ data.pay_item }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="Status" headerText="Status" width="50">
+                  <ng-template #template let-data>
+                    <span>{{ data.status }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="amount" headerText="Amount(AED)" width="50">
+                  <ng-template #template let-data>
+                    <span>{{ data.amount }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="date_incurred" headerText="Assosiated Period" width="60">
+                  <ng-template #template let-data>
+                    <span>{{
+                      data.assc_start_date | date : "dd/MM/yyyy"
+                      }} </span>
+                      <span> to {{
+                        data.assc_end_date | date : "dd/MM/yyyy"
+                        }} </span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="remark" headerText="Remark" width="80">
+                  <ng-template #template let-data>
+                    <span>{{ data.remarks }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column headerText="Action" width="100">
+                  <ng-template #template let-data>
+                    <button class="custbtn" (click)="markPending(data)" *ngIf="addPayrollPaymentsFullAccess">Mark Pending</button>
+                    <button class="foreye" (click)="viewVariablePay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                  </ng-template>
+                </e-column>
+
+              </e-columns>
+
+
+              </ejs-grid>
+            </div>
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Approved'" >
+            <div  *ngIf="!isPayrollActive" style="margin-top: 10px; display: flex; justify-content: end;">
+              <p>Note: You cannot add Variable Pay to Paytable while Payroll is not Active! </p>
+            </div>
+            <div style="margin-top: 10px;">
+              <ejs-grid
+                #singleEmpAssignedLeaveGrid
+                [toolbar]="singleEmpToolbar"
+                [dataSource]="approvedList"
+                [allowExcelExport]="true"
+                (toolbarClick)="singleEmpALGridDownload($event)"
+                allowTextWrap="true"
+                height="500px"
+                allowSorting="true"
+              >
+              <e-columns>
+
+                <e-column field="full_name" headerText="Employee Name" width="80">
+                  <ng-template #template let-data>
+                    <span>{{ data.full_name }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="pay_item" headerText="Pay Item" width="50">
+                  <ng-template #template let-data>
+                    <span>{{ data.pay_item }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="Status" headerText="Status" width="50">
+                  <ng-template #template let-data>
+                    <span>{{ data.status }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="amount" headerText="Amount(AED)" width="50">
+                  <ng-template #template let-data>
+                    <span>{{ data.amount }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="date_incurred" headerText="Assosiated Period" width="60">
+                  <ng-template #template let-data>
+                    <span>{{
+                      data.assc_start_date | date : "dd/MM/yyyy"
+                      }} </span>
+                      <span> to {{
+                        data.assc_end_date | date : "dd/MM/yyyy"
+                        }} </span>
+                  </ng-template>
+                </e-column>
+
+                <e-column field="remark" headerText="Remark" width="80">
+                  <ng-template #template let-data>
+                    <span>{{ data.remarks }}</span>
+                  </ng-template>
+                </e-column>
+
+                <e-column headerText="Action" width="100">
+                  <ng-template #template let-data>
+                    <!-- <button class="custbtn" (click)="MarkApprPaid(data)">Mark Paid</button> -->
+                    <button class="custbtn" *ngIf="showPayrollPaymentBtn && isPayrollActive" (click)="addToPaytable(data)">Add to Paytable</button>
+                    <button class="foreye" (click)="viewVariablePay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    <!-- <button class="foreye" (click)="editAjustmentPay(data)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button> -->
+                  </ng-template>
+                </e-column>
+
+              </e-columns>
+
+
+              </ejs-grid>
+            </div>
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Added to Paytable'" >
+            <div  *ngIf="!isPayrollActive" style="margin-top: 10px; display: flex; justify-content: end;">
+              <p>Note: You cannot add Adjustments to Paytable while Payroll is not Active! </p>
+            </div>
+            <div style="margin-top: 10px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="activeList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+            >
+            <e-columns>
+
+              <e-column field="full_name" headerText="Employee Name" width="80">
+                <ng-template #template let-data>
+                  <span>{{ data.full_name }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="pay_item" headerText="Pay Item" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.pay_item }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="Status" headerText="Status" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.status }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="amount" headerText="Amount(AED)" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.amount }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="date_incurred" headerText="Assosiated Period" width="60">
+                <ng-template #template let-data>
+                  <span>{{
+                    data.assc_start_date | date : "dd/MM/yyyy"
+                    }} </span>
+                    <span> to {{
+                      data.assc_end_date | date : "dd/MM/yyyy"
+                      }} </span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="payroll_name" headerText="Scheduled Payroll" width="60">
+                <ng-template #template let-data>
+                  <span>{{ data.payroll_name }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="remark" headerText="Remark" width="80">
+                <ng-template #template let-data>
+                  <span>{{ data.remarks }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column headerText="Action" width="100">
+                <ng-template #template let-data>
+                  <button *ngIf="isPayrollActive"  ngbTooltip="This option send back the payment to the previous approved section." class="custbtn" (click)="sendBackToApr(data)">Send Back</button>
+                  <button class="foreye" (click)="viewVariablePay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                </ng-template>
+              </e-column>
+
+            </e-columns>
+            </ejs-grid>
+            </div>
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Paid'" >
+            <div style="margin-top: 20px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="paidList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+            >
+            <e-columns>
+
+              <e-column field="full_name" headerText="Employee Name" width="80">
+                <ng-template #template let-data>
+                  <span>{{ data.full_name }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="pay_item" headerText="Pay Item" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.pay_item }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="Status" headerText="Status" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.status }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="amount" headerText="Amount(AED)" width="50">
+                <ng-template #template let-data>
+                  <span>{{ data.amount }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="date_incurred" headerText="Assosiated Period" width="60">
+                <ng-template #template let-data>
+                  <span>{{
+                    data.assc_start_date | date : "dd/MM/yyyy"
+                    }} </span>
+                    <span> to {{
+                      data.assc_end_date | date : "dd/MM/yyyy"
+                      }} </span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="payroll_name" headerText="Scheduled Payroll" width="60">
+                <ng-template #template let-data>
+                  <span>{{ data.payroll_name }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column field="remark" headerText="Remark" width="80">
+                <ng-template #template let-data>
+                  <span>{{ data.remarks }}</span>
+                </ng-template>
+              </e-column>
+
+              <e-column headerText="Action" width="100">
+                <ng-template #template let-data>
+                  <button (click)="viewVariablePay(data)">View</button>
+                </ng-template>
+              </e-column>
+
+            </e-columns>
+            </ejs-grid>
+            </div>
+          </ng-template>
+
+        </e-tabitem>
+      </e-tabitems>
+    </ejs-tab>
+  </div>
+</div>
+
+
+<!-- Models -->
+<!-- Add Variable Pay -->
+<ng-template #addvariablepayModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Variable Pay</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="AddVaraiableForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Employee<span class="error-msg" style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="activeEmpList" (change)="changeEmp($event)" [fields]="commonFields"
+                formControlName="empid" [allowFiltering]="true"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="VarItem" [fields]="commonFields"
+                formControlName="item"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount" />
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Payroll Month<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-dropdownlist (change)="changeAdjPaymonth($event)" [dataSource]="payrollmonth" [fields]="commonFields"
+                formControlName="payroll"></ejs-dropdownlist>
+            </div>
+          </div> -->
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Associated Period<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker format="MMM d, y" formControlName="startdate" placeholder="Start Date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label"></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker format="MMM d, y" formControlName="enddate" placeholder="End Date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitVariablePay()">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<!-- View Variable Pay Details -->
+<ng-template #variablepayModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Variable Pay Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+
+      <div class="kt-portlet__body">
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.reference_id">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Employee </label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.full_name">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.pay_item">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">AED</div>
+              </div>
+              <input type="text" class="form-control" placeholder="" id="nameArea" disabled [(ngModel)]="singleData.amount"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Payroll Month<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6">
+            <ejs-dropdownlist (change)="changeAdjPaymonth($event)" [dataSource]="payrollmonth" [fields]="commonFields"
+              formControlName="payroll"></ejs-dropdownlist>
+          </div>
+        </div> -->
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Associated Period<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled [ngModel]="singleData.assc_start_date | date:'mediumDate'">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label"></label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled [ngModel]="singleData.assc_end_date | date:'mediumDate'">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+          <div class="col-lg-6 col-xl-6">
+            <textarea class="form-control" id="exampleTextarea" rows="4" disabled [(ngModel)]="singleData.remarks" ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
+
+<!-- Approve or Disapprove Variable Pay Details -->
+<ng-template #aprvariablepayModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Approve / Reject Variable Pay</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+
+      <div class="kt-portlet__body">
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.reference_id">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Employee </label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.full_name">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.pay_item">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">AED</div>
+              </div>
+              <input type="text" class="form-control" placeholder="" id="nameArea" disabled [(ngModel)]="singleData.amount"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Associated Period<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled [ngModel]="singleData.assc_start_date | date:'mediumDate'">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label"></label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled [ngModel]="singleData.assc_end_date | date:'mediumDate'">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+          <div class="col-lg-6 col-xl-6">
+            <textarea class="form-control" id="exampleTextarea" rows="4" disabled [(ngModel)]="singleData.remarks" ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="aprVP(singleData)">Approve</button>
+    <button (click)="rejVP(singleData)">Reject</button>
+  </div>
+</ng-template>
+
+

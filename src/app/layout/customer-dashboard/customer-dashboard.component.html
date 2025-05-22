@@ -1,0 +1,1226 @@
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />  -->
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid leadContainer">
+  <div class="kt-grid__item" id="kt_subheader">
+ 
+     
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+              <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title" >
+                  Overview
+                </h3>
+               
+        
+                <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                  <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                          <span class="kt-subheader__breadcrumbs-separator"></span>
+                      <a  class="kt-subheader__breadcrumbs-link">
+                          Cutomers                          </a>
+                                       
+              </div>
+              <div style="border: 1px solid #ffb822;margin-left: 10px;cursor: pointer !important;" [routerLink]="['/pricing']"  class="btn btn-bold btn-sm btn-font-sm btn-label-warning"  >UPGRADE</div>
+                  <div style="color:#2c77f4!important;margin-left: 10px;" >Upgrade to enable customer info & location</div>
+                 
+              </div>
+             
+          </div>
+         
+                   
+
+  </div>
+  <div class="kt-portlet ">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+      <div class="kt-portlet__head-label">
+         
+       
+      </div>
+      <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+  <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+      <i class="la la-long-arrow-left"></i>
+      Back
+  </a> -->
+  &nbsp;
+  <div class="dropdown dropdown-inline">
+      <!-- <button type="button" class="btn btn-brand btn-icon-sm"   aria-haspopup="true" aria-expanded="false"> -->
+            
+      <!-- </button> -->
+      <!-- <button type="button" class="button button-fill button-rose" style="width: 115px !important;"
+        (click)='dragdrp()' aria-haspopup="true" aria-expanded="false">
+          <i class="flaticon2-indent-dots"></i> Drag & drop
+        </button> -->
+<!-- <button type="button"  (click)='AddForm()' class="button button-fill button-rose" > <i class="flaticon2-plus" ></i> Add New </button> -->
+<button type="button"  (click)='goBack()' class="button button-fill button-rose" style="margin-left:10px;" > <i class="fa fa-angle-left"></i> Back	</button>
+   
+  </div>
+</div>		</div>
+  </div>
+    <div class="kt-portlet__body" style="padding-bottom: 8px;">
+        <div class="kt-widget kt-widget--user-profile-3">
+            <div class="kt-widget__top">
+                <div class="kt-widget__media kt-hidden-">
+                    <img src="../../../assets/media/project-logos/3.png" alt="image">
+                </div>
+                <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden">
+                    JM
+                </div>
+                <div class="kt-widget__content">
+                    <div class="kt-widget__head">
+                        <a  class="kt-widget__username kt-hidden">
+                            Jason Muller    
+                            <i class="flaticon2-correct"></i>                       
+                        </a>
+
+                        <a  class="kt-widget__title">{{leadData.first_name}}<span style="margin-left: 4px;">{{leadData.last_name}}</span>- <span style="font-size: 10px;font-weight: normal;">Interfuture</span></a>
+                       
+<!-- 
+                        <div class="kt-widget__action">
+                            <button type="button" class="btn btn-success btn-sm btn-upper" (click)="addActivity()">add milestone</button>&nbsp;
+                            <button type="button" class="btn btn-brand btn-sm btn-upper" (click)="addTask()">new task</button>
+                            <button type="button" class="btn btn-brand btn-sm btn-upper" (click)="addLocation()"> LOCATION </button>
+                        </div> -->
+                    </div>
+
+                    <div class="kt-widget__subhead">
+                        <a ><i class="flaticon2-new-email"></i>{{leadData.email!=''?leadData.email:'-'}}</a>
+                        <a ><i class="flaticon2-calendar-3"></i>PR Manager </a>
+                        <a ><i class="flaticon2-placeholder"></i>Melbourne</a>
+                    </div>
+                   <!-- <div class="kt-widget__desc">
+                     <div style="display: flex;margin:5px 0px;" >
+                       <div style="width:100px;color: #74788d;
+                       font-weight: 500;">Lead Owner</div>
+                       <div>sdfds</div>
+                     </div>
+                     <div style="display: flex;">
+                      <div style="width:100px;color: #74788d;
+                      font-weight: 500;">Lead Status</div>
+                      <div>sdfds</div>
+                    </div>
+                   </div> -->
+                    <!-- <div  class="kt-widget__desc">Lead Owner</div>
+                    <div  class="kt-widget__desc">Lead Status</div> -->
+
+                    <!-- <div class="kt-widget__info">
+                        <div class="kt-widget__desc">
+                            xz
+                        </div>
+                        <div class="kt-widget__progress kt-hidden">
+                            <div class="kt-widget__text">
+                                Progress
+                            </div>
+                            <div class="progress" style="height: 5px;width: 100%;">
+                                <div class="progress-bar kt-bg-success" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="kt-widget__stats">
+                                zx%
+                            </div>
+                        </div>
+
+                        <div class="kt-widget__stats d-flex align-items-center flex-fill">
+                            <div class="kt-widget__item">
+                                <span class="kt-widget__date">
+                                    Start Date
+                                </span>
+                                <div class="kt-widget__label">
+                                    <span class="btn btn-label-brand btn-sm btn-bold btn-upper">zx</span>
+                                </div>
+                            </div>
+
+                            <div class="kt-widget__item">
+                                <span class="kt-widget__date">
+                                    Due Date
+                                </span>
+                                <div class="kt-widget__label">
+                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">zx</span>
+                                </div>
+                            </div>
+
+                            <div class="kt-widget__item flex-fill">
+                                <span class="kt-widget__subtitel">Progress</span>
+                                <div class="kt-widget__progress d-flex  align-items-center">
+                                    <div class="progress" style="height: 5px;width: 100%;">
+                                        <div class="progress-bar kt-bg-success" role="progressbar" [style.width] = "projectProgress? projectProgress+'%'  : 0 +'%'"  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <span class="kt-widget__stat">
+                                        zx%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="kt-widget__action">
+              <!-- <span class="btn btn-label-success" disabled="{planType == 'Basic'?'disabled':''}">Success</span> -->
+              <!-- <button type="button" class="btn btn-sm btn-upper" style="background: #edeff6">edit</button>&nbsp; -->
+              <!-- <button type="button" class="btn btn-success btn-sm btn-upper" (click)="addActivity()">add milestone</button>&nbsp; -->
+              <!-- <button type="button"  data-toggle="kt-tooltip" data-placement="top" title="" data-original-title="Upgrade" class="btn btn-label-success" (click)="addCustomer()">Customer</button> -->
+              <!-- <button type="button"  [style.cursor] = "planType == 'Basic' ? 'not-allowed !important' : ''" style="cursor: not-allowed !important;"  disabled="{planType == 'Basic'?'disabled':''}"  data-toggle="kt-tooltip" data-placement="top" title="" data-original-title="Upgrade" class="btn btn-label-success" (click)="addCustomer()">Customer</button> -->
+              <!-- <button type="button" class="btn btn-brand btn-sm btn-upper" (click)="addLocation()">{{!editableLoc?'ADD LOCATION':'EDIT LOCATION'}} </button> -->
+              <!-- <button type="button"   style="margin-left:15px;" class="btn btn-label-success" (click)="addLocation()"> Location </button> -->
+          </div>
+            <div class="kt-widget__bottom">
+                <!-- <div class="kt-widget__item">
+                    <div class="kt-widget__icon">
+                        <i class="flaticon-piggy-bank"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                        <span class="kt-widget__title">Earnings</span>
+                        <span class="kt-widget__value"><span>$</span>249,500</span>
+                    </div>
+                </div>
+
+                <div class="kt-widget__item">
+                    <div class="kt-widget__icon">
+                        <i class="flaticon-confetti"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                        <span class="kt-widget__title">Expances</span>
+                        <span class="kt-widget__value"><span>$</span>164,700</span>
+                    </div>
+                </div>
+
+                <div class="kt-widget__item">
+                    <div class="kt-widget__icon">
+                        <i class="flaticon-pie-chart"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                        <span class="kt-widget__title">Net</span>
+                        <span class="kt-widget__value"><span>$</span>84,060</span>
+                    </div>
+                </div> -->
+
+                <div class="kt-widget__item" style="padding-top: 10px;">
+                    <div class="kt-widget__icon">
+                        <i class="flaticon2-files-and-folders 
+                        " style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                        <span class="kt-widget__title">zx </span>
+                        <!-- <a class="kt-widget__value kt-font-brand">View</a> -->
+                    </div>
+                </div>
+
+                <div class="kt-widget__item" style="padding-top: 10px;">
+                    <div class="kt-widget__icon">
+                        <i class="flaticon2-sheet" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div class="kt-widget__details">
+                        <span class="kt-widget__title">zx</span>
+                        <!-- <a class="kt-widget__value kt-font-brand">View</a> -->
+                    </div>
+                </div>
+                <div class="kt-widget__item" style="padding-top: 10px;">
+               </div>
+               <div class="kt-widget__item" style="padding-top: 10px;">
+              </div>
+
+</div>
+        </div>
+    </div>
+</div>
+ 
+
+<div class="kt-portlet ">
+    <div class="kt-portlet__head" style="padding-left: 0px;">
+        <div class="kt-portlet__head kt-portlet__head--lg" style="">
+            <div class="kt-portlet__head-label">
+                
+                <h3 class="kt-portlet__head-title" style="font-size: 1rem !important;">
+                    Lead information
+                </h3>
+            </div>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <!-- Lead information -->
+            <!-- <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+               <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_contacts_view_tab_1" role="tab">
+                        <i class="flaticon2-calendar-3"></i> Lead 
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" href="#kt_contacts_view_tab_2" role="tab">
+                        <i class="flaticon2-user-outline-symbol"></i> Address
+                    </a>
+                </li> 
+            <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_contacts_view_tab_3" role="tab">
+                        <i class="flaticon2-gear"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" href="#kt_contacts_view_tab_4" role="tab">
+                        <i class="flaticon2-note"></i> Project
+                    </a>
+                </li>
+            </ul> -->
+        </div>
+    </div>
+    <div class="kt-portlet__body" style="padding-top: 0px;">
+        <div class="tab-content  kt-margin-t-20">
+            <!--Begin:: Tab Content-->
+            <div class="tab-pane active" id="kt_contacts_view_tab_1" role="tabpanel">
+                <form class="kt-form kt-form--label-right" action="#">
+                    <div class="kt-form__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <!-- <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Personal Info:</h3>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Lead Image</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="kt-avatar kt-avatar--outline" id="kt_contacts_edit_avatar">
+                                            <div class="kt-avatar__holder" style="background-image: url(_http_/keenthemes.com/metronic/preview/default/custom/user/assets/media/users/100_12.html);"></div>
+                                            <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" data-original-title="Change avatar">
+                                                <i class="fa fa-pen"></i>
+                                                <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg">
+                                            </label>
+                                            <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+                                               <i class="fa fa-times"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">First Name</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                     {{leadData.first_name!=''?leadData.first_name:'-'}}
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Last Name</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                     {{leadData.last_name!=''?leadData.last_name:'-'}}
+                                    </div>
+                                  
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Lead Owner</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        John
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Lead Source</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        Lead
+                                    </div>
+                                  
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Lead Status</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        Active
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Annual Revenue</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                       {{leadData.annual_revenue!=''?leadData.annual_revenue:0}} $
+                                    </div>
+                                  
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Rating</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        Rating 1
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Industry</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        Finance
+                                    </div>
+                                  
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">No of Employees</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                     {{leadData.no_of_employee!=''?leadData.no_of_employee:'-'}}
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Email</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                     {{leadData.email!=''?leadData.email:'-'}}
+                                    </div>
+                                  
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Website</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                     {{leadData.website!=''?leadData.website:'-'}}
+
+                                    </div>
+                                 
+                                  
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label" style="color: #777;">Last Name</label>
+                                    <div class="col-lg-9 col-xl-6" style="margin-top: 6px;">
+                                     William
+                                    </div>
+                                </div> -->
+                            
+                                <!-- <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Contact Info:</h3>
+                                    </div>
+                                </div> -->
+
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;
+                    margin-bottom: 18px" class="kt-separator kt-separator--space-lg kt-separator--fit kt-separator--border-solid"></div>
+                    <div class="kt-section" style="margin-bottom:0px">
+                       <div class="kt-section__body">
+                    <div class="row">
+                                   <div class="col-lg-9 col-xl-6">
+                                       <h3 class="kt-section__title kt-section__title-sm" style="margin-bottom: 15px;">Address Info:</h3>
+                                   </div>
+                               </div>
+                               </div>
+                    </div>
+                    <div class="form-group row" style="margin-bottom: 2px;">
+                       <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Address 1</label>
+                       <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                       font-weight: 500;">
+                           Regal Tower
+                       </div>
+                       <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Address 2</label>
+                       <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                       font-weight: 500;">
+                           Business Bay
+                       </div>
+                     
+                   </div>
+                               <div class="form-group row" style="margin-bottom: 2px;">
+                                   <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Country</label>
+                                   <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                   font-weight: 500;">
+                                      United Arab Emirates
+                                   </div>
+                                   <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">City</label>
+                                   <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                   font-weight: 500;">
+                                    Dubai
+                                   </div>
+                                 
+                               </div>
+                     <div style="margin-top: 10px;
+                     margin-bottom: 18px" class="kt-separator kt-separator--space-lg kt-separator--fit kt-separator--border-solid"></div>
+                     <div class="kt-section" style="margin-bottom:0px">
+                        <div class="kt-section__body">
+                     <div class="row">
+                                    <!-- <label class="col-xl-2"></label> -->
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm" style="margin-bottom: 15px;">Contact Info:</h3>
+                                    </div>
+                                </div>
+                                </div>
+                     </div>
+                     <div class="form-group row" style="margin-bottom: 2px;">
+                        <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">First Name</label>
+                        <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                        font-weight: 500;">
+                            Hifza
+                        </div>
+                        <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Last Name</label>
+                        <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                        font-weight: 500;">
+                            Kausar
+                        </div>
+                      
+                    </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Contact Number</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                       0537878234
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Contact Email</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                       test@gmail.com
+                                    </div>
+                                  
+                                </div>
+                                <div style="margin-top: 10px;
+                                margin-bottom: 18px" class="kt-separator kt-separator--space-lg kt-separator--fit kt-separator--border-solid"></div>
+                                <div class="kt-section" style="margin-bottom:0px">
+                                   <div class="kt-section__body">
+                                <div class="row">
+                                               <!-- <label class="col-xl-2"></label> -->
+                                               <div class="col-lg-9 col-xl-6">
+                                                   <h3 class="kt-section__title kt-section__title-sm" style="margin-bottom: 15px;">Project Info:</h3>
+                                               </div>
+                                           </div>
+                                           </div>
+                                </div>
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                   <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Project Name</label>
+                                   <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                   font-weight: 500;">
+                                 <span style="margin-right: 2px;font-size: 11px;">{{leadData.leadProject.project_prefix}}</span> {{leadData.leadProject.project_name!=''?leadData.leadProject.project_name:'-'}} 
+                                   </div>
+                                   <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Design Type</label>
+                                   <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                   font-weight: 500;">
+                                       Interior
+                                   </div>
+                                 
+                               </div>
+                                           <div class="form-group row" style="margin-bottom: 2px;">
+                                               <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Project Type</label>
+                                               <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                               font-weight: 500;">
+                                                  Silver
+                                               </div>
+                                               <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Package </label>
+                                               <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                               font-weight: 500;">
+                                                 Package 1
+                                               </div>
+                                             
+                                           </div>
+                              
+                  
+                </form>
+            </div>
+            <!--End:: Tab Content-->
+
+            <!--Begin:: Tab Content-->
+            <div class="tab-pane" id="kt_contacts_view_tab_2" role="tabpanel">
+                <form class="kt-form kt-form--label-right">
+                    <div class="kt-form__body">
+                      
+
+                        <div class="kt-section">
+                            <div class="kt-section__body">
+                                <!-- <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Account:</h3>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group row" style="margin-bottom: 2px;">
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Address 1</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        Regal Tower
+                                    </div>
+                                    <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Address 2</label>
+                                    <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                    font-weight: 500;">
+                                        Business Bay
+                                    </div>
+                                  
+                                </div>
+                                            <div class="form-group row" style="margin-bottom: 2px;">
+                                                <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">Country</label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                                font-weight: 500;">
+                                                   United Arab Emirates
+                                                </div>
+                                                <label class="col-xl-2 col-lg-2 col-form-label" style="color: #777;">City</label>
+                                                <div class="col-lg-4 col-xl-4" style="margin-top: 6px;    color: #000;
+                                                font-weight: 500;">
+                                                 Dubai
+                                                </div>
+                                              
+                                            </div>
+                                
+                             
+                              
+                            </div>
+                        </div>
+
+                        <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg" style="margin-top: 10px;
+                        margin-bottom: 18px"></div>
+
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Security:</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Login verification</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <button type="button" class="btn btn-label-brand btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Setup login verification</button>
+                                        <span class="form-text text-muted">
+                                                    After you log in, you will be asked for additional information to confirm your identity and protect your account from being compromised.
+                                                    <a href="#" class="kt-link">Learn more</a>.
+                                                    </span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Password reset verification</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="kt-checkbox-single">
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox"> Require personal information to reset your password.
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <span class="form-text text-muted">
+                                                    For extra security, this requires you to confirm your email or phone number when you reset your password.
+                                                    <a href="#" class="kt-link">Learn more</a>.
+                                                </span>
+                                    </div>
+                                </div>
+                                <div class="form-group row kt-margin-t-10 kt-margin-b-10">
+                                    <label class="col-xl-3 col-lg-3 col-form-label"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <button type="button" class="btn btn-label-danger btn-bold btn-sm kt-margin-t-5 kt-margin-b-5">Deactivate your account ?</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-separator kt-separator--space-lg kt-separator--fit kt-separator--border-solid" style="margin-top: 10px;
+                    margin-bottom: 18px"></div>
+
+                    <div class="kt-form__actions">
+                        <div class="row">
+                            <div class="col-xl-3"></div>
+                            <div class="col-lg-9 col-xl-6">
+                                <a href="#" class="btn btn-brand btn-bold">Save changes</a>
+                                <a href="#" class="btn btn-clean btn-bold">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--End:: Tab Content-->
+
+            <!--Begin:: Tab Content-->
+            <div class="tab-pane" id="kt_contacts_view_tab_3" role="tabpanel">
+                <form class="kt-form kt-form--label-right">
+                    <div class="kt-form__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Setup Email Notification:</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-sm row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Email Notification</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <span class="kt-switch">
+                                                                    <label>
+                                                                        <input type="checkbox" checked="checked" name="email_notification_1">
+                                                                        <span></span>
+                                        </label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-last row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Send Copy To Personal Email</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <span class="kt-switch">
+                                                                    <label>
+                                                                        <input type="checkbox" name="email_notification_2">
+                                                                        <span></span>
+                                        </label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg"></div>
+
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Activity Related Emails:</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">When To Email</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="kt-checkbox-list">
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox"> You have new notifications.
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox"> You're sent a direct message
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox" checked="checked"> Someone adds you as a connection
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-last row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">When To Escalate Emails</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="kt-checkbox-list">
+                                            <label class="kt-checkbox kt-checkbox--brand">
+                                                <input type="checkbox"> Upon new order.
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox kt-checkbox--brand">
+                                                <input type="checkbox"> New membership approval
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox kt-checkbox--brand">
+                                                <input type="checkbox" checked="checked"> Member registration
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kt-separator kt-separator--border-dashed kt-separator--portlet-fit kt-separator--space-lg"></div>
+
+                        <div class="kt-section kt-section--first">
+                            <div class="kt-section__body">
+                                <div class="row">
+                                    <label class="col-xl-3"></label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <h3 class="kt-section__title kt-section__title-sm">Updates From Keenthemes:</h3>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Email You With</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="kt-checkbox-list">
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox"> News about Metronic product and feature updates
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox"> Tips on getting more out of Keen
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox" checked="checked"> Things you missed since you last logged into Keen
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox" checked="checked"> News about Metronic on partner products and other services
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox" checked="checked"> Tips on Metronic business products
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-separator kt-separator--space-lg kt-separator--fit kt-separator--border-solid"></div>
+
+                    <div class="kt-form__actions">
+                        <div class="row">
+                            <div class="col-xl-3"></div>
+                            <div class="col-lg-9 col-xl-6">
+                                <a href="#" class="btn btn-label-brand btn-bold">Save changes</a>
+                                <a href="#" class="btn btn-clean btn-bold">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--End:: Tab Content-->
+
+            <!--Begin:: Tab Content-->
+            <div class="tab-pane " id="kt_contacts_view_tab_4" role="tabpanel">
+                <div class="kt-container">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Type notes"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="btn btn-label-brand btn-bold">Add notes</a>
+                                <a href="#" class="btn btn-clean btn-bold">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="kt-separator kt-separator--space-lg kt-separator--border-dashed"></div>
+
+                    <div class="kt-notes kt-scroll kt-scroll--pull" data-scroll="true" style="height: 500px;">
+                        <div class="kt-notes__items">
+                            <div class="kt-notes__item">
+                                <div class="kt-notes__media">
+                                    <!-- <img class="kt-hidden-" src="../../../../../themes/metronic/theme/default/demo12/dist/assets/media/users/100_3.jpg" alt="image"> -->
+                                    <span class="kt-notes__icon kt-font-boldest kt-hidden">
+                                            <i class="flaticon2-cup"></i>
+                                        </span>
+                                    <h3 class="kt-notes__user kt-font-boldest kt-hidden">
+                                            N S
+                                        </h3>
+                                </div>
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    New order
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    9:30AM 16 June, 2015
+                                                </span>
+                                            <span class="kt-badge kt-badge--success kt-badge--inline">new</span>
+                                        </div>
+                                        <div class="kt-notes__dropdown">
+                                            <a href="#" class="btn btn-sm btn-icon-md btn-icon" data-toggle="dropdown">
+                                                <i class="flaticon-more-1 kt-font-brand"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="kt-nav">
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+            <span class="kt-nav__link-text">Reports</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-send"></i>
+            <span class="kt-nav__link-text">Messages</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+            <span class="kt-nav__link-text">Charts</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+            <span class="kt-nav__link-text">Members</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-settings"></i>
+            <span class="kt-nav__link-text">Settings</span>
+        </a>
+    </li>
+</ul>                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item">
+                                <div class="kt-notes__media">
+                                    <span class="kt-notes__icon">
+                                            <i class="flaticon2-rocket kt-font-danger"></i>
+                                        </span>
+                                </div>
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    Notification
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    10:30AM 23 May, 2013
+                                                </span>
+                                        </div>
+                                        <div class="kt-notes__dropdown">
+                                            <a href="#" class="btn btn-sm btn-icon-md btn-icon" data-toggle="dropdown">
+                                                <i class="flaticon2-rectangular kt-font-brand"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="kt-nav">
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+            <span class="kt-nav__link-text">Reports</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-send"></i>
+            <span class="kt-nav__link-text">Messages</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+            <span class="kt-nav__link-text">Charts</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+            <span class="kt-nav__link-text">Members</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-settings"></i>
+            <span class="kt-nav__link-text">Settings</span>
+        </a>
+    </li>
+</ul>                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item">
+                                <div class="kt-notes__media">
+                                    <h3 class="kt-notes__user kt-font-brand kt-font-boldest">
+                                            DS
+                                        </h3>
+                                </div>
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    System alert
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    7:10AM 21 February, 2016
+                                                </span>
+                                        </div>
+                                        <div class="kt-notes__dropdown">
+                                            <a href="#" class="btn btn-sm btn-icon-md btn-icon" data-toggle="dropdown">
+                                                <i class="flaticon2-note kt-font-brand"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="kt-nav">
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+            <span class="kt-nav__link-text">Reports</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-send"></i>
+            <span class="kt-nav__link-text">Messages</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+            <span class="kt-nav__link-text">Charts</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+            <span class="kt-nav__link-text">Members</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-settings"></i>
+            <span class="kt-nav__link-text">Settings</span>
+        </a>
+    </li>
+</ul>                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item">
+                                <div class="kt-notes__media">
+                                    <span class="kt-notes__icon">
+                                            <i class="flaticon2-poll-symbol kt-font-success"></i>
+                                        </span>
+                                </div>
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    New order
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    10:30AM 23 May, 2013
+                                                </span>
+                                        </div>
+                                        <div class="kt-notes__dropdown">
+                                            <a href="#" class="btn btn-sm btn-icon-md btn-icon" data-toggle="dropdown">
+                                                <i class="flaticon2-gear kt-font-brand"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="kt-nav">
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+            <span class="kt-nav__link-text">Reports</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-send"></i>
+            <span class="kt-nav__link-text">Messages</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+            <span class="kt-nav__link-text">Charts</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+            <span class="kt-nav__link-text">Members</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-settings"></i>
+            <span class="kt-nav__link-text">Settings</span>
+        </a>
+    </li>
+</ul>                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item">
+                                <div class="kt-notes__media">
+                                    <span class="kt-notes__icon">
+                                            <i class="flaticon2-box-1 kt-font-brand"></i>
+                                        </span>
+                                </div>
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    Notification
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    10:30AM 23 May, 2013
+                                                </span>
+                                        </div>
+                                        <div class="kt-notes__dropdown">
+                                            <a href="#" class="btn btn-sm btn-icon-md btn-icon" data-toggle="dropdown">
+                                                <i class="flaticon2-sort kt-font-brand"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="kt-nav">
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+            <span class="kt-nav__link-text">Reports</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-send"></i>
+            <span class="kt-nav__link-text">Messages</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+            <span class="kt-nav__link-text">Charts</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+            <span class="kt-nav__link-text">Members</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-settings"></i>
+            <span class="kt-nav__link-text">Settings</span>
+        </a>
+    </li>
+</ul>                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item">
+                                <div class="kt-notes__media">
+                                    <span class="kt-notes__icon">
+                                            <i class="flaticon2-rocket kt-font-danger"></i>
+                                        </span>
+                                </div>
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    Notification
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    10:30AM 23 May, 2013
+                                                </span>
+                                        </div>
+                                        <div class="kt-notes__dropdown">
+                                            <a href="#" class="btn btn-sm btn-icon-md btn-icon" data-toggle="dropdown">
+                                                <i class="flaticon2-rectangular kt-font-brand"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <ul class="kt-nav">
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-line-chart"></i>
+            <span class="kt-nav__link-text">Reports</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-send"></i>
+            <span class="kt-nav__link-text">Messages</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-pie-chart-1"></i>
+            <span class="kt-nav__link-text">Charts</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-avatar"></i>
+            <span class="kt-nav__link-text">Members</span>
+        </a>
+    </li>
+    <li class="kt-nav__item">
+        <a href="#" class="kt-nav__link">
+            <i class="kt-nav__link-icon flaticon2-settings"></i>
+            <span class="kt-nav__link-text">Settings</span>
+        </a>
+    </li>
+</ul>                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item kt-notes__item--clean">
+                                <div class="kt-notes__media">
+                                    <!-- <img class="kt-hidden" src="../../../../../themes/metronic/theme/default/demo12/dist/assets/media/users/100_1.jpg" alt="image"> -->
+                                    <span class="kt-notes__icon kt-font-boldest kt-hidden">
+                                            <i class="flaticon2-cup"></i>
+                                        </span>
+                                    <h3 class="kt-notes__user kt-font-boldest kt-hidden">
+                                            M E
+                                        </h3>
+                                    <span class="kt-notes__circle kt-hidden-"></span>
+                                </div>
+
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    Order
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    11:40AM 14 March, 2012
+                                                </span>
+                                            <span class="kt-badge kt-badge--danger kt-badge--inline">important</span>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="kt-notes__item kt-notes__item--clean">
+                                <div class="kt-notes__media">
+                                    <!-- <img class="kt-hidden" src="../../../../../themes/metronic/theme/default/demo12/dist/assets/media/users/100_1.jpg" alt="image"> -->
+                                    <span class="kt-notes__icon kt-font-boldest kt-hidden">
+                                            <i class="flaticon2-cup"></i>
+                                        </span>
+                                    <h3 class="kt-notes__user kt-font-boldest kt-hidden">
+                                            N B
+                                        </h3>
+                                    <span class="kt-notes__circle kt-hidden-"></span>
+                                </div>
+
+                                <div class="kt-notes__content">
+                                    <div class="kt-notes__section">
+                                        <div class="kt-notes__info">
+                                            <a href="#" class="kt-notes__title">
+                                                    Remarks
+                                                </a>
+                                            <span class="kt-notes__desc">
+                                                    10:30AM 23 April, 2013
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <span class="kt-notes__body">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End:: Tab Content-->
+        </div>
+    </div>
+</div>
+  
+
+ 
+
+
+
+  </div>
+
+ 
+
+
+
+
+
+
+
+  
+  
+
+

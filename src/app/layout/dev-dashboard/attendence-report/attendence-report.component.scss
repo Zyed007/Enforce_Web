@@ -1,0 +1,181 @@
+.admin-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .admin-card .card-body {
+    padding: 20px;
+  }
+  
+  .admin-card .card-title {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .admin-card .card-text {
+    color: #666;
+  }
+  
+  .rowimp {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+  }
+  
+  .startdiv {
+    margin: 20px 25px;
+  }
+  
+  .rowcard {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+  }
+  
+  .datewidth {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .background-inPending {
+    background-color: #cecbcb;
+  }
+  
+  .active {
+    background-color: #c1c1c1;
+    /* Add other styles as needed */
+  }
+  
+  .container {
+    background: #ffffff !important;
+  }
+  
+  .button.button-rose {
+    color: #fff;
+    background-color: #e91e63;
+    border: none !important;
+    border-color: #e91e63;
+    width: 95px !important;
+    height: 30px !important;
+    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, .14), 0 3px 1px -2px rgba(233, 30, 99, .2), 0 1px 5px 0 rgba(233, 30, 99, .12) !important;
+  }
+  
+  .button.button-rose:hover {
+    box-shadow: 0 14px 26px -12px rgba(233, 30, 99, .42), 0 4px 23px 0 rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(233, 30, 99, .2) !important;
+  }
+  .custom-filter{
+    background-color: #efefef;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+  
+  .custom-modal-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 999999 !important;
+  }
+  
+  .custom-modal {
+    background-color: #fff !important;
+    max-width: 400px !important;
+    width: 100% !important;
+    max-height: 500px !important;
+    height: 100% !important;
+    margin: auto !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 4px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    flex-direction: column !important;
+  }
+  agm-map {
+    height: 300px !important;
+    display: grid;
+  }
+  
+  /* Skeleton Loader Container */
+  .skeleton-loader {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+  .skeleton-loader-bottom{
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+  
+  
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  .grid-container {
+    position: relative;
+  }
+  
+  .spinner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  .custom-spinner {
+    width: 50px; 
+    height: 50px; 
+    border-width: 6px; 
+    // border-color: #e91e63 !important;
+  }
+  
+  // .custom-spinner::before {
+  //   border-color: #e91e63 transparent transparent transparent !important; 
+  // }
+  .searchBar {
+    border: 1px solid rgba(120, 130, 140, .13);
+    padding: 0px 10px;
+    padding-bottom: 3px;
+    width: 30%;
+    border-radius: 400px;
+    height: 26px;
+  }
+  
+  .teamDiv {
+    text-align: end;
+  }
+  
+.btnColorAll {
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}

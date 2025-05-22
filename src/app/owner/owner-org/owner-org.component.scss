@@ -1,0 +1,35 @@
+.start{
+  margin-right: 0px;
+  margin-left: 0px;
+  padding: 28px 10px;
+}
+
+.point{
+  cursor: pointer;
+}
+
+.CardRow{
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  padding:10px;
+}
+
+.btnColorAll{
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.backDiv{
+  text-align: end;
+  padding-bottom: 10px;
+}
+
+.dateDiv{
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 18px 0px 0px;
+  background: #fafafa;
+}

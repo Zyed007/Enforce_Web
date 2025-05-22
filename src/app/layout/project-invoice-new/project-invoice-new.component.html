@@ -1,0 +1,2361 @@
+<div *ngIf="!accessRevenueModuleGranted && !isWorkForceLeader">
+  <app-not-found></app-not-found>
+</div>
+
+<div *ngIf="accessRevenueModuleGranted" class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <div *ngIf="accessViewRevenue">
+    <div class="kt-grid__item" id="kt_subheader">
+      <div class="kt-container kt-container--fluid dasboardDatePicker ">
+        <div class="kt-subheader kt-grid__item">
+          <div class="kt-subheader__main" style="margin-bottom: 5px;">
+            <h3 class="kt-subheader__title invoicetxt">
+              Project Invoice
+            </h3>
+            <div class="kt-portlet__head-toolbar backbtn">
+              <div class="dropdown dropdown-inline">
+                <button type="button" style="margin-left: 15px;"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form  [formGroup]="datePickerForm">
+           <ejs-datepicker  formControlName="date" dayHeaderFormat="Abbreviated" [max]="maxRangeDate" [showClearButton]="false" [allowEdit]='false'  ></ejs-datepicker>
+           <span class="date-container"  disabled="disabled"  style="border: none;pointer-events:none;position: absolute;left:24px"   >{{dateText}}</span>
+        </form>
+      </div>
+    </div>
+    <div class="kt-subheader kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+          <div class="caption">
+              <div class="actions">
+                <a class="btn btn-icon-only btn-icon-only btn-default" id="previousday" style="background-color:white ;border:none;">
+                  <i class="fas fa-chevron-left" title="Previous Day" (click)="prevday()" style="color: #3f77f4;" ></i>
+                </a>
+                <a class="btn btn-icon-only btn-icon-only btn-default" id="nextday" style="background-color: white;border:none;">
+                  <i class="fas fa-chevron-right" title="Next Day" (click)="nextday()" style="color: #3f77f4;"></i>
+                </a>
+              </div>
+            </div>
+        </div>
+        <div class="kt-subheader__toolbar">
+          <div class="kt-subheader__wrapper">
+            <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;margin-bottom: 0px;">
+              <li class="nav-item" (click)="getTodaysData()">
+                <a class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                  Today
+                </a>
+              </li>
+              <li class="nav-item" (click)="getWeeksData()">
+                <a class="nav-link" [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                  Week
+                </a>
+              </li>
+              <li class="nav-item" (click)="getMonthsData()">
+                <a class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                  Month
+                </a>
+              </li>
+              <li class="nav-item dasboardRange">
+                <a class="nav-link"  [ngClass]="{'active': isRangeActive}" data-toggle="tab"  id="defaultrange_modal"  role="tab" aria-selected="false" style="padding-bottom: 5px !important;">
+                    <div style="display: flex;justify-content: start;">
+                      <div >Range</div>
+                      <div>
+                        <form [formGroup]="dateRangeForm" id="formId"  style="padding-left:4px; ">
+                          <ejs-daterangepicker placeholder='Range' [max]="maxRangeDate"  formControlName='daterange'>
+                            <e-presets>
+                              <e-preset label="Since 7 days" [start]='last7days' [end]='lastEnd'></e-preset>
+                              <e-preset label="Since 15 days" [start]='last15days' [end]='lastEnd'></e-preset>
+                              <e-preset label="Since 1 Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                              <e-preset label="Since 3 Months" [start]='last3Month' [end]='lastEnd'></e-preset>
+                              <e-preset label="Since 6 Months" [start]='last6Month' [end]='lastEnd'></e-preset>
+                              <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                            </e-presets>
+                          </ejs-daterangepicker>
+                        </form>
+                      </div>
+                    </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin: 0px 25px 23px;">
+      <div class="kt-portlet " style="margin-bottom: 0px">
+        <div class="kt-portlet__head" style="padding: 0px 15px;">
+          <div class="kt-portlet__head-label">
+            <h3 class="allHeader mainboxhead">Summary</h3>
+          </div>
+        </div>
+        <div style="padding: 15px 0px 0px">
+          <div class="row rowimp col-lg-12 col-xl-12 order-lg-1 order-xl-1">
+            <div class="col-xl-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <p class="allHeader">PROJECTS</p>
+                  <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title"  *ngIf="!showTimeSpinner">
+                      {{financeData.length!=0?financeData['project_count']:''}}
+                    </h3>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <p class="allHeader">TASKS</p>
+                  <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title"  *ngIf="!showTimeSpinner">
+                      {{financeData.length!=0?financeData['task_count']:''}}
+                    </h3>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <div class="kt-iconbox__content" style="display: flex;">
+                    <p class="allHeader">HOURS</p>
+                    <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Completed task hours" container="body"></i>
+                  </div>
+                  <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title"  *ngIf="!showTimeSpinner">
+                      {{financeData.length!=0?(financeData['hours']):''}}
+                    </h3>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <div class="kt-iconbox__content" style="display: flex;">
+                    <p class="allHeader">Progressive VALUE (AED)</p>
+                    <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Completed task value" container="body"></i>
+                  </div>
+                  <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title"  *ngIf="!showTimeSpinner">
+                      {{financeData.length!=0?financeData['value']:''}}
+                    </h3>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row col-lg-12 col-xl-12 order-lg-1 order-xl-1 boxdata">
+            <div class="col-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px">
+                  <div class="kt-iconbox__content" style="font-size: 15px; display: flex;">
+                    <p class="allHeader">Open Projects</p>
+                    <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Project opened in the selected Date range" container="body"></i>
+                  </div>
+                  <div class="kt-iconbox__desc">
+                    <div *ngIf="!showTimeSpinner">
+                      <p class="marbot" style="cursor: pointer;" (click)="OpenProjectsModel('Open',openProjectData?.basedOnProject)">Projects : <span class="spanTxt">{{openProjectData?.project_count}}</span></p>
+                      <p class="marbot">Total Hours : <span class="spanTxt">{{openProjectData?.hours}}</span></p>
+                      <p class="marbot">Number of Task : <span class="spanTxt">{{openProjectData?.task_count}}</span></p>
+                      <p class="marbot">Progressive Value (AED) : <span class="spanTxt">{{openProjectData?.value}}</span></p>
+                    </div>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <div class="kt-iconbox__content" style="font-size: 15px; display: flex;">
+                    <p class="allHeader">BackLog Projects</p>
+                    <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Project in which task may be open or in progress" container="body"></i>
+                  </div>
+                  <div class="kt-iconbox__desc">
+                    <div *ngIf="!showTimeSpinner">
+                      <p class="marbot" style="cursor: pointer;" (click)="OpenProjectsModel('BackLog',backLogProjectData?.basedOnProject)">Projects : <span class="spanTxt">{{backLogProjectData?.project_count}}</span></p>
+                      <p class="marbot">Total Hours : <span class="spanTxt">{{backLogProjectData?.hours}}</span></p>
+                      <p class="marbot">Number of Task : <span class="spanTxt">{{backLogProjectData?.task_count}}</span></p>
+                      <p class="marbot">Value (AED) : <span class="spanTxt">{{backLogProjectData?.value | number: '.2'}}</span></p>
+                    </div>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+             <!-- Progressive Invoice -->
+
+            <div class="col-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <div class="kt-iconbox__content" style="font-size: 15px; display: flex;">
+                    <p class="allHeader">Proforma Invoice</p>
+                  </div>
+                  <div class="kt-iconbox__desc">
+                    <div *ngIf="!showTimeSpinner">
+                      <p class="marbot">To Be Claimed :
+                        <span class="spanTxt">{{cardDataToDisplay.proformaInvoice?.toBeClaimCount}}</span>
+                        <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Proforma Invoices not yet converted to invoices in the selected range" container="body"></i>
+                      </p>
+                      <p class="marbot">Total Amount :
+                        <span class="spanTxt">AED. {{cardDataToDisplay.proformaInvoice?.toBeClaimValue | number: '.2'}}</span>
+                      </p>
+                    </div>
+
+                    <div *ngIf="!showTimeSpinner">
+                      <p class="marbot">Claimed :
+                        <span class="spanTxt">{{cardDataToDisplay.proformaInvoice?.toBeClaimedCount}} </span>
+                        <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Proforma Invoices converted to invoices in the selected range" container="body"></i>
+                      </p>
+                      <p class="marbot">Total Amount :
+                        <span class="spanTxt">AED. {{cardDataToDisplay.proformaInvoice?.toBeClaimedValue | number: '.2'}}</span>
+                      </p>
+                    </div>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue -->
+
+            <div class="col-3">
+              <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow boxborderimp">
+                <div class="kt-portlet__body" style="padding-top: 0px;padding-left: 10px;padding-bottom: 0px;">
+                  <div class="kt-iconbox__content" style="font-size: 15px; display: flex;">
+                    <p class="allHeader">Revenue</p>
+                  </div>
+                  <div class="kt-iconbox__desc">
+                    <div *ngIf="!showTimeSpinner">
+
+                      <p class="marbot">Total Count :
+                        <span class="spanTxt">{{cardDataToDisplay.Revenue?.toBeClaimCount}}</span>
+                      </p>
+
+                      <p class="marbot">Total Amount :
+                        <span class="spanTxt">AED. {{cardDataToDisplay.Revenue?.toBeClaimValue | number: '.2'}}</span>
+                      </p>
+
+                    </div>
+                    <div *ngIf="showTimeSpinner" style="margin: 0px auto;margin-top: 20px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+      <div class="kt-portlet kt-portlet--mobile">
+        <div class="row">
+          <div class="col col-xl-12 col-lg-12" style="height: 800px;">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+              <div class="kt-portlet__head-label">
+                <h3 class="allHeader mainboxhead">Project Invoice</h3>
+              </div>
+            </div>
+            <div style="margin: 0px 20px;">
+              <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup'>
+                <e-tabitems>
+                  <e-tabitem *ngFor='let header of headerText' [header]='header'>
+                    <ng-template #content *ngIf='header.text=="Employees"'>
+                      <mat-spinner *ngIf="checkForEmpProjData" style="margin: 60px auto;"></mat-spinner>
+                      <ejs-grid #employeeGrid [dataSource]='employeeTableData' height="600px" allowTextWrap='true' [allowExcelExport]='true' [allowPdfExport]='true'
+                      allowSorting='true' [toolbar]='invoiceToolbar' (created)='employeeGridSearch()'
+                      (toolbarClick)='employeeGridDownload($event)' *ngIf="!checkForEmpProjData">
+                        <e-columns>
+                          <e-column field='full_name' headerText='Assignee' textAlign='' width=80>
+                            <ng-template #template let-data>
+                              <span>{{data.full_name}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='project_name' headerText='Project' textAlign='' width=220>
+                            <ng-template #template let-data>
+                              <div>{{data.project_name}}</div>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='project_count' headerText='Project Count' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <div>{{data.project_count}}</div>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='task_count' headerText='Task Count' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span class="pointerLink" (click)="employeeDetailsModel(data)">{{data.task_count}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours_value' headerText='Value (AED)' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours_value| number : '1.2-2' }}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column headerText='Actual Hours (Hrs.Ms)' field='avial_hours' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span [ngClass]="data.avial_hours < data.budgeted_hours_after ? 'Avgtime' : 'deltime'">{{data.avial_hours}}</span>
+                            </ng-template>
+                          </e-column>
+                          <!-- <e-column headerText='Budgeted Hours Old (Hrs:Ms)' field='budgeted_hours'  textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours}}</span>
+                            </ng-template>
+                          </e-column> -->
+                          <e-column headerText='Budgeted Hours (Hrs.Ms)' field='budgeted_hours_after'  textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours_after}}</span>
+                            </ng-template>
+                          </e-column>
+                        </e-columns>
+                      </ejs-grid>
+                    </ng-template>
+
+                    <ng-template #content *ngIf='header.text=="Projects"'>
+                      <mat-spinner *ngIf="checkForEmpProjData" style="margin: 60px auto;"></mat-spinner>
+                      <ejs-grid #projectGrid [dataSource]='projectTableData' height="600px" allowTextWrap='true' allowSorting='true'
+                        [allowExcelExport]='true' [allowPdfExport]='true' (created)='projectGridSearch()'
+                        [toolbar]='invoiceToolbar' (toolbarClick)='projectGridDownload($event)' *ngIf="!checkForEmpProjData">
+                        <e-columns>
+                          <e-column field='project_name' headerText='Project' textAlign='' width=120>
+                            <ng-template #template let-data>
+                              <span>{{data.project_name}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='employee_name' headerText='Assignee' textAlign='' width=170>
+                            <ng-template #template let-data>
+                              <span>{{data.employee_name}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='employee_count' headerText='Employees' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span>{{data.employee_count}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='task_count' headerText='Task Count' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span (click)="projectDetailsModel(data)" class="pointerLink">{{data.task_count}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours_value' headerText='Value (AED)' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours_value| number : '1.2-2' }}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours' headerText='Budgeted Hours' textAlign='center' width=70>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours}}</span>
+                            </ng-template>
+                          </e-column>
+                        </e-columns>
+                      </ejs-grid>
+                    </ng-template>
+
+                    <ng-template #content *ngIf='header.text=="Projects Invoicing"'>
+                      <mat-spinner *ngIf="checkForMilestoneData" style="margin: 60px auto;"></mat-spinner>
+                      <ejs-grid #projectInvoicingGrid [dataSource]='projectMilestonePerTableData' height="600px" [toolbar]='invoiceToolbar'
+                      allowTextWrap='true' allowSorting='true' (created)='projectInvoicingGridSearch()' *ngIf="!checkForMilestoneData">
+                        <e-columns>
+                          <e-column field='project_name' headerText='Project' width=25>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px;">
+                                <span *ngIf="data.accountsId !== null">
+                                  {{data.accountsId}} -
+                                </span>
+                                {{data.project_name}}
+                              </p>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column headerText='Hours overview' width=25>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px; font-size: 12px;">Actual Vs Budgeted %</p>
+                              <div class="progress progHeight" container="body" placement="top" ngbTooltip="{{data.totalTimeProcess}}%">
+                                <div class="progress-bar" [ngClass]="data.totalTimeProcess >= 0 ? 'successLite': 'dangerBug'"
+                                  role="progressbar" [style.width.%]="data.totalTimeProcess < 0 ? '100': data.totalTimeProcess" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                  {{data.totalTimeProcess}}%
+                                </div>
+                              </div>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column field='progress' headerText='Project % by Task completed' width=20>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px;">Project overall %</p>
+                              <div class="progress progHeight" container="body" placement="top" ngbTooltip="Project overall {{data.progress}}% completed">
+                                <div class="progress-bar" [ngClass]="data.progress === 100 ? 'successLite': 'inprogress'"
+                                role="progressbar" [style.width.%]="data.progress" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                  {{data.progress}}%
+                                </div>
+                              </div>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column field='progress' headerText='Project % by Budgeted hours' width=20>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px;">Project overall %</p>
+                              <div class="progress progHeight" container="body" placement="top" ngbTooltip="Project overall {{data.progressByBudgeted_tilldate}}% completed">
+                                <div class="progress-bar" [ngClass]="data.progressByBudgeted_tilldate === 100 ? 'successLite': 'inprogress'"
+                                role="progressbar" [style.width.%]="data.progressByBudgeted_tilldate" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                  {{data.progressByBudgeted_tilldate}}%
+                                </div>
+                              </div>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column headerText='Milestone' width=120>
+                            <ng-template #template let-data>
+                              <div class="milestonemaindiv">
+                                <div *ngFor="let milestoneData of data.projectMilestoneData" class="singlemilestone">
+                                  <p class="milestoneheadername" (click)="projectInvoicingDetailsModel(data, milestoneData)"
+                                    container="body" placement="top" ngbTooltip="Click to view number of Task completed"
+                                    [ngClass]="milestoneData.TotalRatio === 100 ? 'boldclas' : ''">{{milestoneData.activity_name}} - {{milestoneData.TotalRatio}}%</p>
+                                  <div class="progress progHeight" *ngIf="milestoneData.TotalRatio > 0">
+                                    <div class="progress-bar" *ngFor="let milStoneInner of milestoneData.projectMilestoneProperties"
+                                    container="body" placement="top" ngbTooltip="Previous progress was {{milStoneInner?.ratio}} %"
+                                    [ngClass]="milStoneInner?.ratio === 100 ? 'success': 'inprogress'"  role="progressbar" [style.width.%]="milStoneInner?.ratio" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                      {{milStoneInner?.ratio}}%
+                                    </div>
+                                    <div class="progress-bar" *ngFor="let milStoneInner2 of milestoneData.projectMilestonePropertieswithDate"
+                                    container="body" placement="top" ngbTooltip="Progress for Selected Date is {{milStoneInner2?.ratio}} %"
+                                    [ngClass]="milStoneInner2?.ratio === 100 ? 'successLite': 'inprogressLite'"
+                                    role="progressbar" [style.width.%]="milStoneInner2?.ratio === 1 ? '10': milStoneInner2?.ratio" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      {{milStoneInner2?.ratio}}%
+                                    </div>
+                                  </div>
+
+                                  <div class="progress progHeight" *ngIf="milestoneData.projectMilestoneProperties.length === 0 && milestoneData.projectMilestonePropertieswithDate.length === 0">
+                                    <p style="padding-left: 8px;">No Task completed</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </ng-template>
+                          </e-column>
+
+                        </e-columns>
+                      </ejs-grid>
+                    </ng-template>
+
+
+
+
+
+
+                    <ng-template #content *ngIf='header.text === "Productivity"'>
+                      <mat-spinner *ngIf="checkForProductivityData" style="margin: 60px auto;"></mat-spinner>
+                      <ejs-grid #empProductivityTable [dataSource]='employeeProductivityDetail' height="600px"
+                      [toolbar]='invoiceToolbar' (toolbarClick)='ProductivityDetailsCick($event)' [allowExcelExport]='true' [allowPdfExport]='true' allowTextWrap='true' allowSorting='true'
+                      (created)='empProductivityGridSearch()' *ngIf="!checkForProductivityData"  >
+                        <e-columns>
+                          <e-column field='full_name' width=40>
+                            <ng-template #headerTemplate let-data>
+                              <div>
+                                <p class="headerClass">Assignee</p>
+                              </div>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <span>{{data.full_name}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='project_tasks_count' textAlign='Center' width=30>
+                            <ng-template #headerTemplate let-data>
+                              <div placement="top" ngbTooltip="Project Related Tasks generated through estimation contributing to the revenue" container="body">
+                                <p class="headerClass">Project Task</p>
+                                <i class="fa fa-info-circle matpointer"></i>
+                              </div>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <div class="pointerLink" (click)="data.project_tasks_count !== 0 ? employeeProdTaskModel(data, 'projectTask') : ''">{{data.project_tasks_count}}</div>
+                              <span class="pointerLink" style="font-size: 9px;" (click)="data.project_tasks_comp !== 0 ? employeeProdTaskModel(data, 'projectTaskComp') : ''">({{data.project_tasks_comp}} completed)</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='project_tasks_hours' textAlign='center' width=30>
+                            <ng-template #headerTemplate let-data>
+                              <div placement="top" ngbTooltip="Total time taken for Inprogress and completed task within Range" container="body">
+                                <p class="headerClass">Actual Hrs:Ms within Range </p>
+                                <i class="fa fa-info-circle matpointer"></i>
+                              </div>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <div class="totalhrs" container="body" placement="top" ngbTooltip="{{data.pending_Hours_value}}">{{data.project_tasks_hours}}</div>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours_project' textAlign='center' width=30>
+                            <ng-template #headerTemplate let-data>
+                              <div placement="top" ngbTooltip="Total time taken for completed task within Range" container="body">
+                                <p class="headerClass">Total Actual Hrs.Ms within Range</p>
+                                <i class="fa fa-info-circle matpointer"></i>
+                              </div>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <span [ngClass]="data.productive ? 'Avgtime' : 'deltime'">{{data.budgeted_hours_project}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours' textAlign='center' width=30>
+                            <ng-template #headerTemplate let-data>
+                              <div placement="top" ngbTooltip="Total Budgeted hour for completed task" container="body">
+                                <p class="headerClass">Budgeted Hours (Hrs.Ms)</p>
+                                <i class="fa fa-info-circle matpointer"></i>
+                              </div>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours_value' textAlign='center' width=30>
+                            <ng-template #headerTemplate let-data>
+                              <div>
+                                <p class="headerClass">Value (AED)</p>
+                              </div>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours_value}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='start_revisionCount' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div placement="top" ngbTooltip="Number of Total new proposal/revision submitted to the client." container="body">
+                                  <p class="headerClass">Total Revision</p>
+                                  <i class="fa fa-info-circle matpointer"></i>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <div>{{data.start_revisionCount}}</div>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='revision_count' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div placement="top" ngbTooltip="Number of new proposal/revision submitted to the client in the selected date range." container="body">
+                                  <p class="headerClass">Revision</p>
+                                  <i class="fa fa-info-circle matpointer"></i>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <div>{{data.revision_count}}</div>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='normal_tasks_count' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div placement="top" ngbTooltip="Other Tasks generated by employee which can be realted to a project or a normal task" container="body">
+                                  <p class="headerClass">Other Task</p>
+                                  <i class="fa fa-info-circle matpointer"></i>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span class="pointerLink" (click)="data.normal_tasks_count !== 0 ? employeeProdTaskModel(data, 'otherTask') : ''">{{data.normal_tasks_count}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='normal_tasks_hours' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">Time (Hrs:Ms)</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span>{{data.normal_tasks_hours}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='activity_tasks_count' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div placement="top" ngbTooltip="Activity task includes Meetings, Brainstorming Session, Follow up" container="body">
+                                  <p class="headerClass">Activity</p>
+                                  <i class="fa fa-info-circle matpointer"></i>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span class="pointerLink" (click)="data.activity_tasks_count !== 0 ? employeeProdTaskModel(data, 'activityTask') : ''">{{data.activity_tasks_count}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='activity_tasks_hours' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">Time (Hrs:Ms)</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span>{{data.activity_tasks_hours}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='total_Task' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">Total Task</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span>{{data.total_Task}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='total_Working_time' textAlign='center' width=40>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">Total Working Time (Hrs:Ms)</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span>{{data.total_Working_time}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='avial_hours' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">Available Time (Hrs:Ms)</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span>{{data.avial_hours}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='unproductive_time' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">Unproductive Time (Hrs:Ms)</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span>{{data.unproductive_time}}</span>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='unproductive_time_per' textAlign='center' width=30>
+                              <ng-template #headerTemplate let-data>
+                                <div>
+                                  <p class="headerClass">% of Unproductive time</p>
+                                </div>
+                              </ng-template>
+                              <ng-template #template let-data>
+                                <span *ngIf="data.unproductive_time_per > 0">{{data.unproductive_time_per}} %</span>
+                                <span *ngIf="data.unproductive_time_per <= 0">0 %</span>
+                              </ng-template>
+                          </e-column>
+                        </e-columns>
+                      </ejs-grid>
+                    </ng-template>
+
+                    <ng-template #content *ngIf='header.text=="Employee Summary"'>
+                      <mat-spinner *ngIf="checkForEmployeeSummaryData" style="margin: 60px auto;"></mat-spinner>
+                      <p *ngIf="!checkForEmployeeSummaryData" class="imptxt">*Note: Data shown in this table are from start till date.</p>
+                      <ejs-grid #employeeSummaryGrid [dataSource]='employeeSummaryData' height="600px" allowTextWrap='true' [allowExcelExport]='true' [allowPdfExport]='true'
+                      allowSorting='true' [toolbar]='invoiceToolbar' (created)='employeeSummaryGridSearch()'
+                      (toolbarClick)='employeeSummaryGridDownload($event)' *ngIf="!checkForEmployeeSummaryData">
+                        <e-columns>
+                          <e-column field='employee_name' headerText='Employee' width=80>
+                            <ng-template #template let-data>
+                              <span>{{data.employee_name}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='project_name' headerText='Pending Project' textAlign='center' width=50>
+                            <ng-template #template let-data>
+                              <span container="body" ngbTooltip="Click to view projects" placement="top" class="pointerLink" (click)="openSingleEmployeeDetailsModel(data)">
+                                {{data.project_name}}
+                              </span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='task_count' headerText='Pending Task by Milestone' textAlign='center' width=140>
+                            <ng-template #template let-data>
+                              <div>
+                                <table class="table" style="margin-bottom: 0px;">
+                                  <thead>
+                                    <tr>
+                                      <th class="coldes">Study</th>
+                                      <th class="coldes">Design</th>
+                                      <th class="coldes">Shop Drawing</th>
+                                      <th class="coldes">Extra Service</th>
+                                      <th class="coldes">Total Task</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="rowdes">
+                                        <span *ngIf="data.stdCount === '0'">{{data.stdCount}}</span>
+                                        <span *ngIf="data.stdCount !== '0'" container="body" ngbTooltip="Click to view Study task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Study')">
+                                          {{data.stdCount}}
+                                        </span>
+                                      </td>
+                                      <td class="rowdes">
+                                        <span *ngIf="data.desCount === '0'">{{data.desCount}}</span>
+                                        <span *ngIf="data.desCount !== '0'" container="body" ngbTooltip="Click to view Design task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Design')">
+                                          {{data.desCount}}
+                                        </span>
+                                      </td>
+                                      <td class="rowdes">
+                                        <span *ngIf="data.sdCount === '0'">{{data.sdCount}}</span>
+                                        <span *ngIf="data.sdCount !== '0'" container="body" ngbTooltip="Click to view Shop Drawing task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Shop Drawing')">
+                                          {{data.sdCount}}
+                                        </span>
+                                      </td>
+                                      <td class="rowdes">
+                                        <span *ngIf="data.esCount === '0'">{{data.esCount}}</span>
+                                        <span *ngIf="data.esCount !== '0'" container="body" ngbTooltip="Click to view Extra Service task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Extra Service')">
+                                          {{data.esCount}}
+                                        </span>
+                                      </td>
+                                      <td class="rowdes">
+                                        <span>{{data.task_count}}</span>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='employee_count' headerText='Revision' textAlign='center' width=50>
+                            <ng-template #template let-data>
+                              <span>{{data.employee_count}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours' headerText='Budgeted Hrs' textAlign='center' width=50>
+                            <ng-template #template let-data>
+                              <span>{{data.budgeted_hours | number: '.2'}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='expected_working_days' headerText='Expected working days' textAlign='center' width=50>
+                            <ng-template #headerTemplate let-data>
+                              <p style="margin-bottom: 0px;">Expected working days
+                                <i class="fa fa-info-circle" container="body" ngbTooltip="Expected working days is calculated by dividing Budgeted Hours with 8 Days" placement="top"></i>
+                              </p>
+                            </ng-template>
+                            <ng-template #template let-data>
+                              <span>{{data.expected_working_days === 0 ? 1 : data.expected_working_days}}</span>
+                            </ng-template>
+                          </e-column>
+                          <e-column field='budgeted_hours_value' headerText='Amount' textAlign='center' width=50>
+                            <ng-template #template let-data>
+                              <span>AED. {{data.budgeted_hours_value | number: '.2'}}</span>
+                            </ng-template>
+                          </e-column>
+                        </e-columns>
+                      </ejs-grid>
+                    </ng-template>
+
+
+                    <ng-template #content *ngIf='header.text=="Project Status"'>
+
+
+                      <form style="display: flex; flex-direction: column;align-items: end; background: #fafafa; border: 1px solid rgba(0, 0, 0, 0.12); padding: 5px 10px 13px;">
+                        <div style="display: flex;">
+
+                                <div class="col-12">
+                                  <div style="display: flex;margin-right: 3px;margin-top: 12px;">
+                                    <p style="margin-right: 3px;" >Active Projects  <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="Progress of All Active ongoing projects which are not complete" container="body"></i>    </p>
+                                    <div style="margin-top: 2px;">
+                                      <label class="switch">
+                                        <input type="checkbox" (change)="changeDisplayMethod($event)">
+                                        <span></span>
+                                      </label>
+                                    </div>
+                                    <p style="margin-top: 0px;">Non-Active Projects  <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="All Non Active Projects in which No Progress is made" container="body"></i>     </p>
+                                  </div>
+                                </div>
+
+                        </div>
+                        <div style="display: flex;">
+
+                          <div style="display: flex;justify-content: start;">
+                            <div class="projectStatulbl"  >  {{ projectStatusText  }}  </div>
+                            <div>
+                              <form   [formGroup]="dateRngForm"    id="formId"  style="padding-left:4px; ">
+                                <ejs-daterangepicker [max]="maxRangeDate" placeholder='All' formControlName='dtrnge'>
+                                  <e-presets>
+                                    <e-preset label="All" [start]='lastAllMonth'  [end]='lastEnd'></e-preset>
+                                    <e-preset label="Since 15 days" [start]='last15days' [end]='lastEnd'></e-preset>
+                                    <e-preset label="Since 30 days" [start]='lastStart' [end]='lastEnd'></e-preset>
+                                    <e-preset label="Since 60 days" [start]='last60days' [end]='lastEnd'></e-preset>
+                                    <e-preset label="Since 90 days" [start]='last90days' [end]='lastEnd'></e-preset>
+                                  </e-presets>
+                                </ejs-daterangepicker>
+                              </form>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+
+
+
+
+                      </form>
+
+
+                      <mat-spinner *ngIf="checkForOverAllStatusData" style="margin: 60px auto;"></mat-spinner>
+
+
+                      <ejs-grid #projectStatusOverallTable [dataSource]='projectStatusOverallDetail' height="600px" [toolbar]='invoiceToolbar'
+                      allowTextWrap='true' allowSorting='true' (created)='projectOverallStatusGridSearch()' *ngIf="!checkForOverAllStatusData">
+                        <e-columns>
+                          <e-column field='project_name' headerText='Project' width=25>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px;">
+                                <span *ngIf="data.project_prefix !== null">
+                                  {{data.project_prefix}} -
+                                </span>
+                                {{data.project_name}}
+                              </p>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column headerText='Hours overview' width=25>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px; font-size: 12px;">Actual Vs Budgeted %</p>
+                              <div class="progress progHeight" container="body" placement="top" ngbTooltip="{{data.totalTimeProcess}}%">
+                                <div class="progress-bar" [ngClass]="data.totalTimeProcess >= 0 ? 'successLite': 'dangerBug'"
+                                  role="progressbar" [style.width.%]="data.totalTimeProcess < 0 ? '100': data.totalTimeProcess" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                  {{data.totalTimeProcess}}%
+                                </div>
+                              </div>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column field='progress' headerText='Project % by Task completed' width=20>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px;">Project overall %</p>
+                              <div class="progress progHeight" container="body" placement="top" ngbTooltip="Project overall {{data.progress}}% completed">
+                                <div class="progress-bar" [ngClass]="data.progress === 100 ? 'successLite': 'inprogress'"
+                                role="progressbar" [style.width.%]="data.progress" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                  {{data.progress}}%
+                                </div>
+                              </div>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column field='progress' headerText='Project % by Budgeted hours' width=20>
+                            <ng-template #template let-data>
+                              <p style="margin-bottom: 0px;">Project overall %</p>
+                              <div class="progress progHeight" container="body" placement="top" ngbTooltip="Project overall {{data.progressByBudgeted_tilldate}}% completed">
+                                <div class="progress-bar" [ngClass]="data.progressByBudgeted_tilldate === 100 ? 'successLite': 'inprogress'"
+                                role="progressbar" [style.width.%]="data.progressByBudgeted_tilldate" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                  {{data.progressByBudgeted_tilldate}}%
+                                </div>
+                              </div>
+                            </ng-template>
+                          </e-column>
+
+                          <e-column headerText='Milestone' width=120>
+                            <ng-template #template let-data>
+                              <div class="milestonemaindiv">
+                                <div *ngFor="let milestoneData of data.projectMilestoneData" class="singlemilestone">
+                                  <p class="milestoneheadername" (click)="projectInvoicingDetailsModel(data, milestoneData)"
+                                    container="body" placement="top" ngbTooltip="Click to view number of Task completed"
+                                    [ngClass]="milestoneData.TotalRatio === 100 ? 'boldclas' : ''">{{milestoneData.activity_name}} - {{milestoneData.TotalRatio  }}%</p>
+                                  <div class="progress progHeight" *ngIf="milestoneData.TotalRatio > 0">
+                                    <div class="progress-bar" *ngFor="let milStoneInner of milestoneData.projectMilestoneProperties"
+                                    container="body" placement="top" ngbTooltip="Previous progress was {{milStoneInner?.ratio}} %"
+                                    [ngClass]="milStoneInner?.ratio === 100 ? 'success': 'inprogress'"  role="progressbar" [style.width.%]="milStoneInner?.ratio" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                                      {{milStoneInner?.ratio}}%
+                                    </div>
+                                    <div class="progress-bar" *ngFor="let milStoneInner2 of milestoneData.projectMilestonePropertieswithDate"
+                                    container="body" placement="top" ngbTooltip="Progress for Selected Date is {{milStoneInner2?.ratio}} %"
+                                    [ngClass]="milStoneInner2?.ratio === 100 ? 'successLite': 'inprogressLite'"
+                                    role="progressbar" [style.width.%]="milStoneInner2?.ratio" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                      {{milStoneInner2?.ratio}}%
+                                    </div>
+                                  </div>
+
+                                  <div class="progress progHeight" *ngIf="milestoneData.projectMilestoneProperties.length === 0 && milestoneData.projectMilestonePropertieswithDate.length === 0">
+                                    <p style="padding-left: 8px;">No Task completed</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </ng-template>
+                          </e-column>
+
+                        </e-columns>
+                      </ejs-grid>
+                    </ng-template>
+
+
+
+
+                  </e-tabitem>
+                </e-tabitems>
+              </ejs-tab>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!accessViewRevenue">
+    <app-not-found></app-not-found>
+  </div>
+</div>
+
+<div *ngIf="isWorkForceLeader">
+  <div style="margin: 14px 30px 0px;">
+    <h3 class="kt-subheader__title invoicetxt" style="margin-bottom: 0px;">Productivity - Project and Employee</h3>
+    <p style="margin-top: 0px !important; margin-bottom: 8px !important;">WorkForce Management created by {{workForceTeamLeadData?.createdBy}}</p>
+  </div>
+  <div class="row marbot" style="margin: 0px 30px 5px;">
+    <div class="col-7 datedisplay">
+      <p class="marbottp">{{dateTextToDisplay}}</p>
+    </div>
+    <div class="col-5" style="text-align: end;">
+      <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+          <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;display: inline-flex; margin: 0 0 0px 0;">
+            <li class="nav-item" (click)="getCommonDateType('today')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isTodayActiveWF}" data-toggle="tab" aria-selected="false">
+                Today
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('weeks')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isWeekActiveWF}" data-toggle="tab" aria-selected="true">
+                Week
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('month')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isMonthActiveWF}" data-toggle="tab" aria-selected="false">
+                Month
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('six-month')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isSixMonthActive}" data-toggle="tab" aria-selected="false">
+                Six Months
+              </a>
+            </li>
+            <li class="nav-item" (click)="getCommonDateType('year')" style="margin-right: 20px;">
+              <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isYearActive}" data-toggle="tab" aria-selected="false">
+                Years
+              </a>
+            </li>
+            <li class="nav-item dasboardRange" style="margin-right: 20px;">
+              <a class="nav-link" data-toggle="tab"  id="defaultrange_modal" aria-selected="false" style="padding-bottom: 5px !important; padding-top: 5px;">
+                <div style="display: flex;justify-content: start;">
+                  <div >Range</div>
+                  <div>
+                    <form [formGroup]="dateRangeFormWF" id="formId"  style="padding-left:4px; ">
+                      <ejs-daterangepicker [max]="maxRangeDate" placeholder='Select Date range' formControlName='daterange'></ejs-daterangepicker>
+                    </form>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row marbot tabdivggg">
+    <div class="col-12" style="padding: 0px;">
+      <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)" class="tabseStyle2">
+        <e-tabitems>
+          <e-tabitem *ngFor='let header of headerTextWF' [header]='header'>
+            <ng-template #content *ngIf='header.text=="Employees"'>
+              <p class="imptxt">*Note: Data shown in this table are only of completed Task.</p>
+              <ejs-grid #basedOnEmployeeGrid [dataSource]='basedOnEmployee' height="600px" allowTextWrap='true' [allowExcelExport]='true' [allowPdfExport]='true'
+              allowSorting='true' [toolbar]='invoiceModelToolbar' (created)='basedOnEmployeeGridSearch()'>
+                <e-columns>
+                  <e-column field='full_name' headerText='Assignee' textAlign='' width=80>
+                    <ng-template #template let-data>
+                      <span>{{data.full_name}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='project_name' headerText='Project' textAlign='' width=220>
+                    <ng-template #template let-data>
+                      <div>{{data.project_name}}</div>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='project_count' headerText='Project Count' textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <div>{{data.project_count}}</div>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='task_count' headerText='Task Count' textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <span class="pointerLink" (click)="employeeDetailsModel(data)">{{data.task_count}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column headerText='Actual Hours (Hrs.Ms)' field='avial_hours' textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <span [ngClass]="data.avial_hours < data.budgeted_hours_after ? 'Avgtime' : 'deltime'">{{data.avial_hours}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column headerText='Budgeted Hours (Hrs.Ms)' field='budgeted_hours_after'  textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <span>{{data.budgeted_hours}}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+            <ng-template #content *ngIf='header.text=="Projects"'>
+              <p class="imptxt">*Note: Data shown in this table are only of completed Task.</p>
+              <ejs-grid #basedOnProjectGrid [dataSource]='basedOnProject' height="600px" allowTextWrap='true' allowSorting='true'
+              [allowExcelExport]='true' [toolbar]='invoiceModelToolbar' [allowPdfExport]='true' (created)='basedOnProjectGridSearch()'>
+                <e-columns>
+                  <e-column field='project_name' headerText='Project' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.project_name}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='employee_name' headerText='Assignee' textAlign='' width=170>
+                    <ng-template #template let-data>
+                      <span>{{data.employee_name}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='employee_count' headerText='Employees' textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <span>{{data.employee_count}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='task_count' headerText='Task Count' textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <span (click)="projectDetailsModel(data)" class="pointerLink">{{data.task_count}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='budgeted_hours' headerText='Budgeted Hours' textAlign='center' width=70>
+                    <ng-template #template let-data>
+                      <span>{{data.budgeted_hours}}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+            <ng-template #content *ngIf='header.text=="Employee Summary"'>
+              <mat-spinner *ngIf="checkForEmployeeSummaryData" style="margin: 60px auto;"></mat-spinner>
+              <p *ngIf="!checkForEmployeeSummaryData" class="imptxt">*Note: Data shown in this table are from start till date.</p>
+              <ejs-grid *ngIf="!checkForEmployeeSummaryData" #employeeSummaryGrid [dataSource]='employeeSummaryData' height="600px" allowTextWrap='true' [allowExcelExport]='true' [allowPdfExport]='true'
+              allowSorting='true' [toolbar]='invoiceModelToolbar' (created)='employeeSummaryGridSearch()'>
+                <e-columns>
+                  <e-column field='employee_name' headerText='Employee' width=80>
+                    <ng-template #template let-data>
+                      <span>{{data.employee_name}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='project_name' headerText='Pending Project' textAlign='center' width=50>
+                    <ng-template #template let-data>
+                      <span container="body" ngbTooltip="Click to view projects" placement="top" class="pointerLink" (click)="openSingleEmployeeDetailsModel(data)">
+                        {{data.project_name}}
+                      </span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='task_count' headerText='Pending Task by Milestone' textAlign='center' width=140>
+                    <ng-template #template let-data>
+                      <div>
+                        <table class="table" style="margin-bottom: 0px;">
+                          <thead>
+                            <tr>
+                              <th class="coldes">Study</th>
+                              <th class="coldes">Design</th>
+                              <th class="coldes">Shop Drawing</th>
+                              <th class="coldes">Extra Service</th>
+                              <th class="coldes">Total Task</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="rowdes">
+                                <span *ngIf="data.stdCount === '0'">{{data.stdCount}}</span>
+                                <span *ngIf="data.stdCount !== '0'" container="body" ngbTooltip="Click to view Study task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Study')">
+                                  {{data.stdCount}}
+                                </span>
+                              </td>
+                              <td class="rowdes">
+                                <span *ngIf="data.desCount === '0'">{{data.desCount}}</span>
+                                <span *ngIf="data.desCount !== '0'" container="body" ngbTooltip="Click to view Design task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Design')">
+                                  {{data.desCount}}
+                                </span>
+                              </td>
+                              <td class="rowdes">
+                                <span *ngIf="data.sdCount === '0'">{{data.sdCount}}</span>
+                                <span *ngIf="data.sdCount !== '0'" container="body" ngbTooltip="Click to view Shop Drawing task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Shop Drawing')">
+                                  {{data.sdCount}}
+                                </span>
+                              </td>
+                              <td class="rowdes">
+                                <span *ngIf="data.esCount === '0'">{{data.esCount}}</span>
+                                <span *ngIf="data.esCount !== '0'" container="body" ngbTooltip="Click to view Extra Service task" placement="top" class="pointerLink" (click)="openSingleEmpAllTaskModel(data.employee_id, 'Extra Service')">
+                                  {{data.esCount}}
+                                </span>
+                              </td>
+                              <td class="rowdes">
+                                <span>{{data.task_count}}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='employee_count' headerText='Revision' textAlign='center' width=50>
+                    <ng-template #template let-data>
+                      <span>{{data.employee_count}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='budgeted_hours' headerText='Budgeted Hrs' textAlign='center' width=50>
+                    <ng-template #template let-data>
+                      <span>{{data.budgeted_hours | number: '.2'}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='expected_working_days' headerText='Expected working days' textAlign='center' width=50>
+                    <ng-template #headerTemplate let-data>
+                      <p style="margin-bottom: 0px;">Expected working days
+                        <i class="fa fa-info-circle" container="body" ngbTooltip="Expected working days is calculated by dividing Budgeted Hours with 8 Days" placement="top"></i>
+                      </p>
+                    </ng-template>
+                    <ng-template #template let-data>
+                      <span>{{data.expected_working_days === 0 ? 1 : data.expected_working_days}}</span>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+
+            <ng-template #content *ngIf='header.text=="Projects Invoicing"'>
+              <mat-spinner *ngIf="checkForMilestoneData" style="margin: 60px auto;"></mat-spinner>
+              <ejs-grid #projectInvoicingGrid [dataSource]='projectMilestoneWrjPerTableData' height="600px" [toolbar]='invoiceToolbar'
+              allowTextWrap='true' allowSorting='true' (created)='projectInvoicingGridSearch()' *ngIf="!checkForMilestoneData">
+                <e-columns>
+                  <e-column field='project_name' headerText='Project' width=25>
+                    <ng-template #template let-data>
+                      <p style="margin-bottom: 0px;">
+                        <span *ngIf="data.accountsId !== null">
+                          {{data.accountsId}} -
+                        </span>
+                        {{data.project_name}}
+                      </p>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText='Hours overview' width=25>
+                    <ng-template #template let-data>
+                      <p style="margin-bottom: 0px; font-size: 12px;">Actual Vs Budgeted %</p>
+                      <div class="progress progHeight" container="body" placement="top" ngbTooltip="{{data.totalTimeProcess}}%">
+                        <div class="progress-bar" [ngClass]="data.totalTimeProcess >= 0 ? 'successLite': 'dangerBug'"
+                          role="progressbar" [style.width.%]="data.totalTimeProcess < 0 ? '100': data.totalTimeProcess" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                          {{data.totalTimeProcess}}%
+                        </div>
+                      </div>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='progress' headerText='Project % by Task completed' width=20>
+                    <ng-template #template let-data>
+                      <p style="margin-bottom: 0px;">Project overall %</p>
+                      <div class="progress progHeight" container="body" placement="top" ngbTooltip="Project overall {{data.progress}}% completed">
+                        <div class="progress-bar" [ngClass]="data.progress === 100 ? 'successLite': 'inprogress'"
+                        role="progressbar" [style.width.%]="data.progress" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                          {{data.progress}}%
+                        </div>
+                      </div>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='progress' headerText='Project % by Budgeted hours' width=20>
+                    <ng-template #template let-data>
+                      <p style="margin-bottom: 0px;">Project overall %</p>
+                      <div class="progress progHeight" container="body" placement="top" ngbTooltip="Project overall {{data.progressByBudgeted_tilldate}}% completed">
+                        <div class="progress-bar" [ngClass]="data.progressByBudgeted_tilldate === 100 ? 'successLite': 'inprogress'"
+                        role="progressbar" [style.width.%]="data.progressByBudgeted_tilldate" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                          {{data.progressByBudgeted_tilldate}}%
+                        </div>
+                      </div>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText='Milestone' width=120>
+                    <ng-template #template let-data>
+                      <div class="milestonemaindiv">
+                        <div *ngFor="let milestoneData of data.projectMilestoneData" class="singlemilestone">
+                          <p class="milestoneheadername" (click)="projectInvoicingDetailsModel(data, milestoneData)"
+                            container="body" placement="top" ngbTooltip="Click to view number of Task completed"
+                            [ngClass]="milestoneData.TotalRatio === 100 ? 'boldclas' : ''">{{milestoneData.activity_name}} - {{milestoneData.TotalRatio}}%</p>
+                          <div class="progress progHeight" *ngIf="milestoneData.TotalRatio > 0">
+                            <div class="progress-bar" *ngFor="let milStoneInner of milestoneData.projectMilestoneProperties"
+                            container="body" placement="top" ngbTooltip="Previous progress was {{milStoneInner?.ratio}} %"
+                            [ngClass]="milStoneInner?.ratio === 100 ? 'success': 'inprogress'"  role="progressbar" [style.width.%]="milStoneInner?.ratio" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                              {{milStoneInner?.ratio}}%
+                            </div>
+                            <div class="progress-bar" *ngFor="let milStoneInner2 of milestoneData.projectMilestonePropertieswithDate"
+                            container="body" placement="top" ngbTooltip="Progress for Selected Date is {{milStoneInner2?.ratio}} %"
+                            [ngClass]="milStoneInner2?.ratio === 100 ? 'successLite': 'inprogressLite'"
+                            role="progressbar" [style.width.%]="milStoneInner2?.ratio === 1 ? '10': milStoneInner2?.ratio" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                              {{milStoneInner2?.ratio}}%
+                            </div>
+                          </div>
+
+                          <div class="progress progHeight" *ngIf="milestoneData.projectMilestoneProperties.length === 0 && milestoneData.projectMilestonePropertieswithDate.length === 0">
+                            <p style="padding-left: 8px;">No Task completed</p>
+                          </div>
+                        </div>
+                      </div>
+
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+
+
+
+            <ng-template #content *ngIf='header.text=="Productivity"'>
+              <ejs-grid #empProductivityTable [dataSource]='employeeProductivityWrkFrcDetail' height="600px"
+              [toolbar]='invoiceModelToolbar' allowTextWrap='true' allowSorting='true'
+              (created)='empProductivityGridSearch()' *ngIf="!checkForProductivityData">
+                <e-columns>
+                  <e-column field='full_name' width=150>
+                    <ng-template #headerTemplate let-data>
+                      <div>
+                        <p class="headerClass">Assignee</p>
+                      </div>
+                    </ng-template>
+                    <ng-template #template let-data>
+                      <span>{{data.full_name}}</span>
+                    </ng-template>Actual Hrs:Ms
+                  </e-column>
+                  <e-column field='project_tasks_count' textAlign='Center' width=100>
+                    <ng-template #headerTemplate let-data>
+                      <div placement="top" ngbTooltip="Project Related Tasks generated through estimation contributing to the revenue" container="body">
+                        <p class="headerClass">Project Task</p>
+                        <i class="fa fa-info-circle matpointer"></i>
+                      </div>
+                    </ng-template>
+                    <ng-template #template let-data>
+                      <div class="pointerLink" (click)="data.project_tasks_count !== 0 ? employeeProdTaskModel(data, 'projectTask') : ''">{{data.project_tasks_count}}</div>
+                      <span class="pointerLink" style="font-size: 9px;" (click)="data.project_tasks_comp !== 0 ? employeeProdTaskModel(data, 'projectTaskComp') : ''">({{data.project_tasks_comp}} completed)</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='project_tasks_hours' textAlign='center' width=100>
+                    <ng-template #headerTemplate let-data>
+                      <div placement="top" ngbTooltip="Total time taken for Inprogress and completed task within Range" container="body">
+                        <p class="headerClass">Actual Hrs:Ms within Range </p>
+                        <i class="fa fa-info-circle matpointer"></i>
+                      </div>
+                    </ng-template>
+                    <ng-template #template let-data>
+                      <div class="totalhrs" container="body" placement="top" ngbTooltip="{{data.pending_Hours_value}}">{{data.project_tasks_hours}}</div>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='budgeted_hours_project' textAlign='center' width=100>
+                    <ng-template #headerTemplate let-data>
+                      <div placement="top" ngbTooltip="Total time taken for completed task within Range" container="body">
+                        <p class="headerClass">Total Actual Hrs.Ms within Range</p>
+                        <i class="fa fa-info-circle matpointer"></i>
+                      </div>
+                    </ng-template>
+                    <ng-template #template let-data>
+                      <span [ngClass]="data.productive ? 'Avgtime' : 'deltime'">{{data.budgeted_hours_project}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='budgeted_hours' textAlign='center' width=100>
+                    <ng-template #headerTemplate let-data>
+                      <div placement="top" ngbTooltip="Total Budgeted hour for completed task" container="body">
+                        <p class="headerClass">Budgeted Hours (Hrs.Ms)</p>
+                        <i class="fa fa-info-circle matpointer"></i>
+                      </div>
+                    </ng-template>
+                    <ng-template #template let-data>
+                      <span>{{data.budgeted_hours}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='start_revisionCount' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div placement="top" ngbTooltip="Number of Total new proposal/revision submitted to the client." container="body">
+                          <p class="headerClass">Total Revision</p>
+                          <i class="fa fa-info-circle matpointer"></i>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <div>{{data.start_revisionCount}}</div>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='revision_count' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div placement="top" ngbTooltip="Number of new proposal/revision submitted to the client in the selected date range." container="body">
+                          <p class="headerClass">Revision</p>
+                          <i class="fa fa-info-circle matpointer"></i>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <div>{{data.revision_count}}</div>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='normal_tasks_count' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div placement="top" ngbTooltip="Other Tasks generated by employee which can be realted to a project or a normal task" container="body">
+                          <p class="headerClass">Other Task</p>
+                          <i class="fa fa-info-circle matpointer"></i>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span class="pointerLink" (click)="data.normal_tasks_count !== 0 ? employeeProdTaskModel(data, 'otherTask') : ''">{{data.normal_tasks_count}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='normal_tasks_hours' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">Time (Hrs:Ms)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.normal_tasks_hours}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='activity_tasks_count' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div placement="top" ngbTooltip="Activity task includes Meetings, Brainstorming Session, Follow up" container="body">
+                          <p class="headerClass">Activity</p>
+                          <i class="fa fa-info-circle matpointer"></i>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span class="pointerLink" (click)="data.activity_tasks_count !== 0 ? employeeProdTaskModel(data, 'activityTask') : ''">{{data.activity_tasks_count}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='activity_tasks_hours' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">Time (Hrs:Ms)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.activity_tasks_hours}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='total_Task' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">Total Task</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.total_Task}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='total_Working_time' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">Total Working Time (Hrs:Ms)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.total_Working_time}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='avial_hours' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">Available Time (Hrs:Ms)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.avial_hours}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='unproductive_time' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">Unproductive Time (Hrs:Ms)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.unproductive_time}}</span>
+                      </ng-template>
+                  </e-column>
+                  <e-column field='unproductive_time_per' textAlign='center' width=100>
+                      <ng-template #headerTemplate let-data>
+                        <div>
+                          <p class="headerClass">% of Unproductive time</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.unproductive_time_per > 0">{{data.unproductive_time_per}} %</span>
+                        <span *ngIf="data.unproductive_time_per <= 0">0 %</span>
+                      </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+          </e-tabitem>
+        </e-tabitems>
+      </ejs-tab>
+    </div>
+
+  </div>
+</div>
+
+<!-- Open Project Count Model Start-->
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="open_project_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 750px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">{{openProjectsModelHeader}} Project Details</h5>
+          <button type="button" class="close" (click)="closeOpenProjectModel()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden; background: #f1f0ee; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid" style="margin-bottom: 0px;">
+              <div class="kt-widget14 cardPro">
+                <ejs-grid #openProjectGridModel (created)='openProjectGridModelSearch()'
+                (toolbarClick)='ProjectDetailsClick($event)'
+                allowTextWrap='true' allowSorting='true'
+                [allowExcelExport]='true' [allowPdfExport]='true'
+                [dataSource]='openProjectInnerData'
+                [toolbar]='totalProjectsModelToolbar' height="540px">
+                  <e-columns>
+                    <e-column field='created_date' headerText='Created date'>
+                      <ng-template #template let-data>
+                        <span>{{data.created_date | date: 'MMM d, y'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='project_name' headerText='Project Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.project_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='task_count' headerText='Task'>
+                      <ng-template #template let-data>
+                        <span>{{data.task_count}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='budgeted_hours' headerText='Budgeted hours'>
+                      <ng-template #template let-data>
+                        <span>{{data.budgeted_hours}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='budgeted_hours_value' headerText='Value(AED)'>
+                      <ng-template #template let-data>
+                        <span>{{data.budgeted_hours_value}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                  </ejs-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeOpenProjectModel()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Project Task Count Model Ends-->
+
+<!-- Employee Task Count Model Start-->
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="employee_task_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 980px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Employee Task Deatils</h5>
+          <button type="button" class="close" #mapCloseBtn  (click)="closeEmployeeDetailsModel()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden; background: #f1f0ee; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid backcol">
+              <div class="kt-widget14 cardPro">
+                <p class="marBot colr">Employee : {{getEmployeeName}}</p>
+              </div>
+            </div>
+            <div class="kt-portlet kt-portlet--height-fluid" style="margin-bottom: 0px;">
+              <div class="kt-widget14 cardPro">
+                <p style="text-align: end; font-weight: 500;">Total task : {{getEmployeeTaskCount}}</p>
+                <ejs-grid #employeeGridModel (created)='employeeGridModelSearch()'
+                 [dataSource]='getEmployeeData' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true'>
+                  <e-columns>
+                    <e-column field='project_name' headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.project_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='milestone_name' headerText='Milestone'>
+                      <ng-template #template let-data>
+                        <span>{{data.milestone_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='task_name' headerText='Task'>
+                      <ng-template #template let-data>
+                        <span>{{data.task_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='sub_task_name' headerText='Subtask'>
+                      <ng-template #template let-data>
+                        <span>{{data.sub_task_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='modified_date' headerText='Date/time'>
+                      <ng-template #template let-data>
+                        <span>{{data.modified_date | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Actual Hours (Hrs:Ms)' textAlign='center'>
+                      <ng-template #template let-data>
+                        <span [ngClass]="data.actual_hours < data.budgeted_hours ? 'Avgtime' : 'deltime'">{{data.actual_hours}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Budgeted Hours (Hrs:Ms)' textAlign='center'>
+                      <ng-template #template let-data>
+                        <span>{{data.budgeted_hours}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='budgeted_hours_value' headerText='Value (AED)'>
+                      <ng-template #template let-data>
+                        <span *ngIf="!isWorkForceLeader">{{data.budgeted_hours_value| number : '1.2-2' }}</span>
+                        <span *ngIf="isWorkForceLeader">-</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                  </ejs-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeEmployeeDetailsModel()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Employee Task Count Model Ends-->
+
+<!-- Project Task Count Model Start-->
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="project_task_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 900px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Project Task Details</h5>
+          <button type="button" class="close" #mapCloseBtn  (click)="closeProjectDetailsModel()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden; background: #f1f0ee; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid backcol">
+              <div class="kt-widget14 cardPro">
+                <p class="marBot">Project : {{getProjectName}}</p>
+              </div>
+            </div>
+            <div class="kt-portlet kt-portlet--height-fluid" style="margin-bottom: 0px;">
+              <div class="kt-widget14 cardPro">
+                <p style="text-align: end; font-weight: 500;">Total task : {{getProjectTaskCount}}</p>
+                <ejs-grid #projectGridModel (created)='projectGridModelSearch()'
+                 [dataSource]='getProjectData' [toolbar]='invoiceModelToolbar' height="415px" allowTextWrap='true'   allowSorting='true'>
+                  <e-columns>
+                    <e-column field='milestone_name' headerText='Milestone'>
+                      <ng-template #template let-data>
+                        <span>{{data.milestone_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='task_name' headerText='Task'>
+                      <ng-template #template let-data>
+                        <span>{{data.task_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='sub_task_name' headerText='Subtask'>
+                      <ng-template #template let-data>
+                        <span>{{data.sub_task_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='employee_name' headerText='Assignee'>
+                      <ng-template #template let-data>
+                        <span>{{data.employee_name}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='modified_date' headerText='Date/time'>
+                      <ng-template #template let-data>
+                        <span>{{data.modified_date | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                  </ejs-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeProjectDetailsModel()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Project Task Count Model Ends-->
+
+<!-- Project invoicing Task Count Model Start-->
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="project_invoicing_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 750px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Project Task Details</h5>
+          <button type="button" class="close" #mapCloseBtn  (click)="closeProjectInvoicingDetailsModel()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto;overflow-x: hidden; background: #ffffff; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid backcol">
+              <div class="kt-widget14 cardPro" style="display: flex;">
+                <p class="marBot prowidth">Project : {{projectMilestoneInvoiceTableData?.projectName}}</p>
+                <p class="marBot prowidth" style="text-align: end;">Milestone : {{projectMilestoneInvoiceTableData?.milestoneName}}</p>
+              </div>
+            </div>
+            <div class="mainDivision">
+              <div class="milestoneProgressDiv">
+                <div style="padding: 10px; margin-top: 10px;">
+                  <div *ngIf="projectMilestoneInvoiceTableData?.projectMilestoneDataWithDate.length !==0">
+                    <p class="infodiv">{{projectMilestoneInvoiceTableData?.projectMilestoneDataWithDate?.length}} Task Completed from {{projectMilestoneInvoiceTableData?.fromDate | date}} to {{projectMilestoneInvoiceTableData?.toDate | date}}.</p>
+                    <ejs-grid [dataSource]='projectMilestoneInvoiceTableData?.projectMilestoneDataWithDate' height="230px" allowTextWrap='true'   allowSorting='true'>
+                      <e-columns>
+                          <e-column field='employee_name' headerText='Employee'></e-column>
+                          <e-column field='milestone_name' headerText='Milestone'></e-column>
+                          <e-column field='task_name' headerText='Task'></e-column>
+                          <e-column field='sub_task_name' headerText='Sub-Task'></e-column>
+                          <e-column field='modified_date' headerText='Date/time'>
+                            <ng-template #template let-data>
+                              <span>{{data.modified_date | date:'MMM d, y, h:mm a'}}</span>
+                            </ng-template>
+                          </e-column>
+                      </e-columns>
+                    </ejs-grid>
+                  </div>
+                  <div style="margin-top: 10px;" *ngIf="projectMilestoneInvoiceTableData?.projectMilestoneData.length !==0">
+                    <p class="infodiv">{{projectMilestoneInvoiceTableData?.projectMilestoneData?.length}} Task Completed before {{projectMilestoneInvoiceTableData?.fromDate | date}}.</p>
+                    <ejs-grid [dataSource]='projectMilestoneInvoiceTableData?.projectMilestoneData' height="230px" allowTextWrap='true'   allowSorting='true'>
+                      <e-columns>
+                          <e-column field='employee_name' headerText='Employee'></e-column>
+                          <e-column field='milestone_name' headerText='Milestone'></e-column>
+                          <e-column field='task_name' headerText='Task'></e-column>
+                          <e-column field='sub_task_name' headerText='Sub-Task'></e-column>
+                          <e-column field='modified_date' headerText='Date/time'>
+                            <ng-template #template let-data>
+                              <span>{{data.modified_date | date:'MMM d, y, h:mm a'}}</span>
+                            </ng-template>
+                          </e-column>
+                      </e-columns>
+                    </ejs-grid>
+                  </div>
+
+
+                  <div style="margin-top: 10px;" *ngIf="opentskData?.length !==0">
+                    <p class="infodiv">{{opentskData?.length}}  Open Tasks   </p>
+                    <ejs-grid [dataSource]='opentskData' height="230px" allowTextWrap='true'   allowSorting='true'>
+                      <e-columns>
+                        <e-column field='employee_name' headerText='Employee'>
+                          <ng-template #template let-data>
+                            <span>{{data.employee_name === null ? 'Not Assigned' : data.employee_name}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='milestone_name' headerText='Milestone'></e-column>
+                        <e-column field='task_name' headerText='Task'></e-column>
+                        <e-column field='sub_task_name' headerText='Sub-Task'></e-column>
+                        <e-column field='modified_date' headerText='Date/time'>
+                          <ng-template #template let-data>
+                            <span>{{data.modified_date === null ? '-' : (data.modified_date | date:'MMM d, y, h:mm a')}}</span>
+                          </ng-template>
+                        </e-column>
+                    </e-columns>
+                    </ejs-grid>
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeProjectInvoicingDetailsModel()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Project Task Count Model Ends-->
+
+<!-- Employee productivity Project Task Count Model Start-->
+<div class="rightModal700">
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="employee_Prod_task_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;" *ngIf="empProjectTaskdiv">Productivity - Employee Timesheet View</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;" *ngIf="empProjectTaskCompdiv">Productivity - Employee Project Task Completed Deatils</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;" *ngIf="empProTaskempProTaskConListingdiv">Productivity - Employee Project Task Consolidation View</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;" *ngIf="empProjectTaskTimelineListingShow">Productivity - Task Time-line View</h5>
+          <button type="button" class="close" #mapCloseBtn  (click)="closeEmployeeProdTaskDetailsModel('project')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid backcol">
+              <div class="kt-widget14 cardPro">
+                <p class="marBot colr">Employee : {{tempEmpNameCommon}}</p>
+                <p class="taskCountcss" *ngIf="empProjectTaskdiv">Total Task : {{empProjectTaskListing?.length}}</p>
+                <p class="taskCountcss" *ngIf="empProjectTaskCompdiv">Total Task : {{empProjectTaskCompListing?.length}}</p>
+                <p class="taskCountcss" *ngIf="empProTaskempProTaskConListingdiv">Total Task : {{empProjectTaskConsolidationListing?.length}}</p>
+              </div>
+            </div>
+            <div class="kt-portlet kt-portlet--height-fluid" style="margin-bottom: 0px;">
+              <div class="kt-widget14 cardPro">
+                <div *ngIf="empProjectTaskdiv || empProTaskempProTaskConListingdiv" class="co">
+                  <ejs-checkbox (change)="checkConsolidation($event)" [checked]="consolidationCheckValue"></ejs-checkbox>
+                  <p class="consview">Consolidation view</p>
+                  <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="combination of start end time taken for the task" container="body"></i>
+                </div>
+                <div *ngIf="empProjectTaskTimelineListingShow" class="newco">
+                  <p class="noteTimeLine">Note: This is a time line view of the selected task in a selected range.</p>
+                  <button class="btn btnColorNo closetimelineview" (click)="blacktoEmpProjectTaskListing('timeLineList')">
+                    <mat-icon class="bottommar" style="font-size: 20px; height: 19px !important;">arrow_back</mat-icon>
+                    <p class="pstyleback">Back</p>
+                  </button>
+                </div>
+
+                <ejs-grid #projectEmpAllTaskTableList (created)='projectEmpAllTaskTableListSearch()' [dataSource]='empProjectTaskListing' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true' *ngIf="empProjectTaskdiv">
+                  <e-columns>
+                    <e-column field='Start Date' headerText='Start Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.StartTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='End Date' headerText='End Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.EndTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='ProjectName' headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.ProjectName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='TaskName' headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.TaskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='StatusName' headerText='Status' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.StatusName === 'Submitted for review'" class="SubmitReview">Submitted for review</span>
+                        <span *ngIf="data.StatusName === 'In Progress'" class="Inprogress">In Progress</span>
+                        <span *ngIf="data.StatusName === 'Completed'" class="Completed">Completed</span>
+                        <span *ngIf="data.StatusName === 'Open'" class="Open">Open</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Remark'>
+                      <ng-template #template let-data>
+                        <span class="remarktxt" placement="top" [ngbTooltip]="data.Remarks" container="body">
+                          {{data.Remarks === '' || data.Remarks === null ? 'No Remark' : data.Remarks}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Revision' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span>
+                          {{data.RevisionCount !== null ? data.RevisionCount : 0}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Total Time (HH:mm)' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span>{{data.TotalHrs}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='TimeLine' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <mat-icon class="matIconSize" (click)="viewTimeline(data)" placement="top" ngbTooltip="View time-line for this task" container="body">visibility</mat-icon>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+
+                <ejs-grid #projectEmpAllTaskTableList (created)='projectEmpAllTaskTableListSearch()' [dataSource]='empProjectTaskConsolidationListing' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true' *ngIf="empProTaskempProTaskConListingdiv">
+                  <e-columns>
+                    <e-column headerText='Start Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.StartTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='End Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.EndTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='ProjectName' headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.ProjectName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='TaskName' headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.TaskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='StatusName' headerText='Status' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.StatusName === 'Submitted for review'" class="SubmitReview">Submitted for review</span>
+                        <span *ngIf="data.StatusName === 'In Progress'" class="Inprogress">In Progress</span>
+                        <span *ngIf="data.StatusName === 'Completed'" class="Completed">Completed</span>
+                        <span *ngIf="data.StatusName === 'Open'" class="Open">Open</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Remark'>
+                      <ng-template #template let-data>
+                        <ul class="liclass" *ngIf="data.Remarks.length > 1">
+                          <li class="remarktxt" placement="top" ngbTooltip="Click to view More Remark" container="body" (click)="viewRemarkForTask(data)">
+                            {{data.Remarks[0] === ''? 'No Remark' : data.Remarks[0]}}
+                          </li>
+                        </ul>
+                        <ul class="liclass" *ngIf="data.Remarks.length === 1">
+                          <li class="remarktxt" placement="top" [ngbTooltip]="data.Remarks[0]" container="body">
+                            {{data.Remarks[0] === ''? 'No Remark' : data.Remarks[0]}}
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Revision' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span>
+                          {{data.total_RevisonCount !== null ? data.total_RevisonCount : 0}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column textAlign = 'center'>
+                      <ng-template #headerTemplate let-data>
+                        <div placement="top" ngbTooltip="Time Taken to complete the task within the time range" container="body">
+                          <p class="headerClass">Time Taken (HH:mm)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span>{{data.TotalHrs}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column textAlign = 'center'>
+                      <ng-template #headerTemplate let-data>
+                        <div placement="top" ngbTooltip="Time Taken to complete the task from start till now" container="body">
+                          <p class="headerClass">Actual Time (HH:mm)</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <span [ngClass]="data.Preformance ? 'Avgtime' : 'deltime'">{{data.hoursTillDate}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Budgeted Time (HH:mm)' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span>{{ frmtBdgthr(data.budgetedHours)}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+
+                <ejs-grid [dataSource]='empProjectTaskTimelineListing' height="100%" allowTextWrap='true' allowSorting='true' *ngIf="empProjectTaskTimelineListingShow">
+                  <e-columns>
+                    <e-column field='Start Date' headerText='Start Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.StartTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='End Date' headerText='End Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.EndTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.ProjectName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.TaskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Status' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.StatusName === 'Submitted for review'" class="SubmitReview">Submitted for review</span>
+                        <span *ngIf="data.StatusName === 'In Progress'" class="Inprogress">In Progress</span>
+                        <span *ngIf="data.StatusName === 'Completed'" class="Completed">Completed</span>
+                        <span *ngIf="data.StatusName === 'Open'" class="Open">Open</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Remark'>
+                      <ng-template #template let-data>
+                        <span class="remarktxt" placement="top" [ngbTooltip]="data.Remarks" container="body">
+                          {{data.Remarks === '' || data.Remarks === null ? 'No Remark' : data.Remarks }}
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Total Time (HH:mm)' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span>{{data.TotalHrs}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+
+                <ejs-grid #projectEmpAllTaskTableList (created)='projectEmpAllTaskTableListSearch()' [dataSource]='empProjectTaskCompListing' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true' *ngIf="empProjectTaskCompdiv">
+                  <e-columns>
+                    <e-column headerText='Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.startTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.endTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='projectName' headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.projectName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='taskName' headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.taskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='revisionCount' textAlign='center' headerText='Revisions'>
+                      <ng-template #template let-data>
+                        <span>{{data.revisionCount}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Status'>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.statusName === 'Completed'" class="Completed">Completed</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='totalHrs'>
+                      <ng-template #headerTemplate let-data>
+                        <div style="text-align: center;">
+                          <p class="headerClass">Total Actual Hrs.Ms within Range</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <p class="invoicecall">{{data.totalHrs}}</p>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='workedHours'>
+                      <ng-template #headerTemplate let-data>
+                        <div style="text-align: center;">
+                          <p class="headerClass">Total Actual Hrs.Ms from start till now</p>
+                        </div>
+                      </ng-template>
+                      <ng-template #template let-data>
+                        <p class="invoicecall" [ngClass]="data.Preformance ? 'Avgtime' : 'deltime'">{{data.workedHours}}</p>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='budgetedHours' headerText='Budgeted Hrs (Hrs:Ms)'>
+                      <ng-template #template let-data>
+                        <span>{{ frmtBdgthr(data.budgetedHours)}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+
+                <div *ngIf="empProjectTaskRemarkList">
+                  <div class="remarklisting">
+                    <div class="remarTitle">
+                      <p class="remarktxt2">List of remarks made on Task {{empProjectTaskRemarkData.TaskName}} from Project {{empProjectTaskRemarkData.projectName}}</p>
+                      <button class="btn btnColorNo closetime2" (click)="blacktoEmpProjectTaskListing('remarkList')">
+                        <mat-icon class="bottommar" style="font-size: 16px; height: 18px !important;">arrow_back</mat-icon>
+                        <p class="pstyleback">Back</p>
+                      </button>
+                    </div>
+                    <ol class="ollist">
+                      <li *ngFor="let remark of empProjectTaskRemarkData.Remarks">
+                        {{remark === '' ? 'No remark' : remark}}
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btnColorNo" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeEmployeeProdTaskDetailsModel('project')">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Employee Task Count Model Ends-->
+
+<!-- Employee productivity Normal task Model Start-->
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="employee_Normal_task_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 900px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;" *ngIf="!empNormalTaskConsolidationListingDiv">Productivity - Normal task</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;" *ngIf="empNormalTaskConsolidationListingDiv">Productivity - Normal task Consolidation view</h5>
+          <button type="button" class="close" (click)="closeEmployeeProdTaskDetailsModel('normal')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid backcol">
+              <div class="kt-widget14 cardPro">
+                <p class="marBot colr">Employee : {{tempEmpNameCommon}}</p>
+                <p class="taskCountcss" *ngIf="!empNormalTaskConsolidationListingDiv">Total Task : {{empNormalTaskListing?.length}}</p>
+                <p class="taskCountcss" *ngIf="empNormalTaskConsolidationListingDiv">Total Task : {{empNormalTaskConsolidationListing?.length}}</p>
+              </div>
+            </div>
+            <div class="kt-portlet kt-portlet--height-fluid" style="margin-bottom: 0px;">
+              <div class="kt-widget14 cardPro">
+                <div class="co" *ngIf="!empNormalTaskRemarkList">
+                  <ejs-checkbox (change)="checkConsolidationNT($event)" [checked]="empNormalTaskConsolidationListingDiv"></ejs-checkbox>
+                  <p class="consview">Consolidation view</p>
+                  <i class="fa fa-info-circle matpointer" placement="top" ngbTooltip="combination of start end time taken for the task" container="body"></i>
+                </div>
+
+                <ejs-grid #normalEmpAllTaskTableList (created)='normalEmpAllTaskTableListSearch()' [dataSource]='empNormalTaskListing' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true' *ngIf="!empNormalTaskConsolidationListingDiv && !empNormalTaskRemarkList">
+                  <e-columns>
+                    <e-column headerText='Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.StartTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.EndTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='ProjectName' headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.ProjectName !== ''? data.ProjectName : 'No Project Linked'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='TaskName' headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.TaskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='StatusName' headerText='Status'>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.StatusName === 'Submitted for review'" class="SubmitReview">Submitted for review</span>
+                        <span *ngIf="data.StatusName === 'In Progress'" class="Inprogress">In Progress</span>
+                        <span *ngIf="data.StatusName === 'Completed'" class="Completed">Completed</span>
+                        <span *ngIf="data.StatusName === 'Open'" class="Open">Open</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Remark'>
+                      <ng-template #template let-data>
+                        <span class="remarktxt" placement="top" [ngbTooltip]="data.Remarks" container="body">
+                          {{data.Remarks === '' || data.Remarks === null ? 'No Remark' : data.Remarks}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Total Time (HH:mm)'>
+                      <ng-template #template let-data>
+                        <span>{{data.TotalHrs}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+
+                <ejs-grid #normalEmpAllTaskTableList (created)='normalEmpAllTaskTableListSearch()' [dataSource]='empNormalTaskConsolidationListing' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true' *ngIf="empNormalTaskConsolidationListingDiv">
+                  <e-columns>
+                    <e-column headerText='Start Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.startTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='End Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.endTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='projectName' headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.projectName !== ''? data.projectName : 'No Project Linked'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='taskName' headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.taskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='status' headerText='Status' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span *ngIf="data.StatusName === 'Submitted for review'" class="SubmitReview">Submitted for review</span>
+                        <span *ngIf="data.status === 'In Progress'" class="Inprogress">In Progress</span>
+                        <span *ngIf="data.status === 'Completed'" class="Completed">Completed</span>
+                        <span *ngIf="data.status === 'Open'" class="Open">Open</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Remark'>
+                      <!-- <ng-template #template let-data>
+                        <ul class="liclass">
+                          <li *ngFor="let remark of data.remarks" class="remarktxt"
+                          placement="top" [ngbTooltip]="remark" container="body">
+                            {{remark.length !== 0 ? remark : 'No Remark'}}
+                          </li>
+                        </ul>
+                      </ng-template> -->
+                      <ng-template #template let-data>
+                        <ul class="liclass" *ngIf="data.remarks.length > 1">
+                          <li class="remarktxt" placement="top" ngbTooltip="Click to view More Remark" container="body" (click)="viewRemarkForNormalTask(data)">
+                            {{data.remarks[0] === ''? 'No Remark' : data.remarks[0]}}
+                          </li>
+                        </ul>
+                        <ul class="liclass" *ngIf="data.remarks.length === 1">
+                          <li class="remarktxt" placement="top" [ngbTooltip]="data.remarks[0]" container="body">
+                            {{data.remarks[0] === ''? 'No Remark' : data.remarks[0]}}
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Time Taken (HH:mm)' textAlign = 'center'>
+                      <ng-template #template let-data>
+                        <span>{{data.tasks_hours}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+
+                <div *ngIf="empNormalTaskRemarkList">
+                  <div class="remarklisting">
+                    <div class="remarTitle">
+                      <p class="remarktxt2">List of remarks made on task {{empNormalTaskRemarkData.taskName}}</p>
+                      <button class="btn btnColorNo closetime2" (click)="blacktoEmpNormalTaskListing()">
+                        <mat-icon class="bottommar" style="font-size: 16px; height: 18px !important;">arrow_back</mat-icon>
+                        <p class="pstyleback">Back</p>
+                      </button>
+                    </div>
+                    <ol class="ollist">
+                      <li *ngFor="let remark of empNormalTaskRemarkData.remarks">
+                        {{remark === '' ? 'No remark' : remark}}
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btnColorNo" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeEmployeeProdTaskDetailsModel('normal')">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- Employee productivity Normal task Model ends-->
+
+<!-- Employee productivity activity task Model Start-->
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="employee_Activity_task_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 900px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Productivity - Activity task</h5>
+          <button type="button" class="close" (click)="closeEmployeeProdTaskDetailsModel('activity')" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding: 0px;">
+          <div class="kt-demo-panel__body">
+            <div class="kt-portlet kt-portlet--height-fluid backcol">
+              <div class="kt-widget14 cardPro">
+                <p class="marBot colr">Employee : {{tempEmpNameCommon}}</p>
+                <p class="taskCountcss">Total Task : {{empActivityTaskListing?.length}}</p>
+              </div>
+            </div>
+            <div class="kt-portlet kt-portlet--height-fluid" style="margin-bottom: 0px;">
+              <div class="kt-widget14 cardPro">
+                <ejs-grid #activityEmpAllTaskTableList (created)='activityEmpAllTaskTableListSearch()' [dataSource]='empActivityTaskListing' [toolbar]='invoiceModelToolbar' height="100%" allowTextWrap='true' allowSorting='true'>
+                  <e-columns>
+                    <e-column headerText='Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.StartTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Date'>
+                      <ng-template #template let-data>
+                        <span>{{data.EndTime | date:'MMM d, y, h:mm a'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='ProjectName'  headerText='Project'>
+                      <ng-template #template let-data>
+                        <span>{{data.ProjectName !== ''? data.ProjectName : 'No Project Linked'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='MilestoneName' headerText='Milestone Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.MilestoneName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='TaskName' headerText='Task Name'>
+                      <ng-template #template let-data>
+                        <span>{{data.TaskName}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Remark'>
+                      <ng-template #template let-data>
+                        <span class="remarktxt" placement="top" [ngbTooltip]="data.Remarks" container="body">
+                          {{data.Remarks === '' || data.Remarks === null ? 'No Remark' : data.Remarks}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+                    <e-column headerText='Total Time (HH:mm)'>
+                      <ng-template #template let-data>
+                        <span>{{data.TotalHrs}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kt-align-right modal-footer">
+          <button type="reset" class="btn btn-secondary" style="width: 90px; padding: 7px 14px;font-size: 11px;margin-top: -1px;" (click)="closeEmployeeProdTaskDetailsModel('activity')">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Employee productivity activity task Model ends-->
+
+<!-- employee pending task data model -->
+<div class="rightModal700">
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="single_Employee_Details_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">
+            Summary - {{currentEmpDetails?.employee_name}}
+          </h5>
+          <button type="button" class="close" (click)="closeSingleEmployeeDetailsModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding: 0px;">
+          <div class="row rowCarddd">
+            <div class="col-6">
+              <p class="ptag" style="font-size: 14px;">Employee - {{currentEmpDetails?.employee_name}}</p>
+              <p class="ptag" style="font-size: 14px;">Pending Projects - {{currentEmpDetails?.project_name}}</p>
+              <p class="ptag" style="font-size: 14px;">Total Revision - {{currentEmpDetails?.employee_count}}</p>
+              <p class="ptag" style="font-size: 14px;">Total Bugeted Hrs - {{currentEmpDetails?.budgeted_hours}}</p>
+              <p class="ptag" style="font-size: 14px;" *ngIf="isWorkForceLeader">Total Value - AED. {{currentEmpDetails?.budgeted_hours_value | number: '.2'}}</p>
+            </div>
+            <div class="col-6">
+              <p class="ptag" style="font-size: 14px;">Total task - {{currentEmpDetails?.task_count}}</p>
+              <p class="ptag" style="font-size: 14px;">Study - {{currentEmpDetails?.stdCount}}</p>
+              <p class="ptag" style="font-size: 14px;">Design - {{currentEmpDetails?.desCount}}</p>
+              <p class="ptag" style="font-size: 14px;">Shop Drawing - {{currentEmpDetails?.sdCount}}</p>
+              <p class="ptag" style="font-size: 14px;">Extra Service - {{currentEmpDetails?.esCount}}</p>
+            </div>
+          </div>
+          <div style="margin: 10px 26px;">
+            <mat-accordion>
+              <mat-expansion-panel *ngFor="let projectData of singleEmployeeProjectData" style="margin-bottom: 10px;">
+                <mat-expansion-panel-header style="background-color: #e4e8ee00;">
+                  <mat-panel-title style="width: 100%;">
+                    <h1 style="font-size: 14px; cursor: pointer;" (click)="routToProject(projectData[0].ProjectId)">
+                      {{projectData[0].ProjectName}}
+                      <i class="fa fa-info-circle" container="body" ngbTooltip="Click to view the project on a new window" placement="top"></i>
+                    </h1>
+                  </mat-panel-title>
+                  <mat-panel-description style="justify-content: flex-end; width: 30%;">
+                    total {{projectData.length}} task pending
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div>
+                  <ejs-grid [dataSource]='projectData' allowTextWrap='true' height="230px" style="margin: 0px 10px 10px;">
+                    <e-columns>
+                        <e-column field='MilestoneName' headerText='Milestone'></e-column>
+                        <e-column field='TaskName' headerText='Task'></e-column>
+                        <e-column field='SubtaskName' headerText='Sub-Task'></e-column>
+                        <e-column field='StatusName' headerText='Status'></e-column>
+                        <e-column field='Budgetedhours' headerText='Budgeted hours'>
+                          <ng-template #template let-data>
+                            <span>{{data.Budgetedhours | number: '.2'}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='AssigneeDate' headerText='Date'>
+                          <ng-template #template let-data>
+                            <span>{{data.AssigneeDate | date:'MMMM d, y'}}</span>
+                          </ng-template>
+                        </e-column>
+                    </e-columns>
+                  </ejs-grid>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal animated slideInRight faster myDiv" tabindex="-1" id="single_Employee_Task_Details_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">
+            Summary - {{showData?.employeeName}} - {{showData?.milestone}} - Total {{showData?.tasklength}} tasks
+          </h5>
+          <button type="button" class="close" (click)="closeSingleEmpAllTaskModel()"></button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding: 0px;">
+          <div style="margin: 20px 10px;">
+            <ejs-grid [dataSource]='singleEmpAllTask' allowTextWrap='true' [toolbar]='invoiceModelToolbar' height="500px" style="margin: 0px 10px 10px;">
+              <e-columns>
+                  <e-column field='MilestoneName' headerText='Milestone' width="30"></e-column>
+                  <e-column field='ProjectName' headerText='Project' width="50"></e-column>
+                  <e-column field='TaskName' headerText='Task' width="50"></e-column>
+                  <e-column field='SubtaskName' headerText='Sub-Task' width="50"></e-column>
+                  <e-column field='StatusName' headerText='Status' width="30"></e-column>
+                  <e-column field='Budgetedhours' headerText='Budgeted hours' width="30">
+                    <ng-template #template let-data>
+                      <span>{{data.Budgetedhours | number: '.2'}}</span>
+                    </ng-template>
+                  </e-column>
+                  <e-column field='AssigneeDate' headerText='Date' width="30">
+                    <ng-template #template let-data>
+                      <span>{{data.AssigneeDate | date:'MMMM d, y'}}</span>
+                    </ng-template>
+                  </e-column>
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- employee pending task data model -->

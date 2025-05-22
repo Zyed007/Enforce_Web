@@ -1,0 +1,32 @@
+<div style="height: 700px;" *ngIf="noAccessTosettingsPage">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Settings</h1>
+    </div>
+    <div class="col-6 teamDiv">
+      <input type="text" class="searchBar" placeholder="Search a Setting" [(ngModel)]="term">
+    </div>
+  </div>
+  <div class="container">
+    <div class="row rowPad">
+      <div class="col-md-4 col-12" *ngFor = "let item of settingNames |filter:term">
+        <a *ngIf="item.hasAccess"class="card1" (click)="cardClick(item.name)" style="color: black">
+          <h3>{{item.name}}</h3>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="!noAccessTosettingsPage">
+  <app-not-found></app-not-found>
+</div>
+
+
+
+
+
+
+
+

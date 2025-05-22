@@ -1,0 +1,475 @@
+<div>
+    <div class="row pad2515">
+      <div class="col">
+        <h1 class="labelMainHeader">System</h1>
+      </div>
+      <div class="col-6 teamDiv" *ngIf="serviceListing">
+        <button class='btn btnColorAll' style="margin-left: 20px;" (click)="addServiceDiv()">
+          <i class="fa fa-plus padreq" aria-hidden="true"></i>
+          Service
+        </button>
+        <button class='btn btnColorAll' style="margin-left: 20px;" (click)="backToEstimation()">
+          <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+          Back
+        </button>
+      </div>
+      <div class="col-6 teamDiv" *ngIf="!serviceListing">
+        <button class='btn btnColorAll' style="margin-left: 20px;" (click)="closeAddEditService()">
+          <i class="fa fa-chevron-left padreq" aria-hidden="true"></i>
+          Back
+        </button>
+      </div>
+    </div>
+      <div class="row rowPad" >
+        <div class="col-12 whitee" *ngIf="serviceListing">
+          <ejs-grid #serviceGrid [dataSource]='serviceTableData' (created)='serviceSearchKeyUp()'  [toolbar]='employeeGridToolItems' height='300px'>
+            <e-columns>
+              <e-column field='createdDate' headerText='Created Date'>
+                <ng-template #template let-data>
+                  <div>
+                    <p style="margin-bottom: 0px;">{{data.createdDate | date}}</p>
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field='createdBy' headerText='Created By'></e-column>
+              <e-column field='serviceName' headerText='Service Name'>
+                <ng-template #template let-data>
+                  <div style="display: flex;">
+                    <p style="margin-bottom: 0px;">{{data.serviceName}}</p>
+                    
+                  </div>
+                </ng-template>
+              </e-column>
+              <e-column field='AddToBoq' headerText='Add to BOQ sheet' textAlign="center">
+                <ng-template #template let-data>
+                  <div style="display: flex; align-items: center;justify-content: center;">
+                    <input type="checkbox"  checked={{data.addtoBOQ}} disabled/>                    
+                  </div>
+                </ng-template>
+              </e-column>
+              <!-- <e-column headerText='No. of Milestone'>
+                <ng-template #template let-data>
+                  <div>
+                    <p style="margin-bottom: 0px;">{{data.milestone?.length}}</p>
+                  </div>
+                </ng-template>
+              </e-column> -->
+              <e-column headerText='Action'>
+                <ng-template #template let-data>
+                  <div>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="editSingleService(data)"></i>
+                    <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteService(data)"></i>
+                  </div>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+  
+        <div class="col-11 whitee" *ngIf="!serviceListing">
+          <form [formGroup]="addintfutServiceForm">
+            <div class="firstdiv">
+              <div class="row rowimp">
+                <div class="col-3 marAuto">
+                <label class="labCheckBox">Add to BOQ sheet</label>               
+                <input type="checkbox" value="checkBoxVal" (change)="handleCheckBox($event)"/>
+                <i class="fa fa-info-circle matpointer" placement="left" ngbTooltip="The current service will be added to BOQ sheet" container="body"></i> 
+              </div>
+              </div>
+              <div class="row rowimp">
+                <div class="col-2 marAuto">
+                  <label class="labimp">Add a Service Name</label>
+                </div>
+                <div class="col-4">
+                  <input type="text" formControlName="serviceName" class="e-input" placeholder="Enter a Service Name">
+                  <div class="errorTxt" *ngIf="serviceName?.invalid && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                    *Service Name is required
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div style="padding-top: 10px;">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <label style="margin-left: 5px;cursor: pointer;" class="labimp" (click)="openQstnairModal()">Add a Questionnaire for Service </label>
+                  </div>
+                </div>
+
+                
+              </div>
+              <div class="row rowimp" style="margin-top: 20px;">
+                <div class="col-2 marAuto">
+                  <label class="labimp">Select a Service Description</label>
+                </div>
+                <div class="col-4 marAuto" *ngIf="!newMilestone">
+                  <ejs-dropdownlist formControlName="milestone" [dataSource]='milestoneDropDownData' [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a Service Description' (change)="changeMileStone($event)"></ejs-dropdownlist>
+                  <div class="errorTxt" *ngIf="milestone?.invalid && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                    *Service Description is required
+                  </div>
+                  <div style="padding-top: 10px;">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <label style="margin-left: 5px;cursor: pointer;" class="labimp" (click)="addMilestoneModel()">Add a New Service Description</label>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <label for="nameArea" style="padding-right: 5px;">Add a Sequence
+                    <i class="fa fa-info-circle matpointer" placement="left" ngbTooltip="The following filed allows to control the sequence in which the items will be displayed while creating BOQ" container="body"></i> 
+                  </label>
+                  <input  value="{{currentSequenceNum}}"  (change)="addSequenceVal($event)"   type="text" class="e-input" placeholder="Enter a Sequence Number">
+                
+                  <!-- <div class="errorTxt" *ngIf="milestoneSameNameError">
+                    *Sequence Number name can not be the same in a same service.
+                  </div> -->
+                </div>
+
+                <div class="col-4 marAuto" *ngIf="newMilestone">
+                  <div>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <label style="margin-left: 5px;cursor: pointer;" class="labimp" (click)="addMilestoneModel()">
+                      Please add a New Service Description
+                    </label>
+                  </div>
+                </div>
+       
+  
+              </div>
+            </div>
+            <div class="row rowimp seconddiv" *ngIf="showMilestoneTaskTable">
+              <div class="col">
+                <table class="table" style="margin-bottom: 0rem;">
+                  <thead>
+                    <tr>
+                      <th scope="col">Unit Name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col" style="width:10%">Minutes</th>
+                      <th scope="col" style="width:10%">People required</th>
+                      <th scope="col" style="width:12%">Cost per Minute</th>
+                      <th scope="col" style="width:12%">Total cost</th>
+                      <th scope="col" style="width:15%">Rule</th>  
+                      <th scope="col" style="width:15%">Related Items</th>  
+                      <th scope="col" style="text-align: center;">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="taskList">
+                    <tr *ngFor="let task of taskList.controls; let i=index" [formGroupName]="i">
+                      <td>
+                        <input type="text" class="e-input" placeholder="Enter a Unit Name" formControlName="taskName">
+                        <div class="errorTxt" *ngIf="taskList.controls[i].get('taskName')?.errors?.required && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                          *Unit Name is required
+                        </div>
+                      </td>
+                      <td>
+                        <textarea rows="1" class="e-input" formControlName="taskDescription"></textarea>
+                      </td>
+                      <!-- Added labour cost calculation -->
+                   
+                      <td>
+                        <input type="number" class="e-input" placeholder="Enter Min" formControlName="taskMinutes">
+                        <div class="errorTxt" *ngIf="taskList.controls[i].get('taskMinutes')?.errors?.max && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                          *Minutes can't be more than 60 minutes
+                        </div>
+                      </td>
+                      <td>
+                        <input type="number" class="e-input" placeholder="Enter No" formControlName="peopleReq">
+                      </td>
+                      <td>
+                        <input type="number" class="e-input" placeholder="Enter cost per minute" formControlName="costPerTime">
+                      </td>
+                      <td>
+                        <input type="number" class="e-input" placeholder="Total cost" formControlName="totalCost">
+                      </td>
+                      <!-- <td style="display: none;">
+                        {{retureHrsMinConvertedDecimal(task, i)}}
+                      </td> -->
+                      <!-- <td>
+                        <div style="text-align: center;">
+                          <input type="number" class="e-input impe" placeholder="Enter Time" formControlName="timeConverted">
+                        </div>
+                      </td> -->
+                      <td>
+                        <ejs-dropdownlist formControlName="rules" [dataSource]='ruleData' [fields]='commonFields'></ejs-dropdownlist>
+                        <div class="errorTxt" *ngIf="taskList.controls[i].get('rules')?.errors?.required && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                          *Rule is required
+                        </div>
+                      </td>
+                        <!-- Added labour cost calculation -->
+
+                      <td>
+                        <button class="btn reqbtn"(click)="openSlvpup()">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          <p style="margin-bottom: 4px; margin-top: 0px;">Add Related Items</p>
+                        </button>
+                      </td>
+
+
+                      
+                      <td>
+                        <div style="text-align: center;">
+                          <i class="fa fa-trash commonBtn" [ngClass]="checkRowToDisable() ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteTaskRow(i)"></i>
+                        </div>
+                      </td>
+                    </tr>
+                    <div>
+                      <button class="btn reqbtn"(click)="addNewTask()">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <p style="margin-bottom: 4px; margin-top: 0px;">Add New Unit</p>
+                      </button>
+                    </div>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+  
+  
+            <div class="row rowimp thirddiv">
+              <div class="col">
+                <button class="btn buttonSt btnScc" (click)="saveService()">
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                  <p style="margin-bottom: 4px; margin-top: 0px;">Save Service</p>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+  </div>
+  
+  
+  <div class="rightModal700">
+    <div class="modal animated slideInRight faster myDiv" id="Add_Milestone_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="width: 800px;">
+        <div class="modal-content notifyModal" >
+          <div class="modal-header" style="padding: 8px 15px;">
+            <h5 class="modal-title">Add Service Description</h5>
+            <button type="button" class="close" (click)="closeaddMilestoneModel()"></button>
+          </div>
+          <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+            <form [formGroup]="addIntfutServMilestoneNameForm">
+              <div class="row">
+                <div class="col-6">
+                  <label for="nameArea" style="padding-right: 5px;">Service Description Name</label>
+                  <input formControlName="mileStoneName" type="text" class="e-input" placeholder="Enter a Service Description name">
+                  <div class="errorTxt" *ngIf="addIntfutServMilestoneNameForm.get('mileStoneName').hasError('required') && formSubmitAttemptForMilestone">
+                    *Service Description is required
+                  </div>
+                  <div class="errorTxt" *ngIf="milestoneSameNameError">
+                    *Service Description name can not be the same in a same service.
+                  </div>
+                </div>
+
+                <!-- <div class="col-4">
+                  <label for="nameArea" style="padding-right: 5px;">Add a Sequence</label>
+                  <input formControlName="sequenceNum" type="text" class="e-input" placeholder="Enter a Sequence Number">
+                  <div class="errorTxt" *ngIf="addIntfutServMilestoneNameForm.get('sequenceNum').hasError('required') && formSubmitAttemptForMilestone">
+                    *Sequence Number is required
+                  </div>
+                </div> -->
+              </div>
+            </form>
+  
+           
+  
+          </div>
+          <div class="footerdiv">
+            <button class="btn buttonSt btnScc" (click)="saveMileStone()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              <p style="margin-bottom: 4px;margin-top: 2px;">Save Service Description</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--  Start of Related Items Modal -->
+    <div class="modal animated slideInRight faster myDiv" id="Add_RelativeItem_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="width: 800px;">
+        <div class="modal-content notifyModal" >
+          <div class="modal-header" style="padding: 8px 15px;">
+            <h5 class="modal-title">Add Related Items</h5>
+            <button type="button" class="close" (click)="closeRelativeItemModel()"></button>
+          </div>
+       
+
+
+
+          <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+
+
+            <div>
+               Note: The following keywords can only be used when Creating a Formula
+              <div *ngFor="let fm of frmVals; let i=index"  >
+             
+                <span class="badge badge-primary"> {{ fm.taskName }} </span> <br>
+              </div>
+            
+            </div>
+
+
+            <form [formGroup]="addRelatedItemForm">
+              <div class="row">
+                <div class="col">
+                  <table class="table" style="margin-bottom: 0rem;">
+                    <thead>
+                      <tr>
+                        <th scope="col"> Item Name</th>
+                        <th scope="col" style="width:25%" > Type </th>
+                        <th scope="col">Formula</th>  
+                        
+                        <th scope="col" style="text-align: center;">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="realtedItems">
+                      <tr *ngFor="let task of realtedItems.controls; let i=index" [formGroupName]="i">
+                        <td>
+                          <input type="text" class="e-input" placeholder="Enter a Item Name" formControlName="itemName">
+                          <div class="errorTxt" *ngIf="realtedItems.controls[i].get('itemName')?.errors?.required && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                            *Unit Name is required
+                          </div>
+                        </td>
+                        <td>
+                          <!-- <textarea rows="1" class="e-input" formControlName="typeOf"></textarea> -->
+                        
+                          <ejs-dropdownlist  formControlName="typeOf"    [dataSource]='addItemsDropDownData' [fields]='commonFields' [allowFiltering]='true' placeholder = 'select a Type' (change)="changeCostInflator($event,i)"></ejs-dropdownlist>
+                        
+                        </td>
+    
+                        <td>
+                        
+                          <input  type="text" class="e-input" placeholder="Enter a Formula" formControlName="formula">
+                        </td>
+    
+    
+                        
+                        <td>
+                          <div style="text-align: center;">
+                            <i class="fa fa-trash commonBtn" [ngClass]="checkRowToDisable() ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteRelatedItems(i)"></i>
+                          </div>
+                        </td>
+                      </tr>
+                      <div>
+                        <button class="btn reqbtn"(click)="addRelatedItems()">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          <p style="margin-bottom: 4px; margin-top: 0px;">Add New Related Item</p>
+                        </button>
+                      </div>
+                    </tbody>
+                  </table>
+                </div>
+    
+              </div>
+            </form>
+
+           
+
+            
+  
+          </div>
+          <div class="footerdiv">
+            <button class="btn buttonSt btnScc" (click)="saveRelatedItems()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              <p style="margin-bottom: 4px;margin-top: 2px;">Save Rule</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!-- End of Related Items Modal -->
+
+
+     <!--  Start of Questionnaire  Modal -->
+    <div class="modal animated slideInRight faster myDiv" id="Add_qstnaire_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="width: 800px;">
+        <div class="modal-content notifyModal" >
+          <div class="modal-header" style="padding: 8px 15px;">
+            <h5 class="modal-title">Add Questionnaire Related to Service</h5>
+            <button type="button" class="close" (click)="closeQstnairModal()"></button>
+          </div>
+       
+
+
+
+          <div class="modal-body" style="overflow-y: auto;overflow-x: hidden;">
+
+
+
+            <div>
+               Note: The following Questionnaire will be simplify the process of BOQ 
+             
+            
+            </div>
+
+
+            <form [formGroup]="addQstItemForm">
+
+
+              <div class="row">
+                <div class="col">
+                  <table class="table" style="margin-bottom: 0rem;">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width:55%"> Question Description </th>
+                        <th scope="col"  style="width:20%" > Sequence </th>
+                     
+                        
+                        <th scope="col" style="text-align: center;">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="questionItmes">
+                      <tr *ngFor="let task of questionItmes.controls; let i=index" [formGroupName]="i">
+                        <td>
+                          <!-- <input type="text" class="e-input" placeholder="Enter a Item Name" formControlName="questionDesc"> -->
+                          <textarea rows="1" class="e-input" formControlName="questionDesc"></textarea>
+                          <div class="errorTxt" *ngIf="questionItmes.controls[i].get('questionDesc')?.errors?.required && formSubmitAttemptForService != null && !formSubmitAttemptForService">
+                            *Unit Name is required
+                          </div>
+                        </td>
+                        <td>
+                          <input  type="text" class="e-input" placeholder="Enter Sequence" formControlName="sequence">
+                        </td>                        
+                        <td>
+                          <div style="text-align: center;">
+                            <i class="fa fa-trash commonBtn" [ngClass]="checkRowToDisable() ? 'disableButton':'actionButton'" aria-hidden="true" (click)="deleteQstAretems(i)"></i>
+                          </div>
+                        </td>
+                      </tr>
+                      <div>
+                        <button class="btn reqbtn"(click)="addQstArItems()">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          <p style="margin-bottom: 4px; margin-top: 0px;">Add New Question</p>
+                        </button>
+                      </div>
+                    </tbody>
+                  </table>
+                </div>
+    
+              </div>
+
+
+
+
+            </form>
+
+           
+
+            
+  
+          </div>
+          <div class="footerdiv">
+            <button class="btn buttonSt btnScc" (click)="saveRelatedItems()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              <p style="margin-bottom: 4px;margin-top: 2px;">Save Questionaire</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!-- End of Related Items Modal -->
+
+  
+  
+  
+  </div>
+  
+  

@@ -1,0 +1,761 @@
+<!-- begin:: Subheader -->
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/modaljs/default.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../../../assets/modaljs/component.css" />  -->
+<link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+<link href="http://cdn.syncfusion.com/ej2/material.css" rel="stylesheet" type="text/css" />
+<!--begin::Fonts -->
+
+<div *ngIf="noAllowAccess">
+  <app-not-found></app-not-found>
+</div>
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader" *ngIf="allowAccess">
+  <div class="kt-container  kt-container--fluid ">
+    <div class="kt-subheader__main">
+      <h3 class="kt-subheader__title">
+
+        Manage Role </h3>
+
+      <span class="kt-subheader__separator kt-hidden"></span>
+      <div class="kt-subheader__breadcrumbs">
+        <a class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+        <span class="kt-subheader__breadcrumbs-separator"></span>
+        <a class="kt-subheader__breadcrumbs-link">
+          Role </a>
+        <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+          Add Role </a>
+        <span *ngIf="editable  && !showTaskList" class="kt-subheader__breadcrumbs-separator"></span>
+        <a *ngIf="editable && !showTaskList" class="kt-subheader__breadcrumbs-link">
+          Edit Role </a>
+        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<!-- end:: Subheader -->
+<!-- <button class="md-trigger" data-modal="modal123">Newspaper</button> -->
+<div *ngIf="allowAccess">
+  <div *ngIf="showTaskList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!-- begin:: Subheader -->
+    <!-- <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-container  kt-container--fluid ">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+
+                   Tasks                           </h3>
+
+                                <span class="kt-subheader__separator kt-hidden"></span>
+
+                        </div>
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+  end:: Subheader -->
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+          <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
+
+              <h3 class="kt-portlet__head-title">
+                Role
+              </h3>
+            </div>
+
+
+
+            <div class="kt-portlet__head-toolbar">
+              <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+
+                  &nbsp;
+                  <button type="button" class="button button-fill button-rose" (click)='AddForm()' aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="flaticon2-plus"></i> Add New
+                  </button>
+                  <button type="button" style="margin-left: 15px;" (click)='goBack()'
+                    class="button button-fill button-rose"> <i class="fa fa-angle-left"></i> Back </button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="kt-portlet__body " style=" border-bottom-color: #f0f3ff;
+        color: #595d6e;">
+            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="dataTables_length" id="kt_table_1_length">
+
+                  </div>
+                </div>
+
+
+                <!-- <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter"><label>Search: <mat-form-field>
+                                          <input matInput [(ngModel)]="searchField" class="form-control" (keyup)="applyFilter($event.target.value)"  >
+                                          <i class="fa fa-close closeBtnIcon"  (click)="clearSearchField()" *ngIf="searchField" ></i>
+                                        </mat-form-field > </label></div></div> -->
+              </div>
+
+
+              <!-- <div class="row">
+          <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length" id="kt_table_1_length">
+
+                  </div></div>
+                  <div class="col-sm-12 col-md-6"><div id="kt_table_1_filter" class="dataTables_filter">
+                    <mat-form-field><label>Search:<input type="search" matInput class="form-control form-control-sm" placeholder="" aria-controls="kt_table_1"></label></mat-form-field>
+
+                  </div></div>
+              </div> -->
+              <!--begin: Datatable -->
+              <!-- <div class="kt-datatable" id="local_data"></div> -->
+              <!--end: Datatable -->
+              <ejs-grid #grid [dataSource]='dataSource' height="315px" [searchSettings]='searchOptions'
+                allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar'
+                (toolbarClick)='toolbarClick($event)' [allowExcelExport]='true' [allowPdfExport]='true'>
+                <e-columns>
+
+
+                  <!-- <e-column field='rowno' headerText='No' width=60></e-column> -->
+
+                  <e-column field='role_name' headerText='Role Name' textAlign='' width=120>
+                    <ng-template #template let-data>
+
+                      <div>{{data.role_name}}</div>
+                    </ng-template>
+                  </e-column>
+                  <!-- <e-column field='ondate' headerText='Date' width=90></e-column> -->
+
+
+
+
+
+
+
+
+                  <!-- <e-column field='total_hrs' headerText='Total Hours' textAlign='' width=90></e-column> -->
+                  <e-column type='' textAlign='' headerText='Action' width='90'>
+                    <ng-template #template let-data>
+                      <!-- <span style="color:blue;cursor: pointer;" (click)="openDialog(data.lat,data.lang,data.project_or_comp_name)">View Location</span> -->
+                      <a title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                        (click)="taskEdit(data.id)"> <i class="la la-edit"></i> </a>
+
+                      <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                        (click)="taskDelete(reassign, data.id)"><i class="la la-trash"></i> </a>
+
+                    </ng-template>
+                  </e-column>
+                  <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                </e-columns>
+              </ejs-grid>
+
+
+
+              <!-- <mat-paginator [pageSize]="5" [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator> -->
+
+            </div>
+
+          </div>
+          <!-- <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+
+
+              <div class="" style=" box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1);
+              padding-left: 26px;margin-top: -1rem;
+             ">
+
+                  <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;
+                  margin-bottom: 0px;">
+                      <li class="nav-item status">
+                          <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                                         Total
+                                        <div style="text-align: center">4</div>
+                                        </a>
+
+                      </li>
+                      <li class="nav-item status" >
+                          <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                                                 Completed
+                                                 <div style="text-align: center">3</div>
+                                                </a>
+
+
+                      </li>
+                      <li class="nav-item status">
+                          <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                                           Open
+                                           <div style="text-align: center">1</div>
+                                        </a>
+
+
+                      </li>
+
+
+
+                  </ul>
+              </div>
+
+
+        </div>
+      </div> -->
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+
+  <div class="row">
+    <div class="col-lg-12">
+      <!--begin::Portlet-->
+      <div class="kt-portlet">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <div class="kt-portlet__head-label">
+
+            <h3 class="kt-portlet__head-title">
+              Manage Role
+            </h3>
+          </div>
+          <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+              <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                          <i class="la la-long-arrow-left"></i>
+                          Back
+                      </a> -->
+              &nbsp;
+              <div class="dropdown dropdown-inline">
+
+                <!-- <button type="button"  (click)='TaskView()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+                <button type="button" style="margin-left: 15px;" (click)='TaskView()'
+                  class="button button-fill button-rose"> <i class="fa fa-angle-left"></i> Back </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--begin::Form-->
+        <form class="kt-form kt-form--label-right" [formGroup]="taskForm">
+          <div class="kt-portlet__body">
+
+            <div class="form-group row">
+              <label class="col-xl-3 col-lg-3 col-form-label">Name</label>
+              <div class="col-lg-4 col-xl-4">
+                <!-- <select2 [data]="milestoneData"   [options]="taskOptions" (valueChanged)="changedMilestone($event)"  ></select2> -->
+                <!-- <div *ngIf="isFieldValid('taskName')" class="error-msg">Required.</div>  -->
+                <input type="text" class="form-control" (blur)='existRole($event)' placeholder="Name"
+                  formControlName="name">
+                <div *ngIf="nameExists" style="color:red" class="error-msg">Role name already exists</div>
+
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
+              <div class="col-lg-4 col-xl-4">
+                <!-- <select2 [data]="milestoneData"   [options]="taskOptions" (valueChanged)="changedMilestone($event)"  ></select2> -->
+                <!-- <div *ngIf="isFieldValid('taskName')" class="error-msg">Required.</div>  -->
+                <input type="text" class="form-control" placeholder="Enter Description" formControlName="description">
+
+              </div>
+            </div>
+            <form class="kt-form kt-form--label-right" [formGroup]="emailForm">
+              <div class="form-group row" formArrayName="emails">
+                <!-- <label class="col-xl-1 col-lg-1 col-form-label">
+                            </label> -->
+                <div class="col-lg-12 col-xl-12 permissionTable"
+                  style="height: 300px;overflow-y: scroll;padding: 26px 23px;">
+                  <!-- <div class="col-lg-12 col-xl-10 specifyTable" style="max-height: 490px;
+                            overflow-y: auto;
+                            height: auto;"> -->
+                              <table>
+                                <tr>
+                                  <th>Module </th>
+                                </tr>
+                                <tr *ngFor="let email of emailForm.get('emails')['controls']; let i = index"
+                                [formGroupName]="i" class="form-group row">
+                                <td class="col-xl-2 col-lg-2 col-sm-4">
+                                  <div>
+                                    <ejs-dropdownlist  formControlName="ModuleName"
+                                      [dataSource]="email.get('ModuleList').value" [fields]="{text: 'text', value: 'id' }" (change)="changedEjsModule($event,i,'add')"
+                                      placeholder="Select Module" popupHeight='300px' #ModuleName>
+                                    </ejs-dropdownlist>
+                                    <div *ngIf="(addSection || editformSubmitted || submitClicked ) && (email.get('ModuleName').value==''||email.get('ModuleName').value=='Select Module')">
+                                      <label class="e-error" for="OrderID" id="OrderID-info"
+                                        style="display: block;">*Module Name is required</label>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="col-xl-2 col-lg-2 col-sm-2">
+                                  <div>
+                                    <ejs-dropdownlist  formControlName="AcessType"
+                                      [dataSource]='ejsAcessList' [fields]="{text: 'text', value: 'id' }"
+                                      placeholder="Access Type" popupHeight='300px' >
+                                    </ejs-dropdownlist>
+                                    <div
+                                      *ngIf="(addSection || editformSubmitted || submitClicked) && (email.get('AcessType').value==''||email.get('AcessType').value=='Access Type')">
+                                      <label class="e-error" for="OrderID" id="OrderID-info"
+                                        style="display: block;">*Access Type is required</label>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="col-xl-3 col-lg-3 col-sm-3">
+                                  <div>
+                                    <ejs-multiselect id='multiselect-checkbox' (change)="changedEjsSection($event,i)"
+                                       #checkbox [dataSource]="email.get('section_list').value"
+                                       [placeholder]='checkWaterMark' [enableSelectionOrder]='false' [fields]='checkFields'
+                                      [showDropDownIcon]='true' [mode]='mode' formControlName="sectionArray"
+                                      showSelectAll='true'  [filterBarPlaceholder]='filterBarPlaceholder' ></ejs-multiselect>
+                                    </div>
+                                    <div *ngIf="(addSection || editformSubmitted || submitClicked) && email.get('sectionArray').value==''">
+                                      <label class="e-error" for="tags" id="OrderID-info" style="display: block;">*Section is required</label>
+                                    </div>
+                                  </td>
+                                  <td *ngIf="getApproversBySectionId(i,ModuleName) &&   (ModuleName.value == '94ea9953-9403-4a1c-bb63-7379265d1499' || ModuleName.value == 'bc326d58-0ecf-4c87-8fd4-af61d6106ab7' || ModuleName.value == '673d8b28-5623-434c-8913-b065f5648637' || ModuleName.value == 'ae3c96f7-cd3c-4796-a5c1-81067d8a7b78' || ModuleName.value == '94ea9953-9403-4a1c-bb63-7379265d1499' || ModuleName.value == '3adedc90-f10b-414c-9206-98b4307dec32' || ModuleName.value == '2f1f188a-8a92-464d-88ab-7f99e0906f9c' || ModuleName.value == 'd982c812-0345-47b4-ad27-de52040208ff') "   class="col-xl-3 col-lg-3 col-sm-2">
+                                    <!-- <th>Approvers</th> -->
+
+                        <p style="margin-top: -1.99em;
+                                           font-weight: bolder;"> Approvers </p>
+                        <div *ngIf="getApproversBySectionId(i,ModuleName)" style="margin-top: -5px;"
+                          class="input-group">
+
+                          <input type="text" style=" background: #fff !important;" class="toolTipText"
+                            placement="bottom" ngbPopover="{{approversTextData}}"
+                            value='{{getApproversBySectionId(i,ModuleName)}}' readonly>
+
+                          <div (click)='changedApprType(teamMem,i,ModuleName)' class="editButton input-group-addon">
+                            <i class="la la-edit"></i>
+                          </div>
+                        </div>
+
+                        <input style=" background: #fff !important;" *ngIf="!getApproversBySectionId(i,ModuleName)"
+                          type="text" class="toolTipText" placement="bottom" ngbPopover="{{approversTextData}}"
+                          value='{{getApproversBySectionId(i,ModuleName)}}' readonly>
+
+                                  </td>
+
+                                  <td  *ngIf="!getApproversBySectionId(i,ModuleName) &&  (ModuleName.value == '94ea9953-9403-4a1c-bb63-7379265d1499'
+                                  || ModuleName.value == 'bc326d58-0ecf-4c87-8fd4-af61d6106ab7' || ModuleName.value == '673d8b28-5623-434c-8913-b065f5648637'
+                                  || ModuleName.value == 'ae3c96f7-cd3c-4796-a5c1-81067d8a7b78' || ModuleName.value == '3adedc90-f10b-414c-9206-98b4307dec32' || ModuleName.value == '2f1f188a-8a92-464d-88ab-7f99e0906f9c' || ModuleName.value == 'd982c812-0345-47b4-ad27-de52040208ff'  ) "
+                                   class="col-xl-2 col-lg-2 col-sm-2">
+
+                        <!-- //{{ ModuleName.value }} -->
+                        <!-- <div>
+                                        <span (click)='changedApprType(teamMem,i,ModuleName)'  style="padding: 8px 15px; border-color: #d1c3ad;
+                                        background-color: #e91e63;
+                                        color: #fff;cursor: pointer;" class="">  Assign  Approvers </span>
+                                      </div> -->
+                        <button type="button" style="height: 35px !important; width: auto !important;"
+                          class="button button-fill button-rose" (click)='changedApprType(teamMem,i,ModuleName)'>
+                          Assign Approvers
+                        </button>
+                      </td>
+
+
+
+
+                      <td class="col-xl-1 col-lg-1 col-sm-1" style="display: flex;margin-top:6px;">
+                        <!-- <div aria-haspopup="true" (click)="AddUnitDesc(i)" aria-expanded="false"
+                                    style="color:black;text-align: center;">
+                                    <a><i [ngClass]="(duplicatedValues.length!=0 && sectionIndex==i)?'disabledColor':'enabledColor'" class="flaticon2-plus" style="margin-right:1px;background-color: #e91e63;border-radius: 50%;    padding: 5px 6px;
+                                                          color: #fff;
+                                                          font-size: 8px;
+                                                          "></i>
+                                    </a>
+                                  </div> -->
+
+                        <div *ngIf="i!=0" aria-haspopup="true" (click)="RemoveUnitDesc(i)" aria-expanded="false"
+                          style="color:black;text-align: center;margin-left: 10px;">
+                          <a>
+                            <i class="fa fa-trash actionButton" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                      </td>
+                      <div *ngIf="duplicatedValues.length!=0 && sectionIndex==i" style="display: flex;color: red;">
+                        <div *ngFor="let dup of duplicatedNames; let isLast=last">{{dup}}{{isLast ? '' : ', '}} </div>
+                        <div style="margin-left: 4px;">is already chosen please assign other sections</div>
+                      </div>
+                    </tr>
+                    <tr>
+                      <th>
+                        <a class="addModuleClick" (click)="AddUnitDesc(incrementValue)">
+                          <i class="fa fa-plus-square actionButton" aria-hidden="true"></i>
+                          <span class="addleavetxt">Add new Module</span>
+                        </a>
+                      </th>
+                    </tr>
+
+                  </table>
+
+                  <!-- </div> -->
+
+                </div>
+                <!-- <label class="col-xl-2 col-lg-2 col-form-label" >Unit Description</label> -->
+
+              </div>
+              <!-- <div style="display: flex;justify-content: flex-end;margin-right: 100px;margin-bottom: 5px;">
+                          <button type="button" id='width100' style="width: 100px !important;" class="button button-fill button-rose"  (click)='projCostId!=""?onUpdateCost():onAddSubmit()' aria-haspopup="true" aria-expanded="false">
+                            <i class="flaticon2-plus" ></i> Calculate
+                        </button>
+                        </div> -->
+            </form>
+
+
+
+
+
+          </div>
+
+
+          <div class="kt-portlet__foot">
+            <div class="kt-form__actions">
+              <div class="row">
+                <div class="col-lg-6">
+                  <!-- <button type="reset" class="btn btn-success">Save</button> -->
+                  <!-- <span *ngIf="AddNewSubmit">
+                                    <button type="submit" class="btn btn-success" style="margin-right:10px;" (click)=" onAddNewSubmit()">Submit & New</button>
+                                </span> -->
+                  <!-- <button type="submit" class="btn btn-success"  (click)="editable ? onEditSubmit() : onAddSubmit()">Update</button> -->
+                  <button type="submit" [disabled]="duplicatedValues.length!=0 || nameExists " class="btn btn-success"
+                    (click)="editable ? onEditSubmit() : onAddSubmit()"> {{ editable ? 'Save Edit' : 'Save' }} </button>
+
+                  <button type="reset" class="btn btn-secondary" (click)='TaskView()'
+                    style="margin-left:10px;">Cancel</button>
+                  <!-- <button type="reset" class="btn btn-success">Save</button> -->
+
+                  <!-- <button type="reset" class="btn btn-secondary" style="margin-left:5px;">Cancel</button> -->
+                </div>
+                <!-- <div class="col-lg-6 kt-align-right">
+                              <button type="reset" class="btn btn-danger">Delete</button>
+                            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="container">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="form-group" [formGroup]="form">
+                              <app-datepicker-input
+                                [formControl]="form.controls['datepicker']"
+                              ></app-datepicker-input>
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+        </form>
+
+
+
+
+
+      </div>
+
+
+    </div>
+  </div>
+  <!-- end:: Content -->
+</div>
+
+<!-- <div class="md-modal md-effect-1" id="modal123">
+  <div class="md-content">
+    <h3>Modal Dialog</h3>
+    <div>
+      <p>This is a modal window. You can do the following things with it:</p>
+      <ul>
+        <li><strong>Read:</strong> Modal windows will probably tell you something important so don't forget to read what it says.</li>
+        <li><strong>Look:</strong> modal windows enjoy a certain kind of attention; just look at it and appreciate its presence.</li>
+        <li><strong>Close:</strong> click on the button below to close the modal.</li>
+      </ul>
+      <button class="md-close">Close me!</button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="md-overlay"></div>              -->
+
+
+<!-- Add Approvers  Model -->
+<ng-template #teamMem let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Assign Approvers <i class="fa fa-info-circle" data-toggle="tooltip"
+        data-placement="top" ngbTooltip="Approvers for the actions carried out by created role"></i> </h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="setCard">
+
+      <div class="row" *ngFor="let section of  selectedSections">
+
+        <div *ngIf="section.id != '05ce9c8a-d9c8-4ea7-8225-352ede4adf7d' &&
+                    section.id != 'ea8643fe-135e-4468-b722-5537cd76487d'   &&
+                    section.id !=   '8a5187b2-cec7-4360-be13-04b217de6b6f' &&
+                    section.id !=   'b833ad17-8220-4a8e-9012-3a4ca1796076'  &&
+                    section.id !=   'e2aefc13-b5da-4f50-ad34-fa17c0861154'
+                    && section.id != 'd42b9416-ff69-452d-90ec-adc3bc723180'
+                    && section.id != '3894ac3a-6124-47ce-8fb7-31acbb45f1a6'
+                    && section.id != 'a71b7687-0c30-45a4-aa0e-e9d281f0e351'
+                    && section.id != 'c75f82d3-4920-4d61-96e5-ac7bf8e711ee'
+                    && section.id != '8897388b-8905-42f7-83d7-e8fc36e38fad'
+                    && section.id != 'd63c4b4d-3c76-4725-9bf3-b608308f7a8b'
+                    && section.id != '3894ac3a-6124-47ce-8fb7-31acbb45f1a6'
+                    && section.id != '9538ad1f-3ee5-4351-9ec9-9d601e6542be'
+                    && section.id != '8ff2b456-8a2e-43bc-8bfb-7910fc9bc7a1'
+                    && section.id != '13349fc3-d01b-4dac-a5c8-dfb9aee40422'
+                    && section.id != 'c4458afa-610a-4334-ba89-b9f4b70db947'
+                    && section.id != '24431a3f-e7de-41e9-b22d-58879d61aeb6'
+
+
+                    " class="col-sm-3 col-md-3">
+          <p class="sctName"> {{ section.text }} </p>
+        </div>
+
+
+        <div *ngIf="section.id != '05ce9c8a-d9c8-4ea7-8225-352ede4adf7d' &&
+        section.id != 'ea8643fe-135e-4468-b722-5537cd76487d'   &&
+        section.id !=   '8a5187b2-cec7-4360-be13-04b217de6b6f' &&
+        section.id !=   'b833ad17-8220-4a8e-9012-3a4ca1796076' &&
+        section.id !=   'e2aefc13-b5da-4f50-ad34-fa17c0861154' &&
+        section.id != 'd42b9416-ff69-452d-90ec-adc3bc723180'
+        && section.id != '3894ac3a-6124-47ce-8fb7-31acbb45f1a6'
+        && section.id != 'a71b7687-0c30-45a4-aa0e-e9d281f0e351'
+        && section.id != 'c75f82d3-4920-4d61-96e5-ac7bf8e711ee'
+        && section.id != '8897388b-8905-42f7-83d7-e8fc36e38fad'
+        && section.id != 'd63c4b4d-3c76-4725-9bf3-b608308f7a8b'
+        && section.id != '3894ac3a-6124-47ce-8fb7-31acbb45f1a6'
+        && section.id != '9538ad1f-3ee5-4351-9ec9-9d601e6542be'
+        && section.id != '8ff2b456-8a2e-43bc-8bfb-7910fc9bc7a1'
+        && section.id != '13349fc3-d01b-4dac-a5c8-dfb9aee40422'
+        && section.id != 'c4458afa-610a-4334-ba89-b9f4b70db947'
+        && section.id != '24431a3f-e7de-41e9-b22d-58879d61aeb6'
+
+
+
+        "   class="col-sm-3 col-md-3">
+          <div class="sctName"  #popover="ngbPopover" ngbPopover="  {{ approverData?.length === 2 ?  'There is no approval beside the account owner.You need to have another approver in order to use the dual approval feature.' : popover.close() }} ">
+            <select   class="form-control" (change)='selectAccessType($event.target.value,section.id)' >
+              <option disabled>Approver Type</option>
+              <option [selected]='section.fullAccess== true' title="Grants user Full Access for {{ section.text }}"
+                value="fullAccess">Self Approver</option>
+              <option [selected]='section.isSingleApprover == true && section.isDualApprover == false'
+                title="Request needs to be approved by one approver" value="single"> Single Approver</option>
+              <option *ngIf="approverData?.length === 2" [selected]='section.isDualApprover == true' value="dual"
+                disabled>Dual Approver</option>
+              <option *ngIf="approverData?.length > 2" [selected]='section.isDualApprover == true'
+                title="Request needs to be approved by two approver's" value="dual">Dual Approver</option>
+            </select>
+          </div>
+          <!-- {{ section.fullAccess }} -->
+          <!-- <div class="sctName">
+            <input type="checkbox" [checked]="section.fullAccess== true"   (change)='giveFullAccess( $event,section.id)'  id='full{{section.id}}' style="margin-right: 10px;" />
+            <label for="nameArea" style="padding-right: 5px;">Full Access</label>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Allow Full access to {{ section.text }} "></i>
+          </div> -->
+        </div>
+
+
+        <div *ngIf="section.isSingleApprover || section.isDualApprover" class="col-sm-3 col-md-3">
+          <div class="commDiv">
+            <label for="nameArea" style="padding-right: 5px;">Level 1 </label>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+              ngbTooltip="Level 1 Approver for {{ section.text }}"></i>
+            <input type="text" style="display: none;" />
+            <select2 [data]="returnSectionFiltered(section.id,selectedSections)"
+              [value]="section.approver1 ? section.approver1 : ''" (valueChanged)="changedLevel1($event,section.id)"
+              [options]="deptOptions" id='apprId{{section.id}}'></select2>
+          </div>
+        </div>
+
+        <div *ngIf="section.isDualApprover" class="col-sm-3 col-md-3">
+          <div class="commDiv">
+            <label for="nameArea" style="padding-right: 5px;">Level 2</label>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+              ngbTooltip="Level 2 Approver for {{ section.text }}"></i>
+            <input type="text" style="display: none;" />
+            <select2 [data]="returnSectionFiltered(section.id,selectedSections)"
+              [value]="section.approver2 ? section.approver2 : ''" [options]="deptOptions"
+              (valueChanged)="changedLevel2($event,section.id)" id='apprId{{section.id}}'></select2>
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <p *ngIf='!isValid'> Select Different Roles for Level 1 and Level 2 </p>
+    <button type="button" [disabled]='!isValid' (click)='saveApproversModuleWise()'
+      class="button button-fill button-rose" aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-floppy-o"></i> Save
+    </button>
+
+    <button type="button" class="button button-fill button-rose" (click)='closeModal()' aria-haspopup="true"
+      aria-expanded="false">
+      <i class="fa fa-ban"></i> Cancel
+    </button>
+
+
+  </div>
+</ng-template>
+<!-- Add Team Model -->
+
+
+
+<!-- View Approvers  Model -->
+<ng-template #viewApprov let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Selected Approvers</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeAprvModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="setCard">
+
+      <div class="row" *ngFor="let section of  approversTextData">
+
+
+
+        <div class="col-sm-6 col-md-6">
+          <p class="sctName"> {{ section.sectionName }} </p>
+        </div>
+
+        <div class="col-sm-6 col-md-6">
+          <p class="sctName"> <b> {{ section.accessType != 'Full Access' ? 'Level 1' : ' ' }} </b> {{ section.accessType
+            }} </p>
+          <p *ngIf='section.level2' class="sctName"> <b> Level 2 </b> {{ section.level2 }} </p>
+        </div>
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+</ng-template>
+<!-- View Team Model -->
+
+
+
+<!-- Reaasign Approvers  Model -->
+<ng-template #reassign let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Re-Assign Approvers <i class="fa fa-info-circle"
+        data-toggle="tooltip" data-placement="top" ngbTooltip="Re-Assign Approver for the selected Role"></i> </h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="setCard">
+
+      <div class="row" *ngFor="let section of  repsData">
+
+        <div *ngIf="section.id != '05ce9c8a-d9c8-4ea7-8225-352ede4adf7d' &&
+                    section.id != 'ea8643fe-135e-4468-b722-5537cd76487d'   &&
+                    section.id !=   '8a5187b2-cec7-4360-be13-04b217de6b6f' &&
+                    section.id !=   'b833ad17-8220-4a8e-9012-3a4ca1796076'  &&
+                    section.id !=   'e2aefc13-b5da-4f50-ad34-fa17c0861154'
+                    && section.id != 'd42b9416-ff69-452d-90ec-adc3bc723180'
+                    " class="col-sm-3 col-md-3">
+          <p class="sctName"> {{ section.text }} </p>
+        </div>
+
+
+        <div *ngIf="section.id != '05ce9c8a-d9c8-4ea7-8225-352ede4adf7d' &&
+        section.id != 'ea8643fe-135e-4468-b722-5537cd76487d'   &&
+        section.id !=   '8a5187b2-cec7-4360-be13-04b217de6b6f' &&
+        section.id !=   'b833ad17-8220-4a8e-9012-3a4ca1796076' &&
+        section.id !=   'e2aefc13-b5da-4f50-ad34-fa17c0861154'
+        && section.id != 'd42b9416-ff69-452d-90ec-adc3bc723180'
+        " class="col-sm-3 col-md-3">
+          <div class="sctName" #popover="ngbPopover"
+            ngbPopover="  {{ approverData?.length === 2 ?  'There is no approval beside th account owner.You need to have another approver in order to use the dual approval feature.' : popover.close() }} ">
+            <select class="form-control" (change)='selectAccessType($event.target.value,section.id)'>
+              <option disabled>Approver Type</option>
+              <option [selected]='section.fullAccess== true' title="Grants user Full Access for {{ section.text }}"
+                value="fullAccess">Self Approver</option>
+              <option [selected]='section.isSingleApprover == true && section.isDualApprover == false'
+                title="Request needs to be approved by one approver" value="single"> Single Approver</option>
+              <option *ngIf="approverData?.length === 2" [selected]='section.isDualApprover == true' value="dual"
+                disabled>Dual Approver</option>
+              <option *ngIf="approverData?.length > 2" [selected]='section.isDualApprover == true'
+                title="Request needs to be approved by two approver's" value="dual">Dual Approver</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div *ngIf="section.isSingleApprover || section.isDualApprover" class="col-sm-3 col-md-3">
+          <div class="commDiv">
+            <label for="nameArea" style="padding-right: 5px;">Level 1</label>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+              ngbTooltip="Level 1 Approver for {{ section.text }}"></i>
+            <input type="text" style="display: none;" />
+            <select2 [data]="approverData" [value]="section.approver1 ? section.approver1 : ''"
+              (valueChanged)="changedLevel1($event,section.id)" [options]="deptOptions" id='apprId{{section.id}}'>
+            </select2>
+          </div>
+        </div>
+        <div *ngIf="section.isDualApprover" class="col-sm-3 col-md-3">
+          <div class="commDiv">
+            <label for="nameArea" style="padding-right: 5px;">Level 2</label>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+              ngbTooltip="Level 2 Approver for {{ section.text }}"></i>
+            <input type="text" style="display: none;" />
+            <select2 [data]="approverData" [value]="section.approver2 ? section.approver2 : ''" [options]="deptOptions"
+              (valueChanged)="changedLevel2($event,section.id)" id='apprId{{section.id}}'></select2>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <p *ngIf='!isValid'> Select Different Roles for Level 1 and Level 2 </p>
+    <button type="button" [disabled]='!isValid' (click)='updateSectionPolicies()' class="button button-fill button-rose"
+      aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-floppy-o"></i> Save
+    </button>
+
+    <button type="button" class="button button-fill button-rose" (click)='closeModal()' aria-haspopup="true"
+      aria-expanded="false">
+      <i class="fa fa-ban"></i> Cancel
+    </button>
+
+
+  </div>
+</ng-template>
+<!-- Reaasign Approvers  Model -->

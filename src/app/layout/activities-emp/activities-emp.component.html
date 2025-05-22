@@ -1,0 +1,1877 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor empActivity" id="kt_content">
+  <!-- begin:: Subheader -->
+  <div class="kt-grid__item" id="kt_subheader">
+      <div class="kt-container  kt-container--fluid dasboardDatePicker ">
+          <div class="kt-subheader   kt-grid__item" id="kt_subheader" style="display: flex;justify-content: space-between;">
+                <div class="kt-subheader__main">
+                  <h3 class="kt-subheader__title" style="font-size: 1.4rem;
+                  font-weight: 500;">
+                    Dashboard
+                  </h3>
+
+                  <span class="kt-subheader__separator kt-hidden"></span>
+                  <div class="kt-subheader__breadcrumbs">
+                    <!-- <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-separator"></span>
+                    <a href="#" class="kt-subheader__breadcrumbs-link">
+                      Application
+                    </a> -->
+                    <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                  </div>
+                </div>
+        <!-- <button type="button"  (click)='goBack()' class="button button-fill button-rose"  > <i class="fa fa-angle-left"></i> Back	</button> -->
+
+            </div>
+            <form [formGroup]="datePickerForm"   style="padding-left:4px; ">
+
+         <ejs-datepicker  formControlName="date" dayHeaderFormat="Abbreviated" [max]="maxRangeDate" [showClearButton]="false" [allowEdit]='false' [value]='dateValue' ></ejs-datepicker>
+         <span  class="date-container"  disabled="disabled"  style="border: none;pointer-events:none;position: absolute;left:24px"   >{{dateText}}</span>
+</form>
+
+
+
+
+      </div>
+  </div>
+
+  <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+
+      <div class="kt-subheader__main">
+
+        <div class="caption">
+            <div class="actions">
+              <a class="btn btn-icon-only btn-icon-only btn-default" id="previousday" style="background-color:white ;border:none;">
+                <i class="fas fa-chevron-left" title="Previous Day" (click)="prevday()" style=" color: #3f77f4;" ></i>
+              </a>
+              <a></a>
+              <a class="btn btn-icon-only btn-icon-only btn-default" [ngClass]="disableNxtBtn?'disabled':'enabled'" id="nextday" style="background-color: white;border:none;">
+                <i class="fas fa-chevron-right" title="Next Day" (click)="nextday()" style=" color: #3f77f4;"></i>
+              </a>
+            </div>
+          </div>
+        <span class="kt-subheader__separator kt-hidden"></span>
+        <div class="kt-subheader__breadcrumbs">
+
+        </div>
+      </div>
+      <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+
+
+              <div class="" style="display: flex;justify-content:space-between;">
+
+                  <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist" style="border-bottom: none;
+                  margin-bottom: 15px;">
+                      <li class="nav-item" (click)="getTodaysData()">
+                          <a class="nav-link" [ngClass]="{'active': isTodayActive}" data-toggle="tab" href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                                         Today
+                          </a>
+                      </li>
+                      <li class="nav-item" (click)="getWeeksData()">
+                          <a class="nav-link "  [ngClass]="{'active': isWeekActive}" data-toggle="tab" href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                                                 Week
+                          </a>
+                      </li>
+                      <li class="nav-item" (click)="getMonthsData()">
+                          <a class="nav-link" [ngClass]="{'active': isMonthActive}" data-toggle="tab" href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                                           Month
+                          </a>
+                      </li>
+                      <!-- <li class="nav-item dasboardRange">
+                          <a class="nav-link"  [ngClass]="{'active': isRangeActive}" data-toggle="tab"  id="defaultrange_modal"  role="tab" aria-selected="false" style="padding-bottom: 5px !important;">
+                              <div style="display: flex;justify-content: start;">
+                                <div >Range</div>
+
+                                <div>
+                                  <form [formGroup]="dateRangeForm" id="formId"  style="padding-left:4px; ">
+
+                                        <ejs-daterangepicker placeholder='Range' [max]="maxRangeDate" formControlName="daterange" >
+
+                                          </ejs-daterangepicker>
+
+                                    </form>
+                                </div>
+                              </div>
+
+
+                          </a>
+
+                        </li> -->
+
+
+                  </ul>
+              </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- end:: Subheader -->
+  <!-- begin:: Content -->
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!--Begin::Dashboard 1-->
+    <!--Begin::Row-->
+
+    <div class="row" style="    background-color: #ffff;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-top: 15px;
+    ">
+  <div *ngIf='full_name!="" && full_name!=null' style="font-size: 13px;font-weight: bold;margin-bottom: 10px;
+  margin-left: 14px;text-transform: uppercase;"><i class="fa fa-user" aria-hidden="true" style="    font-size: 13px;
+
+    margin-right: 6px;"></i>{{full_name}}</div>
+
+     <!-- <div style="display: flex;" class="col-xl-2 col-lg-5 col-sm-6"  >
+      <div class="col-xl-7 col-lg-6 col-sm-3" style="color: black;padding-right: 0px;margin-top: -2px;padding-left: 0px;" >E-Desk App</div>
+      <div >
+          <label class="switch" >
+              <input type="checkbox"  [checked]="" name='chec'   id="isProj"   (change)="checkIsWebApp($event)" >
+              <span>
+
+              </span>
+          </label>
+
+      </div>
+      <div ngbPopover="Enforce desktop application"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -2px;">
+       <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #e6a03f;border-radius: 50%;   padding: 2px 4px;
+       color: #fff;
+       font-size: 10px;
+       "></i>
+     </div>
+   </div> -->
+        <div class="row col-lg-12 col-xl-12 order-lg-1 order-xl-1">
+            <div class="col-xl-3" style="height: 145px;">
+
+
+            <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow">
+              <div class="kt-portlet__body" style="    padding-top: 0px;
+              padding-left: 10px;">
+                <div class="kt-iconbox__content">
+                ARRIVAL TIME
+
+              </div>
+
+                      <div class="kt-iconbox__desc">
+                          <h3 class="kt-iconbox__title">
+                            {{!showAppData?arrivalTime:desktopCheckin}}
+            </h3>
+            <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+            margin-top: 20px;">
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+            </div>
+                      </div>
+
+              </div>
+          </div>
+        </div>
+
+      <div class="col-xl-3" style="height: 145px;">
+
+
+        <div class="kt-portlet kt-iconbox kt-iconbox--animate">
+          <div class="kt-portlet__body" style="    padding-top: 0px;
+          padding-left: 10px;">
+            <div class="kt-iconbox__content">
+            LEFT TIME
+          </div>
+
+                  <div class="kt-iconbox__desc">
+                      <h3 class="kt-iconbox__title">
+                        {{!showAppData?leftTime:desktopCheckout}}
+        </h3>
+        <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+        margin-top: 20px;">
+          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+        </div>
+
+                  </div>
+
+          </div>
+      </div>
+    </div>
+    <div class="col-xl-3" style="height: 145px;">
+
+
+      <div class="kt-portlet kt-iconbox kt-iconbox--animate-slower">
+        <div class="kt-portlet__body" style="    padding-top: 0px;
+        padding-left: 10px;">
+          <div class="kt-iconbox__content"    >
+          DESKTOP TIME
+          <span ngbPopover="Online time spent on the computer"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+          margin-left: 5px;" container="body">
+            <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+            color: #fff;
+            font-size: 10px;
+            "></i>
+          </span>
+        </div>
+
+                <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title">
+                      {{!showAppData?total_hrs:desktopHrs}}
+      </h3>
+      <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+        margin-top: 20px;">
+          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+        </div>
+
+                </div>
+
+        </div>
+    </div>
+  </div>
+    <div class="col-xl-3" style="height: 145px;">
+
+
+      <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow">
+        <div class="kt-portlet__body" style="    padding-top: 0px;
+        padding-left: 10px;">
+          <div class="kt-iconbox__content">
+          TIME AT WORK
+          <span ngbPopover="Total time from when you arrived to when you left the work"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+          margin-left: 5px;" container="body">
+            <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+            color: #fff;
+            font-size: 10px;
+            "></i>
+          </span>
+        </div>
+
+                <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title">
+                      {{!showAppData?final_hrs:desktopFinalHrs}}
+      </h3>
+      <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+      margin-top: 20px;">
+        <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+      </div>
+                </div>
+
+        </div>
+    </div>
+  </div>
+          <!-- Old Desktime view -->
+  <!-- <div class="kt-portlet kt-portlet--fit kt-portlet--head-lg kt-portlet--head-overlay kt-portlet--skin-solid kt-portlet--height-fluid  kt-portlet--sortable"   >
+              <div class="kt-portlet__head kt-portlet__head--noborder kt-portlet__space-x "   >
+
+              </div>
+              <div class="kt-portlet__body kt-portlet__body--fit">
+                <div class="kt-widget17">
+               <div class="kt-widget17__visual kt-widget17__visual--chart kt-portlet-fit--top kt-portlet-fit--sides" style="height:60px;">
+
+                  </div>
+                  <div class="kt-widget17__stats" style="width: 98%;">
+                    <div class="kt-widget17__items">
+
+                  <div class="kt-widget17__item"  style="background-color: white"  >
+                        <span class="kt-widget17__icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  class="attendance-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24" />
+                              <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                              <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                            </g>
+                          </svg>
+                        </span>
+                        <span class="kt-widget17__subtitle" style="color: #3f77f4;">
+                          Arrival Time
+                        </span>
+                        <span class="kt-widget17__desc" style="color: #3f77f4;">
+                      {{!showAppData?arrivalTime:desktopCheckin}}
+
+                        </span>
+                        <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                      </div>
+                      <div class="kt-widget17__item" style="background-color: white">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="outsource-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                                <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #93a2dd">
+                            Left Time
+                          </span>
+                          <span  class="kt-widget17__desc" style="color:#93a2dd;">
+                         {{!showAppData?leftTime:desktopCheckout}}
+                          </span>
+
+                          <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                        </div>
+                        <div class="kt-widget17__item" style="background-color: white;">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                            Time At Work
+                          </span>
+                          <span  class="kt-widget17__desc" style="color: #1dc9b7;">
+
+                            {{!showAppData?total_hrs:desktopHrs}}
+
+                          </span>
+                          <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+
+
+
+                        </div>
+                      <div class="kt-widget17__item"  style="background-color: white ">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #dc3545">
+                            Desktop Time
+                          </span>
+
+                          <span  class="kt-widget17__desc" style="color:#93a2dd;">
+                            {{!showAppData?final_hrs:desktopFinalHrs}}
+                             </span>
+                             <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                        </div>
+
+                    </div>
+
+                    <div class="kt-widget17__items">
+                        <div class="kt-widget17__item" style="background-color: white;">
+                            <span class="kt-widget17__icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="overtime-svg-icon">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <rect x="0" y="0" width="24" height="24" />
+                                  <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3" />
+                                  <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000" />
+                                </g>
+                              </svg>
+                            </span>
+                            <span class="kt-widget17__subtitle" style="color: #fd397a;">
+                            Productive Time
+
+                            </span>
+                            <span class="kt-widget17__desc" style="color: #fd397a;">
+                            {{prodTime}}
+                            </span>
+                            <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                          </div>
+
+
+
+                            <div class="kt-widget17__item" style="background-color:white;">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="exception-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <rect x="0" y="0" width="24" height="24" />
+                                      <path d="M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z" fill="#000000" opacity="0.3" />
+                                      <path d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z" fill="#000000" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle"  style="color: #ffb822;">
+                              Productivity
+
+                                </span>
+                                <span *ngIf="!showTimeSpinner" class="kt-widget17__desc"  style="color: #ffb822;">
+                                   {{prodRatio}}%
+                                </span>
+                                <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                              </div>
+                              <div class="kt-widget17__item" style="background-color: white;">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <polygon points="0 0 24 0 24 24 0 24" />
+                                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                                   Project Count
+                                </span>
+                                <span  class="kt-widget17__desc" style="color: #1dc9b7;">
+                               0
+
+                                </span>
+
+
+                              </div>
+                            <div class="kt-widget17__item"  style="background-color: white ">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <polygon points="0 0 24 0 24 24 0 24" />
+                                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle" style="color: #dc3545">
+                                  Task Count
+                                </span>
+                                <span class="kt-widget17__desc" style="color: #dc3545">
+                                0
+                                </span>
+                              </div>
+
+                          </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+          <div class="row col-lg-12 col-xl-12 order-lg-1 order-xl-1">
+            <div class="col-xl-3" style="height: 145px;">
+
+
+            <div class="kt-portlet kt-iconbox kt-iconbox--animate-slower">
+              <div class="kt-portlet__body" style="    padding-top: 0px;
+              padding-left: 10px;">
+                <div class="kt-iconbox__content">
+                PRODUCTIVE TIME
+                <span ngbPopover="Total time spent on activities"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                margin-left: 5px;" container="body">
+                  <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                  color: #fff;
+                  font-size: 10px;
+                  "></i>
+                </span>
+              </div>
+
+                      <div class="kt-iconbox__desc">
+                          <h3 class="kt-iconbox__title">
+                            {{prodTime}}
+            </h3>
+            <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+
+                      </div>
+
+              </div>
+          </div>
+        </div>
+
+      <div class="col-xl-3" style="height: 145px;">
+
+
+        <div class="kt-portlet kt-iconbox kt-iconbox--animate">
+          <div class="kt-portlet__body" style="    padding-top: 0px;
+          padding-left: 10px;">
+            <div class="kt-iconbox__content"  >
+          PRODUCTIVITY
+          <span ngbPopover="Productive time by total desktime & expressed as percentage"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+          margin-left: 5px;" container="body">
+            <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+            color: #fff;
+            font-size: 10px;
+            "></i>
+          </span>
+          </div>
+
+                  <div class="kt-iconbox__desc">
+                      <h3 class="kt-iconbox__title" *ngIf="!showTimeSpinner">
+         {{prodRatio}}%
+        </h3>
+        <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+        margin-top: 20px;">
+          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+        </div>
+
+                  </div>
+
+          </div>
+      </div>
+    </div>
+    <div class="col-xl-3" style="height: 145px;">
+
+
+      <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow">
+        <div class="kt-portlet__body" style="    padding-top: 0px;
+        padding-left: 10px;">
+          <div class="kt-iconbox__content">
+    ACTIVITIES COUNT
+        </div>
+
+                <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title"  *ngIf="!showTimeSpinner">
+     {{activity_count?activity_count:0}}
+      </h3>
+      <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+      margin-top: 20px;">
+        <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+      </div>
+                </div>
+
+        </div>
+    </div>
+  </div>
+    <div class="col-xl-3" style="height: 145px;">
+
+
+      <div class="kt-portlet kt-iconbox kt-iconbox--animate-slower">
+        <div class="kt-portlet__body" style="    padding-top: 0px;
+        padding-left: 10px;">
+          <div class="kt-iconbox__content">
+        TIME SPENT
+        <span ngbPopover="Total time spent on tasks"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+        margin-left: 5px;" container="body">
+          <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+          color: #fff;
+          font-size: 10px;
+          "></i>
+        </span>
+        </div>
+
+                <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title" *ngIf="!showTimeSpinner">
+    {{time_spend}}
+      </h3>
+      <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+      margin-top: 20px;">
+        <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+      </div>
+                </div>
+
+        </div>
+    </div>
+  </div>
+          <!-- Old Desktime view -->
+  <!-- <div class="kt-portlet kt-portlet--fit kt-portlet--head-lg kt-portlet--head-overlay kt-portlet--skin-solid kt-portlet--height-fluid  kt-portlet--sortable"   >
+              <div class="kt-portlet__head kt-portlet__head--noborder kt-portlet__space-x "   >
+
+              </div>
+              <div class="kt-portlet__body kt-portlet__body--fit">
+                <div class="kt-widget17">
+               <div class="kt-widget17__visual kt-widget17__visual--chart kt-portlet-fit--top kt-portlet-fit--sides" style="height:60px;">
+
+                  </div>
+                  <div class="kt-widget17__stats" style="width: 98%;">
+                    <div class="kt-widget17__items">
+
+                  <div class="kt-widget17__item"  style="background-color: white"  >
+                        <span class="kt-widget17__icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  class="attendance-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24" />
+                              <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                              <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                            </g>
+                          </svg>
+                        </span>
+                        <span class="kt-widget17__subtitle" style="color: #3f77f4;">
+                          Arrival Time
+                        </span>
+                        <span class="kt-widget17__desc" style="color: #3f77f4;">
+                      {{!showAppData?arrivalTime:desktopCheckin}}
+
+                        </span>
+                        <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                      </div>
+                      <div class="kt-widget17__item" style="background-color: white">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="outsource-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                                <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #93a2dd">
+                            Left Time
+                          </span>
+                          <span  class="kt-widget17__desc" style="color:#93a2dd;">
+                         {{!showAppData?leftTime:desktopCheckout}}
+                          </span>
+
+                          <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                        </div>
+                        <div class="kt-widget17__item" style="background-color: white;">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                            Time At Work
+                          </span>
+                          <span  class="kt-widget17__desc" style="color: #1dc9b7;">
+
+                            {{!showAppData?total_hrs:desktopHrs}}
+
+                          </span>
+                          <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+
+
+
+                        </div>
+                      <div class="kt-widget17__item"  style="background-color: white ">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #dc3545">
+                            Desktop Time
+                          </span>
+
+                          <span  class="kt-widget17__desc" style="color:#93a2dd;">
+                            {{!showAppData?final_hrs:desktopFinalHrs}}
+                             </span>
+                             <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                        </div>
+
+                    </div>
+
+                    <div class="kt-widget17__items">
+                        <div class="kt-widget17__item" style="background-color: white;">
+                            <span class="kt-widget17__icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="overtime-svg-icon">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <rect x="0" y="0" width="24" height="24" />
+                                  <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3" />
+                                  <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000" />
+                                </g>
+                              </svg>
+                            </span>
+                            <span class="kt-widget17__subtitle" style="color: #fd397a;">
+                            Productive Time
+
+                            </span>
+                            <span class="kt-widget17__desc" style="color: #fd397a;">
+                            {{prodTime}}
+                            </span>
+                            <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                          </div>
+
+
+
+                            <div class="kt-widget17__item" style="background-color:white;">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="exception-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <rect x="0" y="0" width="24" height="24" />
+                                      <path d="M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z" fill="#000000" opacity="0.3" />
+                                      <path d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z" fill="#000000" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle"  style="color: #ffb822;">
+                              Productivity
+
+                                </span>
+                                <span *ngIf="!showTimeSpinner" class="kt-widget17__desc"  style="color: #ffb822;">
+                                   {{prodRatio}}%
+                                </span>
+                                <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                              </div>
+                              <div class="kt-widget17__item" style="background-color: white;">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <polygon points="0 0 24 0 24 24 0 24" />
+                                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                                   Project Count
+                                </span>
+                                <span  class="kt-widget17__desc" style="color: #1dc9b7;">
+                               0
+
+                                </span>
+
+
+                              </div>
+                            <div class="kt-widget17__item"  style="background-color: white ">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <polygon points="0 0 24 0 24 24 0 24" />
+                                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle" style="color: #dc3545">
+                                  Task Count
+                                </span>
+                                <span class="kt-widget17__desc" style="color: #dc3545">
+                                0
+                                </span>
+                              </div>
+
+                          </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+
+          <div class="row col-lg-12 col-xl-12 order-lg-1 order-xl-1" style="margin: 0px;">
+
+          </div>
+
+          <div class="row col-lg-12 col-xl-12 order-lg-1 order-xl-1" *ngIf="showAbsentCount">
+            <div class="col-xl-3" style="height: 145px;">
+
+
+            <div class="kt-portlet kt-iconbox kt-iconbox--animate-slower">
+              <div class="kt-portlet__body" style="    padding-top: 0px;
+              padding-left: 10px;">
+                <div class="kt-iconbox__content">
+                WORKED DAYS
+                <span ngbPopover="Total time spent on activities"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+                margin-left: 5px;" container="body">
+                  <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+                  color: #fff;
+                  font-size: 10px;
+                  "></i>
+                </span>
+              </div>
+
+                      <div class="kt-iconbox__desc">
+                          <h3 class="kt-iconbox__title">
+                            {{avail_workdays_count}}
+            </h3>
+            <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+
+                      </div>
+
+              </div>
+          </div>
+        </div>
+
+      <div class="col-xl-3" style="height: 145px;">
+
+
+        <div class="kt-portlet kt-iconbox kt-iconbox--animate">
+          <div class="kt-portlet__body" style="    padding-top: 0px;
+          padding-left: 10px;">
+            <div class="kt-iconbox__content"  >
+          ABSENT
+          <span ngbPopover="Productive time by total desktime & expressed as percentage"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+          margin-left: 5px;" container="body">
+            <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+            color: #fff;
+            font-size: 10px;
+            "></i>
+          </span>
+          </div>
+
+                  <div class="kt-iconbox__desc">
+                      <h3 class="kt-iconbox__title" *ngIf="!showTimeSpinner">
+         {{absent_days_count}}
+        </h3>
+        <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+        margin-top: 20px;">
+          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+        </div>
+
+                  </div>
+
+          </div>
+      </div>
+    </div>
+    <div class="col-xl-3" style="height: 145px;">
+
+
+      <div class="kt-portlet kt-iconbox kt-iconbox--animate-slow">
+        <div class="kt-portlet__body" style="    padding-top: 0px;
+        padding-left: 10px;">
+          <div class="kt-iconbox__content">
+    LEAVE
+        </div>
+
+                <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title"  *ngIf="!showTimeSpinner">
+     {{leave_days_count?leave_days_count:0}}
+      </h3>
+      <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+      margin-top: 20px;">
+        <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+      </div>
+                </div>
+
+        </div>
+    </div>
+  </div>
+    <div class="col-xl-3" style="height: 145px;">
+
+
+      <div class="kt-portlet kt-iconbox kt-iconbox--animate-slower">
+        <div class="kt-portlet__body" style="    padding-top: 0px;
+        padding-left: 10px;">
+          <div class="kt-iconbox__content">
+LATE        <span ngbPopover="Total time spent on tasks"  triggers="mouseenter:mouseleave" placement="top" style="margin-top: -1px;
+        margin-left: 5px;" container="body">
+          <i class="fa fa-question" style="cursor: pointer;margin-right:1px;background-color: #cfd2d5;border-radius: 50%;   padding: 2px 4px;
+          color: #fff;
+          font-size: 10px;
+          "></i>
+        </span>
+        </div>
+
+                <div class="kt-iconbox__desc">
+                    <h3 class="kt-iconbox__title" *ngIf="!showTimeSpinner">
+    {{late_days_count}}
+      </h3>
+      <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+      margin-top: 20px;">
+        <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+      </div>
+                </div>
+
+        </div>
+    </div>
+  </div>
+          <!-- Old Desktime view -->
+  <!-- <div class="kt-portlet kt-portlet--fit kt-portlet--head-lg kt-portlet--head-overlay kt-portlet--skin-solid kt-portlet--height-fluid  kt-portlet--sortable"   >
+              <div class="kt-portlet__head kt-portlet__head--noborder kt-portlet__space-x "   >
+
+              </div>
+              <div class="kt-portlet__body kt-portlet__body--fit">
+                <div class="kt-widget17">
+               <div class="kt-widget17__visual kt-widget17__visual--chart kt-portlet-fit--top kt-portlet-fit--sides" style="height:60px;">
+
+                  </div>
+                  <div class="kt-widget17__stats" style="width: 98%;">
+                    <div class="kt-widget17__items">
+
+                  <div class="kt-widget17__item"  style="background-color: white"  >
+                        <span class="kt-widget17__icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  class="attendance-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <rect x="0" y="0" width="24" height="24" />
+                              <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                              <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                            </g>
+                          </svg>
+                        </span>
+                        <span class="kt-widget17__subtitle" style="color: #3f77f4;">
+                          Arrival Time
+                        </span>
+                        <span class="kt-widget17__desc" style="color: #3f77f4;">
+                      {{!showAppData?arrivalTime:desktopCheckin}}
+
+                        </span>
+                        <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                      </div>
+                      <div class="kt-widget17__item" style="background-color: white">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="outsource-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+                                <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #93a2dd">
+                            Left Time
+                          </span>
+                          <span  class="kt-widget17__desc" style="color:#93a2dd;">
+                         {{!showAppData?leftTime:desktopCheckout}}
+                          </span>
+
+                          <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                        </div>
+                        <div class="kt-widget17__item" style="background-color: white;">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                            Time At Work
+                          </span>
+                          <span  class="kt-widget17__desc" style="color: #1dc9b7;">
+
+                            {{!showAppData?total_hrs:desktopHrs}}
+
+                          </span>
+                          <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+
+
+
+                        </div>
+                      <div class="kt-widget17__item"  style="background-color: white ">
+                          <span class="kt-widget17__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                              </g>
+                            </svg>
+                          </span>
+                          <span class="kt-widget17__subtitle" style="color: #dc3545">
+                            Desktop Time
+                          </span>
+
+                          <span  class="kt-widget17__desc" style="color:#93a2dd;">
+                            {{!showAppData?final_hrs:desktopFinalHrs}}
+                             </span>
+                             <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                        </div>
+
+                    </div>
+
+                    <div class="kt-widget17__items">
+                        <div class="kt-widget17__item" style="background-color: white;">
+                            <span class="kt-widget17__icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="overtime-svg-icon">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                  <rect x="0" y="0" width="24" height="24" />
+                                  <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3" />
+                                  <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000" />
+                                </g>
+                              </svg>
+                            </span>
+                            <span class="kt-widget17__subtitle" style="color: #fd397a;">
+                            Productive Time
+
+                            </span>
+                            <span class="kt-widget17__desc" style="color: #fd397a;">
+                            {{prodTime}}
+                            </span>
+                            <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                          </div>
+
+
+
+                            <div class="kt-widget17__item" style="background-color:white;">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="exception-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <rect x="0" y="0" width="24" height="24" />
+                                      <path d="M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z" fill="#000000" opacity="0.3" />
+                                      <path d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z" fill="#000000" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle"  style="color: #ffb822;">
+                              Productivity
+
+                                </span>
+                                <span *ngIf="!showTimeSpinner" class="kt-widget17__desc"  style="color: #ffb822;">
+                                   {{prodRatio}}%
+                                </span>
+                                <div *ngIf="showTimeSpinner" style="margin: 0px auto;
+                        margin-top: 20px;">
+                          <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+                        </div>
+                              </div>
+                              <div class="kt-widget17__item" style="background-color: white;">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="absent-svg-icon" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <polygon points="0 0 24 0 24 24 0 24" />
+                                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span  class="kt-widget17__subtitle" style="color: #1dc9b7;">
+                                   Project Count
+                                </span>
+                                <span  class="kt-widget17__desc" style="color: #1dc9b7;">
+                               0
+
+                                </span>
+
+
+                              </div>
+                            <div class="kt-widget17__item"  style="background-color: white ">
+                                <span class="kt-widget17__icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="leave-svg-icon"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <polygon points="0 0 24 0 24 24 0 24" />
+                                      <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                      <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                                    </g>
+                                  </svg>
+                                </span>
+                                <span class="kt-widget17__subtitle" style="color: #dc3545">
+                                  Task Count
+                                </span>
+                                <span class="kt-widget17__desc" style="color: #dc3545">
+                                0
+                                </span>
+                              </div>
+
+                          </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+
+    </div>
+    <!-- <div>
+      <h3>A simple timeline</h3>
+      <div id="timeline1"></div>
+    </div> -->
+
+    <div class="row" style="margin-top: 15px;display: none;
+    background-color: white;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-top: 20px;"  *ngIf="showActDiv">
+      <div class="col-xl-6 col-lg-6">
+        <div class="control-section kt-portlet" style="background: none;" >
+
+          <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+            <div class="kt-portlet__head-label"  >
+              <h3 class="kt-portlet__head-title" style="display: flex;">
+               <div style="padding-top: 18px;">Milestone</div>
+<div class="col-xl-12 col-lg-6" style="margin: 8px 2px;">
+  <select2 [data]="milesData" [options]="activityOptions" [value]="milesValue" (valueChanged)="changedMiles($event)" ></select2>
+
+</div>
+
+              </h3>
+
+
+            </div>
+            </div>
+            <ejs-chart #milestonechart style='display:block;' height='300' id='chartcontainer1' [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis' [title]='title'
+                [tooltip]='tooltip' (load)='load($event)' [legendSettings] = 'legendSettings'>
+                <e-series-collection>
+                    <e-series [dataSource]='data1' type='Column' xName='x' yName='y' name='Profit' width=0 >
+                    </e-series>
+
+                </e-series-collection>
+            </ejs-chart>
+
+
+    </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+          <div class="control-section kt-portlet" style="background: none;" >
+
+            <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+              <div class="kt-portlet__head-label"  >
+                <h3 class="kt-portlet__head-title" style="display: flex;">
+                  <div style="padding-top: 18px;">Task</div>
+<div class="col-xl-12 col-lg-6" style="margin: 8px 2px;">
+  <select2 [data]="taskData" [options]="activityOptions" [value]="taskValue" (valueChanged)="changedTask($event)" ></select2>
+
+</div>
+                </h3>
+
+
+              </div>
+              </div>
+              <ejs-chart #taskchart style='display:block;' height='300' id='chartcontainer2' [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis' [title]='title'
+                  [tooltip]='tooltip' (load)='load($event)' [legendSettings] = 'legendSettings'>
+                  <e-series-collection>
+                      <e-series [dataSource]='data1' type='Column' xName='x' yName='y' name='Profit' width=0 >
+                      </e-series>
+                  </e-series-collection>
+              </ejs-chart>
+
+
+      </div>
+          </div>
+    </div>
+    <div class="row" style="margin-top: 15px;display: none;">
+      <div  class="col-xl-12 col-lg-12">
+        <div class="control-section kt-portlet" style="background: none;" >
+
+          <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+            <div class="kt-portlet__head-label"  >
+              <h3 class="kt-portlet__head-title">
+                Task Productivity
+              </h3>
+
+
+            </div>
+            </div>
+           <div style="background-color: white;padding:10px 15px;">
+            <ejs-chart #projchart style='display:block;' height='300' width='92%' id='chartcontainer4' [primaryXAxis]='projXAxis' [primaryYAxis]='primaryYAxis' [title]='title'
+            [tooltip]='tooltip' (load)='load($event)' [legendSettings] = 'legendSettings' [chartArea]=chartArea>
+            <e-series-collection>
+                <e-series [dataSource]='data' type='Column' xName='x' yName='y' name='Productivity' width=0  [marker]='marker'>
+                </e-series>
+
+            </e-series-collection>
+        </ejs-chart>
+
+           </div>
+
+
+
+
+
+    </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 15px;">
+      <div style="width:100%"  class="col-xl-12 col-lg-12">
+        <div style="background-color: #f6f3f3;padding:10px 15px;overflow-x: auto;">
+          <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="employeeTabSelected($event)" style="margin-bottom: 10px;">
+            <e-tabitems>
+              <e-tabitem  *ngFor='let header of employeeActivityTab' [header]='header'></e-tabitem>
+            </e-tabitems>
+          </ejs-tab>
+
+          <div style="padding: 10px 0px;" id="PRODUCTIVITY">
+            <div class="kt-portlet" style="background: none;" >
+
+              <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title"  style="color: #5fb92a;text-transform: uppercase;">
+                    <!-- Activity Progress -->
+                  Productivity
+                  </h3>
+
+
+                </div>
+                </div>
+               <div style="background-color: white;padding:10px 15px;overflow-x: auto;">
+                <!-- <ejs-chart #actchart style='display:block;' height='300' width='92%' id='chartcontainer3' [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis' [title]='title'
+                [tooltip]='tooltip' (load)='load($event)' (tooltipRender)='tooltipRender($event)' [legendSettings] = 'legendSettings' [chartArea]=chartArea>
+                <e-series-collection>
+                    <e-series [dataSource]='data1' type='Column' xName='x' yName='y' name='Productivity' width=0 >
+                    </e-series>
+                </e-series-collection>
+
+            </ejs-chart> -->
+            <div *ngIf="showChartSpinner" style="display: flex;justify-content: center;
+            margin-top: 20px;">
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+
+            </div>
+            <div *ngIf='!showMonthsContainer' style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date1}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime1}}</span></div>
+            <div *ngIf='!showMonthsContainer' id="container" style="height: 250px;"></div>
+            <div class="row "  *ngIf='!showMonthsContainer'>
+              <!-- <div id="timeline1"></div>  -->
+
+
+              <div  class="col-xl-12 col-lg-12"  >
+                <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+    <!--
+                  <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                    <div class="kt-portlet__head-label"  >
+                      <h3 class="kt-portlet__head-title">
+
+                        Tasks
+                      </h3>
+
+
+                    </div>
+                    </div> -->
+                    <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                    <!-- <div width="100%" id="timelineRelativeTime" style="background-color: white;"></div> -->
+                    <!-- <div>
+                      <div id="hoverRes">
+                        <div class="coloredDiv"></div>
+                        <div id="name"></div>
+                        <div id="scrolled_date"></div>
+                      </div>
+                      <div id="timeline3"></div>
+
+                    </div> -->
+
+                    <div id="projContainer" style="width:100%;padding:0px 36px;background-color: white;height:125px"></div>
+
+                </div>
+
+
+             </div>
+           </div>
+        <!-- <div   id="areaContainer1" style="height: 250px;"></div> -->
+
+      <div *ngIf="showweeksContainer">
+        <div style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date2}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime2}}</span></div>
+        <div id="weekcontainer1" style="height: 250px;"></div>
+        <div class="row ">
+          <!-- <div id="timeline1"></div>  -->
+
+
+          <div  class="col-xl-12 col-lg-12"  >
+            <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+
+              <!-- <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title">
+                    Tasks
+                  </h3>
+                </div>
+                </div> -->
+                <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                  <div id="proj1Container" style="width:100%;padding:0px 36px;height: 125px;"></div>
+            </div>
+         </div>
+       </div>
+        <div style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date3}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime3}}</span></div>
+        <div id="weekcontainer2" style="height: 250px;"></div>
+        <div class="row ">
+          <!-- <div id="timeline1"></div>  -->
+          <div  class="col-xl-12 col-lg-12"  >
+            <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+
+              <!-- <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title">
+                    Tasks
+                  </h3>
+                </div>
+                </div> -->
+                <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                  <div id="proj2Container" style="width:100%;padding:0px 36px;height: 125px;"></div>
+            </div>
+         </div>
+       </div>
+        <div style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date4}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime4}}</span></div>
+        <div id="weekcontainer3" style="height: 250px;"></div>
+        <div class="row ">
+          <!-- <div id="timeline1"></div>  -->
+          <div  class="col-xl-12 col-lg-12"  >
+            <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+
+              <!-- <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title">
+                    Tasks
+                  </h3>
+                </div>
+                </div> -->
+                <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                  <div id="proj3Container" style="width:100%;padding:0px 36px;height: 125px;"></div>
+            </div>
+         </div>
+       </div>
+        <div style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date5}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime5}}</span></div>
+        <div id="weekcontainer4" style="height: 250px;"></div>
+        <div class="row ">
+          <!-- <div id="timeline1"></div>  -->
+          <div  class="col-xl-12 col-lg-12"  >
+            <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+
+              <!-- <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title">
+                    Tasks
+                  </h3>
+                </div>
+                </div> -->
+                <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                  <div id="proj4Container" style="width:100%;padding:0px 36px;height: 125px;"></div>
+            </div>
+         </div>
+       </div>
+        <div style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date6}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime6}}</span></div>
+        <div id="weekcontainer5" style="height: 250px;"></div>
+        <div class="row ">
+          <!-- <div id="timeline1"></div>  -->
+          <div  class="col-xl-12 col-lg-12"  >
+            <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+    <!--
+              <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title">
+                    Tasks
+                  </h3>
+                </div>
+                </div> -->
+                <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                  <div id="proj5Container" style="width:100%;padding:0px 36px;height: 125px;"></div>
+            </div>
+         </div>
+       </div>
+        <div style="text-transform: uppercase;
+            color: #252d33;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-left: 12px;">{{date7}}<span style="margin-left:4px;color: grey;font-size: 10px;">{{desktime7}}</span></div>
+        <div id="weekcontainer6" style="height: 250px;"></div>
+        <div class="row ">
+          <!-- <div id="timeline1"></div>  -->
+          <div  class="col-xl-12 col-lg-12"  >
+            <div class="control-section kt-portlet" style="background: none;margin-bottom: 20px;" >
+
+              <!-- <div class="kt-portlet__head" style="display: flex;justify-content: space-between;background-color: white !important;"> -->
+                <!-- <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title">
+                    Tasks
+                  </h3>
+                </div> -->
+                <!-- </div> -->
+                <div style="    font-weight: 600;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 8px;">Tasks</div>
+                  <div id="proj6Container" style="width:100%;padding:0px 36px;height: 125px;"></div>
+            </div>
+         </div>
+       </div>
+                 </div>
+
+
+               </div>
+
+
+
+
+
+            </div>
+
+            <div class="kt-portlet" style="background: none;" >
+              <ejs-schedule width='100%' #schedule height='550px'  [workDays]='workWeekDays'   [currentView]="currentView" [minDate]="minDate" [maxDate]="maxDate" [views]="view" [selectedDate]='selectedDate' (popupOpen)="onPopupOpen($event)"
+              (actionBegin)="actionBegin($event)" (dataBound)="onDataBound()"    (eventRendered)="onEventRendered($event)"  (renderCell)='onRenderCell($event)' (actionComplete)="onActionComplete($event)" [startHour]="startHour" [endHour]="endHour"   [eventSettings]='eventSettings'>
+              <!-- <ejs-schedule width='100%' #schedule height='550px'  [workDays]='workWeekDays'   [currentView]="currentView" [minDate]="minDate" [maxDate]="maxDate" [views]="view" [selectedDate]='selectedDate' (popupOpen)="onPopupOpen($event)"
+              (actionBegin)="actionBegin($event)" (dataBound)="onDataBound()" (eventRendered)="onEventRendered($event)"  (renderCell)='onRenderCell($event)' (actionComplete)="onActionComplete($event)" [startHour]="startHour" [endHour]="endHour"   [eventSettings]='eventSettings'> -->
+               <!-- <e-views>
+                 <e-view option='Day'></e-view>
+                 <e-view option='Week'></e-view>
+                 <e-view option='Month'></e-view>
+               </e-views> -->
+               <!-- <ng-template #cellTemplate let-data>
+                 <div class="templatewrap"  *ngIf="data.type == 'workCells'"  [innerHTML]="data.ArriveTime" >{{data}}</div>
+               </ng-template> -->
+               <!-- <ng-template #eventSettingsTooltipTemplate let-data>
+                 <div class="tooltip-wrap">
+                   <div class="content-area">
+                     <div class="name">{{data.EventName}}</div>
+
+                     <div *ngIf="data.ArriveTime != null && data.ArriveTime !=undefined">
+                       <div class="time">ArriveTime&nbsp;:&nbsp;{{data.ArriveTime}} </div>
+                     <div *ngIf="data.LeftTime != null && data.LeftTime !=''" class="time">LeftTime&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{data.LeftTime}}
+                       <div *ngIf="data.TeamMembers != ''" class="city">{{data.TeamMembers}}</div>
+
+                     </div>
+                     </div>
+
+                   </div>
+                 </div>
+
+               </ng-template> -->
+                <ng-template #quickInfoTemplatesHeader let-data>
+                 <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">
+                   <div class="e-popup-header">
+                     <div class="e-header-icon-wrapper">
+                       <div *ngIf="data.elementType == 'event'" class="subject">{{data.Event}}</div>
+                       <button class="e-close e-close-icon e-icons" title="Close" (click)="onCloseClick($event)"></button>
+                     </div>
+
+                   </div>
+                 </div>
+               </ng-template>
+
+               <ng-template #quickInfoTemplatesContent let-data>
+                 <div *ngIf="data.elementType == 'event'" class="e-event-content">
+                 <div class="tooltip-wrap">
+                   <div class="content-area">
+                     <!-- <div class="name">{{data.Event}}</div>  -->
+                     <div  class="kt-subheader   kt-grid__item" id="kt_subheader"
+                     style="padding:0px ;margin:0px !important">
+
+                     <div class="kt-subheader__main">
+                       <div style="display: flex;flex-direction:column;">
+                         <div class="kt-subheader__title" style="padding-right: 10px;padding-bottom: 1px;">
+                           Project
+                         </div>
+                         <div style="color: black;text-align: center;margin-right: 8px;font-weight: bold;">{{data.Project}}</div>
+                       </div>
+                       <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+
+                       <div style="display: flex;flex-direction:column;">
+                         <div class="kt-subheader__title" style="padding-right: 10px;padding-bottom: 1px;">
+                           Milestone
+                         </div>
+                         <div style="color: black;text-align: center;margin-right: 8px;font-weight: bold;">{{data.Milestone}}</div>
+                       </div>
+
+
+                       <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                       <div style="display: flex;flex-direction:column;">
+                         <div class="kt-subheader__title" style="padding-right: 10px;padding-bottom: 1px; ">
+                           Task
+                         </div>
+                         <div style="color: black;text-align: center;font-weight: bold;">{{data.Task}}</div>
+                       </div>
+
+                     </div>
+
+
+                   </div>
+
+                     <div *ngIf="data.ArriveTime != null && data.ArriveTime !=undefined">
+                       <div class="time"><div style="width: 138px;display: flex;"><div style="width:70px"><span style="margin-right: 4px;"><i class="fa fa-clock-o" aria-hidden="true"></i></span>{{data.ArriveTime}}</div><div style="width:70px"> <span *ngIf="data.LeftTime != null && data.LeftTime !=''"><span style="margin-left:5px;margin-right:5px;">-</span> {{data.LeftTime}}</span></div></div> <span style="margin-left:2px;margin-left: 2px;
+                       text-transform: uppercase;
+                       font-size: 10px;
+                       color: gray;
+                       margin-top: 1px;">(Checkin<span *ngIf="data.LeftTime != null && data.LeftTime !=''"> <span style="margin-left:2px;margin-right:2px;">-</span> Checkout</span>)</span>   </div>
+                       <div class="time">
+                         <div style="width: 138px;display: flex;"><div  style="width:70px"><span style="margin-right: 4px;"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>{{data.StartTime|date : "h:mm a"}}</div><div style="width:70px"> <span *ngIf="data.EndTime != null && data.EndTime !=''"><span style="margin-left:5px;margin-right:5px;">-</span> {{data.EndTime|date : "h:mm a"}}</span></div></div>  <span style="margin-left:2px;margin-left: 2px;
+                       text-transform: uppercase;
+                       font-size: 10px;
+                       color: gray;
+                       margin-top: 1px;"  *ngIf="data.StartTime != null && data.StartTime !=''">(Task time) </span> </div>
+                       <div class="time">
+                         <div style="display: flex;"><div  ><span style="margin-right: 4px;"><i class="fa fa-map-marker" style="font-size: 16px;" aria-hidden="true"></i></span>{{data.Location}}</div>
+                     </div>   </div>
+                     <div>
+                       {{data.Status}}<span *ngIf="data.Percent!=null">({{data.Percent}}%)</span>
+                     </div>
+                  <div *ngIf="data.Remarks != ''" style="border-bottom:1px solid #777;width:100%;font-size: 10px;padding-bottom: 2px;
+                  margin-bottom: 4px; margin-top: 4px;
+                  color: gray;">
+                   <div>REMARKS</div>
+                  </div>
+                       <div *ngIf="data.Remarks != ''" class="city">{{data.Remarks}}</div>
+                   <div *ngIf="data.TeamMembers != ''" class="city">{{data.TeamMembers}}</div>
+                       <!-- <div *ngIf="data.LeftTime != null && data.LeftTime !=''" class="time">LeftTime&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{data.LeftTime}}
+                       <div *ngIf="data.TeamMembers != ''" class="city">{{data.TeamMembers}}</div>
+
+                     </div> -->
+                     </div>
+                     <!-- <div class="time">From&nbsp;:&nbsp;{{data.StartTime.toLocaleString()}} </div>
+                     <div class="time">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{data.EndTime.toLocaleString()}}
+                     </div>  -->
+                   </div>
+                 </div>
+                 </div>
+                 </ng-template>
+             </ejs-schedule>
+            </div>
+
+            <div class="kt-portlet" style="background: white;" >
+              <div class="kt-portlet__head" style="">
+                <div class="kt-portlet__head-label"  >
+                  <h3 class="kt-portlet__head-title" style="color: #5fb92a;">
+                    PRODUCTIVE APPS
+                  </h3>
+
+
+                </div>
+                </div>
+                <div class="row" style="    margin: 0px 0px;
+                padding: 15px 20px;
+                overflow-y: auto;
+                height: 180px;">
+                  <div class="col-md-4 col-sm-6" *ngFor="let app of productiveApps">
+                    <div  class="row">
+
+
+                      <div  class="col-md-9 col-sm-12" style="padding-bottom: 10px;">
+                        <div style="display: flex;background-repeat:no-repeat;">
+                        <div><img [src]='app.icon' style="height: 20px;" /></div>
+                          <div style="width:150px;margin-left: 24px;">
+                          {{app.name}}
+                        </div>
+                        <div  style="width:100px;color: #777;">
+                          {{app.time}}
+                        </div>
+                                    </div>
+
+                    </div>
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+          </div>
+
+          <div id="PROJECT">
+            <div class="kt-portlet" style="background: none;" >
+              <div class="kt-portlet__head" style="display: block;justify-content: space-between;background-color: white !important;">
+                <h3 class="kt-portlet__head-title"  style="color: #5fb92a;text-transform: uppercase;font-size: 1rem; padding-top: 12px;">
+                  Projects
+                  </h3>
+                <div class="kt-portlet__head-label">
+                  <ejs-grid style="margin-top: 10px; margin-bottom: 30px;overflow: auto;" #projectGrid (toolbarClick)='gridProjecttoolbarClick($event)'
+                   [allowPdfExport]='true' [allowExcelExport]='true' [allowSorting]='true' [sortSettings]='initialSort'
+                   [dataSource]='projectDataTab' [height]='500' [searchSettings]='searchSettings' [toolbar]='toolbar' [allowTextWrap]='true'>
+                    <e-columns>
+                        <e-column field='project_prefix' headerText='Job No' textAlign='Center' width=120>
+                          <ng-template #template let-data>
+                            <span>{{data.project_prefix}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='project_name' headerText='Project' width=100>
+                          <ng-template #template let-data>
+                            <span style="color:blue;cursor: pointer;text-transform: capitalize;" (click)="toProjectLayout(data.project_id)">{{data.project_name}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='project_status_name' headerText='Status' textAlign='Center' format='C2' width=100>
+                          <ng-template #template let-data>
+                            <span>{{data.project_status_name}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='start_date' headerText='Start Date' textAlign='Center' width=100 >
+                          <ng-template #template let-data>
+                            <span>{{data.start_date | date : "dd/MM/y"}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='end_date' headerText='End Date' textAlign='Center' width=100 >
+                          <ng-template #template let-data>
+                            <span>{{data.end_date | date : "dd/MM/y"}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='cst_name' headerText='Customer' textAlign='Center' width=100 >
+                          <ng-template #template let-data>
+                            <span>{{data.cst_name}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='email' headerText='Email' textAlign='Center' width=120 >
+                          <ng-template #template let-data>
+                            <span>{{data.email}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='phone' headerText='Phone' textAlign='Center' width=120 >
+                          <ng-template #template let-data>
+                            <span>{{data.phone}}</span>
+                          </ng-template>
+                        </e-column>
+                        <e-column field='ondate' headerText='Date' textAlign='Center' width=100 >
+                          <ng-template #template let-data>
+                            <span>{{data.ondate}}</span>
+                          </ng-template>
+                        </e-column>
+                    </e-columns>
+                </ejs-grid>
+                </div>
+            </div>
+          </div>
+
+
+
+          </div>
+
+          <div style="padding: 10px 0px;" id="TASK">
+            <div class="kt-portlet" style="background: none;" >
+              <div class="kt-portlet__head" style="padding: 20px;display: block;justify-content: space-between;background-color: white !important;">
+                <h3 class="kt-portlet__head-title"  style="color: #5fb92a;text-transform: uppercase;font-size: 1rem;margin-bottom: 0px;">
+                  Task
+                  </h3>
+                  <div class="mainDiv" style="display: flex;">
+                    <div class="kt-portlet__head-label firstDiv" style="width: 25%;">
+                      <form [formGroup]="taskDatePickerRangeForm" style="padding-left:4px;" style="width: 100%;">
+                        <ejs-daterangepicker placeholder="Select a Range" [max]="maxRangeDateForTask" formControlName="taskDaterange" format='E, d MMM, y'>
+                        </ejs-daterangepicker>
+                      </form>
+                    </div>
+
+                    <div class="kt-subheader__main secondDiv" style="width: 75%; margin: 0px 20px 15px 20px; display: flex; justify-content: center;">
+                      <div class = "e-card cardwidth cardrespWidth">
+                        <div>
+                          <div class="kt-subheader__title cardHeaderFont">
+                            <h1 class="cardHeaderFont" style="font-weight: 700; margin: 10px;">
+                              PRODUCTIVE TIME
+                            </h1>
+                          </div>
+                          <div style="color: black;font-weight: bold;color: #2c77f4;">
+                            {{empProductiveTime}}
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <div class = "e-card cardwidth cardrespWidth">
+                        <div class="kt-subheader__title cardHeaderFont">
+                          <h1 class="cardHeaderFont" style="font-weight: 700; margin: 10px;">
+                            PRODUCTIVITY (%)
+                          </h1>
+                        </div>
+                        <div style="color: black;font-weight: bold;color: #2c77f4;">
+                          {{empProductivity === '-' ? '-' : empProductivity | number : '1.2-2'}}
+                        </div>
+                      </div>
+
+                      <div class = "e-card cardwidth cardrespWidth">
+                        <div class="kt-subheader__title cardHeaderFont">
+                          <h1 class="cardHeaderFont" style="font-weight: 700; margin: 10px;">
+                            ACTIVITY COUNT
+                          </h1>
+                        </div>
+                        <div style="color: black;font-weight: bold;color: #2c77f4;">
+                          {{empActivetyTime}}
+                        </div>
+                      </div>
+
+                      <div class = "e-card cardwidth cardrespWidth">
+                        <div class="kt-subheader__title" style="font-weight: 700;text-transform: uppercase;">
+                          <h1 class="cardHeaderFont" style="font-weight: 700; margin: 10px;">
+                            TIME SPEND
+                          </h1>
+                        </div>
+                        <div style="color: black;font-weight: bold;color: #2c77f4;">
+                          {{empTimeSpend}}
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                <div class="timeTrackGrid">
+                  <ejs-grid #timeTrackGrid [dataSource]='employeeTodayDayActivitiesProjectData' height="500px" allowSorting='true' allowTextWrap='true'
+                  [allowExcelExport]='true' [allowPdfExport]='true'
+                  (toolbarClick)='toolbarClick($event)'
+                  [toolbar]='toolbarOptions'>
+                    <e-columns>
+                      <e-column field='ondate' headerText='Date' width=120></e-column>
+                      <e-column field='subtask' headerText='Subtask' textAlign='' width=160>
+                        <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <div  popoverClass="remarksTooltip" container="body"
+                          [ngbPopover]="data.remarks" placement="top" triggers="mouseenter:mouseleave" style="font-weight: 500;text-transform: capitalize;cursor: pointer;">{{data.task_name}}<span style="font-size: 10px;margin-left: 4px;"
+                            [ngClass]="data.status_name  == 'Completed' ? 'status-code-success': (data.status_name  == 'Open' ? 'status-code-failed':'status-code-empty' )">{{data.status_name }}
+                            <span *ngIf="data.is_modified" class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded ng-star-inserted" style="color: white;padding: 0.75rem 0.5rem !important">Modified</span>
+                          </span>
+                        </div>
+
+                          <div class="list-item-meta">
+                            <div class="meta-item" style="display: flex; padding-top:10px">
+                              <div class="meta-item-icon"><svg class="icon " style="color: #918686;" height="12" version="1.1" viewBox="0 0 12 14"
+                                  width="10.285714285714285" xmlns="http://www.w3.org/2000/svg">
+                                  <path
+                                    d="M8.655 3.728l.797-.797c.27-.27.709-.27.978 0l.49.49a.69.69 0 0 1 0 .979l-.796.797a5.54 5.54 0 1 1-5.276-2.384v-.735h-.69a.695.695 0 0 1-.695-.692V.692c0-.382.312-.692.695-.692h2.765c.384 0 .695.311.695.692v.694a.694.694 0 0 1-.695.692h-.69v.735c.89.111 1.715.433 2.422.915zM5.54 12.466a4.155 4.155 0 1 0 0-8.31 4.155 4.155 0 0 0 0 8.31zm-.693-6.922a.692.692 0 1 1 1.385 0v2.764a.692.692 0 1 1-1.385 0V5.544z"
+                                    fill="currentColor" fill-rule="evenodd"></path>
+                                </svg></div><time style="color: #918686;" datetime="1600871427591">{{data.start_time|date : "h:mm a"}}</time>&nbsp;-&nbsp; <time
+                                datetime="1600871444711" style="color: #918686;">{{data.end_time|date : "h:mm a"}}</time>
+                            </div>
+
+                          </div>
+
+                        </ng-template>
+                      </e-column>
+
+                      <e-column field='main_name' headerText='Task' textAlign='' width=120>
+                        <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <span>{{data.main_name}} </span>
+
+
+                        </ng-template>
+                      </e-column>
+
+                      <e-column field='project_name' headerText='Project' textAlign='' width=120>
+                        <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <div>{{data.project_name}}</div>
+                          <!-- <div>(Milestone-{{data.milestone_name}})</div> -->
+
+
+                        </ng-template>
+                      </e-column>
+
+                      <e-column field='full_name' headerText='Assignee' textAlign='' width=120>
+                        <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <span>{{data.full_name}}</span>
+
+
+                        </ng-template>
+                      </e-column>
+                      <e-column field='total_hrs' headerText='Time' textAlign='' width=120>
+                        <ng-template #template let-data>
+
+                          <!-- <button mat-menu-item (click)="openDialog(element)">Edit</button> -->
+                          <span>{{data.total_hrs!=null?(data.total_hrs ):(data.total_hrs )}}</span>
+
+
+                        </ng-template>
+                      </e-column>
+
+
+                    </e-columns>
+                  </ejs-grid>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+
+

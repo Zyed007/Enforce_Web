@@ -1,0 +1,26 @@
+// shared css for the login and signup page
+// @import "../login/login.component.scss";
+.mt-10 a{
+    cursor: pointer !important;
+}
+.forny-form{
+    padding: 0px !important;
+}
+.error-msg{
+    text-align: center;
+    margin-top: -10px;
+    color: red;
+}
+.margin6{
+    margin-top: 6px !important ;
+}
+.font20{
+    font-size: 20px !important;
+}
+
+.softVersion{
+  position: absolute;
+  bottom: 0px;
+  margin: 0px 0px 8px 11px;
+  font-weight: 500;
+}

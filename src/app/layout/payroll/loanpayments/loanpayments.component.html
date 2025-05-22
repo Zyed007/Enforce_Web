@@ -1,0 +1,1114 @@
+<div *ngIf="!accessToPage">
+  <app-not-found></app-not-found>
+</div>
+
+<div *ngIf="accessToPage" style="padding: 15px; background-color: white; margin: 10px 15px 0px 15px;">
+
+  <div class="selbox col-12" style="display: flex;justify-content: end;">
+    <div class="col-2 text-right">
+      <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" (click)="openAddAdjustment()">
+        Add Loan Payments
+      </button>
+    </div>
+  </div>
+
+  <div style="display: inline-block;">
+    <ejs-tab id="element"  #tabObjlist heightAdjustMode="Auto" overflowMode="Popup">
+      <e-tabitems>
+        <e-tabitem *ngFor="let header of Tabs" [header]="header">
+
+          <ng-template #content *ngIf="header.text == 'Pending'" >
+            <div style="margin-top: 20px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="pendingList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+              >
+                <e-columns>
+
+                  <e-column field="full_name" headerText="Employee Name" width="80">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="pay_item" headerText="Pay Item" width="50">
+                    <ng-template #template let-data>
+                      <span>{{ data.pay_item }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="type" headerText="Type" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.type}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="amount" headerText="Amount(AED)" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.amount}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="date_incurred"  headerText="Date Incurred" width="60" >
+                    <ng-template #template let-data>
+                      <span>{{ data.date_incurred | date : "dd/MM/yyyy" }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="remarks" headerText="Remark"  width="80" >
+                    <ng-template #template let-data>
+                      <span>{{data.remarks}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText="Action" width="100">
+                    <ng-template #template let-data>
+                      <button  class="custbtn"
+                        *ngIf="addPayrollPaymentsFullAccess || (data.approver1_roleId == user_info.role_id && data.is_approved_1 == false)"
+                        (click)="aprRejAJ(data)">Approve/Reject</button>
+                        <button class="foreye" (click)="viewAdjustmentPay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Rejected'" >
+            <div style="margin-top: 20px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="rejectedList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+              >
+                <e-columns>
+
+                  <e-column field="full_name" headerText="Employee Name" width="80">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="pay_item" headerText="Pay Item" width="50">
+                    <ng-template #template let-data>
+                      <span>{{ data.pay_item }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="type" headerText="Type" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.type}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="amount" headerText="Amount(AED)" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.amount}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="date_incurred"  headerText="Date Incurred" width="60" >
+                    <ng-template #template let-data>
+                      <span>{{ data.date_incurred | date : "dd/MM/yyyy" }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="remarks" headerText="Remark"  width="80" >
+                    <ng-template #template let-data>
+                      <span>{{data.remarks}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText="Action" width="100">
+                    <ng-template #template let-data>
+                      <button class="custbtn" (click)="markPending(data)" *ngIf="addPayrollPaymentsFullAccess">Mark Pending</button>
+                      <button class="foreye" (click)="viewAdjustmentPay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Approved'" >
+            <div  *ngIf="!isPayrollActive" style="margin-top: 10px; display: flex; justify-content: end;">
+              <p>Note: You cannot add Loan Payments to Paytable while Payroll is not Active! </p>
+            </div>
+            <div style="margin-top: 10px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="approvedList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+              >
+                <e-columns>
+
+                  <e-column field="full_name" headerText="Employee Name" width="80">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="pay_item" headerText="Pay Item" width="50">
+                    <ng-template #template let-data>
+                      <span>{{ data.pay_item }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="type" headerText="Type" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.type}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="amount" headerText="Amount(AED)" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.amount}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="date_incurred"  headerText="Date Incurred" width="60" >
+                    <ng-template #template let-data>
+                      <span>{{ data.date_incurred | date : "dd/MM/yyyy" }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="remarks" headerText="Remark"  width="80" >
+                    <ng-template #template let-data>
+                      <span>{{data.remarks}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText="Action" width="100">
+                    <ng-template #template let-data>
+                      <button class="custbtn" (click)="MarkApprPaid(data)">Mark Paid</button>
+                      <button class="custbtn" *ngIf="showPayrollPaymentBtn && isPayrollActive" (click)="addToPaytable(data)">Add to Paytable</button>
+                      <button class="foreye" (click)="viewAdjustmentPay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      <button class="foreye" (click)="editAjustmentPay(data)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Added to Paytable'" >
+            <div  *ngIf="!isPayrollActive" style="margin-top: 10px; display: flex; justify-content: end;">
+              <p>Note: You cannot add Loan Payments to Paytable while Payroll is not Active! </p>
+            </div>
+            <div style="margin-top: 10px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="activeList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+              >
+                <e-columns>
+
+                  <e-column field="full_name" headerText="Employee Name" width="80">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="pay_item" headerText="Pay Item" width="50">
+                    <ng-template #template let-data>
+                      <span>{{ data.pay_item }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="type" headerText="Type" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.type}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="amount" headerText="Amount(AED)" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.amount}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="date_incurred"  headerText="Date Incurred" width="60" >
+                    <ng-template #template let-data>
+                      <span>{{ data.date_incurred | date : "dd/MM/yyyy" }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="remarks" headerText="Remark"  width="80" >
+                    <ng-template #template let-data>
+                      <span>{{data.remarks}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText="Action" width="100">
+                    <ng-template #template let-data>
+                      <button *ngIf="isPayrollActive"  ngbTooltip="This option send back the payment to the previous approved section." class="custbtn" (click)="sendBackToApr(data)">Send Back</button>
+                      <button class="foreye" (click)="viewAdjustmentPay(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+
+          <ng-template #content *ngIf="header.text == 'Paid'" >
+            <div style="margin-top: 20px;">
+              <ejs-grid
+              #pendingExpGrid
+              [toolbar]="singleEmpToolbar"
+              [dataSource]="activeList"
+              [allowExcelExport]="true"
+              (toolbarClick)="singleEmpALGridDownload($event)"
+              allowTextWrap="true"
+              height="500px"
+              allowSorting="true"
+              >
+                <e-columns>
+
+                  <e-column field="full_name" headerText="Employee Name" width="80">
+                    <ng-template #template let-data>
+                      <span>{{ data.full_name }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="pay_item" headerText="Pay Item" width="50">
+                    <ng-template #template let-data>
+                      <span>{{ data.pay_item }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="type" headerText="Type" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.type}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="amount" headerText="Amount(AED)" width="50" >
+                    <ng-template #template let-data>
+                      <span>{{data.amount}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="date_incurred"  headerText="Date Incurred" width="60" >
+                    <ng-template #template let-data>
+                      <span>{{ data.date_incurred | date : "dd/MM/yyyy" }}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field="remarks" headerText="Remark"  width="80" >
+                    <ng-template #template let-data>
+                      <span>{{data.remarks}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText="Action" width="100">
+                    <ng-template #template let-data>
+                      <button (click)="viewVariablePay(data)">View</button>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </ng-template>
+
+        </e-tabitem>
+      </e-tabitems>
+    </ejs-tab>
+  </div>
+
+</div>
+
+<!-- Models -->
+<!--Add  Adjustment-->
+<ng-template #addadjustmentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Advance & Loan</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="!showEmployeeData">
+      <form class="kt-form kt-form--label-right" [formGroup]="AddAdjustmentForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid">
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="activeEmpList" (change)="changeEmp($event)" [fields]="commonFields"
+                formControlName="empid" [allowFiltering]="true"></ejs-dropdownlist>
+            </div>
+          </div> -->
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="activeEmpList" (change)="changeEmp($event)" [fields]="commonFields"
+                formControlName="empid" [allowFiltering]="true" [itemTemplate]="template">
+              </ejs-dropdownlist>
+              <ng-template #template let-data>
+                <div style="border-bottom: 1px solid #ccc">
+                  <div>Name: {{ data.text }}</div>
+                  <div>Id: {{ data.emp_code }}</div>
+                  <!-- <div>Check: {{ data.check }}</div> -->
+                </div>
+              </ng-template>
+            </div>
+            <i class="fa fa-eye" placement="top" ngbTooltip="View Employee" aria-hidden="true"
+              style="display: flex; align-items: center" *ngIf="AddAdjustmentForm.get('empid').value"
+              (click)="getUserDetailsByEmpId()"></i>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="adjType" (change)="changeAdjTyp($event)" formControlName="type"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="adjItem" formControlName="item"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount"
+                  (change)="generateTermDetails()" (keyup)="generateTermDetails()" />
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showRecurring" class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Terms<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-light btn-sm" id="minus-btn" (click)="changeTermCount('minus')">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                </div>
+                <span style="text-align: center; margin: 0px 10px 0px 10px">{{ termCount }}</span>
+                <div class="input-group-prepend">
+                  <button class="btn btn-light btn-sm" id="plus-btn" (click)="changeTermCount('plus')">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <div style="margin-left: 5px; margin-right: 10px">Months</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showRecurring" class="form-group row" style="margin-top: 0px !important">
+            <label class="col-xl-4 col-lg-4 col-form-label"></label>
+            <div class="col-lg-6 col-xl-6">
+              <table style="width: 100%; border-collapse: collapse">
+                <thead>
+                  <tr style="background-color: lightgrey">
+                    <th style="font-weight: 500; text-align: center">Term</th>
+                    <!-- <th style="font-weight: 500; text-align: center"> Payroll </th> -->
+                    <th style="font-weight: 500; text-align: center">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of termDetails">
+                    <td style="text-align: center">{{ item.index }}</td>
+                    <!-- <td style="text-align: left">{{ item.payroll_term }}</td> -->
+                    <td style="text-align: right">{{ item.amountstring }}</td>
+                  </tr>
+                  <tr style="background-color: lightgrey">
+                    <td style="text-align: right">Total</td>
+                    <td style="text-align: right">{{ totalAmountString }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker formControlName="dateincurred" format="MMM d, y"
+                placeholder="Enter date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Attach Document</label>
+            <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+              <ejs-uploader *ngIf="!isadjDocUp" (selected)="onFileSelected($event)" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Browse' }" multiple="false"></ejs-uploader>
+            </div>
+            <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+              <a (click)="goToLink()" class="hyperlink"> View Document </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" (click)="DocDelete()"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="showEmployeeData">
+      <div style="display: flex; justify-content: flex-end">
+        <button (click)="goBack()" style="background-color: #e91e63; color: white; font-weight: 600">
+          <i class="fa fa-angle-left"></i> Back
+        </button>
+      </div>
+      <div>
+        <div style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+          ">
+          <div style="
+              height: 80px;
+              width: 80px;
+              margin-bottom: 5px;
+              border-radius: 50%;
+              overflow: hidden;
+            ">
+            <img class="images" [src]="selectedemployeeData.imgurl_id"
+              style="width: 100%; height: 100%; object-fit: cover" />
+          </div>
+
+          <h3>{{ selectedemployeeData.full_name }}</h3>
+        </div>
+        <div style="background-color: #f3f3f3; padding: 10px; border-radius: 5px">
+          <div style="display: flex; margin-top: 10px; margin-bottom: 10px">
+            <div style="display: flex; flex: 1">
+              <div>Email: {{ selectedemployeeData.workemail }}</div>
+            </div>
+            <div style="display: flex; flex: 1">
+              <div>
+                Joining Date:
+                {{ selectedemployeeData.joined_date | date : "d MMM, y" }}
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; margin-bottom: 10px">
+            <div style="display: flex; flex: 1">
+              <div>Phone: {{ selectedemployeeData.phone }}</div>
+            </div>
+            <div style="display: flex; flex: 1">
+              <div>
+                Contract End Date:
+                {{ selectedemployeeData.contract_enddate | date : "d MMM, y" }}
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; margin-bottom: 10px">
+            <div style="display: flex; flex: 1">
+              <div>Emp Code: {{ selectedemployeeData.emp_code }}</div>
+            </div>
+            <div style="display: flex; flex: 1">
+              <div>Gender: {{ selectedemployeeData.gender }}</div>
+            </div>
+          </div>
+          <div style="display: flex; margin-bottom: 10px">
+            <div style="display: flex; flex: 1">
+              <div>Department: {{ selectedemployeeData.dep_name }}</div>
+            </div>
+            <div style="display: flex; flex: 1">
+              <div>
+                Designation: {{ selectedemployeeData.designation_name }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="approverDivCW" style="width: fit-content; margin-bottom: 5px;">
+      <div class="approverHeader">Loan Payment Request Approvers</div>
+      <div *ngIf="!addPayrollPaymentsFullAccess" class="approverBody">
+        <p style="margin-bottom: 2px">Level 1: {{createPayrollPaymentApprover1rollName }}</p>
+        <p style="margin-bottom: 2px" *ngIf="isDualApproverPayrollPayments"> Level 2: {{createPayrollPaymentApprover2rollName}} </p>
+      </div>
+      <div *ngIf="addPayrollPaymentsFullAccess" class="approverBody">
+        <p style="margin-bottom: 2px">Self Approver</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitAdjustment()" [disabled]="showEmployeeData"
+    style="background-color: #e91e63; color: white; font-weight: 600">
+    Submit
+  </button>
+  </div>
+</ng-template>
+
+<!--Add  Repayment-->
+<ng-template #addRepaymentadjustmentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Advance & Loan</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="AddAdjustmentForm">
+        <div class="kt-portlet__body">
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="activeEmpList" (change)="changeEmp($event)" [fields]="commonFields"
+                formControlName="empid"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="adjType" (change)="changeAdjTyp($event)" formControlName="type"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="adjItem" formControlName="item"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="number" class="form-control" placeholder="" id="nameArea" formControlName="amount"
+                  (change)="generateTermDetails()" (keyup)="generateTermDetails()" />
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showRecurring" class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Terms<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-light btn-sm" id="minus-btn" (click)="changeTermCount('minus')">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                </div>
+                <span style="text-align: center; margin: 0px 10px 0px 10px">{{ termCount }}</span>
+                <div class="input-group-prepend">
+                  <button class="btn btn-light btn-sm" id="plus-btn" (click)="changeTermCount('plus')">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <div style="margin-left: 5px; margin-right: 10px">Months</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showRecurring" class="form-group row" style="margin-top: 0px !important">
+            <label class="col-xl-4 col-lg-4 col-form-label"></label>
+            <div class="col-lg-6 col-xl-6">
+              <table style="width: 100%; border-collapse: collapse">
+                <thead>
+                  <tr style="background-color: lightgrey">
+                    <th style="font-weight: 500; text-align: center">Term</th>
+                    <!-- <th style="font-weight: 500; text-align: center"> Payroll </th> -->
+                    <th style="font-weight: 500; text-align: center">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of termDetails">
+                    <td style="text-align: center">{{ item.index }}</td>
+                    <!-- <td style="text-align: left">{{ item.payroll_term }}</td> -->
+                    <td style="text-align: right">{{ item.amountstring }}</td>
+                  </tr>
+                  <tr style="background-color: lightgrey">
+                    <td style="text-align: right">Total</td>
+                    <td style="text-align: right">{{ totalAmountString }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Attach Document</label>
+            <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+              <ejs-uploader *ngIf="!isadjDocUp" (selected)="onFileSelected($event)" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Browse' }" multiple="false"></ejs-uploader>
+            </div>
+            <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+              <a (click)="goToLink()" class="hyperlink"> View Document </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" (click)="DocDelete()"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btnColorAll btnScc" (click)="submitAdjustment()">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<!-- View Adjustment Pay Details -->
+<ng-template #adjustmentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Loan Payment Detials</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="kt-portlet__body">
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [ngModel]="singleData.reference_id">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.full_name">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.type">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.pay_item">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">AED</div>
+              </div>
+              <input type="text" class="form-control" disabled [(ngModel)]="singleData.amount">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+              style="color: red">*</span></label>
+          <div class="col-lg-6 col-xl-6">
+            <input type="text" class="form-control" disabled [ngModel]="singleData.date_incurred | date:'mediumDate'">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+          <div class="col-lg-6 col-xl-6">
+            <textarea class="form-control" id="exampleTextarea" rows="4" disabled [(ngModel)]="singleData.remarks" ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-xl-4 col-lg-4 col-form-label">Attached Document</label>
+          <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+          </div>
+          <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+            <a (click)="goToLink()" class="hyperlink"> View Document </a>
+            <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+              container="body" (click)="DocDelete()"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
+
+<!-- Approve or Disapprove Adjustment Pay Details -->
+<ng-template #apradjustmentModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Approve / Reject Loan Payment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="kt-portlet__body">
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Refference #</label>
+        <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+          <input type="text" class="form-control" disabled [(ngModel)]="singleData.reference_id">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Employee</label>
+        <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+          <input type="text" class="form-control" disabled [(ngModel)]="singleData.full_name">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+            style="color: red">*</span></label>
+        <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+          <input type="text" class="form-control" disabled [(ngModel)]="singleData.type">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+            style="color: red">*</span></label>
+        <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+          <input type="text" class="form-control" disabled [(ngModel)]="singleData.pay_item">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+            style="color: red">*</span></label>
+        <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">AED</div>
+            </div>
+            <input type="text" class="form-control" disabled [(ngModel)]="singleData.amount">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+            style="color: red">*</span></label>
+        <div class="col-lg-6 col-xl-6">
+          <input type="text" class="form-control" disabled [ngModel]="singleData.date_incurred | date:'mediumDate'">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+        <div class="col-lg-6 col-xl-6">
+          <textarea class="form-control" id="exampleTextarea" rows="4" disabled [(ngModel)]="singleData.remarks" ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-xl-4 col-lg-4 col-form-label">Attached Document</label>
+        <div *ngIf="!isadjDocUp" class="col-lg-6 col-xl-6">
+        </div>
+        <div *ngIf="isadjDocUp" class="col-lg-6 col-xl-6">
+          <a (click)="goToLink()" class="hyperlink"> View Document </a>
+          <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+            container="body" (click)="DocDelete()"></i>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p *ngIf="singleData.created_by"  style="margin-bottom: 2px; color:rgb(98, 98, 98)"><u> <strong>Adjustment Request Details</strong> </u></p>
+      <p *ngIf="singleData.created_by"  style="margin-bottom: 2px">Created by : {{singleData.created_by}}</p>
+      <p *ngIf="singleData.created_by"  style="margin-bottom: 2px">Created Date : {{singleData.created_date | date }} </p>
+    </div>
+
+    <div *ngIf="singleData.created_by != 'System' && singleData.approver1_roleId">
+      <p style="margin-bottom: 2px; color:rgb(98, 98, 98)" ><u> <strong>Approval Status</strong> </u></p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.status == 'Rejected' ">
+        Level 1: {{singleData.approver1_roleName}}
+        <span class="approve" *ngIf="singleData.is_approved_1 == true"> Approved</span>
+        <span class="decline" *ngIf="singleData.is_approved_1 == false"> Rejected</span>
+      </p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.status == 'Rejected' ">
+        Level 2: {{singleData.approver1_roleName}}
+        <span class="decline" *ngIf="singleData.is_approved_2 == false"> Rejected</span>
+      </p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.status != 'Rejected' ">
+        Level 1: {{singleData.approver1_roleName}}
+        <span class="pending" *ngIf="singleData.is_approved_1 == false"> Pending</span>
+        <span class="approve" *ngIf="singleData.is_approved_1 == true"> Approved</span>
+      </p>
+      <p style="margin-bottom: 2px" *ngIf="singleData.approver2_roleId && singleData.status != 'Rejected' ">
+        Level 2: {{singleData.approver2_roleName}}
+        <span class="pending" *ngIf="singleData.is_approved_2 == false"> Pending</span>
+        <span class="approve" *ngIf="singleData.is_approved_2 == true"> Approved</span>
+      </p>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="aprAJ(singleData)">Approve</button>
+    <button  class="btn btn-danger" (click)="rejAJ(singleData)">Reject</button>
+  </div>
+
+</ng-template>
+
+<!-- Mark Paid the Adjustemt model -->
+<ng-template #apprMarkPaidModel>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Mark Paid</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <form class="kt-form kt-form--label-right" [formGroup]="ApprMarkPaidForm">
+        <div class="kt-portlet__body">
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Id</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="reffid" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Acc Ref Id</label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control"  />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Type <span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="type" />
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Pay Item<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <input type="text" class="form-control" disabled formControlName="item">
+            </div>
+          </div> -->
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Amount<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">AED</div>
+                </div>
+                <input type="text" class="form-control" disabled formControlName="amount" />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Mode of payment<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="paymentModeArr" (change)="selectMode($event)" formControlName="mode"
+                [fields]="commonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="
+              ApprMarkPaidForm.get('mode').value == 'Bank Transfer' ||
+              ApprMarkPaidForm.get('mode').value == 'Cheque'
+            ">
+            <label class="col-xl-4 col-lg-4 col-form-label">Account to debit<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="senderArr" (change)="selectMode($event)" formControlName="debitAcc"
+                [fields]="custCommonFields"></ejs-dropdownlist>
+              <a href="javascript:void(0)" (click)="showSelectedBankAccDetails('sender')" style="
+                  display: inline-block;
+                  text-decoration: none;
+                  background-color: #f0f0f0;
+                  padding: 5px 8px;
+                  border-radius: 5px;
+                ">
+                View Bank Account
+                <i class="fa fa-eye" placement="top" ngbTooltip="View Bank Account" aria-hidden="true"
+                  style="margin-left: 5px"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="ApprMarkPaidForm.get('mode').value == 'Cash'">
+            <label class="col-xl-4 col-lg-4 col-form-label">Paid By:<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-dropdownlist [dataSource]="paidByArr" (change)="selectMode($event)"
+                [fields]="custCommonFields"></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="ApprMarkPaidForm.get('mode').value == 'Cheque'">
+            <label class="col-xl-4 col-lg-4 col-form-label">Attach Cheque:<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-uploader (selected)="onFileSelected($event, 'cheque')" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+              <a (click)="goToLink(ApprMarkPaidForm.get('cheque').value)" class="hyperlink" style="cursor: pointer"
+                *ngIf="
+                  ApprMarkPaidForm.get('cheque').value != '' &&
+                  ApprMarkPaidForm.get('cheque').value != null
+                ">
+                <i class="fa fa-eye"></i>
+              </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" *ngIf="
+                  ApprMarkPaidForm.get('cheque').value != '' &&
+                  ApprMarkPaidForm.get('cheque').value != null
+                " (click)="docDelete('cheque')"></i>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="ApprMarkPaidForm.get('mode').value == 'Cheque'">
+            <label class="col-xl-4 col-lg-4 col-form-label">Cheque Type:<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6" style="margin-top: 4px">
+              <ejs-radiobutton label="PDC" name="chequeType" (change)="chequeType('PDC')"
+                checked="true"></ejs-radiobutton>
+              <ejs-radiobutton label="CDC" name="chequeType" style="margin-left: 12px"
+                (change)="chequeType('CDC')"></ejs-radiobutton>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Date Incurred<span class="error-msg"
+                style="color: red">*</span></label>
+            <div class="col-lg-6 col-xl-6">
+              <ejs-datepicker formControlName="dateincurred" format="MMM d, y"
+                placeholder="Enter date"></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-xl-4 col-lg-4 col-form-label">Remark</label>
+            <div class="col-lg-6 col-xl-6">
+              <textarea class="form-control" id="exampleTextarea" rows="4" formControlName="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="ApprMarkPaidForm.get('mode').value=='Bank Transfer' || ApprMarkPaidForm.get('mode').value=='Cash'">
+            <label class="col-xl-4 col-lg-4 col-form-label">{{
+              ApprMarkPaidForm.get("mode").value == "Bank Transfer"
+              ? "Attach
+              Receipt"
+              : "Attach Payment Voucher"
+              }}</label>
+            <div class="col-lg-6 col-xl-6" style="display: flex; align-items: center">
+              <ejs-uploader (selected)="onFileSelected($event, 'reciept')" allowedExtensions=".jpg,.png,.pdf"
+                [autoUpload]="true" [buttons]="{ browse: 'Upload' }" multiple="false"></ejs-uploader>
+              <a (click)="
+                  goToLink(this.ApprMarkPaidForm.get('recieptDoc').value)
+                " class="hyperlink" style="cursor: pointer" *ngIf="
+                  ApprMarkPaidForm.get('recieptDoc').value != '' &&
+                  ApprMarkPaidForm.get('recieptDoc').value != null
+                ">
+                <i class="fa fa-eye"></i>
+              </a>
+              <i class="fa fa-trash" style="font-size: 14px" aria-hidden="true" placement="top" ngbTooltip="Delete File"
+                container="body" *ngIf="
+                  ApprMarkPaidForm.get('recieptDoc').value != '' &&
+                  ApprMarkPaidForm.get('recieptDoc').value != null
+                " (click)="docDelete('recieptDoc')"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" style="background-color: #e91e63; color: white; font-weight: 600" [disabled]="!isadjDocUp">
+      Mark Paid
+    </button>
+  </div>
+</ng-template>

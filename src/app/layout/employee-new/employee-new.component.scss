@@ -1,0 +1,53 @@
+.headerText{
+  color: #333c43;
+  font-size: 1.625rem;
+  font-weight: 400;
+  font-family: Source Sans Pro,sans-serif;
+}
+
+.btnsection{
+  text-align: end;
+}
+
+.employeeDiv{
+  margin: 20px;
+  height: 632px;
+}
+
+.newEmployee, .editEmployee{
+  margin: 20px;
+}
+
+.mainCard{
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  padding: 20px;
+  margin-top: 15px;
+}
+
+.button-emp{
+  color: #fff;
+  background-color: #e91e63;
+  border: none !important;
+  padding: 5px 10px;
+  font-family: Source Sans Pro,sans-serif;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgb(233 30 99 / 14%), 0 3px 1px -2px rgb(233 30 99 / 20%), 0 1px 5px 0 rgb(233 30 99 / 12%) !important;
+}
+
+.details{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  padding: 15px 15px 25px;
+  border-radius: 5px;
+}
+
+.linebottom{
+  border-bottom: 1px solid #d7d2d2;
+  padding-bottom: 5px;
+  font-weight: 500;
+}
+
+.marTop{
+  margin-top: 30px;
+}

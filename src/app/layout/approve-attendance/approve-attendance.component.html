@@ -1,0 +1,340 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+  <!-- header -->
+  <div class="kt-subheader kt-grid__item" id="kt_subheader">
+    <div class="kt-container kt-container--fluid ">
+      <div class="kt-subheader__main">
+          <h3 class="kt-subheader__title">
+            Checkin/Checkout Overwrite Pending Requests
+          </h3>
+          <span class="kt-subheader__separator kt-hidden"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- content -->
+  <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!-- top part -->
+    <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+      <button class="kt-app__aside-close" id="kt_user_profile_aside_close">
+        <i class="la la-close"></i>
+      </button>
+
+      <!-- form detail -->
+      <div class="tab-content" style="width: 100%;">
+        <div class="tab-pane active"  role="tabpanel" id="kt_user_edit_tab_1">
+          <div class="kt-grid__item kt-grid__item--fluid kt-app__content" style="margin-left: 0px;">
+            <div class="row">
+              <div class="col-lg-12 col-xl-6 order-lg-6 order-xl-1">
+                <div class="kt-portlet " style="height: 620px; overflow-y: auto;">
+
+                  <div class="kt-portlet__head  kt-portlet__head--noborder" >
+                    <div class=" kt-portlet--tabs" style="margin-bottom: 16px;">
+                      <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#pending" role="tab">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <polygon points="0 0 24 0 24 24 0 24"/>
+                              <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                              <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+                              </g>
+                            </svg>
+                              Pending
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#approved" role="tab">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <polygon points="0 0 24 0 24 24 0 24"/>
+                              <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+                              <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+                              </g>
+                            </svg>
+                            Approved
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#declined" role="tab" id="testdiv">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <polygon points="0 0 24 0 24 24 0 24"/>
+                              <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero"/>
+                              <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3"/>
+                              </g>
+                            </svg>
+                            Declined
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="kt-portlet__body kt-portlet__body--fit-y userProfile">
+                    <div *ngIf="showCheckinSpinner"  style="margin-top: 140px;position: absolute;margin-left: 150px;">
+                      <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning"></div>
+                    </div>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="pending" role="tabpanel" style="margin-top: 15px;">
+                        <div class="kt-widget kt-widget--user-profile-1" *ngFor="let penCheck of pendingCheckin" style="padding-bottom: 10px;">
+                          <div [ngClass]="penCheck.id === activeTabID ? 'activetab' : ''" class="kt-widget__head" style="border-bottom: 1px solid #dfdfdf; padding: 13px;" (click)="leaveDetails(penCheck.id, 'Pending', 'toApprove')">
+                            <div class="kt-widget__media" >
+                              <img style="height: 62px;width: 62px;border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                            </div>
+                            <div class="kt-widget__content">
+                              <div class="kt-widget__section">
+                                <div class="pr-requester-name" style="cursor: pointer;">
+                                  <div style="font-weight: 500;margin-bottom: 5px;">{{penCheck.full_name}}</div>
+                                  <div style="font-size: 12px;color: #607787;">
+                                    Applied on {{penCheck.leave_start_date |date :  "d MMM, y"}}
+                                  </div>
+                                  <div style="display: flex; margin-top: 3px;">
+                                    <div style="background-color: #3f77f4; margin-top: 4px;" class="leave-circle"></div>
+                                    <div style="margin-top: -1px;">{{penCheck.leave_name}}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="approved" role="tabpanel" style="margin-top: 15px;">
+                        <div class="kt-widget kt-widget--user-profile-1" *ngFor="let appCheck of appovedCheckin" style="padding-bottom: 10px;">
+                          <div [ngClass]="appCheck.id === activeTabID ? 'activetab' : ''" class="kt-widget__head" style="border-bottom: 1px solid #dfdfdf; padding: 13px;" (click)="leaveDetails(appCheck.id, 'Approved', 'approve Done')">
+                            <div class="kt-widget__media">
+                              <img style="height: 62px; width: 62px; border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                            </div>
+                            <div class="kt-widget__content">
+                              <div class="kt-widget__section">
+                                <div class="pr-requester-name" style="cursor: pointer;">
+                                  <div style="font-weight: 500;margin-bottom: 5px;">{{appCheck.full_name}}</div>
+                                  <div style="font-size: 12px;color: #607787;">
+                                    Applied on {{appCheck.leave_start_date |date :  "d MMM, y"}}
+                                  </div>
+                                  <div style="display: flex; margin-top: 3px;">
+                                    <div style="background-color: #3f77f4; margin-top: 4px;" class="leave-circle"></div>
+                                    <div style="margin-top: -1px;">{{appCheck.leave_name}}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="declined" role="tabpanel" style="margin-top: 15px;">
+                        <div class="kt-widget kt-widget--user-profile-1" *ngFor="let appCheck of declinedCheckin" style="padding-bottom: 10px;">
+                          <div [ngClass]="appCheck.id === activeTabID ? 'activetab' : ''" class="kt-widget__head" style="border-bottom: 1px solid #dfdfdf; padding: 13px;" (click)="leaveDetails(appCheck.id, 'Declined', 'Cancel')">
+                            <div class="kt-widget__media">
+                              <img style="height: 62px; width: 62px; border-radius: 50%;" src="assets/media/users/100_13.jpg" alt="image">
+                            </div>
+                            <div class="kt-widget__content">
+                              <div class="kt-widget__section">
+                                <div class="pr-requester-name" style="cursor: pointer;">
+                                  <div style="font-weight: 500;margin-bottom: 5px;">{{appCheck.full_name}}</div>
+                                  <div style="font-size: 12px;color: #607787;">
+                                    Applied on {{appCheck.leave_start_date |date :  "d MMM, y"}}
+                                  </div>
+                                  <div style="display: flex; margin-top: 3px;">
+                                    <div style="background-color: #3f77f4; margin-top: 4px;" class="leave-circle"></div>
+                                    <div style="margin-top: -1px;">{{appCheck.leave_name}}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-xl-6 order-lg-1 order-xl-1">
+                <div style="background: white; padding: 14px; height: 620px;">
+                  <div class="kt-widget2__username" style="margin-bottom: 10px;" *ngIf="statusDiv">
+                    <span style="border-color: #ffdca7; background-color: #fff9f0; color: #fa9443; padding: 5px 5px;">
+                      {{checkinStatus}}
+                    </span>
+                  </div>
+                  <div style="margin-bottom: 10px;  padding-bottom: 5px; border-bottom: 1px solid #e1dddd;">
+                    <span style="text-transform: capitalize;">{{checkinOutOverwrite?.Onbehalf_fullname}}</span>
+                      has applied to overwrite checkin time at
+                      {{checkinData?.timesheetCategoryViewModel.project_category_type === 'WFH'? checkinData?.timesheetCategoryViewModel.project_category_type :''}}
+                      <div style="display: flex;background-color: rgba(44,119,244,.1);margin-top: 6px;">
+                        <div style="color: #2c77f4;padding: 6px 12px;font-weight: bold; font-size: 12px;">
+                          {{checkinData?.timesheetCategoryViewModel.project_or_comp_name}}
+                        </div>
+                      </div>
+                      <div style="display: flex; padding-left: 12px; padding-bottom: 6px;background-color: rgba(44,119,244,.1);">
+                        <div style="display: flex;">
+                          <span style="margin-right: 4px;">
+                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                          </span>
+                            {{checkinOutOverwrite?.check_in_old | date:'dd/MM/yyyy'}}
+                        </div>
+                      </div>
+                      <div style="border-bottom: 1px solid;">
+                        <div class="time" style="display: flex; padding-left: 12px; padding-bottom: 6px;background-color: rgba(44,119,244,.1);">
+                          <div style="display: flex;">
+                            <span style="margin-right: 4px;">
+                              <i aria-hidden="true" class="fa fa-clock-o"></i> Original:
+                            </span>
+                            {{checkinOutOverwrite?.check_in_old | date:'hh:mm a'}}
+                            <div>
+                              <span class="ng-star-inserted">
+                              <span style="margin-left:5px;margin-right:5px;">-</span> {{checkinOutOverwrite?.check_out_old | date:'hh:mm a'}}</span>
+                            </div>
+                          </div>
+                          <div style="margin-left:2px;margin-left: 6px;text-transform: uppercase;font-size: 10px;color: gray;margin-top: 3px;">
+                            (Checkin <span class="ng-star-inserted"><span style="margin-left:2px;margin-right:2px;">-</span> Checkout</span>)
+                          </div>
+                        </div>
+                        <div style="display: flex; background-color: rgba(44,119,244,.1); padding-left: 12px; padding-bottom: 5px;">
+                          <span style="margin-right: 4px;">
+                            <i class="fa fa-hourglass-end" aria-hidden="true"></i>
+                          </span>
+                            {{checkinOutOverwrite?.total_hrs_old !== null ? checkinOutOverwrite?.total_hrs_old : '-'}} hr
+                        </div>
+                      </div>
+                      <div class="time" style="display: flex; padding-left: 12px; padding-bottom: 6px;background-color: rgba(44,119,244,.1);">
+                        <div style="display: flex;">
+                          <span style="margin-right: 4px;">
+                            <i aria-hidden="true" class="fa fa-clock-o"></i> Overwrite:
+                          </span>
+                          {{checkinOutOverwrite?.check_in | date:'hh:mm a'}}
+                          <div>
+                            <span class="ng-star-inserted">
+                            <span style="margin-left:5px;margin-right:5px;">-</span> {{checkinOutOverwrite?.check_out | date:'hh:mm a'}}</span>
+                          </div>
+                        </div>
+                        <div style="margin-left:2px;margin-left: 6px;text-transform: uppercase;font-size: 10px;color: gray;margin-top: 3px;">
+                          (Checkin <span class="ng-star-inserted"><span style="margin-left:2px;margin-right:2px;">-</span> Checkout</span>)
+                        </div>
+                      </div>
+                    <div style="display: flex; padding-left: 12px; padding-bottom: 6px;background-color: rgba(44,119,244,.1);">
+                      <div style="display: flex;">
+                        <span style="margin-right: 4px;">
+                          <i class="fa fa-hourglass-end" aria-hidden="true"></i>
+                        </span>
+                          {{checkinOutOverwrite?.total_hrs !== null ? checkinOutOverwrite?.total_hrs : '-'}} hr
+                      </div>
+                    </div>
+                  </div>
+                  <a class="kt-widget2__username" style="display: flex;">
+                    <p class="text-small" style="margin-top: 4px;width: 40%;">
+                      <span class="text-muted"> Applied on</span>
+                        {{checkinOutOverwrite?.ondate | date : "d MMM, y"}}
+                    </p>
+                    <p class="text-small" style="margin-top: 4px;">
+                      <span class="text-muted"> Applied by </span>
+                        {{checkinOutOverwrite?.Onbehalf_fullname}}
+                    </p>
+                  </a>
+                  <a class="kt-widget2__username" >
+                    <label for="exampleTextarea" >Reason</label>
+                      <div class="leave-comment pending-comment mt20" style="background-color: #f8f9fa;border: 1px solid #dfdfdf;padding: 20px;">
+                        {{checkinOutOverwrite?.reasons_name === 'Other' ? checkinOutOverwrite?.reason_desc : checkinOutOverwrite?.reasons_desc}}
+                      </div>
+                  </a>
+                  <div class="kt-widget2__username" style="margin-top: 5px;" >
+                    <label for="exampleTextarea" >Approvers</label>
+                      <div class="leave-comment pending-comment mt20" style="background-color: #f8f9fa;border: 1px solid #dfdfdf;padding: 20px;display: flex;">
+                        <div class="" style="text-align: left;font-size: 10px;font-weight: 800;">
+                          <span style="padding: 8px 15px; color: #fff; background-color: #1bc5bd; border-color: #1bc5bd; cursor: pointer;font-size: 13px; font-weight: initial;" class="">
+                            {{checkinOutOverwrite?.approver1}}
+                          </span>
+                        </div>
+                        <div *ngIf='checkinOutOverwrite?.approver2 !== null' class="" style="text-align: left;margin-left: 15px;font-size: 10px;font-weight: 800;">
+                          <span style="padding: 8px 15px; color: #fff; background-color: #1bc5bd; border-color: #1bc5bd; cursor: pointer;font-size: 13px; font-weight: initial;" class="">
+                            {{checkinOutOverwrite?.approver2}}
+                          </span>
+                        </div>
+                      </div>
+                  </div>
+                  <form  [formGroup]="approverForm">
+                    <a class="kt-widget2__username">
+                      <div class="form-group row" style="margin-top: 14px;">
+                        <div class="col-lg-12 col-xl-12">
+                          <label for="exampleTextarea" >Comments</label>
+                          <textarea class="form-control" id="exampleTextarea" rows="3" formControlName="desc" (keyup)="commentsEntry($event)" ></textarea>
+                        </div>
+                      </div>
+                    </a>
+                  </form>
+                  <div style="text-align: right;" *ngIf='showApproveBtn'>
+                    <button type="button" *ngIf="leaveStatusName!='Approved'" (click)="approveNotification(checkinOutOverwrite?.id)"
+                      class="button button-fill" style="width: 100px !important;margin-right: 10px; color: #fff;background-color: #28a745;border-color: #28a745;height: 30px; border: none;" aria-haspopup="true" aria-expanded="false">
+                      <i class="flaticon2-plus"></i> Approve
+                    </button>
+                    <button type="reset" class="btn button button-rose" style="width: 90px; padding: 3px 14px;  margin-top: -5px; border-radius: 0px;font-size: 10px;"
+                      *ngIf="leaveStatusName!='Declined'" (click)="declineNotification(checkinOutOverwrite?.id)">
+                        {{leaveStatusName!='Approved'?'Decline':'Cancel'}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+      <div class="col col-lg-12">
+        <div class="kt-portlet kt-portlet--mobile">
+          <div class="kt-portlet__head kt-portlet__head--lg" style="min-height: 40px !important;" >
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title" style="font-size: 12px !important;">
+                  History
+                </h3>
+            </div>
+          </div>
+          <div class="kt-portlet__body"  style=" border-bottom-color: #f0f3ff;padding-top: -15px; color: #595d6e;">
+            <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+              <ejs-grid #grid [dataSource]='orgleaveHistory' allowTextWrap='true'  height="300px"   allowSorting='true'  [toolbar]='toolbar'>
+                <e-columns>
+                  <e-column field='full_name' headerText='Employee Name' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.full_name}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='leave_name' headerText='Leave Name' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.leave_name}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='leave_start_date' headerText='Start Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.leave_start_date| date :  "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='leave_end_date' headerText='End Date' textAlign='' width=120>
+                    <ng-template #template let-data>
+                      <span>{{data.leave_end_date| date :  "dd/MM/y"}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='leave_status_name' headerText='Status' width=100></e-column>
+                  <e-column field='leave_type_name' headerText='Leave Type' width=90></e-column>
+
+                  <e-column field='start_date' headerText='Days' textAlign='' width=90>
+                    <ng-template #template let-data>
+                      <span>{{data.leave_days}}</span>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

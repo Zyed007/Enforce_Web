@@ -1,0 +1,96 @@
+.rowMar{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.dateRange{
+  width: -webkit-fill-available;
+}
+
+.dateactiondiv{
+  display: flex;
+  background: #fbfafc;
+  margin-top: 20px;
+  padding: 7px 10px;
+}
+
+.disable{
+  pointer-events: none;
+  cursor: default;
+  background-color: #f0f0f0;
+  padding: 7px 10px 11px 17px;
+}
+
+.normalCss{
+  padding: 7px 10px 11px 17px;
+  background-color: #fbfafc;
+}
+
+.btn.btn-default:hover {
+  background: #fbfafc !important;
+}
+
+.rowtabcol{
+  width: auto;
+  padding: 10px 15px;
+  background: #fbfafc;
+  border-color: #fbfafc !important;
+}
+
+.link{
+  color: blue;
+  cursor: pointer;
+}
+
+.carrrdd{
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+  margin: 20px;
+  padding: 20px;
+  background: #fbfafc;
+}
+
+.fontddd{
+  font-size: 20px;
+  border-bottom: 1px solid #2e3e4e;
+  padding-bottom: 7px;
+}
+
+.headerffr{
+  font-size: 17px;
+    width: 80%;
+    margin-bottom: 0px;
+    margin: auto;
+}
+
+.tableFixHead          { overflow: auto; height: 500px; }
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th     { background:#eee; }
+
+.button.button-rose {
+  color: #fff;
+  background-color: #e91e63;
+  border-radius: 6px;
+  padding: 5px;
+  border-color: #e91e63;
+  width: 90px !important;
+  box-shadow: 0 2px 2px 0 rgb(233 30 99 / 14%), 0 3px 1px -2px rgb(233 30 99 / 20%), 0 1px 5px 0 rgb(233 30 99 / 12%) !important;
+}
+
+.btnnnn{
+  text-align: end;
+  padding: 15px 36px 0px;
+}
+
+.numdiv{
+  width: 4%;
+  margin: auto;
+  text-align: center;
+}
+
+.marbot0{
+  margin-bottom: 0px;
+}

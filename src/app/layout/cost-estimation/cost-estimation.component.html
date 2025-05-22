@@ -1,0 +1,534 @@
+<div *ngIf="showEstimationList">
+  <div style="padding: 15px;">
+    <p class="marboto">Estimation Management</p>
+  </div>
+  <div class="kt-portlet ktmargin">
+    <div class="row">
+      <div class="col col-xl-12 col-lg-12">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+          <h3 class="kt-portlet__head-title esthead" style="display: flex;">
+            {{editEstimationDiv ? 'Estimation ID - '+leadToEstimationData?.project_prefix : 'Estimation'}}
+            <p *ngIf="showExtensionDiv" class="estdivimp">
+              (Extension of project - <span class="hyplink" (click)="toProjectLayout(originalProjectData?.project_id)">{{originalProjectData?.projectName}}</span>)
+            </p>
+          </h3>
+
+          <div class="kt-portlet__head-toolbar">
+            <button type="button" (click)='goBackToListing()' class="button button-rose-new">
+              <p class="normalFont marbot">Back</p>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="!editEstimationDiv" class="kt-portlet__body" style=" border-bottom-color: #f0f3ff;padding-top: -15px; color: #595d6e;">
+          <ejs-grid #estimationProjectGrid [dataSource]='estimationProjectData' height="315px" [allowExcelExport]='true'
+            allowSorting='true' [toolbar]='toolbar' [allowPdfExport]='true' [allowTextWrap]='true'
+            (toolbarClick)='estPrjTableToolbarClick($event)' (created)='estPrjTableSearchKeyUp()'>
+            <e-columns>
+              <e-column field='ondate' headerText='Created Date' textAlign='' width=110></e-column>
+              <e-column field='project_prefix' headerText='Est No' textAlign='' width=100>
+                <ng-template #template let-data>
+                  <span>{{data.project_prefix}}</span>
+                </ng-template>
+              </e-column>
+              <e-column field='project_name' headerText='Project' textAlign='' width=120>
+                <ng-template #template let-data>
+                  <span style="text-transform: capitalize;" >{{data.project_name}} </span>
+                  <span *ngIf="data.relprojectId !== null" (click)="toProjectLayout(data.relprojectId)" style="font-size: 10px;" class="hyplink">Extension of {{data.relprojectName}}</span>
+                  <span *ngIf="data.isComplimentary !== null && data.isMarketing !== null" style="font-size: 10px;" >  {{ data.isComplimentary === 'true' ? "Complimentary Project" : "Marketing project" }}   </span>
+                </ng-template>
+              </e-column>
+              <e-column field='profit_margin_amount' headerText='Project Amount' textAlign='' width=140>
+                <ng-template #template let-data>
+                  <span>AED. {{data.net_total_amount !== null ? (data.net_total_amount | number: '.2') : 0}}</span>
+                </ng-template>
+              </e-column>
+              <e-column field='cst_name' headerText='Customer' textAlign='' width=120></e-column>
+              <e-column field='email' headerText='Email' textAlign='' width=140></e-column>
+              <e-column field='phone' headerText='Phone' textAlign='' width=140></e-column>
+              <e-column headerText='Actions' width='170'>
+                <ng-template #template let-data>
+                  <div>
+                    <a *ngIf="showEstimationEditBtn" title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md" (click)="editEstimation(data.project_id)">
+                      <i class="la la-edit"></i>
+                    </a>
+                    <a *ngIf="showEstimationDeleteBtn" title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                      (click)="taskDelete(data.project_id)">
+                      <i class="la la-trash"></i>
+                    </a>
+                    <span *ngIf="showEstimationConvertBtn" (click)='ConvertToQtn(data.project_id,data.project_name)' class="convertbtn">
+                      CONVERT
+                    </span>
+                  </div>
+                </ng-template>
+              </e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+
+        <div *ngIf="editEstimationDiv" class="kt-portlet__body" style=" border-bottom-color: #f0f3ff;padding-top: -15px; color: #595d6e;">
+
+          <div id="estimationDetails">
+            <header class="titleheader">
+              <div class="titleHeaderDiv">
+                <h1 class="titleHeaderH">Estimation Details</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="row" [formGroup]="estimationForm">
+              <div class="col-4">
+                <label class="cobac">Project Name</label>
+                <input class="e-input" type="text" formControlName="projectName" placeholder="Enter Project Name"/>
+                <div class="errorTxt colred" *ngIf="estimationForm.controls['projectName'].errors?.required && formSubmitErrorCheck">
+                  *Project name required
+                </div>
+              </div>
+              <div class="col-4">
+                <label class="cobac">Project Type</label>
+                <ejs-dropdownlist formControlName="projectType" [dataSource]='projectTypeDropDown' [fields]='commonFields' [allowFiltering]='true' placeholder = 'Select a type'></ejs-dropdownlist>
+              </div>
+              <div class="col-4">
+                <label class="cobac">Selected Contract Type</label>
+                <input class="e-input" type="text" [value]="serviceSelected" disabled/>
+              </div>
+
+              <div class="col-4 martop20">
+                <label class="cobac">No. of Floors</label>
+                <input class="e-input" type="number" formControlName="noOfFloors" placeholder="Enter number"/>
+                <div class="errorTxt colred" *ngIf="estimationForm.controls['noOfFloors'].errors?.required && formSubmitErrorCheck">
+                  *No of Floors required
+                </div>
+              </div>
+              <div class="col-4 martop20">
+                <label class="cobac">Plot Size</label>
+                <div style="display: flex;">
+                  <input class="e-input" type="number" formControlName="plotSize" placeholder="Enter number"/>
+                  <ejs-dropdownlist class="wid10" formControlName="plotSizeSq" [dataSource]='areaData' [fields]='commonFields'></ejs-dropdownlist>
+                </div>
+              </div>
+              <div class="col-4 martop20">
+                <label class="cobac">Built Up Area</label>
+                <div style="display: flex;">
+                  <input class="e-input" type="number" formControlName="builtUpArea" placeholder="Enter number"/>
+                  <ejs-dropdownlist class="wid10" formControlName="builtUpAreaSq" [dataSource]='areaData' [fields]='commonFields'></ejs-dropdownlist>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="customerDetails" class="martop20">
+            <header class="titleheader">
+              <div class="titleHeaderDiv">
+                <h1 class="titleHeaderH">Customer Info</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="row" [formGroup]="estimationForm">
+              <div class="col-4">
+                <label class="cobac">Customer Name</label>
+                <input class="e-input" type="text" formControlName="customerName"/>
+              </div>
+              <div class="col-4">
+                <div *ngFor="let contact of customerEntityContact">
+                  <ejs-radiobutton [checked]="contact.is_primary" (change)="contact()" [label]="contact.name"></ejs-radiobutton>
+                  <div class="marleft28">
+                    <p *ngIf="contact.email !== null" class="marboto">Email: {{contact.email}}</p>
+                    <p *ngIf="contact.phone !== null" class="marboto">Moblie: {{contact.phone}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4"></div>
+            </div>
+          </div>
+
+          <div id="scopeOfWorkDetails" class="martop20">
+            <header class="titleheader">
+              <div class="titleHeaderDiv">
+                <h1 class="titleHeaderH">Scope Of Work</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="row">
+              <div class="col-3 labelDiv">
+                <label class="cobac">Select a Unit Description</label>
+              </div>
+              <div class="col-4 marBottom">
+                <ejs-dropdownlist #scopeOfWrkDropDown [dataSource]='unitDropDown' [fields]='commonFields' (change)="changeScopeofWork($event)" [allowFiltering]='true' placeholder = 'Tag list'></ejs-dropdownlist>
+                <div class="errorTxt colred" *ngIf="selectAtagError">
+                  *Select a tag to continue
+                </div>
+              </div>
+              <div class="col-2 marBottom" style="display: flex;">
+                <button type="button" (click)='addTagRow()' class="button button-rose-round">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </button>
+                <p class="normalFont marleft8" (click)='addTagRow()'>Add Description</p>
+              </div>
+              <div class="col-3">
+                <p class="nounit">No. of units selected - {{scopeOfWork.controls.length}}</p>
+                <p class="errortagdup" *ngIf="tagDuplicateError">
+                  Error: Duplicate Tag is not allowed.
+                </p>
+              </div>
+              <div class="col-12 martop20">
+                <table class="table tableBorder" [formGroup]="estimationForm">
+                  <thead>
+                    <tr class="tableHeader">
+                      <th scope="col" class="txtcent">Add Unit</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Cost Up (%)</th>
+                      <th scope="col">Notes</th>
+                      <th scope="col">Tags</th>
+                      <th scope="col" class="txtcent">Remove Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="scopeOfWork">
+                    <tr *ngFor="let tagsData of scopeOfWork.controls; let i=index" [formGroupName]="i">
+                      <td class="txtcent">
+                        <button type="button" (click)='addTagRowSide(tagsData, i)' class="button button-rose-round">
+                          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                      <td>
+                        <p>{{scopeOfWork.controls[i].get('description').value}}</p>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter Percentage" formControlName="costUp">
+                      </td>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Enter Notes" formControlName="notes">
+                      </td>
+                      <td>
+                        <input type="text" class="form-control" formControlName="tags" (keyup)="tagChangeValue()">
+                        <div style="color: red; font-weight: 500;">
+                          {{returnTagError(tagsData.value)}}
+                        </div>
+                      </td>
+                      <td class="txtcent">
+                        <button type="button" (click)='deleteTagRow(tagsData.value, i)' class="button button-rose-round">
+                          <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div id="ServicesDetails" class="martop20">
+            <header class="titleheader">
+              <div class="titleHeaderDiv">
+                <h1 class="titleHeaderH">Service/MileStone</h1>
+                <span class="spacer"></span>
+              </div>
+            </header>
+            <div class="row">
+              <div class="col-3 labelDiv">
+                <label class="cobac">Select a Service/MileStone</label>
+              </div>
+              <div class="col-4 marBottom">
+                <ejs-dropdownlist #serviceDropDown [dataSource]='taskListDropDown' [fields]='commonFields' (change)="changeTaskService($event)" [allowFiltering]='true' placeholder = 'Service/MileStone list'></ejs-dropdownlist>
+                <div class="errorTxt colred" *ngIf="tagArrayEmpty">
+                  *There are no tags selected
+                </div>
+                <div class="errorTxt colred" *ngIf="noCurrentTaskError">
+                  *select a task to continue
+                </div>
+              </div>
+              <div class="col-2 marBottom" style="display: flex;">
+                <button type="button" (click)='addTaskRow()' class="button button-rose-round">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </button>
+                <p class="normalFont marleft8" (click)='addTaskRow()'>Add Service/MileStone</p>
+              </div>
+              <div class="col-3">
+                <p class="nounit">No. of Service/MileStone selected - {{service.controls.length}}</p>
+              </div>
+              <div class="col-12">
+                <table class="table tableBorder" [formGroup]="estimationForm">
+                  <thead>
+                    <tr class="tableHeader">
+                      <th scope="col" class="txtcent">Add Unit</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Cost Up (%)</th>
+                      <th scope="col">Notes</th>
+                      <th scope="col">Tags</th>
+                      <th scope="col" class="txtcent">Remove Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="service">
+                    <tr *ngFor="let serviceData of service.controls; let i=index" [formGroupName]="i">
+                      <td class="txtcent">
+                        <button type="button" (click)='addTaskRows(serviceData, i)' class="button button-rose-round">
+                          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                      <td>
+                        <p>{{service.controls[i].get('description').value}}</p>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Enter Percentage" formControlName="costUp">
+                      </td>
+                      <td>
+                        <input type="text" class="form-control" placeholder="Enter Notes" formControlName="notes">
+                      </td>
+                      <td>
+                        <ejs-multiselect #serviceDropDown width="200" popupHeight='300px' formControlName="tags" [dataSource]='tagListDropDown' [fields]='commonFields' mode='CheckBox' placeholder='Select a Task'></ejs-multiselect>
+                        <div style="color: red; font-weight: 500;">
+                          {{returnAnyTagError(serviceData.value)}}
+                        </div>
+                      </td>
+                      <td class="txtcent">
+                        <button type="button" (click)='deleteServiceRow(i)' class="button button-rose-round">
+                          <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div id="calculateBtn" class="martop20" style="text-align: end;" *ngIf="!showMileStoneandTaskTable">
+            <button type="button" (click)='calculateEstimation()' class="button button-rose-new">
+              <p class="normalFont wordtxt">Calculate</p>
+            </button>
+            <p class="errorTxt colred" *ngIf="formSubmitErrorCheck">Calculation can't be completed due to incomplete Values</p>
+          </div>
+
+          <div id="MilestonetaskDetails" class="martop20" *ngIf="showMileStoneandTaskTable">
+            <div>
+              <h3 class="kt-section__title kt-section__title-lg" style="font-size: 16px;">Milestones and Task</h3>
+              <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg" style="margin: 10px 0px !important;"></div>
+            </div>
+            <div>
+              <mat-accordion>
+                <mat-expansion-panel *ngFor="let mileStoneTask of milestoneAndTaskDestails" [disabled]="mileStoneTask.CostProjectTask.length === 0">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title style="font-size: 17px; font-weight: 400;">
+                      {{mileStoneTask.milestone_name}}
+                    </mat-panel-title>
+                    <mat-panel-description style="display: block;">
+                      <div style="font-size: 10px;display: flex;justify-content: flex-end;">
+                        <div style="font-size: 13px;">
+                          <span style="font-weight: bold; margin-right: 4px;">Total Hours - </span>
+                          {{mileStoneTask.totalHours | number : '1.2-2'}}
+                        </div>
+                        <div style=" margin-left: 10px; font-size: 13px;">
+                          <span style="font-weight: bold; margin-right: 4px;">Total Cost - </span>
+                          {{mileStoneTask.totalCost | number : '1.2-2'}}
+                          <span style="margin-left: 4px;">AED</span>
+                        </div>
+                        <div style=" margin-left: 10px; font-size: 13px;">
+                          <span style="font-weight: bold; margin-right: 4px;">Total Task - </span>
+                          {{mileStoneTask.CostProjectTask.length}}
+                        </div>
+                      </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <ejs-grid #mileTaskDataTableGrid [toolbar]='mileTaskToolbar' (created)='mileTaskSearchKeyUp()'
+                    [dataSource]='mileStoneTask.CostProjectTask' allowTextWrap='true' height="200px" allowSorting='true'>
+                      <e-columns>
+
+                        <e-column field='task_name' headerText='Tasks' width=90 textAlign='Center'>
+                          <ng-template #template let-data>
+                            <span>{{data.task_name}}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='default_unit_hours' headerText='Hours Per Unit' width=80 textAlign='Center'>
+                          <ng-template #template let-data>
+                            <span>{{data.default_unit_hours}}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column width=90 textAlign='Center'>
+                          <ng-template #headerTemplate let-data>
+                            <div class="tabledivmain">
+                              <p style="margin-bottom: 0px;">Rule</p>
+                            </div>
+                            <div style="display: flex;">
+                              <p class="commondivsub boderright">M.Unit</p>
+                              <p class="commondivsub">No. of Items</p>
+                            </div>
+                          </ng-template>
+
+                          <ng-template #template let-data>
+                            <div style="display: flex;">
+                              <p class="commondivsub boderright">
+                                {{data.unit_type}}
+                              </p>
+                              <p class="commondivsub">
+                                {{data.total_unit}}
+                              </p>
+                            </div>
+
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='qty' headerText='Budgeted Hours' width=80 textAlign='Center'>
+                          <ng-template #template let-data>
+                            <span>{{data.qty}}</span>
+                          </ng-template>
+                        </e-column>
+
+                        <e-column field='qty' headerText='Total Cost (AED)' width=80 textAlign='Center'>
+                          <ng-template #template let-data>
+                            <span>{{data.total_cost_amount | number : '1.2-2'}}</span>
+                          </ng-template>
+                        </e-column>
+
+                      </e-columns>
+                    </ejs-grid>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+
+              <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4"></div>
+                <div class="col-4">
+                  <div style="margin-top: 20px;">
+                    <div class="disflex">
+                      <label class="labelTagreq">Total Hours</label>
+                      <label class="labelTagreq2">{{projectCalculationAmt?.total_hours | number : '1.2-2'}}</label>
+                    </div>
+                    <div class="disflex">
+                      <label class="labelTagreq">Gross Total (AED)</label>
+                      <label class="labelTagreq2">{{projectCalculationAmt?.gross_total_amount | currency:'INR':''}}</label>
+                    </div>
+                    <div class="disflex">
+                      <label class="labelTagreq">Profit Margin (100%)</label>
+                      <label class="labelTagreq2">{{projectCalculationAmt?.profit_margin_amount | currency:'INR':''}}</label>
+                    </div>
+                    <div class="disflex">
+                      <label class="labelTagreq">Total</label>
+                      <label class="labelTagreq2">{{(projectCalculationAmt?.gross_total_amount * 2) | currency:'INR':''}}</label>
+                    </div>
+                    <div class="disflex" [formGroup]="estimationDisForm">
+                      <label class="labelTagreq">Discount</label>
+                      <input class="e-input width35" type="number" formControlName="discount_amount" (keyup)="addDiscount()"/>
+                    </div>
+                    <div class="disflex">
+                      <label class="labelTagreq">Total after Discount</label>
+                      <label class="labelTagreq2">{{projectCalculationAmt?.total_amount | currency:'INR':''}}</label>
+                    </div>
+                    <div class="disflex">
+                      <label class="labelTagreq">VAT ({{vatNumber}}%)</label>
+                      <label class="labelTagreq2">{{projectCalculationAmt?.vat_amount | currency:'INR':''}}</label>
+                    </div>
+                    <div class="disflex">
+                      <label class="labelTagreq">Net Total (AED)</label>
+                      <label class="labelTagreq2">{{projectCalculationAmt?.net_total_amount | currency:'INR':''}}</label>
+                    </div>
+                    <div class="disflex">
+                      
+                      <label class="labelTagreq">Mark As Complimentary Project   <i class="fa fa-info-circle matpointer" placement="left" ngbTooltip="By checking this option the project will be marked as complimentary" container="body"></i>  </label>
+                      <input type="checkbox" [checked]="isProjectComplimentary" id="billable" (change)="onComplimentryAdded($event)">
+                    </div>
+                    <div class="disflex">
+                     
+                      <label class="labelTagreq">Mark As Marketing Project  <i class="fa fa-info-circle matpointer" placement="left" ngbTooltip="By checking this option the project will be marked as Marketing Project" container="body"></i>     </label>
+                      <input  type="checkbox" [checked]="isProjectMarketing"    id="billable" (change)="onMarketingAdded($event)">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="MilestonetaskDetails" class="martop20" *ngIf="showSaveBtn">
+            <button type="button" (click)='saveEstimation()' class="savest">
+              <p class="callsavebtn">Save Estimation</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!showEstimationList">
+  <app-not-found></app-not-found>
+</div>
+
+
+<div class="rightModal700">
+
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="confirm_Convert_modal" data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Estimation - Conversion</h5>
+          <button type="button" class="close" (click)="closeConvertToQtn()" aria-label="Close"></button>
+        </div>
+        <div style="overflow-y: scroll">
+          <div class="row rowreg">
+            <div class="col-12">
+              <div class="carddiv">
+                <p class="headercc">Project Name</p>
+                <span class="prokj">{{finalEstimationData?.project_prefix}} {{finalEstimationData?.project_name}}</span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="carddiv">
+                <p class="headercc">Contact details</p>
+                <div *ngFor="let cont of finalEstimationData?.entityContact" style="display: grid;">
+                  <span class="prokj">{{cont.name}}</span>
+                  <span class="gdddh">{{cont.email}}</span>
+                  <span class="gdddh">{{cont.phone}}</span>
+                </div>
+              </div>
+            </div>
+            <div  *ngIf="finalEstimationData?.entityContact.length > 0"   class="col-12">
+              <div class="carddiv">
+                <p class="headercc">Customer</p>
+                <div style="display: grid;">
+                  <span class="prokj">{{finalEstimationData?.entityContact[0].name}}</span>
+                  <span class="gdddh">{{finalEstimationData?.entityContact[0].phone}}</span>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-12" style="margin-top: 15px;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="bordegh">Total Hours</th>
+                    <th scope="col" class="bordegh">Gross Total</th>
+                    <th scope="col" class="bordegh">Profit Margin (100%)</th>
+                    <th scope="col" class="bordegh">Total</th>
+                    <th scope="col" class="bordegh">Discount</th>
+                    <th scope="col" class="bordegh">Total after Discount</th>
+                    <th scope="col" class="bordegh">VAT (5%)</th>
+                    <th scope="col" class="bordegh">Net Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="bordegh">{{finalEstimationData?.total_hours}}</td>
+                    <td class="bordegh">AED. {{finalEstimationData?.gross_total_amount | number: '.2'}}</td>
+                    <td class="bordegh">AED. {{finalEstimationData?.profit_margin_amount | number: '.2'}}</td>
+                    <td class="bordegh">AED. {{(finalEstimationData?.gross_total_amount + finalEstimationData?.profit_margin_amount) | number: '.2'}}</td>
+                    <td class="bordegh">AED. {{finalEstimationData?.discount_amount === '' ? (0 | number: '.2') : (finalEstimationData?.discount_amount | number: '.2')}}</td>
+                    <td class="bordegh">AED. {{finalEstimationData?.total_amount | number: '.2'}}</td>
+                    <td class="bordegh">AED. {{finalEstimationData?.vat_amount | number: '.2'}}</td>
+                    <td class="bordegh">AED. {{finalEstimationData?.net_total_amount | number: '.2'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-12" style="margin-top: 15px; text-align: end;">
+              <button type="button" (click)='convertEstimationToOtn()' class="button button-rose-new">
+                <p class="normalFont marbot">Convert</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

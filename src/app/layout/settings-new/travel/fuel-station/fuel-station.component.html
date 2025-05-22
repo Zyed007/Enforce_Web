@@ -1,0 +1,57 @@
+<div class="mainProfileDiv">
+  <div class="row pad2515">
+    <div class="col">
+      <h1 class="labelMainHeader">Fuel Station Brands</h1>
+    </div>
+    <div class="col addProfilesection">
+      <button ejs-button class="btn btnColorAll" (click)="openVenAct('Add')" *ngIf="fuelStationListing">Add Fuel Station Brand</button>
+      <button ejs-button class="btn btnColorAll marlef15" (click)="backToFuelStation()">Back</button>
+    </div>
+  </div>
+  <div class="profiletabGrid">
+    <div *ngIf="fuelStationListing">
+      <ejs-grid #vendActGrid [dataSource]='actFuelStationTableData' (created)='serviceSearchKeyUp()' [toolbar]='actVenGridToolItems' height='300px'>
+        <e-columns>
+          <e-column field='createdDate' headerText='Created Date'>
+            <ng-template #template let-data>
+              <div>
+                <p style="margin-bottom: 0px;">{{data.created_date | date}}</p>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field='created_by' headerText='Created By'></e-column>
+          <e-column field='name' headerText='Fuel Station Brand'></e-column>
+          <e-column field='desc' headerText='Description'></e-column>
+          <e-column headerText='Action'>
+            <ng-template #template let-data>
+              <div>
+                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;" placement="top" ngbTooltip="Update this Service" container="body" (click)="openVenAct(data)"></i>
+                <i class="fa fa-trash" aria-hidden="true" style="font-size: 16px; margin-left: 10px;" placement="top" ngbTooltip="Delete this Service" container="body" (click)="deleteVendAct(data)"></i>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <div class="pad2515" *ngIf="!fuelStationListing">
+      <div class="row" [formGroup]="actFuelStationForm">
+        <div class="col-6">
+          <label class="labelcss">Fuel Station Brand Name</label>
+          <input class="e-input" type="text" placeholder="Enter name" formControlName="name" />
+          <div class="errorTxt" *ngIf="actFuelStationForm.controls['name']?.errors?.required && formSubmitAttemptForActivity">
+            *Fuel Station Name is required
+          </div>
+        </div>
+        <div class="col-6">
+          <label class="labelcss">Description</label>
+          <textarea class="e-input" rows="1" formControlName="desc" placeholder="Enter Description"></textarea>
+        </div>
+      </div>
+      <div style="margin-top: 20px;">
+        <button class='btn btnColorAlll' (click)="submitActivity()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

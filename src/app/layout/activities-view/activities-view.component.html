@@ -1,0 +1,268 @@
+<!-- begin:: Subheader -->
+<!-- <link href="../../../assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" /> -->
+
+<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				
+              Activities Log                           </h3>
+
+                            <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a  class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                                            <span class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  class="kt-subheader__breadcrumbs-link">
+                          Activities                        </a>
+                                            <span *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="showAddForm && !editable" class="kt-subheader__breadcrumbs-link">
+                              Add Department                    </a>
+                                            <span *ngIf="editable  && !showDeptList" class="kt-subheader__breadcrumbs-separator"></span>
+                        <a  *ngIf="editable && !showDeptList" class="kt-subheader__breadcrumbs-link">
+                              Edit Department                          </a>
+                                        <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                </div>
+                    </div>
+       
+    </div>
+</div>
+<!-- end:: Subheader -->
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+											
+    <!-- begin:: Subheader -->
+    
+    <!-- end:: Subheader -->
+                        
+                        <!-- begin:: Content -->
+        <div *ngIf="showDeptList" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+          
+    
+    <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <!-- <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-line-chart"></i>
+                        </span> -->
+                        <h3 class="kt-portlet__head-title">
+                                Activities 
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+                    <div class="dropdown dropdown-inline" style="display: flex;">
+                        <form [formGroup]="dateRangeForm" id="formId">
+                            <div class="form-group row" style="margin-right: 10px;" >
+                                <!-- <div class="col-lg-6 col-sm-4 col-xl-3"> -->
+                                <ejs-daterangepicker placeholder='Range' formControlName="daterange" >
+                                    <e-presets>
+                                        <e-preset label="Today" [start]='today' [end]='today'></e-preset>
+                                        <e-preset label="This Week" [start]='weekStart' [end]='weekEnd'></e-preset>
+                                        <e-preset label="This Month" [start]='monthStart' [end]='monthEnd'></e-preset>
+                                        <e-preset label="Last Month" [start]='lastStart' [end]='lastEnd'></e-preset>
+                                        <e-preset label="Last Year" [start]='yearStart' [end]='yearEnd'></e-preset>
+                                    </e-presets>
+                                </ejs-daterangepicker>
+                            <!-- </div> -->
+                        </div>
+                            </form>
+                            <button type="button" class="button button-fill button-rose"  (click)='toDashboardUser()' aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back	
+                        </button>
+                    </div>
+                    
+                </div>	
+                </div>	
+                
+            	</div>
+
+               
+                </div>
+           
+    
+       
+       <div class="kt-portlet__body "  style=" border-bottom-color: #f0f3ff;
+        color: #595d6e;" >
+       
+            
+                  <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length" id="kt_table_1_length">
+                                      
+                                        </div></div>
+                                      
+  
+                                        
+                                    </div>
+
+                  <!-- <ejs-grid [dataSource]='data12' height="315px" [searchSettings]='searchOptions'  allowPaging='true' allowSorting='true' [sortSettings]='initialSort' [toolbar]='toolbar' [pageSettings]='pageSettings' >
+                    <e-columns>
+                        
+                           
+                            
+                                <e-column type=''  headerText='No' width=60 
+                                         > 
+                                         <ng-template #template let-data let-i=index > 
+{{i+1}}
+                                        </ng-template>
+
+                               </e-column> 
+                               <e-column field='alias' headerText='Job' textAlign='Left' width=120></e-column>
+            
+                        <e-column field='dep_name' headerText='Activity' width=120></e-column>
+                        <e-column field='lead_name' headerText='Start Time' textAlign='Right' width=90></e-column>
+                        <e-column field='workemail' headerText='End Time' textAlign='Left' width=120></e-column>
+                        <e-column type='' headerText='Actions'  width='200'>
+                            <ng-template #template let-data>
+                            
+                                    <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.department_id)"> <i class="la la-edit"></i> </a>
+                                     
+                                    <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.department_id)"><i class="la la-trash"></i>						</a>
+                                              
+                            </ng-template>
+                        </e-column>
+                    </e-columns>
+                    </ejs-grid> -->
+
+                    <ejs-grid #grid [dataSource]='data12' allowTextWrap='true' [allowFiltering]='true' [filterSettings]='filterOptions'    [pageSettings]='pageSettings'
+                    height="320"  >
+             
+                      <e-columns>
+                        <e-column field='total_time' headerText='Time' textAlign='Left' minWidth='6' width='90'>
+                        </e-column>
+                        <e-column field='project_type' headerText='Type' minWidth='8' width='90' textAlign='Left'>
+                        </e-column>
+                        <e-column field='members' headerText='Team' minWidth='8' width='90' textAlign='Left'>
+                        </e-column>
+  
+                          <e-column field='project_name' headerText='Project Name' minWidth='8' width='120'
+                          textAlign='Left'></e-column>
+                        <e-column field='milestone_name' headerText='Milestone Name' minWidth='8' width='120'
+                          textAlign='Left'></e-column>
+  
+                        
+  
+                        <e-column field='task_name' headerText='Task Name' textAlign='Left' minWidth='6' width='100'>
+                        </e-column>
+                        <e-column field='remarks' headerText='Remarks' textAlign='Left' minWidth='6' width='100'>
+                        </e-column>
+                        <e-column field='total_hrs' headerText='Hours' textAlign='Left' minWidth='4' width='100'>
+                        </e-column>
+                          <!-- <e-column type='' headerText='Actions'  width='200'>
+                              <ng-template #template let-data>
+                                
+                                      <a title="Edit details" class="btn btn-sm btn-clean btn-icon " (click)="deptEdit(data.department_id)"> <i class="la la-edit"></i> </a>
+                                       
+                                      <a title="Delete" class="btn btn-sm btn-clean btn-icon " (click)="deptDelete(data.department_id)"><i class="la la-trash"></i>						</a>
+                                                
+                              </ng-template>
+                          </e-column> -->
+                          <!-- <e-column field='workemail' headerText='Ship Name' textAlign='Left' width=120></e-column> -->
+                      </e-columns>
+                      </ejs-grid>
+    
+                </div>
+
+        </div>
+    </div>
+  </div>
+
+    <div *ngIf="showAddForm" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+           
+    
+           
+       
+                        <div class="row">
+                    <div class="col-lg-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                                <div class="kt-portlet__head kt-portlet__head--lg">
+                                        <div class="kt-portlet__head-label">
+                                            
+                                            <h3 class="kt-portlet__head-title">
+                                                Departments
+                                            </h3>
+                                        </div>
+                                        <div class="kt-portlet__head-toolbar">
+                                            <div class="kt-portlet__head-wrapper">
+                                    <!-- <a href="#" class="btn btn-clean btn-icon-sm">
+                                        <i class="la la-long-arrow-left"></i>
+                                        Back
+                                    </a> -->
+                                    &nbsp;
+                                    <div class="dropdown dropdown-inline">
+                                        <button type="button" class="button button-fill button-rose"  (click)='DeptView()' aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-angle-left" style="margin-bottom: 2px;" ></i> Back	
+                                        </button>
+                
+                                  
+                                    </div>
+                                </div>		</div>
+                                    </div>
+                            <!--begin::Form-->
+                            <form class="kt-form kt-form--label-right" [formGroup]="deptForm"  >
+                                <div class="kt-portlet__body">
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Department Name:</label>
+                                            <input type="email" class="form-control" placeholder="Enter name" formControlName="dep_name">
+                                            <!-- <span class="form-text text-muted">Please enter your department name</span> -->
+                                            
+                                                  <div class="error-msg"  *ngIf="isFieldValid('dep_name')">Required.</div>
+
+                                        </div>
+                                        <!-- <div class="col-lg-6">
+                                            <label class="">Last Name:</label>
+                                            <input type="email" class="form-control" placeholder="Enter last name">
+                                            <span class="form-text text-muted">Please enter your last name</span>
+                                        </div> -->
+                                    </div>	 
+                                    <div class="form-group row">    
+                                        <div class="col-lg-6">
+                                            <label>Mail Alias:</label>
+                                            <div class="kt-input-icon">
+                                                <input type="text" class="form-control" placeholder="Enter Mail Alias" formControlName="alias">
+                                            </div>
+                                            <!-- <span class="form-text text-muted">Please enter your Email ID</span> -->
+                                        </div>
+                                        
+                                    </div>	 
+                               
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label>Department Lead:</label>
+                                            <div class="kt-input-icon">
+                                            <select2 [data]="departmentLeadData" [value]="departmentLeadValue"  [options]="deptOptions" (valueChanged)="changedLead($event)"  ></select2>
+                                               
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                                    
+                                </div>
+                                <div class="kt-portlet__foot kt-portlet__foot--fit-x">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <!-- <div class="col-lg-2"></div> -->
+                                            <div class="col-lg-10">
+                                                    <span *ngIf="AddNewSubmit" style="margin-right: 10px;">
+                                                            <button type="reset" class="btn btn-success" (click)=" onAddNewSubmit($event)">Submit & New</button>
+                                                        </span>
+                                                    <button type="reset" class="btn btn-success" (click)="editable ? onEditSubmit($event) : onAddSubmit($event)">Submit</button>
+                                                    <button type="reset" class="btn btn-secondary"  (click)='DeptView()' style="margin-left:10px;">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>	
+    <!-- end:: Content -->				</div>
+
+
+   

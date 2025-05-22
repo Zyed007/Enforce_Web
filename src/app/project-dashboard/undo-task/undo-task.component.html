@@ -1,0 +1,67 @@
+<div class="backdiv">
+  <button type="button" (click)='goBack()' class="button backBTN" style="margin-left:10px;" >
+    <p class="btntxtb"><i class="fa fa-angle-left" style="margin-right: 5px;"></i>Back</p>
+  </button>
+</div>
+
+<div class="CardRow">
+  <p class="projectName">{{projectName}}</p>
+  <div style="padding: 0px 20px 20px;">
+    <div class="row" style="margin-bottom: 25px;">
+      <div class="col-6">
+        <label for="nameArea" style="padding-right: 5px;">Select a Milestone</label>
+        <select2 [data]="availableMilestoneData" [options]='deptOptions' (valueChanged)="changedMilestone($event)"></select2>
+      </div>
+      <div class="col-6">
+        <label for="nameArea" style="padding-right: 5px;">Select a Task</label>
+        <select2 [data]="availableTaskData" [options]='deptOptions' (valueChanged)="changedTask($event)"></select2>
+      </div>
+    </div>
+    <div>
+      <div class="undoBtnplcae">
+        <button type="button" [ngClass]="checkAnyTaskThere ? 'btnNotallowed': 'backBTN'" (click)="openConfirmationModel()" class="button">
+          <p class="btntxtb">Undo Task status</p>
+        </button>
+      </div>
+      <ejs-grid #employeeTaskGrid (rowSelected)='rowSelected()' (rowDeselected)="rowSelected()" [dataSource]='subTaskGridData' height='400px'>
+        <e-columns>
+            <e-column type='checkbox' width='50'></e-column>
+            <e-column field='EmployeeName' headerText='Assignee Name'></e-column>
+            <e-column field='TaskName' headerText='Task Name'></e-column>
+            <e-column field='SubtaskName' headerText='Sub-task Name'></e-column>
+            <e-column field='StatusName' headerText='Task Status'></e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<!--confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="max-width: 751px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" (click)="closeConfirmationModel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p>Are you sure you want to undo the status of the below task ?</p>
+          <ejs-grid [dataSource]='selectedTaskToUndo' height='300px' allowTextWrap='true'>
+            <e-columns>
+                <e-column field='EmployeeName' headerText='Assignee Name'></e-column>
+                <e-column field='TaskName' headerText='Task Name'></e-column>
+                <e-column field='SubtaskName' headerText='Sub-task Name'></e-column>
+                <e-column field='StatusName' headerText='Task Status'></e-column>
+            </e-columns>
+          </ejs-grid>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="finalConv()">Undo Task</button>
+      </div>
+    </div>
+  </div>
+</div>

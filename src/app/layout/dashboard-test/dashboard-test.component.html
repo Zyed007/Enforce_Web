@@ -1,0 +1,1218 @@
+
+<!--Header-->
+<div class="row pad2515">
+    <h5  style="margin-left: 20px;" class="teamMemberTxt">Dashboard Test</h5>
+</div>
+
+<!--Dashboard-->
+<div class="row marbot rowcard" style="margin: 10px 20px 10px 20px ;" *ngIf="viewDashboard" >
+    <!-- <div style="margin-bottom: 10px; " class="col-12">
+      <h1 class="teamMemberTxt">Dash Board</h1>
+      <span class="spacer"></span>
+    </div> -->
+    <div style="margin-bottom: 10px; " class="col-12">
+        <h1 class="teamMemberTxt">Leave</h1>
+        <span class="spacer"></span>
+    </div>
+    <div *ngFor="let item of leaveItems" class="col-3" style="margin-top: 20px;">
+      <div class="borderCard" (click)="leaveClick('New Leave Request')">
+          <p class="headerA">
+            {{ item }}
+            <i class="fa fa-info-circle" container="body"
+              ngbTooltip="" placement="top"></i>
+          </p>
+          <p *ngIf="!isHRLoading"  class="headerB">
+            {{ this.newData.length }}
+
+            </p>
+            <div class="spinner-overlay" *ngIf="isHRLoading" style="margin: 0px auto;
+                        margin-top: 15px;" >
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning">
+              </div>
+            </div>
+      </div>
+    </div>
+
+</div>
+
+<div class="col-12" *ngIf="showLeaveList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">New Leave Request</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('New Leave Request')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showLeaveList">
+      <ejs-grid [dataSource]="showDashData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="name" headerText="Name" width="120">
+            <ng-template #template let-data>
+              {{ data.created_by_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="message" headerText="Message" width="150">
+            <ng-template #template let-data>
+              {{data.message }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="created_date" headerText="Date" width="120">
+            <ng-template #template let-data>
+              {{data.created_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewEditNotification(data, 'newMessage')">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+
+  </div>
+</div>
+
+<div class="row marbot rowcard" style="margin: 10px 20px 10px 20px ;"  *ngIf="viewDashboard">
+  <!-- <div style="margin-bottom: 10px; " class="col-12">
+    <h1 class="teamMemberTxt">Dash Board</h1>
+    <span class="spacer"></span>
+  </div> -->
+  <div style="margin-bottom: 10px; " class="col-12">
+      <h1 class="teamMemberTxt">Attendance Override</h1>
+      <span class="spacer"></span>
+  </div>
+  <div *ngFor="let item of overwriteItems" class="col-3" style="margin-top: 20px;">
+    <div class="borderCard" (click)="overClick('check In check Out Overwrite Request')">
+        <p class="headerA" >
+          {{item}}
+          <i class="fa fa-info-circle" container="body"
+            ngbTooltip="" placement="top" ></i>
+        </p>
+        <p *ngIf="!isHRLoading"  class="headerB">
+          {{ this.unReadOverrideData.length }}
+
+          </p>
+          <div class="spinner-overlay" *ngIf="isHRLoading" style="margin: 0px auto;
+                        margin-top: 15px;" >
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning">
+              </div>
+            </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="col-12" *ngIf="showDashList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">check In check Out Overwrite Request</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('check In check Out Overwrite Request')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showDashList">
+      <ejs-grid [dataSource]="showOverData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="name" headerText="Name" width="120">
+            <ng-template #template let-data>
+              {{ data.created_by_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="message" headerText="Message" width="150">
+            <ng-template #template let-data>
+              {{data.message }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="created_date" headerText="Date" width="120">
+            <ng-template #template let-data>
+              {{data.created_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewEditNotification(data, 'newMessage')">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+
+  </div>
+</div>
+
+<div class="row marbot rowcard" style="margin: 10px 20px 10px 20px ;" *ngIf="viewDashboard" >
+  <!-- <div style="margin-bottom: 10px; " class="col-12">
+    <h1 class="teamMemberTxt">Dash Board</h1>
+    <span class="spacer"></span>
+  </div> -->
+  <div style="margin-bottom: 10px; " class="col-12">
+      <h1 class="teamMemberTxt">Human Resource</h1>
+      <span class="spacer"></span>
+  </div>
+  <div *ngFor="let item of hrItems" class="col-3" style="margin-top: 20px;">
+    <div class="borderCard" (click)="cardClick(item)">
+        <p class="headerA">
+          {{item}}
+          <i class="fa fa-info-circle" container="body"
+            ngbTooltip="" placement="top"></i>
+        </p>
+        <p *ngIf="!isHRLoading && item === 'Creating Employee Details'"  class="headerB">
+          {{ this.unReadDetailsCreate.length }}
+
+          </p>
+          <p *ngIf="!isHRLoading && item === 'Updating Employee Details'"  class="headerB">
+            {{ this.unReadDetailsUpdate.length }}
+
+            </p>
+            <p *ngIf="!isHRLoading && item === 'Deleting Employee Details'"  class="headerB">
+              {{ this.unReadDetailsDelete.length }}
+
+              </p>
+              <div class="spinner-overlay" *ngIf="isHRLoading" style="margin: 0px auto;
+              margin-top: 15px;" >
+    <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning">
+    </div>
+  </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="col-12" *ngIf="showCreateList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Creating Employee Details</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList(dashhead)"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showCreateList">
+      <ejs-grid [dataSource]="showCreateData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="name" headerText="Name" width="120">
+            <ng-template #template let-data>
+              {{ data.created_by_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="message" headerText="Message" width="150">
+            <ng-template #template let-data>
+              {{data.message }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="created_date" headerText="Date" width="120">
+            <ng-template #template let-data>
+              {{data.created_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewEditNotification(data, 'newMessage')">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showUpdateList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Updating Employee Details</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList(dashhead)"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showUpdateList">
+      <ejs-grid [dataSource]="showUpdateData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="name" headerText="Name" width="120">
+            <ng-template #template let-data>
+              {{ data.created_by_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="message" headerText="Message" width="150">
+            <ng-template #template let-data>
+              {{data.message }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="created_date" headerText="Date" width="120">
+            <ng-template #template let-data>
+              {{data.created_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewEditNotification(data, 'newMessage')">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showDeleteList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Deleting Employee Details</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList(dashhead)"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showDeleteList">
+      <ejs-grid [dataSource]="showDeleteData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="name" headerText="Name" width="120">
+            <ng-template #template let-data>
+              {{ data.created_by_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="message" headerText="Message" width="150">
+            <ng-template #template let-data>
+              {{data.message }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="created_date" headerText="Date" width="120">
+            <ng-template #template let-data>
+              {{data.created_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewEditNotification(data, 'newMessage')">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+
+  </div>
+</div>
+
+<div class="row marbot rowcard" style="margin: 10px 20px 10px 20px ;" *ngIf="viewDashboard" >
+  <!-- <div style="margin-bottom: 10px; " class="col-12">
+    <h1 class="teamMemberTxt">Dash Board</h1>
+    <span class="spacer"></span>
+  </div> -->
+  <div style="margin-bottom: 10px; " class="col-12">
+      <h1 class="teamMemberTxt">Payroll</h1>
+      <span class="spacer"></span>
+  </div>
+  <div *ngFor="let item of payrollItems" class="col-3" style="margin-top: 20px;">
+    <div class="borderCard" (click)="payrollClick('Payroll')">
+        <p class="headerA">
+          {{item}}
+          <i class="fa fa-info-circle" container="body"
+            ngbTooltip="" placement="top"></i>
+        </p>
+        <p *ngIf="!isHRLoading"  class="headerB">
+          {{ this.filteredPayroll.length }}
+
+          </p>
+          <div class="spinner-overlay" *ngIf="isHRLoading" style="margin: 0px auto;
+                        margin-top: 15px;" >
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning">
+              </div>
+            </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="col-12" *ngIf="payrollList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Payroll</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Payroll')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="payrollList">
+      <ejs-grid [dataSource]="showPayrollData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="name" headerText="Payroll" width="120">
+            <ng-template #template let-data>
+              {{ data.name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="status" headerText="Status" width="150">
+            <ng-template #template let-data>
+              {{data.status }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="start_date" headerText="Start Date" width="120">
+            <ng-template #template let-data>
+              {{data.start_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="end_date" headerText="End Date" width="120">
+            <ng-template #template let-data>
+              {{data.end_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_due__date" headerText="Due Date" width="120">
+            <ng-template #template let-data>
+              {{data.pay_due_date | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="active_employees" headerText="Employee Count" width="120">
+            <ng-template #template let-data>
+              {{data.active_employees}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="net_payable" headerText="Net Pay" width="120">
+            <ng-template #template let-data>
+              {{data.net_payable}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="hold_employees" headerText="Hold Employees" width="120">
+            <ng-template #template let-data>
+              {{data.hold_employees}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="hold_amount" headerText="Hold Amount" width="120">
+            <ng-template #template let-data>
+              {{data.hold_amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="submit_remarks" headerText="Remarks" width="120">
+            <ng-template #template let-data>
+              {{data.submit_remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewPayrollNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="row marbot rowcard" style="margin: 10px 20px 10px 20px ;" *ngIf="viewDashboard" >
+  <!-- <div style="margin-bottom: 10px; " class="col-12">
+    <h1 class="teamMemberTxt">Dash Board</h1>
+    <span class="spacer"></span>
+  </div> -->
+  <div style="margin-bottom: 10px; " class="col-12">
+      <h1 class="teamMemberTxt">Adjustments</h1>
+      <span class="spacer"></span>
+  </div>
+  <div *ngFor="let item of adjustmentItems" class="col-3" style="margin-top: 20px;">
+    <div class="borderCard" (click)="adjustClick(item)">
+        <p class="headerA">
+          {{item}}
+          <i class="fa fa-info-circle" container="body"
+            ngbTooltip="" placement="top"></i>
+        </p>
+        <p *ngIf="!isPendingLoading && item === 'Absence'"  class="headerB">
+          {{ this.absenceList.length }}
+
+          </p>
+          <p *ngIf="!isHRLoading && item === 'Advance'"  class="headerB">
+            {{ this.advanceList.length }}
+
+          </p>
+          <p *ngIf="!isHRLoading && item === 'Arrear Adjustment'"  class="headerB">
+            {{ this.arrearList.length }}
+
+          </p>
+          <p *ngIf="!isHRLoading && item === 'Leave Salary'"  class="headerB">
+              {{ this.leaveSalaryList.length }}
+
+          </p>
+          <p *ngIf="!isHRLoading && item === 'Loan'"  class="headerB">
+            {{ this.loanList.length }}
+
+          </p>
+          <p *ngIf="!isHRLoading && item === 'Fine'"  class="headerB">
+            {{ this.fineList.length }}
+
+          </p>
+
+          <div class="spinner-overlay" *ngIf="isHRLoading" style="margin: 0px auto;
+                        margin-top: 15px;" >
+              <div class="kt-spinner kt-spinner--v2 kt-spinner--lg kt-spinner--warning">
+              </div>
+            </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="col-12" *ngIf="showAbsenceList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Absence</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Absence')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showAbsenceList">
+      <ejs-grid [dataSource]="showAbsenceData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="full_name" headerText="Employee Name" width="120">
+            <ng-template #template let-data>
+              {{ data.full_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_item" headerText="Pay Item" width="150">
+            <ng-template #template let-data>
+              {{data.pay_item }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="type" headerText="Type" width="120">
+            <ng-template #template let-data>
+              {{data.type}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="amount" headerText="Amount(AED)" width="120">
+            <ng-template #template let-data>
+              {{data.amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="date_incurred" headerText="Date Incurred" width="120">
+            <ng-template #template let-data>
+              {{data.date_incurred | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="remarks" headerText="Remark" width="120">
+            <ng-template #template let-data>
+              {{data.remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewAdjustmentsNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isPendingLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showAdvanceList && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Advance</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Advance')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showAdvanceList">
+      <ejs-grid [dataSource]="showAdvanceData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="full_name" headerText="Employee Name" width="120">
+            <ng-template #template let-data>
+              {{ data.full_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_item" headerText="Pay Item" width="150">
+            <ng-template #template let-data>
+              {{data.pay_item }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="type" headerText="Type" width="120">
+            <ng-template #template let-data>
+              {{data.type}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="amount" headerText="Amount(AED)" width="120">
+            <ng-template #template let-data>
+              {{data.amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="date_incurred" headerText="Date Incurred" width="120">
+            <ng-template #template let-data>
+              {{data.date_incurred | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="remarks" headerText="Remark" width="120">
+            <ng-template #template let-data>
+              {{data.remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewAdjustmentsNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isPendingLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showArrearAdjustment && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Arrear Adjustment</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Arrear Adjustment')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showArrearAdjustment">
+      <ejs-grid [dataSource]="showArrearAdjustmentData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="full_name" headerText="Employee Name" width="120">
+            <ng-template #template let-data>
+              {{ data.full_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_item" headerText="Pay Item" width="150">
+            <ng-template #template let-data>
+              {{data.pay_item }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="type" headerText="Type" width="120">
+            <ng-template #template let-data>
+              {{data.type}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="amount" headerText="Amount(AED)" width="120">
+            <ng-template #template let-data>
+              {{data.amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="date_incurred" headerText="Date Incurred" width="120">
+            <ng-template #template let-data>
+              {{data.date_incurred | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="remarks" headerText="Remark" width="120">
+            <ng-template #template let-data>
+              {{data.remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewAdjustmentsNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isPendingLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showLeaveSalary && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Leave Salary</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Leave Salary')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showLeaveSalary">
+      <ejs-grid [dataSource]="showLeaveSalaryData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="full_name" headerText="Employee Name" width="120">
+            <ng-template #template let-data>
+              {{ data.full_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_item" headerText="Pay Item" width="150">
+            <ng-template #template let-data>
+              {{data.pay_item }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="type" headerText="Type" width="120">
+            <ng-template #template let-data>
+              {{data.type}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="amount" headerText="Amount(AED)" width="120">
+            <ng-template #template let-data>
+              {{data.amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="date_incurred" headerText="Date Incurred" width="120">
+            <ng-template #template let-data>
+              {{data.date_incurred | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="remarks" headerText="Remark" width="120">
+            <ng-template #template let-data>
+              {{data.remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewAdjustmentsNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isPendingLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showLoan && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Loan</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Loan')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showLoan">
+      <ejs-grid [dataSource]="showLoanData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="full_name" headerText="Employee Name" width="120">
+            <ng-template #template let-data>
+              {{ data.full_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_item" headerText="Pay Item" width="150">
+            <ng-template #template let-data>
+              {{data.pay_item }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="type" headerText="Type" width="120">
+            <ng-template #template let-data>
+              {{data.type}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="amount" headerText="Amount(AED)" width="120">
+            <ng-template #template let-data>
+              {{data.amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="date_incurred" headerText="Date Incurred" width="120">
+            <ng-template #template let-data>
+              {{data.date_incurred | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="remarks" headerText="Remark" width="120">
+            <ng-template #template let-data>
+              {{data.remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewAdjustmentsNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isPendingLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div class="col-12" *ngIf="showFine && viewDashboard">
+  <div class="alertBox">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="nothead col-4" style="padding-left: 20px">Fine</div>
+      <div class="col-8" style="display: flex; justify-content: flex-end;">
+        <button id="add" class="btn btnColorAll btnScc" (click)="closeDashList('Fine')"
+          style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px;">
+          Close
+          <i class="fa fa-close marTopnew padreq" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div *ngIf="showFine">
+      <ejs-grid [dataSource]="showFineData" height="400px" [toolbar]="employeeGridToolItems"
+        >
+        <e-columns>
+
+          <e-column field="full_name" headerText="Employee Name" width="120">
+            <ng-template #template let-data>
+              {{ data.full_name }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="pay_item" headerText="Pay Item" width="150">
+            <ng-template #template let-data>
+              {{data.pay_item }}
+            </ng-template>
+          </e-column>
+
+          <e-column field="type" headerText="Type" width="120">
+            <ng-template #template let-data>
+              {{data.type}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="amount" headerText="Amount(AED)" width="120">
+            <ng-template #template let-data>
+              {{data.amount}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="date_incurred" headerText="Date Incurred" width="120">
+            <ng-template #template let-data>
+              {{data.date_incurred | date: 'MMM d, y'}}
+            </ng-template>
+          </e-column>
+
+          <e-column field="no_of_days" headerText="Days since Applied" width="120">
+            <ng-template #template let-data >
+              <p [style.color]="data.no_of_days > 5 ? 'green' : 'red'">
+                {{data.no_of_days }}
+              </p>
+            </ng-template>
+          </e-column>
+
+          <e-column field="remarks" headerText="Remark" width="120">
+            <ng-template #template let-data>
+              {{data.remarks}}
+            </ng-template>
+          </e-column>
+
+          <e-column headerText="Action" textAlign="Centre" width="100">
+              <ng-template #template let-data>
+
+                <button class="btn buttonSt btnScc edbtnSt" placement="top" ngbTooltip="View Leave Details" container="body"
+                  (click)="viewAdjustmentsNotification(data)">
+                  <i class="fa fa-eye fa-xs" aria-hidden="true"></i>
+                </button>
+              </ng-template>
+          </e-column>
+
+
+        </e-columns>
+        <div *ngIf="isPendingLoading" class="spinner-overlay" style="display: flex;justify-content: center;align-items: center;">
+          <div class="spinner-border text-secondary custom-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<div  class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid"  *ngIf="!viewDashboard">
+  <div class="kt-portlet kt-portlet--mobile">
+    <div class="row">
+      <div class="col col-xl-12 col-lg-12">
+  <div >
+          <app-not-found></app-not-found>
+        </div>
+        </div>
+        <!-- </div>
+        </div>
+        </div>  -->
+
+    <!-- <div class="row col-12">
+        <div *ngFor="let item of dashItems" class="col-3" style="margin-top: 20px;">
+            <div class="borderCard" (click)="cardClick(item)">
+                <p class="headerA">
+                  {{ item }}
+                  <i class="fa fa-info-circle" container="body"
+                    ngbTooltip="" placement="top"></i>
+                </p>
+
+
+                <div *ngIf="item === 'Attendance Override'">
+                  <p *ngIf="!isHRLoading" class="headerB">
+                    {{ this.unReadOverrideData.length}}
+                  </p>
+                  <div *ngIf="isHRLoading" class="spinner-overlay" >
+                    <div class="spinner-border text-secondary custom-spinner" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'Human Resource'">
+                  <p *ngIf="!isHRLoading"  class="headerB">
+                    {{ this.unReadDetailsUpdate.length}}
+                  </p>
+                  <div *ngIf="isHRLoading" class="spinner-overlay" >
+                    <div class="spinner-border text-secondary custom-spinner" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'Payroll'">
+                  <p *ngIf="!isPayrollLoading">
+                    {{ this.pendingPayrollCount }}
+                  </p>
+                  <div *ngIf="isPayrollLoading" class="spinner-overlay" >
+                    <div class="spinner-border text-secondary custom-spinner" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'Adjustments'">
+                  <p *ngIf="!isPendingLoading">
+                    {{ this.pendingList.length }}
+                  </p>
+                  <div *ngIf="isPendingLoading" class="spinner-overlay" >
+                    <div class="spinner-border text-secondary custom-spinner" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+

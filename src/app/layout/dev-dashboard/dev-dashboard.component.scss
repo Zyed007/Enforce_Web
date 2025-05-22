@@ -1,0 +1,88 @@
+.pad2515 {
+  padding: 25px 15px;
+  background: #fff;
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+}
+
+.labelMainHeader {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.teamDiv {
+  text-align: end;
+}
+
+.rowPad {
+  padding: 25px 0px;
+}
+
+.container {
+  background: #f0f0f0 !important;
+}
+
+.card1 {
+  display: block;
+  position: relative;
+  background-color: #fff;
+  height: 135px;
+  border-radius: 2px;
+  padding: 24px;
+  margin: 12px;
+  cursor: pointer;
+  z-index: 0;
+  overflow: hidden;
+  box-shadow: 0 0 1px rgb(0 0 0 / 15%);
+
+  &:before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: -16px;
+      right: -27px;
+      //background-image: linear-gradient(-20deg, #616161 0%, #9bc5c3 100%);
+      background: linear-gradient(180deg, #8C9396 0%, #535353 100%);
+      height: 70px;
+      width: 35px;
+      border-radius: 32px;
+      transform: scale(1);
+      transform-origin: 50% 50%;
+      transition: transform 0.25s ease-out;
+  }
+
+  &:hover:before {
+      transform: scale(21);
+  }
+}
+
+.card1:hover {
+  p {
+      transition: all 0.3s ease-out;
+      color: rgba(255, 255, 255, 0.8);
+  }
+
+  h3 {
+      transition: all 0.3s ease-out;
+      color: #ffffff;
+  }
+}
+
+.searchBar {
+  border: 1px solid rgba(120, 130, 140, .13);
+  padding: 0px 10px;
+  padding-bottom: 3px;
+  width: 30%;
+  border-radius: 400px;
+  height: 26px;
+}
+
+.btnColorAll {
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.padreq {
+  padding: 5px 6px !important;
+}

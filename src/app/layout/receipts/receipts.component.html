@@ -1,0 +1,849 @@
+<div *ngIf="accessToReceipts" class="startdiv">
+  <div *ngIf="mainTabListing">
+    <h3 class="kt-subheader__title invoicetxt" style="font-weight: 400;">
+      Receipts
+    </h3>
+    <div class="row" style="margin-bottom: 18px;">
+      <div class="col-9" style="margin: auto;">
+        <p class="datetxt">{{dateTextToDisplay}}</p>
+      </div>
+      <div class="col-3" style="text-align: end;">
+        <div class="kt-subheader__toolbar">
+          <div class="kt-subheader__wrapper">
+            <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand"
+              role="tablist" style="border-bottom: none;display: inline-flex; margin: 0 0 0px 0;">
+              <li class="nav-item" (click)="getCommonDateType('All')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isAllActive}" data-toggle="tab"
+                  href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                  All
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('today')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isTodayActive}" data-toggle="tab"
+                  href="#kt_user_edit_tab_1" role="tab" aria-selected="false">
+                  Today
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('weeks')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isWeekActive}" data-toggle="tab"
+                  href="#kt_user_edit_tab_2" role="tab" aria-selected="true">
+                  Week
+                </a>
+              </li>
+              <li class="nav-item" (click)="getCommonDateType('month')" style="margin-right: 20px;">
+                <a class="nav-link" style="padding: 5px 0;" [ngClass]="{'active': isMonthActive}" data-toggle="tab"
+                  href="#kt_user_edit_tab_3" role="tab" aria-selected="false">
+                  Month
+                </a>
+              </li>
+              <li class="nav-item dasboardRange" style="margin-right: 20px;">
+                <a class="nav-link" data-toggle="tab" id="defaultrange_modal" role="tab" aria-selected="false"
+                  style="padding-bottom: 5px !important; padding-top: 5px;">
+                  <div style="display: flex;justify-content: start;">
+                    <div>Range</div>
+                    <div>
+                      <form [formGroup]="dateRangeForm" id="formId" style="padding-left:4px; ">
+                        <ejs-daterangepicker placeholder='Select Date range'
+                          formControlName='daterange'></ejs-daterangepicker>
+                      </form>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row rowimp rowcard" style="padding: 0px; margin-bottom: 20px;padding-bottom: 20px;">
+      <div class="col-12">
+        <div class="row" style="padding: 10px 0px; border-bottom: 1px solid #ada8a8;">
+          <div class="col-8">
+            <h3 style="font-size: 17px; font-weight: 300; margin-bottom: 0px;">Select an Invoice to create receipt</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <ejs-tab id="element" heightAdjustMode='Auto' overflowMode='Popup' (selected)="tabSelected($event)"
+          class="tabseStyle2">
+          <e-tabitems>
+            <e-tabitem *ngFor='let header of headerText' [header]='header'>
+
+              <ng-template #content *ngIf='header.text=="Outstanding Invoice"'>
+                <ejs-grid #proformaInvoiceTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true'
+                  [allowPdfExport]='true' (toolbarClick)='proformaInvoiceDownload($event)'
+                  [dataSource]='stageInvoiceData' allowTextWrap='true' height="350px" allowSorting='true'>
+                  <e-columns>
+
+                    <e-column field='dueDate' headerText='Date' width=70>
+                      <ng-template #template let-data>
+                        <span>{{data.dueDate | date: 'dd/MM/yyyy'}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Type' textAlign='center' width=110>
+                      <ng-template #template let-data>
+                        <span *ngIf="!data.isCommission">Project</span>
+                        <span *ngIf="data.isCommission">Other Income</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='accountsId' headerText='Acc ID' width=60>
+                      <ng-template #template let-data>
+                        <span>{{data.accountsId}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='accountRefId' headerText='Inv No.' width=70>
+                      <ng-template #template let-data>
+                        <span>{{data.accountRefId}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='projectName' headerText='Project Name' width=80>
+                      <ng-template #template let-data>
+                        <span>{{data.projectName}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='customerName' headerText='Customer Name' width=100>
+                      <ng-template #template let-data>
+                        <div>
+                          <span>{{data.customerName}}</span>
+                          <span>{{data.custPhone}}</span>
+                        </div>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='AmoutPlusVat' headerText='Amount + Vat' width=100>
+                      <ng-template #template let-data>
+                        <div style="display: grid;">
+                          <span>AED {{data.AmoutPlusVat}}</span>
+                          <span style="font-size: 12px;">({{data.advAmount | number: '.2'}} +
+                            {{data.taxExcluded}})</span>
+                          <span *ngIf="data.discountAmount !== 0"
+                            style="display: block; font-size: 10px; font-weight: 500; color: green;">
+                            - AED. {{data.discountAmount}} discount Applied
+                          </span>
+                        </div>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Claimed Status' width=100>
+                      <ng-template #template let-data>
+                        <div style="display: grid;">
+                          <span>AED {{data.amountClaimed}}</span>
+                        </div>
+                        <span *ngIf="data.finalAmount !== 0"
+                          style="display: block; font-size: 11px; font-weight: 500; color: #c61616;">
+                          Balance: AED. {{data.amountBalance - data.discountAmount | number: '.2'}}
+                        </span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column width=40 textAlign='center'>
+                      <ng-template #template let-data>
+                        <i *ngIf="data.finalAmount !== 0" class="fa fa-file-text-o savedraf" aria-hidden="true"
+                          (click)="openInvoiceClubModel(data)"></i>
+                        <i *ngIf="data.finalAmount === 0"
+                          style="margin-bottom: 0px; color: green; font-weight: 500; text-transform: capitalize;"
+                          class="fa fa-check" aria-hidden="true"></i>
+                      </ng-template>
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+
+              <ng-template #content *ngIf="header.text == 'Receipts'">
+                <ejs-grid
+                #receiptsTableGrid
+                [toolbar]="invoiceToolbar"
+                [allowExcelExport]="true"
+                [allowPdfExport]="true"
+                (toolbarClick)="receiptsDownload($event)"
+                [dataSource]="receiptsData"
+                allowTextWrap="true"
+                height="350px"
+                [detailTemplate]="detailTemplate"
+                (detailDataBound)="onDetailDataBound($event)">              
+
+                  <e-columns>
+                    <e-column field="createdDate" headerText="Created Date" width="70px">
+                      <ng-template #template let-data>
+                        <span>{{data.createdDate | date: 'dd/MM/yyyy'}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="projectName" headerText="Project Name" width="100px">
+                      <ng-template #template let-data>
+                        <span>{{data.projectName}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="customerName" headerText="Customer Name" width="100px">
+                      <ng-template #template let-data>
+                        <span>{{data.customerName}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="custPhone" headerText="Customer Phone" width="100px">
+                      <ng-template #template let-data>
+                        <span>{{data.custPhone}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field="amount" headerText="Amount claimed" width="90px">
+                      <ng-template #template let-data>
+                        <span>AED {{data.amount | number: '.2'}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+
+                </ejs-grid>
+              </ng-template>
+
+              <!-- Row Template for Expanded Content -->
+              <ng-template #detailTemplate let-data>
+                <div style="display: flex; justify-content: center; padding: 16px;" *ngIf="data.matchedInvoices?.length">
+                  <table class="e-table e-grid" style="width: auto; border-collapse: collapse; border: 1px solid #ccc;">
+                    <thead style="background-color: #f5f5f5;">
+                      <tr>
+                        <th style="padding: 12px;">REF ID</th>
+                        <th style="padding: 12px;">Date</th>
+                        <th style="padding: 12px;">Description</th>
+                        <th style="padding: 12px;">Invoice Amount</th>
+                        <th style="padding: 12px;">Amount Balance</th>
+                        <th style="padding: 12px;">Amount Claimed</th>
+
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of data.matchedInvoices; let i = index">
+                        <td style="padding: 12px;">{{ item.accountRefId }}</td>
+                        <td style="padding: 12px;">{{ item.createdDate | date: 'shortDate' }}</td>
+                        <td style="padding: 12px;">{{ item.comments }}</td>
+                        <td style="padding: 12px;">{{ item.amountClaimed | currency:'AED' }}</td>
+                        <td style="padding: 12px;">
+                          {{
+                            (item.amountBalance != null ? item.amountBalance : 0)
+                            | currency:'AED'
+                          }}
+                        </td>
+                        
+                        <td style="padding: 12px;">
+                          <ng-container *ngIf="i === 0; else checkBalance">
+                            <ng-container *ngIf="item.amountBalance; else showClaimedOnly">
+                              {{ (item.amountClaimed - item.amountBalance) | currency: 'AED' }}
+                            </ng-container>
+                        
+                            <ng-template #showClaimedOnly>
+                              {{ item.amountClaimed | currency: 'AED' }}
+                            </ng-template>
+                        
+                            <ng-container *ngIf="item.extraAmount?.data != null">
+                              extra ({{ item.extraAmount.data | currency: 'AED' }})
+                            </ng-container>
+                          </ng-container>
+                        
+                          <ng-template #checkBalance>
+                            <ng-container *ngIf="!item.amountBalance; else showBalance">
+                              <ng-container *ngIf="item.extraAmount?.data != null; else showClaimedOther">
+                                - {{ item.extraAmount.data | currency: 'AED' }}
+                              </ng-container>
+                              <ng-template #showClaimedOther>
+                                {{ item.amountClaimed | currency: 'AED' }}
+                              </ng-template>
+                            </ng-container>
+                        
+                            <ng-template #showBalance>
+                              {{ item.amountBalance | currency: 'AED' }}
+                            </ng-template>
+                          </ng-template>
+                        </td>
+                                             
+                        
+                      </tr>
+                      
+                      
+                      
+                    </tbody>
+                  </table>
+                </div>
+              
+                <!-- If there are no matched invoices, show a no-match message -->
+                <div *ngIf="data.matchedInvoices?.length === 0" style="text-align: center; padding: 16px;">
+                  <p>No matching invoices found.</p>
+                </div>
+              </ng-template>
+              
+              
+              
+
+
+
+
+              <ng-template #content *ngIf='header.text=="Customer Statement"'>
+                <ejs-grid #customerStatTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true'
+                  [allowPdfExport]='true' (toolbarClick)='customerStatDownload($event)'
+                  (created)='searchKeyStroke($event)' [dataSource]='customerListing' allowTextWrap='true' height="350px"
+                  allowSorting='true'>
+                  <e-columns>
+
+                    <e-column field='cst_name' headerText='Customer Name' width=70>
+                      <ng-template #template let-data>
+                        <span>{{data.cst_name}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='phone' headerText='Customer Phone' width=70>
+                      <ng-template #template let-data>
+                        <span>{{data.phone}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column field='projectNo' headerText='Project No.' width=70>
+                      <ng-template #template let-data>
+                        <span>{{data.projectNo}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Project Count' width=50 textAlign='center'>
+                      <ng-template #template let-data>
+                        <span>{{data.projectNo.length}}</span>
+                      </ng-template>
+                    </e-column>
+
+                    <e-column headerText='Statement' width=70 textAlign='center'>
+                      <ng-template #template let-data>
+                        <i class="fa fa-file-text-o savedraf" aria-hidden="true" (click)="showCustStatList(data)"></i>
+                      </ng-template>
+                    </e-column>
+
+                  </e-columns>
+                </ejs-grid>
+              </ng-template>
+
+            </e-tabitem>
+          </e-tabitems>
+        </ejs-tab>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="receiptsCard">
+    <div class="rowcard">
+      <div class="row headerft">
+        <div class="col-8" style="margin: auto;">
+          <h1 class="headerfont">Customer Payment</h1>
+        </div>
+        <div class="col-4" style="text-align: end; padding-bottom: 15px;">
+          <button class="button button-fill button-rose2" style="padding: 3px 10px !important;"
+            (click)="backToMainListing('receipt')">
+            <div style="display: flex; padding: 6px;">
+              <p style="margin-bottom: 0px;">Cancel</p>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div [formGroup]="patchReceiptValueForm">
+        <div class="row">
+          <div class="col-3" style="margin-bottom: 10px;">
+            <p style="margin-bottom: 3px !important;">Received from</p>
+            <input class="e-input" type="text" formControlName="customerName" />
+          </div>
+          <div class="col-3">
+            <div style="display:flex">
+              <p style="margin-bottom: 0px;">Handed over by Customer ?</p>
+              <div style="margin-left: 10px;">
+                <ejs-radiobutton label="Yes" name="default" (change)="checkHandedOverBy('yes')"
+                  checked="true"></ejs-radiobutton>
+                <ejs-radiobutton label="No" name="default" style="margin-left: 12px;"
+                  (change)="checkHandedOverBy('no')"></ejs-radiobutton>
+              </div>
+            </div>
+            <input *ngIf="handOverCash" class="e-input" type="text" formControlName="handedOverBy" />
+          </div>
+          <div class="col-3" style="margin-bottom: 10px;">
+            <p style="margin-bottom: 0px;">Date</p>
+            <ejs-datepicker format='MMM d, y' formControlName="date"></ejs-datepicker>
+          </div>
+          <div class="col-3" style="margin-bottom: 10px;">
+            <p style="margin-bottom: 0px;">Reference ID</p>
+            <input class="e-input" type="text" formControlName="referenceID" />
+          </div>
+          <div class="col-3" style="margin-bottom: 10px;">
+            <p style="margin-bottom: 0px;">Amount (AED)</p>
+            <input class="e-input" type="number" formControlName="Amount" />
+          </div>
+          <div class="col-3" style="margin-bottom: 10px;">
+            <p style="margin-bottom: 0px;">Payment Method</p>
+            <ejs-dropdownlist formControlName="paymentMethod" [dataSource]='paymentMethodData'
+              [fields]='commonFields'></ejs-dropdownlist>
+            <p *ngIf="noPaymentTypeError" class="errorTxt" style="color: red;">Payment method is required.</p>
+          </div>
+          <div class="col-3" style="margin-bottom: 10px;" *ngIf="showChequeDiv">
+            <p style="margin-bottom: 0px;">Select Cheque type</p>
+            <div style="margin-top: 7px;">
+              <ejs-radiobutton label="PDC" name="default" (change)="chequeType('PDC')" checked="true"></ejs-radiobutton>
+              <ejs-radiobutton label="CDC" name="default" style="margin-left: 12px;"
+                (change)="chequeType('CDC')"></ejs-radiobutton>
+            </div>
+            <div style="margin-top: 7px;">
+              <ejs-datepicker format='MMM d, y' formControlName="chequeDate" [min]='maxDate'></ejs-datepicker>
+            </div>
+          </div>
+          <div class="col-3" style="margin-bottom: 10px;">
+            <p style="margin-bottom: 0px;">Memo</p>
+            <input class="e-input" type="text" formControlName="memo" placeholder="Enter memo" />
+            <p *ngIf="chequeError" class="errorTxt" style="color: red;">
+              Please enter Cheque Number in memo.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered" style="margin-bottom: 0px;margin-top: 25px;" style="width:100%">
+              <thead>
+                <tr>
+                  <th style="font-weight: 500 !important; width:10%">Date</th>
+                  <th style="font-weight: 500 !important; width:12%">Reference Number</th>
+                  <th style="font-weight: 500 !important; width:13%">Project</th>
+                  <th style="font-weight: 500 !important; width:13%">Customer</th>
+                  <th style="font-weight: 500 !important; width:12%">Phone</th>
+                  <th style="font-weight: 500 !important; width:10%">Comments</th>
+                  <th style="font-weight: 500 !important; width:10%">Amount</th>
+                  <th style="font-weight: 500 !important; width:10%">Payment</th>
+                  <th style="font-weight: 500 !important; width:10%">Outstanding</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="arrSelectedInvoice">
+                <tr *ngFor="let item of arrSelectedInvoice.controls; let i = index" [formGroupName]="i">
+                  <td>
+                    {{arrSelectedInvoice.controls[i].get('createdDate')?.value | date: 'dd/MM/yyyy'}}
+                  </td>
+                  <td>
+                    {{arrSelectedInvoice.controls[i].get('accountRefId')?.value}}
+                  </td>
+                  <td>
+                    {{arrSelectedInvoice.controls[i].get('projectName')?.value}}
+                  </td>
+                  <td>
+                    {{arrSelectedInvoice.controls[i].get('customerName')?.value}}
+                  </td>
+                  <td>
+                    {{arrSelectedInvoice.controls[i].get('custPhone')?.value}}
+                  </td>
+                  <td>
+                    {{arrSelectedInvoice.controls[i].get('comments')?.value}}
+                  </td>
+                  <td>
+                    AED. {{arrSelectedInvoice.controls[i].get('AmoutPlusVat')?.value}}
+                  </td>
+                  <td>
+                    <input type="number" class="e-input" formControlName="paymentAmt">
+                  </td>
+                  <td>
+                    <p style="margin-bottom: 0px;">
+                      {{returePending(item , i)}}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <p class="pprep">Total Receipt Amount -></p>
+                  </td>
+                  <td>AED. {{showReceiptTotal}}</td>
+                  <td>AED. {{showPaymentTotal | number: '.2'}}</td>
+                </tr>
+                <tr style="text-align: end;" *ngIf="bankTransfer">
+                  <td [formGroup]="patchReceiptValueForm" colspan="6">
+                    <ejs-checkbox label="Confirm collection" formControlName="confirmCollection"></ejs-checkbox>
+                    <p *ngIf="confirmCollectionError" class="errorTxt" style="color: red;">
+                      Collection Should Be confirmed.
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: end; margin-top: 20px;">
+        <button type="button" (click)="convertToReceipt()" style="padding: 10px !important;"
+          class="button button-fill button-rose2">
+          <i class="fa fa-retweet"></i>
+          Convert to Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="singleCustomerStatementDiv">
+    <div class="rowcard">
+      <div class="row headerft">
+        <div class="col-8" style="margin: auto;">
+          <h1 class="headerfont">Customer Statement</h1>
+        </div>
+        <div class="col-4" style="text-align: end; padding-bottom: 15px;">
+          <button class="button button-fill button-rose2" style="padding: 3px 10px !important;"
+            (click)="backToMainListing('custStat')">
+            <div style="display: flex; padding: 6px;">
+              <p style="margin-bottom: 0px;">Cancel</p>
+            </div>
+          </button>
+        </div>
+
+        <div class="col-4">
+          <h1 style="font-size: 18px; margin-bottom: 10px;">Project Account Summary</h1>
+          <p class="prodata">Project: {{projectData?.project_name}}</p>
+          <p class="prodata">Created Date: {{projectData?.created_date | date:'MMMM d, y'}}</p>
+          <p class="prodata">Customer: {{projectData?.cst_name}}</p>
+          <p class="prodata">Contact No: {{projectData?.phone}}</p>
+          <p class="prodata">Project Ref. : {{projectData?.accountsId !== null ? projectData?.accountsId : 'No Reference
+            ID added'}}</p>
+
+          <table class="table" style="margin-top: 10px;">
+            <thead>
+              <tr>
+                <th scope="col">Project value</th>
+                <th scope="col">VAT</th>
+                <th scope="col">Inc. Vat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AED. {{projectData?.projectAttribute.total_amount | number: '.2'}}</td>
+                <td>AED. {{projectData?.projectAttribute.vat_amount | number: '.2'}}</td>
+                <td style="font-weight: 700;">AED. {{projectData?.projectAttribute.net_total_amount | number: '.2'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <div class="col-13">
+            <p class="paymenttemphead">Summary</p>
+            <!-- Invoice Table -->
+            <table class="table table-bordered text-center">
+              <thead class="thead-light">
+                <tr>
+                  <th>Total Invoice</th>
+                  <th>Total Paid</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 500;">
+                    AED {{ custStatementAmountPlusVATTotal | number: '1.2-2' }}
+                  </td>
+                  <td style="font-weight: 500;">
+                    AED {{ custStatementClaimedTotal | number: '1.2-2' }}
+                  </td>
+                  <td style="font-weight: 500;">
+                    AED {{
+                      (custStatementAmountPlusVATTotal || 0) -
+                      (custStatementClaimedTotal || 0) | number: '1.2-2'
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-8">
+          <p class="paymenttemphead">Payment Terms</p>
+          <div>
+            <table class="table" style="border: 1px solid #dee2e6;">
+              <thead>
+                <tr style="text-align: center;">
+                  <th scope="col">Payment terms</th>
+                  <th scope="col">% of project value</th>
+                  <th scope="col">Value (AED)</th>
+                  <th scope="col" colspan="2">
+                    Tigger
+                    <i class="fa fa-info-circle matpointer"
+                      style="font-size: 14px; position: absolute; margin-top: 4px; margin-left: 4px;" placement="top"
+                      ngbTooltip="select on which event the payment should be taken place " container="body"></i>
+                  </th>
+                  <th scope="col">Stage / Milestone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let paydata of paymentTermsData">
+                  <th scope="row">
+                    {{paydata.term_name}}
+                  </th>
+                  <td style="text-align: center;">
+                    {{paydata.term_percent}}%
+                  </td>
+                  <td>
+                    AED. {{paydata.term_value}}
+                  </td>
+                  <td>
+                    {{paydata.payment_event}}
+                  </td>
+                  <td>
+                    {{paydata.paymentEventpercent}}%
+                  </td>
+                  <td style="text-align: center;">
+                    {{paydata.stage_name}}
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row"></th>
+                  <td style="text-align: center; font-weight: 400;">
+                    {{totalProjPercent}}
+                  </td>
+                  <td style="font-weight: 400;">
+                    AED. {{totalProjValue}}
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Ref. ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount Plus VAT</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Un-Paid</th>
+                <th scope="col" style="text-align: end;">Outstanding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let singData of singleCustomerStatement">
+                <td>{{singData?.accountRefId}}</td>
+                <td>{{singData?.dueDate | date:'mediumDate'}}</td>
+                <td>{{singData?.comments}}</td>
+                <td>
+                  <p style="margin-bottom: 0px; font-weight: 500;">AED. {{singData?.amountPlusVat | number: '.2'}}</p>
+                  <p style="margin-bottom: 0px;">({{singData?.advAmount | number: '.2'}} + {{singData?.onlyVat | number:
+                    '.2'}})</p>
+                </td>
+                <td>
+                  <div *ngIf="singData?.amountClaimed !== 0">
+                    <p style="margin-bottom: 0px;">AED. {{singData?.amountClaimed | number: '.2'}}</p>
+                    <span *ngIf="singData?.amountExtra !== 0">Extra Amount: AED. {{singData?.amountExtra }}</span>
+                  </div>
+                  <div *ngIf="singData?.amountClaimed === 0">
+                    <p>{{singData?.amountClaimed | number: '.2'}}</p>
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="singData?.amountBalance !== 0">
+                    AED. {{singData?.amountBalance | number: '.2'}}
+                  </p>
+                  <p *ngIf="singData?.amountBalance === 0">
+                    {{singData?.amountBalance | number: '.2'}}
+                  </p>
+                </td>
+                <td style="text-align: end;">
+                  <p *ngIf="singData?.amountBalance !== 0">
+                    AED. {{singData?.amountBalance | number: '.2'}}
+                  </p>
+                  <p *ngIf="singData?.amountBalance === 0">
+                    {{singData?.amountBalance | number: '.2'}}
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3"></td>
+                <td style="font-weight: 500;">
+                  AED. {{custStatementAmountPlusVATTotal | number: '.2'}}
+                  <p style="margin-bottom: 0px;font-weight: normal;">
+                    ({{custStatementAmountPlusVATTotal - custStatementOnlyVATTotal | number: '.2'}} +
+                    {{custStatementOnlyVATTotal | number: '.2'}})
+                  </p>
+                </td>
+                <td colspan="2">
+                  <p style="margin-bottom: 0px">Net Amount to Paid as of Statement date</p>
+                </td>
+                <td style="text-align: end;">
+                  AED. {{custStatementTotal | number: '.2'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="!accessToReceipts">
+  <app-not-found></app-not-found>
+</div>
+
+<div class="rightModal700">
+
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="consolidationView_Invoice_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1050px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Multiple Invoices</h5>
+          <button type="button" class="close" (click)="closeInvoiceClubModel()" aria-label="Close"></button>
+        </div>
+        <div>
+          <div class="row" style="margin-left: 0px; margin-right: 0px;">
+            <div class="col-6">
+              <div class="cardgggg">
+                <p class="heradersgsgs">Project Details</p>
+                <div>
+                  <p style="margin-top: 0px; margin-bottom: 2px;font-weight: 600;">Job No: <span
+                      style="font-weight: 400;">{{projectDetails?.project_prefix}}</span></p>
+                  <p style="margin-top: 0px; margin-bottom: 2px;font-weight: 600;">Project Name: <span
+                      style="font-weight: 400;">{{projectDetails?.project_name}}</span></p>
+                  <p style="margin-top: 0px; margin-bottom: 2px;font-weight: 600;">Total Project Value: <span
+                      style="font-weight: 400;">AED. {{projectDetails?.projectAttribute.total_amount | number:
+                      '.2'}}</span></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-6" style="display: grid;">
+              <div class="cardgggg">
+                <p class="heradersgsgs">Customer Details</p>
+                <div>
+                  <p style="margin-top: 0px; margin-bottom: 2px;font-weight: 600;">Customer Name: <span
+                      style="font-weight: 400;">{{projectDetails?.cst_name}}</span></p>
+                  <p style="margin-top: 0px; margin-bottom: 2px;font-weight: 600;">Customer Phone: <span
+                      style="font-weight: 400;">{{projectDetails?.entityCustomer.phone}}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="combinecardcss">
+            <div class="row">
+              <div class="col-8">
+                <p class="multheat">It seems you have multiple Invoices for {{projectDetails?.project_name}} Project.
+                </p>
+                <span style="font-size: 11px;">Please select to proceed</span>
+              </div>
+              <div class="col-4" style="margin: auto; text-align: end;" *ngIf="showContinuebtn">
+                <button type="button" style="margin-left: 15px;" (click)="selectInvoice()"
+                  class="button button-fill button-rose">
+                  Continue
+                </button>
+              </div>
+              <div class="col-12">
+                <ejs-grid #totalInvoicesGrid (rowSelected)='rowSelected()' (rowDeselected)="rowSelected()"
+                  style="margin-top: 15px;" [dataSource]='totalInvoices' height='300px' allowTextWrap='true'>
+                  <e-columns>
+                    <e-column type='checkbox' width='50' textAlign='Center'></e-column>
+                    <e-column field='createdDate' headerText='Date' width='70'>
+                      <ng-template #template let-data>
+                        <span>{{data.createdDate | date: 'dd/MM/yyyy'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='projectName' headerText='Project' width='80'></e-column>
+                    <e-column field='accountRefId' headerText='Acc. Ref ID' width='80'></e-column>
+                    <e-column field='AmoutPlusVat' headerText='Total' width='80'>
+                      <ng-template #template let-data>
+                        <div>
+                          <span>AED. {{data.AmoutPlusVat | number: '.2'}}</span>
+                          <span *ngIf="data.discountAmount !== 0"
+                            style="display: block; font-size: 10px; font-weight: 500; color: green;">
+                            Discount: - AED. {{data.discountAmount}}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='amountClaimed' headerText='Claimed' width='80'>
+                      <ng-template #template let-data>
+                        <span>AED. {{data.amountClaimed | number: '.2'}}</span>
+                      </ng-template>
+                    </e-column>
+                    <e-column field='finalAmount' headerText='Final Amount' width='80'>
+                      <ng-template #template let-data>
+                        <span>AED. {{data.finalAmount | number: '.2'}}</span>
+                      </ng-template>
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal  animated slideInRight faster myDiv" tabindex="-1" id="all_customer_statement_modal"
+    data-backdrop="static" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 800px;">
+      <div class="modal-content notifyModal">
+        <div class="modal-header" style="padding: 8px 15px;">
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 12px;">Project Invoice Statements</h5>
+          <button type="button" class="close" (click)="closeCustomerStatementModel()" aria-label="Close"></button>
+        </div>
+        <div>
+          <div class="row custercard">
+            <div class="col-6">
+              <p style="margin-bottom: 3px; font-weight: 500;">Customer Name</p>
+              <p style="margin-bottom: 0px;">{{customerData?.cst_name}}</p>
+            </div>
+            <div class="col-6">
+              <p style="margin-bottom: 3px; font-weight: 500;">Customer Phone</p>
+              <p style="margin-bottom: 0px;">{{customerData?.phone}}</p>
+            </div>
+          </div>
+
+          <div class="row custercard">
+            <div class="col-12" style="padding-right: 0px; padding-left: 0px;">
+              <ejs-grid #receiptsTableGrid [toolbar]='invoiceToolbar' [allowExcelExport]='true' [allowPdfExport]='true'
+                (toolbarClick)='receiptsDownload($event)' [dataSource]='allCustomerStatement' allowTextWrap='true'
+                height="400px" allowSorting='true'>
+                <e-columns>
+
+                  <e-column field='projectName' headerText='Project' width=100>
+                    <ng-template #template let-data>
+                      <span>{{data.projectName}}</span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column field='comments' headerText='Comments' width=100>
+                    <ng-template #template let-data>
+                      <span *ngFor="let com of data.comments">
+                        <p style="margin-bottom: 1px;">{{com}}</p>
+                      </span>
+                    </ng-template>
+                  </e-column>
+
+                  <e-column headerText='No. of Invoices' width=100 textAlign='center'>
+                    <ng-template #template let-data>
+                      <p style="margin-bottom: 0px;color: blue; cursor: pointer;"
+                        (click)="viewSingleCustStatement(data.statementData)">
+                        {{data.statementData.length}}
+                      </p>
+                    </ng-template>
+                  </e-column>
+
+                </e-columns>
+              </ejs-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

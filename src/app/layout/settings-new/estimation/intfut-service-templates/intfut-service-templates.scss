@@ -1,0 +1,151 @@
+.pad2515 {
+  padding: 25px 15px;
+  background: #fff;
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+}
+
+.labelMainHeader {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.teamDiv {
+  text-align: end;
+}
+
+.rowPad {
+  padding: 25px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.whitee {
+  margin: auto;
+  padding: 10px;
+  background: white;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.rowimp {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.labimp {
+  margin-bottom: 0px;
+  font-weight: 500;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.marAuto {
+  margin: auto 0;
+}
+
+.container {
+  background: #f0f0f0 !important;
+}
+
+.btnColorAll {
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.errorTxt {
+  color: #f35b5b;
+  background: none;
+  border: none;
+  padding: 3px;
+  margin-bottom: 0px;
+}
+
+.footerdiv {
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 1rem;
+  justify-content: flex-end;
+}
+
+.buttonSt {
+  background-color: #b54269;
+  border-color: #b54269;
+  color: white;
+}
+
+.btnScc {
+  display: inline-flex;
+}
+
+.commonBtn {
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.actionButton {
+  color: #2e3e4e !important;
+  cursor: pointer;
+}
+
+.disableButton {
+  color: #c9c9c9 !important;
+  pointer-events: none;
+}
+
+.firstdiv {
+  margin-bottom: 10px;
+}
+
+.seconddiv {
+  border-top: 1px solid #898d91;
+  margin-top: 15px;
+  padding-bottom: 10px;
+}
+
+.thirddiv {
+  border-top: 1px solid #898d91;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}
+
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+
+.fa-search {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  /* Adjust the right spacing for the icon */
+  transform: translateY(-50%);
+  color: #333;
+  /* Adjust the color of the icon */
+  cursor: pointer;
+}
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s;
+}
+.thirddiv{
+  border-top: 1px solid #898d91;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}
+.reqbtn {
+  display: flex !important;
+  border: 1px solid #a3a5ad !important;
+}

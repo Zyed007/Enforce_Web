@@ -1,0 +1,64 @@
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid" style=" margin-top: 16px;">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-sm-6" *ngFor="let org of delegateDetails;">
+                <div class="kt-portlet kt-portlet--height-fluid" >
+                    <div class="kt-portlet__body kt-portlet__body--fit cardShadow">
+                        <div class="kt-widget kt-widget--project-1">
+                            <div *ngIf="org.delegate_org_id" class=" kt-ribbon kt-ribbon--brand kt-ribbon--shadow kt-ribbon--left kt-ribbon--round" data-container="body" data-toggle="kt-tooltip" data-placement="top" title="" data-original-title="Upgrade">
+                                <div class="kt-ribbon__target" style="top: 4px; right: -2px;" >
+                                    Branch
+                                </div>
+    
+                            </div>
+                            <div class="kt-widget__head" style="padding-left: 12px !important;">
+                                <div class="kt-widget__label" (click)="toDashboard(org.delegate_org_id)">
+                                    <div class="kt-widget__media">
+                                        <span class="kt-media kt-media--lg kt-media--circle">
+                                            <img [src]="org.img_url" onError="this.src='../../../assets/media/project-logos/3.png'" alt="image">
+                                        </span>
+                                    </div>
+                                    <div class="kt-widget__info kt-margin-t-5">
+    
+                                        <a  class="kt-widget__title">
+                                            {{org.delegate_org_name}}
+                                          </a>
+                                          <span *ngIf="org.delegate_org_id" class="kt-widget__desc" style="font-weight: bold;font-size: 10px;">
+                                            <i class="flaticon2-calendar-3"></i> Delegated by {{org.delegator_full_name}}
+                                          </span>
+                                        <!-- <span class="kt-widget__desc" >
+                                         Role {{org.delegate_role_name}}
+                                        </span> -->
+    
+                                    </div>
+                                </div>
+                               
+    
+                            </div>
+    
+    
+                            <div class="kt-widget__footer">
+                                <div class="kt-widget__wrapper" style="display: flex;
+                                padding: 10px 15px !important;">
+                                     <div class="kt-widget__section">
+                                        <div class="kt-widget__blog">
+                                           <strong>Delegated User: </strong> {{org.delegate_name
+                                            }}
+                                        </div>
+                                        <div class="kt-widget__blog">
+                                            <strong>Delegated Role: </strong> {{org.delegate_role_name}}
+    
+                                        </div>
+    
+                                    
+                                    </div>
+    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+      </div>
+</div>

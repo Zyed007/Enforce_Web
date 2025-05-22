@@ -1,0 +1,50 @@
+.kt-aside--fixed .kt-wrapper {
+    padding-left: 0px !important;
+}
+.kt-header--fixed .kt-wrapper {
+    padding-top: 0px !important;
+}
+.kt-pricing-2[_ngcontent-rlq-c2] .kt-pricing-2__content[_ngcontent-rlq-c2] .kt-pricing-2__container[_ngcontent-rlq-c2] .kt-pricing-2__items[_ngcontent-rlq-c2] .kt-pricing-2__item[_ngcontent-rlq-c2] .kt-pricing-2__visual[_ngcontent-rlq-c2] .kt-pricing-2__icon[_ngcontent-rlq-c2] > i[_ngcontent-rlq-c2] {
+    font-size: 2.43rem !important;
+}
+.kt-pricing-2[_ngcontent-ydy-c2] .kt-pricing-2__content[_ngcontent-ydy-c2] .kt-pricing-2__container[_ngcontent-ydy-c2] .kt-pricing-2__items[_ngcontent-ydy-c2] .kt-pricing-2__item[_ngcontent-ydy-c2] .kt-pricing-2__visual[_ngcontent-ydy-c2]{
+    margin-top: 2.8rem !important;
+}
+.negMargin{
+    margin-top: -12px;;
+}
+.tick{
+    border-top: 1px solid #e1f1ff;
+    /* text-align: left; */
+    /* padding-left: 65px; */
+    display: flex ;
+    flex-direction: column;
+    /* justify-content: center; */
+    text-align: justify;
+    padding-left: 32%;
+}
+.freeTrialLink{
+    color: blue;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+    margin-bottom: -10px;
+}
+.tick span::before{
+    font-family: "FontAwesome";
+    content: "\f00c";
+    font-size: 1.3rem;
+    color: #33c4b6;
+    margin-right: 3px;
+}
+@media (min-width: 1025px){
+    .kt-aside--fixed .kt-wrapper {
+        padding-left: 0px !important;
+    }
+}
+@media (min-width: 1025px){
+    .kt-header--fixed .kt-wrapper {
+        padding-top: 0px !important;
+    }
+}
+

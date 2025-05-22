@@ -1,0 +1,88 @@
+.mainProfileDiv {
+  margin: 0px 15px 15px;
+}
+
+.pad2515 {
+  padding: 25px 15px;
+  background: #fff;
+  box-shadow: 0 2px 2px rgb(0 0 0 / 3%), 0 1px 0 rgb(0 0 0 / 3%);
+}
+
+.labelMainHeader {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.addProfilesection {
+  text-align: end;
+}
+
+.btnColorAll {
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.btnColorAlll {
+  background-color: #e91e63 !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.marlef15 {
+  margin-left: 15px;
+}
+
+.profiletabGrid {
+  padding: 20px 20px 0px 20px;
+}
+
+.errorTxt {
+  color: #f35b5b;
+  background: none;
+  border: none;
+  padding: 3px;
+  margin-bottom: 0px;
+}
+
+.labfont {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.form-item {
+  flex: 1;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item label {
+  margin-bottom: 5px;
+}
+
+.btnColorAll {
+  background-color: #2e3e4e !important;
+  color: #f5f5f6 !important;
+  font-weight: 500 !important;
+}
+
+.e-upload-files .e-upload-file-list {
+  display: none;
+}
+
+.e-upload .e-file-select-wrap {
+  padding: 0px !important;
+}
